@@ -129,11 +129,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="COMMON\CommonContext.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DBContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Account.cs" />
     <Compile Include="Models\CongTo.cs" />
     <Compile Include="Models\CongTy.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Models\LogTinhChatDiemDo.cs" />
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\NhaMay.cs" />
+    <Compile Include="Models\RoleAccount.cs" />
     <Compile Include="Models\SanLuong.cs" />
     <Compile Include="Models\SanLuongDuKien.cs" />
     <Compile Include="Models\SanLuongThucTe.cs" />
@@ -2202,6 +2205,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
