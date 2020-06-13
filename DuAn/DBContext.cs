@@ -21,7 +21,7 @@ namespace DuAn
                 DateTime namEnd = new DateTime(2021, 1, 1);
                 DateTime sanLuong = new DateTime(2020, 4, 18);
                 List<DiemDoData> list = new List<DiemDoData>();
-                var temp1 = db.SanLuongs.Where(x => x.Ngay == sanLuong).OrderBy(x => x.DiemDo.TinhChatDiemDo.STT).ToList();
+                var temp1 = db.SanLuongs.Where(x => x.Ngay == sanLuong).OrderBy(x => x.DiemDo.ThuTuHienThu).ToList();
                 List<int> temp = temp1.Select(x => x.DiemDoID).Distinct().ToList();
                 foreach (int itemp in temp)
                 {
@@ -32,7 +32,7 @@ namespace DuAn
                         tenDiemDo = listDiemDo.Select(x => x.TenDiemDo).FirstOrDefault(),
                         maDiemDo = listDiemDo.Select(x => x.MaDiemDo).FirstOrDefault(),
                         tinhChat = listDiemDo.Select(x => x.TinhChatDiemDo.TenTinhChat).FirstOrDefault(),
-                        thuTuHienThi = listDiemDo.Select(x => x.TinhChatDiemDo.STT).FirstOrDefault(),
+                        thuTuHienThi = listDiemDo.Select(x => x.ThuTuHienThu).FirstOrDefault(),
                         kwhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KWH_GIAO).Select(x => x.GiaTri).ToList(),
                         kwhNhan = listSanLuong.Where(x => x.KenhID == CommonContext.KWH_NHAN).Select(x => x.GiaTri).ToList(),
                         kvarhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_GIAO).Select(x => x.GiaTri).ToList(),

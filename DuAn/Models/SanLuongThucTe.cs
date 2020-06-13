@@ -13,8 +13,6 @@ namespace DuAn.Models
 
         public int DiemDoID { get; set; }
 
-        public int LoaiID { get; set; }
-
         public double SanLuong { get; set; }
 
         public int KenhID { get; set; }
@@ -25,7 +23,5 @@ namespace DuAn.Models
         public virtual DiemDo DiemDo { get; set; }
 
         public virtual Kenh Kenh { get; set; }
-
-        public virtual LoaiSanLuong LoaiSanLuong { get; set; }
     }
 }

@@ -8,10 +8,11 @@ namespace DuAn.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=Model14")
+            : base("name=Model1")
         {
         }
 
+        public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<CongTo> CongToes { get; set; }
         public virtual DbSet<CongTy> CongTies { get; set; }
         public virtual DbSet<DiemDo> DiemDoes { get; set; }
@@ -24,6 +25,7 @@ namespace DuAn.Models
         public virtual DbSet<LogNhaMay> LogNhaMays { get; set; }
         public virtual DbSet<LogTinhChatDiemDo> LogTinhChatDiemDoes { get; set; }
         public virtual DbSet<NhaMay> NhaMays { get; set; }
+        public virtual DbSet<RoleAccount> RoleAccounts { get; set; }
         public virtual DbSet<SanLuong> SanLuongs { get; set; }
         public virtual DbSet<SanLuongDuKien> SanLuongDuKiens { get; set; }
         public virtual DbSet<SanLuongThucTe> SanLuongThucTes { get; set; }
@@ -31,6 +33,14 @@ namespace DuAn.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Account>()
+                .Property(e => e.username)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.password)
+                .IsUnicode(false);
+
             modelBuilder.Entity<CongTo>()
                 .Property(e => e.Serial)
                 .IsFixedLength();
@@ -107,12 +117,6 @@ namespace DuAn.Models
                 .HasForeignKey(e => e.LoaiID)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<LoaiSanLuong>()
-                .HasMany(e => e.SanLuongThucTes)
-                .WithRequired(e => e.LoaiSanLuong)
-                .HasForeignKey(e => e.LoaiID)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<LogCongTy>()
                 .Property(e => e.TenVietTat)
                 .IsFixedLength();
@@ -145,6 +149,12 @@ namespace DuAn.Models
             modelBuilder.Entity<NhaMay>()
                 .HasMany(e => e.LogNhaMays)
                 .WithRequired(e => e.NhaMay)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<RoleAccount>()
+                .HasMany(e => e.Accounts)
+                .WithRequired(e => e.RoleAccount)
+                .HasForeignKey(e => e.RoleID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TinhChatDiemDo>()
