@@ -1,35 +1,8 @@
-﻿ NextSelect a theme:
-No theme
-Dataviz
-Material
-Kelly's
-Dark
-Frozen
-Moonrise Kingdom
-Spirited Away
-+
-Open in:
-Data grouping 50K points
-This demo shows how dynamic data item grouping – a feature built-in into amCharts 4 – can help coping with large data sets.
-
-In a nutshell it ensures that no more than a fixed number of data items is displayed at any given time. The chart itself automatically adjusts data granularity, grouping data items into bigger periods.
-
-When users zooms in, the granularity increases. This means that you can have a “bird’s eye” view of the data when zoomed out without overwhelming number of items, and access detailed values for specific periods.
-
-And, best of all, you’re in control when specifying how aggregate values are calculated. It can be one of the absolute values like open, high, low, or close, or auto-calculated ones, like average or sum.
-
-Read more about data item grouping
-
-Demo source
-JavaScript
-TypeScript / ES6
-...
-<!-- Styles -->
+﻿<!-- Styles -->
 <style>
     #chartdiv {
         width: 100%;
         height: 500px;
-        max-width: 100%;
     }
 </style>
 
@@ -46,42 +19,69 @@ TypeScript / ES6
         am4core.useTheme(am4themes_animated);
         // Themes end
 
-        var chart = am4core.create("chartdiv", am4charts.XYChart);
-        chart.paddingRight = 20;
-
-        var data = [];
-        var visits = 10;
-        for (var i = 1; i < 50000; i++) {
-            visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-            data.push({ date: new Date(2018, 0, i), value: visits });
-        }
-
-        chart.data = data;
-
-        var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-        dateAxis.renderer.grid.template.location = 0;
-        dateAxis.minZoomCount = 5;
 
 
-        // this makes the data to be grouped
-        dateAxis.groupData = true;
-        dateAxis.groupCount = 500;
+        // Create chart instance
+        var chart = am4core.create("chartdiv", am4charts.RadarChart);
 
-        var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        // Add data
+        chart.data = [{
+            "category": "Research",
+            "value": 80,
+            "full": 100
+        }];
 
-        var series = chart.series.push(new am4charts.LineSeries());
-        series.dataFields.dateX = "date";
-        series.dataFields.valueY = "value";
-        series.tooltipText = "{valueY}";
-        series.tooltip.pointerOrientation = "vertical";
-        series.tooltip.background.fillOpacity = 0.5;
+        // Make chart not full circle
+        chart.startAngle = 160;
+        chart.endAngle = 380;
+        chart.innerRadius = am4core.percent(60);
 
-        chart.cursor = new am4charts.XYCursor();
-        chart.cursor.xAxis = dateAxis;
+        // Set number format
+        chart.numberFormatter.numberFormat = "#.#'%'";
 
-        var scrollbarX = new am4core.Scrollbar();
-        scrollbarX.marginBottom = 20;
-        chart.scrollbarX = scrollbarX;
+        // Create axes
+        var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "category";
+        categoryAxis.renderer.grid.template.location = 0;
+        categoryAxis.renderer.grid.template.strokeOpacity = 0;
+        categoryAxis.renderer.labels.template.horizontalCenter = "right";
+        categoryAxis.renderer.labels.template.fontWeight = 500;
+        categoryAxis.renderer.labels.template.adapter.add("fill", function (fill, target) {
+            return (target.dataItem.index >= 0) ? chart.colors.getIndex(target.dataItem.index) : fill;
+        });
+        categoryAxis.renderer.minGridDistance = 10;
+
+        var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+        valueAxis.renderer.grid.template.strokeOpacity = 0;
+        valueAxis.min = 0;
+        valueAxis.max = 100;
+        valueAxis.strictMinMax = true;
+
+        // Create series
+        var series1 = chart.series.push(new am4charts.RadarColumnSeries());
+        series1.dataFields.valueX = "full";
+        series1.dataFields.categoryY = "category";
+        series1.clustered = false;
+        series1.columns.template.fill = new am4core.InterfaceColorSet().getFor("alternativeBackground");
+        series1.columns.template.fillOpacity = 0.08;
+        series1.columns.template.cornerRadiusTopLeft = 20;
+        series1.columns.template.strokeWidth = 0;
+        series1.columns.template.radarColumn.cornerRadius = 20;
+
+        var series2 = chart.series.push(new am4charts.RadarColumnSeries());
+        series2.dataFields.valueX = "value";
+        series2.dataFields.categoryY = "category";
+        series2.clustered = false;
+        series2.columns.template.strokeWidth = 0;
+        series2.columns.template.tooltipText = "{category}: [bold]{value}[/]";
+        series2.columns.template.radarColumn.cornerRadius = 20;
+
+        series2.columns.template.adapter.add("fill", function (fill, target) {
+            return chart.colors.getIndex(target.dataItem.index);
+        });
+
+        // Add cursor
+        chart.cursor = new am4charts.RadarCursor();
 
     }); // end am4core.ready()
 </script>
