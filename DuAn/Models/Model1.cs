@@ -1,15 +1,85 @@
-namespace DuAn.Models
+﻿namespace DuAn.Models
 {
     using System;
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using System.Security.Cryptography;
 
     public partial class Model1 : DbContext
     {
         public Model1()
             : base("name=Model1")
         {
+        }
+
+        public static class AccountDAO
+        {
+            public static string MaHoaMatKhau(String password)
+            {
+                //Tạo MD5 
+                MD5 mh = MD5.Create();
+                //Chuyển kiểu chuổi thành kiểu byte
+                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(password);
+                //mã hóa chuỗi đã chuyển
+                byte[] hash = mh.ComputeHash(inputBytes);
+                //tạo đối tượng StringBuilder (làm việc với kiểu dữ liệu lớn)
+                String sb = "";
+                for (int i = 0; i < hash.Length; i++)
+                {
+                    sb += hash[i].ToString("x");
+                }
+                return sb;
+            }
+
+            private static string RandomSaltHash()
+            {
+                string rs = "";
+                Random rd = new Random();
+                for (int i = 0; i < 20; i++)
+                {
+                    rs += Convert.ToString((Char)rd.Next(65, 90));
+                }
+                return rs;
+            }
+            static Model1 db = new Model1();
+            public static Account CheckLogin(string username, string password)
+            {
+                try
+                {
+                    var rs = db.Accounts.SingleOrDefault(x => x.Username == username);
+
+                    if (rs != null && rs.Password == MaHoaMatKhau(rs.SaltPassword + password))
+                    {
+                        return rs;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    return null;
+                }
+                return null;
+            }
+            public static void AddAccount(Account acc)
+            {
+                acc.SaltPassword = RandomSaltHash();
+                // ma hoa mat khau
+                acc.Password = MaHoaMatKhau(acc.SaltPassword + acc.Password);
+                db.Accounts.Add(acc);
+                db.SaveChanges();
+            }
+            public static bool CheckUsername(string username)
+            {
+                foreach (Account c in db.Accounts)
+                {
+                    if (c.Username == username)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
         }
 
         public virtual DbSet<Account> Accounts { get; set; }
@@ -34,11 +104,11 @@ namespace DuAn.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()
-                .Property(e => e.username)
+                .Property(e => e.Username)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Account>()
-                .Property(e => e.password)
+                .Property(e => e.Password)
                 .IsUnicode(false);
 
             modelBuilder.Entity<CongTo>()

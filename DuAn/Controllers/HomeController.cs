@@ -1,4 +1,5 @@
-﻿using DuAn.Models.CustomModel;
+﻿using DuAn.Attribute;
+using DuAn.Models.CustomModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace DuAn.Controllers
 {
     public class HomeController : Controller
     {
+        [CheckRoleAttribute(RoleID = new int[2] { 2, 3 })]
         public ActionResult Index()
         {
             var data = DBContext.getDuKien();
@@ -18,7 +20,6 @@ namespace DuAn.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
             return View();
         }
 

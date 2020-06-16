@@ -1,11 +1,11 @@
 "use strict";
 // Class definition
 
-var KTAppsUsersListDatatable = function() {
+var KTAppsUsersListDatatable = function () {
 	// Private functions
 
 	// basic demo
-	var _demo = function() {
+	var _demo = function () {
 		var datatable = $('#kt_datatable').KTDatatable({
 			// datasource definition
 			data: {
@@ -48,14 +48,14 @@ var KTAppsUsersListDatatable = function() {
 					type: 'number',
 					selector: false,
 					textAlign: 'left',
-					template: function(data) {
+					template: function (data) {
 						return '<span class="font-weight-bolder">' + data.RecordID + '</span>';
 					}
 				}, {
 					field: 'OrderID',
 					title: 'Customer',
 					width: 250,
-					template: function(data) {
+					template: function (data) {
 						var number = KTUtil.getRandomInt(1, 14);
 						var user_img = '100_' + number + '.jpg';
 
@@ -85,7 +85,7 @@ var KTAppsUsersListDatatable = function() {
 							var state = states[stateNo];
 
 							output = '<div class="d-flex align-items-center">\
-								<div class="symbol symbol-40 symbol-light-'+state+' flex-shrink-0">\
+								<div class="symbol symbol-40 symbol-light-'+ state + ' flex-shrink-0">\
 									<span class="symbol-label font-size-h4 font-weight-bold">' + data.CompanyAgent.substring(0, 1) + '</span>\
 								</div>\
 								<div class="ml-4">\
@@ -100,7 +100,7 @@ var KTAppsUsersListDatatable = function() {
 				}, {
 					field: 'Country',
 					title: 'Country',
-					template: function(row) {
+					template: function (row) {
 						var output = '';
 
 						output += '<div class="font-weight-bolder font-size-lg mb-0">' + row.Country + '</div>';
@@ -113,14 +113,14 @@ var KTAppsUsersListDatatable = function() {
 					title: 'Ship Date',
 					type: 'date',
 					format: 'MM/DD/YYYY',
-					template: function(row) {
+					template: function (row) {
 						var output = '';
 
 						var status = {
-							1: {'title': 'Paid', 'class': ' label-light-primary'},
-							2: {'title': 'Approved', 'class': ' label-light-danger'},
-							3: {'title': 'Pending', 'class': ' label-light-primary'},
-							4: {'title': 'Rejected', 'class': ' label-light-success'}
+							1: { 'title': 'Paid', 'class': ' label-light-primary' },
+							2: { 'title': 'Approved', 'class': ' label-light-danger' },
+							3: { 'title': 'Pending', 'class': ' label-light-primary' },
+							4: { 'title': 'Rejected', 'class': ' label-light-success' }
 						};
 						var index = KTUtil.getRandomInt(1, 4);
 
@@ -132,7 +132,7 @@ var KTAppsUsersListDatatable = function() {
 				}, {
 					field: 'CompanyName',
 					title: 'Company Name',
-					template: function(row) {
+					template: function (row) {
 						var output = '';
 
 						output += '<div class="font-weight-bold text-muted">' + row.CompanyName + '</div>';
@@ -143,15 +143,15 @@ var KTAppsUsersListDatatable = function() {
 					field: 'Status',
 					title: 'Status',
 					// callback function support for column rendering
-					template: function(row) {
+					template: function (row) {
 						var status = {
-							1: {'title': 'Pending', 'class': ' label-light-primary'},
-							2: {'title': 'Delivered', 'class': ' label-light-danger'},
-							3: {'title': 'Canceled', 'class': ' label-light-primary'},
-							4: {'title': 'Success', 'class': ' label-light-success'},
-							5: {'title': 'Info', 'class': ' label-light-info'},
-							6: {'title': 'Danger', 'class': ' label-light-danger'},
-							7: {'title': 'Warning', 'class': ' label-light-warning'},
+							1: { 'title': 'Pending', 'class': ' label-light-primary' },
+							2: { 'title': 'Delivered', 'class': ' label-light-danger' },
+							3: { 'title': 'Canceled', 'class': ' label-light-primary' },
+							4: { 'title': 'Success', 'class': ' label-light-success' },
+							5: { 'title': 'Info', 'class': ' label-light-info' },
+							6: { 'title': 'Danger', 'class': ' label-light-danger' },
+							7: { 'title': 'Warning', 'class': ' label-light-warning' },
 						};
 						return '<span class="label label-lg font-weight-bold ' + status[row.Status].class + ' label-inline">' + status[row.Status].title + '</span>';
 					},
@@ -162,7 +162,7 @@ var KTAppsUsersListDatatable = function() {
 					width: 130,
 					overflow: 'visible',
 					autoHide: false,
-					template: function() {
+					template: function () {
 						return '\
 	                        <div class="dropdown dropdown-inline">\
 	                            <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown">\
@@ -241,11 +241,11 @@ var KTAppsUsersListDatatable = function() {
 				}],
 		});
 
-		$('#kt_datatable_search_status').on('change', function() {
+		$('#kt_datatable_search_status').on('change', function () {
 			datatable.search($(this).val().toLowerCase(), 'Status');
 		});
 
-		$('#kt_datatable_search_type').on('change', function() {
+		$('#kt_datatable_search_type').on('change', function () {
 			datatable.search($(this).val().toLowerCase(), 'Type');
 		});
 
@@ -254,12 +254,12 @@ var KTAppsUsersListDatatable = function() {
 
 	return {
 		// public functions
-		init: function() {
+		init: function () {
 			_demo();
 		},
 	};
 }();
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
 	KTAppsUsersListDatatable.init();
 });

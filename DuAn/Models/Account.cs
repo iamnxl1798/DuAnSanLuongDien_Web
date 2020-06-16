@@ -13,12 +13,19 @@ namespace DuAn.Models
 
         [Required]
         [StringLength(100)]
-        public string username { get; set; }
+        public string Username { get; set; }
 
         [Required]
-        public string password { get; set; }
+        public string Password { get; set; }
 
         public int RoleID { get; set; }
+        public string SaltPassword { get; set; }
+        public string Fullname { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string IdentifyCode { get; set; }
+        public string Email { get; set; }
+        public DateTime DOB { get; set; }
 
         public virtual RoleAccount RoleAccount { get; set; }
     }

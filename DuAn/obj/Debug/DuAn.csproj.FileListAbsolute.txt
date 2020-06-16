@@ -325,8 +325,8 @@ D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\bin\System.Web.We
 D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\bin\Newtonsoft.Json.xml
 D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\bin\Antlr3.Runtime.pdb
 D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\obj\Debug\DuAn.csprojAssemblyReference.cache
 D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\obj\Debug\DuAn.csproj.CoreCompileInputs.cache
 D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\obj\Debug\DuAn.csproj.CopyComplete
 D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\obj\Debug\DuAn.dll
 D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\obj\Debug\DuAn.pdb
+D:\E-Solution\WebGiamSatSanLuongDien\DuAnSanLuongDien_Web\DuAn\obj\Debug\DuAn.csprojAssemblyReference.cache

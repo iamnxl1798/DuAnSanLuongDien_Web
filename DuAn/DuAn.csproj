@@ -128,7 +128,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attribute\CheckRoleAttribute.cs" />
     <Compile Include="COMMON\CommonContext.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DBContext.cs" />
@@ -163,10 +165,15 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="email.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="phone.png" />
+    <Content Include="Scripts\Account\chuyenvien-account-ajax-server-side.js" />
+    <Content Include="Scripts\Account\custome.js" />
+    <Content Include="Scripts\assets\css\jquery.dataTables.min.css" />
     <Content Include="Scripts\assets\css\pages\error\error-3.css" />
     <Content Include="Scripts\assets\css\pages\error\error-3.min.css" />
     <Content Include="Scripts\assets\css\pages\error\error-4.css" />
@@ -221,6 +228,7 @@
     <Content Include="Scripts\assets\css\pages\wizard\wizard-4.min.css" />
     <Content Include="Scripts\assets\css\style.bundle.css" />
     <Content Include="Scripts\assets\css\style.bundle.min.css" />
+    <Content Include="Scripts\assets\js\jquery.dataTables.min.js" />
     <Content Include="Scripts\assets\js\pages\builder.js" />
     <Content Include="Scripts\assets\js\pages\builder.min.js" />
     <Content Include="Scripts\assets\js\pages\crud\datatables\advanced\column-rendering.js" />
@@ -2201,6 +2209,15 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <None Include="Views\Account\ListUser.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2208,14 +2225,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\RoleDenied.cshtml" />
+    <Content Include="Views\Account\TableDataUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

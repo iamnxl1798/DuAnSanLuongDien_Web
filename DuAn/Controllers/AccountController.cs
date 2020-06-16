@@ -4,129 +4,93 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using DuAn.Attribute;
 using DuAn.Models;
+using static DuAn.Models.Model1;
 
 namespace DuAn.Controllers
 {
+    [CheckRole(RoleID = new int[1] { 2 })]
     public class AccountController : Controller
     {
         private Model1 db = new Model1();
 
+        [AllowAnonymous]
         // GET: Account
         public ActionResult Login()
         {
-            var accounts = db.Accounts.Include(a => a.RoleAccount);
-            return View(accounts.ToList());
-        }
-
-        // GET: Account/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            /*for (int i = 1; i < 10; i++)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            return View(account);
-        }
-
-        // GET: Account/Create
-        public ActionResult Create()
-        {
-            ViewBag.RoleID = new SelectList(db.RoleAccounts, "ID", "Role");
+                Random rd = new Random();
+                Account acc = new Account
+                {
+                    Username = "test_" + i,
+                    SaltPassword = "1234567",
+                    Password = AccountDAO.MaHoaMatKhau("123"),
+                    Fullname = "test_" + i,
+                    Phone = rd.Next(999).ToString(),
+                    Address = "123456",
+                    IdentifyCode = rd.Next(999).ToString(),
+                    Email = rd.Next(999).ToString() + "@gmail.com",
+                    DOB = DateTime.Parse("0" + i + "/0" + i + "/200" + i),
+                    RoleID = rd.Next(4)
+                };
+                AccountDAO.AddAccount(acc);
+            }*/
             return View();
         }
+        [AllowAnonymous]
+        public JsonResult CheckLogin(string username, string password)
+        {
+            try
+            {
+                var rs = AccountDAO.CheckLogin(username, password);
 
-        // POST: Account/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+                if (rs != null)
+                {
+                    Session["User"] = rs;
+                    return Json("Success", JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+            return Json("Fail", JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowAnonymous]
+        public ActionResult Logout()
+        {
+            Session.Remove("User");
+            return RedirectToAction("Login");
+        }
+        
+        public ActionResult ListUser()
+        {
+            return View();
+        }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,username,password,RoleID")] Account account)
+        public JsonResult TableDataUser()
         {
-            if (ModelState.IsValid)
-            {
-                db.Accounts.Add(account);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.RoleID = new SelectList(db.RoleAccounts, "ID", "Role", account.RoleID);
-            return View(account);
-        }
-
-        // GET: Account/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.RoleID = new SelectList(db.RoleAccounts, "ID", "Role", account.RoleID);
-            return View(account);
-        }
-
-        // POST: Account/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,username,password,RoleID")] Account account)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(account).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.RoleID = new SelectList(db.RoleAccounts, "ID", "Role", account.RoleID);
-            return View(account);
-        }
-
-        // GET: Account/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            return View(account);
-        }
-
-        // POST: Account/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Account account = db.Accounts.Find(id);
-            db.Accounts.Remove(account);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            var rs = (from acc in db.Accounts
+                     select new
+                     {
+                         ID = acc.ID,
+                         Username = acc.Username,
+                         Fullname = acc.Fullname,
+                         Phone = acc.Phone,
+                         Email = acc.Email,
+                         Role = acc.RoleAccount.Role,
+                         Status = 1,
+                         Type = 2,
+                         Actions = 1
+                     }).ToList();
+            return Json(rs);
         }
     }
 }
