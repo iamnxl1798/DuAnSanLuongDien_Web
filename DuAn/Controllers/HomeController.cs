@@ -29,5 +29,10 @@ namespace DuAn.Controllers
 
             return View();
         }
+        public ActionResult getModelDetail(int id)
+        {
+            var result = DBContext.getChiTietDiemDo(id);
+            return PartialView(result);
+        }
     }
 }

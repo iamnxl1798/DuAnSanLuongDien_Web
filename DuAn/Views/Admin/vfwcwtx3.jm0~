@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Dropzone File Upload Examples</h3>
+        </div>
+    </div>
+    <!--begin::Form-->
+    <form action="~/Admin/SaveDropzoneJsUploadedFiles" class="dropzone" id="dropzoneJsForm">
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">File Type Validation</label>
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    <butto class="btn btn-info "n id="submit-all">Submit All Files</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="col-lg-4">
+                    <button type="reset" class="btn btn-light-primary mr-2">Submit</button>
+                    <button type="reset" class="btn btn-primary">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--end::Form-->
+</div>
+
+
+@section scripts {
+    <script type="text/javascript">
+
+        Dropzone.options.dropzoneJsForm = {
+
+            //prevents Dropzone from uploading dropped files immediately
+            autoProcessQueue: false,
+
+            init: function () {
+                var submitButton = document.querySelector("#submit-all");
+                var myDropzone = this; //closure
+
+                submitButton.addEventListener("click", function () {
+
+                    //tell Dropzone to process all queued files
+                    myDropzone.processQueue();
+                });
+
+            }
+        };
+
+    </script>
+}
