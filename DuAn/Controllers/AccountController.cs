@@ -90,6 +90,8 @@ namespace DuAn.Controllers
                          Type = 2,
                          Actions = 1
                      }).ToList();
+            /*Dictionary<String, object> json = new Dictionary<String, object>();
+            json.Add("data", rs);*/
             return Json(rs);
         }
     }

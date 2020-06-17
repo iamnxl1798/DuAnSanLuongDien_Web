@@ -158,6 +158,7 @@
     <Compile Include="Models\SanLuongDuKien.cs" />
     <Compile Include="Models\SanLuongThucTe.cs" />
     <Compile Include="Models\TinhChatDiemDo.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +171,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\9151163621500882431.jpg" />
+    <Content Include="images\spritemap%402x.png" />
+    <Content Include="images\spritemap.png" />
     <Content Include="phone.png" />
     <Content Include="Scripts\Account\chuyenvien-account-ajax-server-side.js" />
     <Content Include="Scripts\Account\custome.js" />
@@ -2199,17 +2203,21 @@
     <Content Include="fonts\OpenSans-SemiBold.ttf" />
     <Content Include="fonts\OpenSans-SemiBoldItalic.ttf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\dropzone.js" />
+    <Content Include="Scripts\dropzone.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.filedrop.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <None Include="Views\Account\ListUser.cshtml" />
+    <Content Include="Scripts\respond.js" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -2228,6 +2236,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\RoleDenied.cshtml" />
     <Content Include="Views\Account\TableDataUser.cshtml" />
+    <Content Include="Views\Home\getModelDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

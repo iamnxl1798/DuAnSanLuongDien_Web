@@ -18,6 +18,12 @@ var KTDatatablesDataSourceAjaxServer = function () {
 						'Phone', 'Email', 'Role',
 						'Status', 'Type', 'Actions'],
 				},
+				success: function (result) { //we got the response
+					alert('Successfully called');
+				},
+				error: function (jqxhr, status, exception) {
+					alert('Exception:', exception);
+				}
 			},
 			columns: [
 				{ data: 'ID' },
