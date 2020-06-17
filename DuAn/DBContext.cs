@@ -87,5 +87,17 @@ namespace DuAn
                 }
             }
         }
+        public static AdminModel getDataAdminModel()
+        {
+            using (var db = new Model1())
+            {
+                var result = new AdminModel()
+                {
+                    listDiemDo = db.DiemDoes.ToList(),
+                    listKenh = db.Kenhs.ToList()
+                };
+                return result;
+            }
+        }
     }
 }

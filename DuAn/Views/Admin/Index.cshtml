@@ -1,86 +1,127 @@
-﻿
+﻿@using DuAn.Models.CustomModel
+@using DuAn.Models
+@model AdminModel
 @{
     ViewBag.Title = "Index";
 }
 
 
-<!DOCTYPE html>
-<html lang="en">
-<!--begin::Head-->
-<head>
-    <base href="../../">
-
-    <link href="assets/plugins/global/plugins.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-    <link href="assets/css/style.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-</head>
-<!--end::Head-->
-<!--begin::Body-->
-<body id="kt_body" style="background-image: url(assets/media/bg/bg-10.jpg)" class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading">
-    <!--begin::Main-->
-    <div class="d-flex flex-column flex-root">
-        <!--begin::Page-->
-        <div class="d-flex flex-row flex-column-fluid page">
-            <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-                    <!--begin::Entry-->
-                    <div class="d-flex flex-column-fluid">
-                        <!--begin::Container-->
-                        <div class="container">
-                            <!--end::Notice-->
-                            <!--begin::Card-->
-                            <div class="card card-custom gutter-b">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <h3 class="card-label">Dropzone File Upload Examples</h3>
-                                    </div>
+<div class="row ml-1 col-12">
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:95%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật dữ liệu bị thiếu</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
+                                <div class="dropzone-msg dz-message needsclick">
+                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                    <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
                                 </div>
-                                <!--begin::Form-->
-                                <form>
-                                    <div class="card-body">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">File Type Validation</label>
-                                            <div class="col-lg-4 col-md-9 col-sm-12">
-                                                <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
-                                                    <div class="dropzone-msg dz-message needsclick">
-                                                        <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                                                        <span class="dropzone-msg-desc">Only image, pdf and psd files are allowed for upload</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-4">
-                                                <button type="reset" class="btn btn-light-primary mr-2">Submit</button>
-                                                <button type="reset" class="btn btn-primary">Cancel</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <!--end::Form-->
                             </div>
                         </div>
-                        <!--end::Container-->
                     </div>
-                    <!--end::Entry-->
                 </div>
-                <!--end::Content-->
-            </div>
-            <!--end::Wrapper-->
+                <div class="card-footer">
+                    <label class="text-success" id="capNhatDuLieuLabel"></label>
+                </div>
+            </form>
+            <!--end::Form-->
         </div>
-        <!--end::Page-->
+        <!--end::Mixed Widget 18-->
     </div>
-    <!--begin::Global Config(global config for global JS scripts)-->
-    <script src="~/Scripts/assets/plugins/global/plugins.bundle.js"></script>
-    <script src="~/Scripts/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
-    <script src="~/Scripts/assets/js/scripts.bundle.js"></script>
-    <!--end::Global Theme Bundle-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script>
+
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:95%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật công thức tính sản lượng</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-12 d-flex justify-content-between">
+                            <div class="row">
+                                <div class="d-inline m-3">
+                                    <select class="form-control bg-primary text-white" id="diemDo">
+                                        <option value="" hidden selected>Điểm đo</option>
+                                        @foreach (DiemDo item in Model.listDiemDo)
+                                        {
+                                            <option value="@item.ID" class="bg-white text-dark">@item.TenDiemDo</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="d-inline m-3">
+                                    <select class="form-control bg-primary text-white" id="kenh">
+                                        <option value="" hidden selected>Kênh</option>
+                                        @foreach (Kenh item in Model.listKenh)
+                                        {
+                                            <option value="@item.ID" class="bg-white text-dark">@item.Ten</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="d-inline m-3">
+                                    <button class="btn btn-success form-control" value="+"><span class="ml-3 mr-3">+</span></button>
+                                </div>
+                                <div class="d-inline m-3">
+                                    <button class="btn btn-success form-control" value="-"><span class="ml-3 mr-3">-</span></button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="d-inline m-3"><p class="btn btn-danger form-control" value="del" onclick="delBtnClick()"><span class="ml-4 mr-4">Xóa</span></p></div>
+                                <div class="d-inline m-3"><p class="btn btn-danger form-control" value="add" onclick="addBtnClick()"><span class="ml-4 mr-4">Thêm</span></p></div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-7">
+                            <input type="text" id="phepTinh" class="form-control" disabled />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Mixed Widget 18-->
+    </div>
+    <div class="col-12">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:100%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật công thức tính sản lượng</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
+                                <div class="dropzone-msg dz-message needsclick">
+                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                    <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Mixed Widget 18-->
+    </div>
+</div>
+<script>
         $(document).ready(function () {
             $('#kt_dropzone_3').dropzone({
                 addRemoveLinks: true,
@@ -97,46 +138,58 @@
                         done();
                     }
                 },
+                success: function (file, response) {
+                    if (document.getElementById("capNhatDuLieuLabel").classList.contains('text-danger')) {
+                        document.getElementById("capNhatDuLieuLabel").classList.add('text-success');
+                        document.getElementById("capNhatDuLieuLabel").classList.remove('text-danger');
+                    }
+                    document.getElementById("capNhatDuLieuLabel").innerHTML  = "Cập nhật thành công";
+                },
                 removedfile: function (file) {
                     file.previewElement.remove();
                     $.ajax({
+                        method:'POST',
                         cache: false,
                         url: "@Url.Action("RemoveFile","Admin")",
-                        data: { name:file.name},
-                        success: function () {
+                        data: { name: file.name },
+                        dataType:'json',
+                        success: function (message) {
+                            if (document.getElementById("capNhatDuLieuLabel").classList.contains('text-danger')) {
+                                document.getElementById("capNhatDuLieuLabel").classList.add('text-success');
+                                document.getElementById("capNhatDuLieuLabel").classList.remove('text-danger');
+                            }
+                            document.getElementById("capNhatDuLieuLabel").innerHTML = message.Message;
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
+                            if (document.getElementById("capNhatDuLieuLabel").classList.contains('text-success')) {
+                                document.getElementById("capNhatDuLieuLabel").classList.add('text-danger');
+                                document.getElementById("capNhatDuLieuLabel").classList.remove('text-success');
+                            }
+                            document.getElementById("capNhatDuLieuLabel").innerHTML = "Xóa thất bại";
+                            console.log(thrownError);
                         }
                     });
                 }
             });
         });
-    </script>
-    <!--end::Page Scripts-->
-</body>
-<!--end::Body-->
-</html>
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            Dropzone.autoDiscover = false;
-            $("#dZUpload").dropzone({
-                url: "GenericHandler.ashx",
-                addRemoveLinks: true,
-                success: function (file, response) {
-                    var imgName = response;
-                    file.previewElement.classList.add("dz-success");
-                    console.log("Successfully uploaded :" + imgName);
-                },
-                error: function (file, response) {
-                    file.previewElement.classList.add("dz-error");
-                }
-            });
-        });
-    </script>
-    <h2>html5-file upload drag and drop</h2>
-    <div id="dZUpload" class="dropzone">
-        <div class="dz-defaultdz-message"></div>
-    </div>*@
+
+    function addBtnClick() {
+        var text = document.getElementById('phepTinh').value;
+        if (text.length != 0) {
+            if (text[text.length - 2] == '+' || text[text.length - 2] == '-') {
+                var diemDo = document.getElementById("diemDo");
+                var kenh = document.getElementById("kenh");
+                var diemDoText = diemDo.options[diemDo.selectedIndex].text;
+                var kenhText = kenh.options[kenh.selectedIndex].text;
+                var result = diemDoText + '_' + kenhText + ' ';
+                document.getElementById('phepTinh').value = text + result;
+            }
+        }
+    };
+
+    function delBtnClick() {
+        var text = document.getElementById('phepTinh').value;
+        text = text.substring(0, text.length - 1);
+        document.getElementById('phepTinh').value = text.substring(0, text.lastIndexOf(' '));
+    }
+</script>

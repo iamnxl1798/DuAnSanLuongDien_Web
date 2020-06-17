@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DuAn.Models.CustomModel;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -12,7 +14,10 @@ namespace DuAn.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            return View();
+            string math = "100 * 5 - 2";
+            string value = new DataTable().Compute(math, null).ToString();
+            AdminModel item = DBContext.getDataAdminModel();
+            return View(item);
         }
 
         public ActionResult SaveDropzoneJsUploadedFiles()
@@ -71,7 +76,7 @@ namespace DuAn.Controllers
                     System.IO.File.Delete(Path.Combine(folderPath, name));
                 }
             }
-            return Json(new { Message = string.Empty });
+            return Json(new { Message = "Xóa thành công" });
         }
 
 

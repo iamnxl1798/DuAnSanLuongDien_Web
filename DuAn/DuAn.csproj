@@ -140,6 +140,7 @@
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\CongTo.cs" />
     <Compile Include="Models\CongTy.cs" />
+    <Compile Include="Models\CustomModel\AdminModel.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />
     <Compile Include="Models\DiemDo.cs" />
