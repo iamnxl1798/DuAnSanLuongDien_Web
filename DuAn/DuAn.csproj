@@ -55,6 +55,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -140,6 +143,7 @@
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\CongTo.cs" />
     <Compile Include="Models\CongTy.cs" />
+    <Compile Include="Models\CustomModel\AccountPaging.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />
     <Compile Include="Models\DiemDo.cs" />
@@ -172,11 +176,12 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\9151163621500882431.jpg" />
+    <Content Include="images\avatarAccount\avatar_1.png" />
     <Content Include="images\spritemap%402x.png" />
     <Content Include="images\spritemap.png" />
     <Content Include="phone.png" />
-    <Content Include="Scripts\Account\chuyenvien-account-ajax-server-side.js" />
-    <Content Include="Scripts\Account\custome.js" />
+    <Content Include="Scripts\Account\account.customer.css" />
+    <Content Include="Scripts\Account\account.customer.js" />
     <Content Include="Scripts\assets\css\jquery.dataTables.min.css" />
     <Content Include="Scripts\assets\css\pages\error\error-3.css" />
     <Content Include="Scripts\assets\css\pages\error\error-3.min.css" />
@@ -2216,6 +2221,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Views\Account\EditAccount.cshtml" />
     <None Include="Views\Account\ListUser.cshtml" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Views\Admin\Index.cshtml" />

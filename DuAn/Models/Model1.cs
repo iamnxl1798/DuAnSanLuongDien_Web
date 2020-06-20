@@ -48,7 +48,6 @@
                 try
                 {
                     var rs = db.Accounts.SingleOrDefault(x => x.Username == username);
-
                     if (rs != null && rs.Password == MaHoaMatKhau(rs.SaltPassword + password))
                     {
                         return rs;

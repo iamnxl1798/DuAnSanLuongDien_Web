@@ -1,4 +1,5 @@
-﻿
+﻿@model ICollection<DuAn.Models.Account>
+
 <head>
     <base href="../../../">
     <meta charset="utf-8" />
@@ -9,11 +10,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
     <!--begin::Global Theme Styles(used by all pages)-->
+
     <link href="~/Scripts/assets/plugins/global/plugins.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
     <link href="~/Scripts/assets/plugins/custom/prismjs/prismjs.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
     <link href="~/Scripts/assets/css/style.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
     <!--begin::Page Vendors Styles(used by this page)-->
-    <link href="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" />
+    <!--<link href="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" />
+    <script src="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.js"></script>-->
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
@@ -120,24 +123,7 @@
             </div>
             <!--end::Header-->
             <!--begin::Body-->
-            <div class="card-body">
-                <!--begin: Datatable-->
-                <table class="table table-bordered table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Fullname</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                </table>
-                <!--end: Datatable-->
+            <div id="datatable_ajax">
             </div>
             <!--end::Body-->
         </div>
@@ -147,7 +133,23 @@
 </div>
 <!--end::Entry-->
 <!--begin::Page Scripts(used by this page)-->
-<script src="~/Scripts/Account/chuyenvien-account-ajax-server-side.js"></script>
-@*<script src="~/scripts/account/custome.js"></script>*@
-<script src="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        var url = "@Url.Action("TableDataUser", "Account")";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $('#datatable_ajax').html(data);
+                @*$('#test_ajax').modal('show');*@
+            },
+            error: function (data) {
+                alert("Error load ajax");
+            }
+        });
+    });
+</script>
+
 <!--end::Page Scripts-->
