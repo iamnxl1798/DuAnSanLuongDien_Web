@@ -1,4 +1,4 @@
-﻿<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+﻿@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
 @*<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />*@
 @*<script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>*@
 <script>
@@ -101,7 +101,7 @@
 	                                </ul>\
 	                            </div>\
 	                        </div>\
-	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 bt-open-edit-account-form" title="Edit details">\
+	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 bt-open-edit-account-form" data-id="'+ data.ID +'" title="Edit details">\
 	                            <span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -149,18 +149,17 @@
     <!--end: Datatable-->
 </div>
 <!--begin::Example-->
-<!-- Button trigger modal-->
-<button type="button" class="btn btn-primary bt-open-edit-account-form" data-toggle="modal" data-target="#exampleModalLong">Launch demo modal</button>
 <!-- Modal-->
 <div class="modal" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
 <script>
     $('#my_datatable').on('click','.bt-open-edit-account-form',function () {
-			var url = "@Url.Action("EditAccount", "Account")";
+		var url = "@Url.Action("EditAccount", "Account")";
+		var id = $(this).attr("data-id");
 			$.ajax({
 				url: url,
 				type: 'POST',
 				data: {
-					accID : 1
+					accID: id
                 },
 				success: function (data) {
                     $('#exampleModalLong').html(data);
