@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DuAn.COMMON;
+using System.IO;
 
 namespace DuAn
 {
@@ -51,7 +52,7 @@ namespace DuAn
                         thucTeThang = db.SanLuongThucTes.Where(x => x.Ngay == thang).Select(x => x.SanLuong).Sum(),
                         thucTeNam = db.SanLuongThucTes.Where(x => x.Ngay == nam).Select(x => x.SanLuong).Sum(),
                         data = list,
-                        sanLuongTrongNgay = sumChuKy
+                        sanLuongTrongNgay = sumChuKy,
                     };
                     return result;
                 }
@@ -94,9 +95,73 @@ namespace DuAn
                 var result = new AdminModel()
                 {
                     listDiemDo = db.DiemDoes.ToList(),
-                    listKenh = db.Kenhs.ToList()
+                    listKenh = db.Kenhs.ToList(),
+                    getLastDate = db.CongThucTongSanLuongs.Count() != 0 ? db.CongThucTongSanLuongs.OrderByDescending(x => x.ThoiGianKetThuc).Select(x => x.ThoiGianKetThuc).First().AddDays(1) : DateTime.MinValue.AddMonths(1),
+                    missingData = getMissingData()
                 };
                 return result;
+            }
+        }
+
+        public static void updateFormula(string formular, string name, string thoiGian)
+        {
+            using (var db = new Model1())
+            {
+                DateTime batDau = DateTime.MinValue;
+                if (db.CongThucTongSanLuongs.Count() != 0)
+                {
+                    batDau = db.CongThucTongSanLuongs.OrderByDescending(x => x.ThoiGianKetThuc).Select(x => x.ThoiGianKetThuc).First().AddDays(1);
+                }
+                var item = new CongThucTongSanLuong()
+                {
+                    Ten = name,
+                    CongThuc = formular,
+                    ThoiGianBatDau = batDau,
+                    ThoiGianKetThuc = DateTime.ParseExact(thoiGian, "dd/MM/yyyy", null)
+                };
+                db.CongThucTongSanLuongs.Add(item);
+                db.SaveChanges();
+            }
+        }
+
+        public static List<MissingDataStatus> getMissingData()
+        {
+            using (var db = new Model1())
+            {
+                DateTime startDay = db.SanLuongs.Min(x => x.Ngay);
+                DateTime endDay = db.SanLuongs.Max(x => x.Ngay);
+                List<MissingDataStatus> data = new List<MissingDataStatus>();
+                var listDiemDo = db.DiemDoes;
+                for (DateTime date = startDay; date <= endDay; date = date.AddDays(1))
+                {
+                    foreach (DiemDo item in listDiemDo)
+                    {
+                        if (db.SanLuongs.Where(x => x.Ngay == date).Where(x => x.DiemDoID == item.ID).Count() == 0)
+                        {
+                            string fileName = date.Day.ToString("00") + date.Month.ToString("00") + (date.Year % 10).ToString() + item.ID.ToString() + ".CSV";
+                            var pathString = new DirectoryInfo(string.Format("{0}images\\{1}", AppDomain.CurrentDomain.BaseDirectory.ToString(), fileName)).ToString();
+                            if (File.Exists(pathString))
+                            {
+                                data.Add(new MissingDataStatus()
+                                {
+                                    date = date.ToString("dd/MM/yyyy"),
+                                    name = item.TenDiemDo,
+                                    status = "Đang cập nhật"
+                                });
+                            }
+                            else
+                            {
+                                data.Add(new MissingDataStatus()
+                                {
+                                    date = date.ToString("dd/MM/yyyy"),
+                                    name = item.TenDiemDo,
+                                    status = "Chưa cập nhật"
+                                });
+                            }
+                        }
+                    }
+                }
+                return data;
             }
         }
     }

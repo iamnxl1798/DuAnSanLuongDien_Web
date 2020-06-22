@@ -20,6 +20,13 @@ namespace DuAn.Controllers
             return View(item);
         }
 
+        public ActionResult viewMissingDataList()
+        {
+            var data = DBContext.getMissingData();
+            data = data.GetRange(0, 5);
+            return PartialView(data);
+        }
+
         public ActionResult SaveDropzoneJsUploadedFiles()
         {
             foreach (string fileName in Request.Files)
@@ -77,6 +84,12 @@ namespace DuAn.Controllers
                 }
             }
             return Json(new { Message = "Xóa thành công" });
+        }
+
+        public ActionResult UpdateFormula(string formula,string name, string thoiGian)
+        {
+            DBContext.updateFormula(formula, name, thoiGian);
+            return Json(new { Message = "Cập nhật thành công" });
         }
 
 

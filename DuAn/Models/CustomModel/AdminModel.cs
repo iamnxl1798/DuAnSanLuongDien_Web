@@ -9,6 +9,9 @@ namespace DuAn.Models.CustomModel
     {
         public List<DiemDo> listDiemDo { get; set; }
         public List<Kenh> listKenh { get; set; }
+        public DateTime getLastDate { get; set; }
+        public int getDate{ get { return getLastDate.Day; } }
+        public List<MissingDataStatus> missingData { get; set; }
 
     }
 }

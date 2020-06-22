@@ -138,11 +138,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\CongThucTongSanLuong.cs" />
     <Compile Include="Models\CongTo.cs" />
     <Compile Include="Models\CongTy.cs" />
     <Compile Include="Models\CustomModel\AdminModel.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />
+    <Compile Include="Models\CustomModel\MissingDataStatus.cs" />
     <Compile Include="Models\DiemDo.cs" />
     <Compile Include="Models\DiemDo_CongTo.cs" />
     <Compile Include="Models\Kenh.cs" />
@@ -159,6 +161,8 @@
     <Compile Include="Models\SanLuongDuKien.cs" />
     <Compile Include="Models\SanLuongThucTe.cs" />
     <Compile Include="Models\TinhChatDiemDo.cs" />
+    <Compile Include="Models\TongSanLuong_Ngay.cs" />
+    <Compile Include="Models\TongSanLuong_ThangNam.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -175,6 +179,7 @@
     <Content Include="images\9151163621500882431.jpg" />
     <Content Include="images\spritemap%402x.png" />
     <Content Include="images\spritemap.png" />
+    <Content Include="images\upload-arrow_318-26670.jpg" />
     <Content Include="phone.png" />
     <Content Include="Scripts\Account\chuyenvien-account-ajax-server-side.js" />
     <Content Include="Scripts\Account\custome.js" />
@@ -2238,6 +2243,7 @@
     <Content Include="Views\RoleDenied.cshtml" />
     <Content Include="Views\Account\TableDataUser.cshtml" />
     <Content Include="Views\Home\getModelDetail.cshtml" />
+    <Content Include="Views\Admin\viewMissingDataList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

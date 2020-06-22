@@ -8,11 +8,6 @@
 
     public partial class Model1 : DbContext
     {
-        public Model1()
-            : base("name=Model1")
-        {
-        }
-
         public static class AccountDAO
         {
             public static string MaHoaMatKhau(String password)
@@ -48,13 +43,12 @@
                 try
                 {
                     var rs = db.Accounts.SingleOrDefault(x => x.Username == username);
-
                     if (rs != null && rs.Password == MaHoaMatKhau(rs.SaltPassword + password))
                     {
                         return rs;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return null;
                 }
@@ -82,7 +76,13 @@
 
         }
 
+        public Model1()
+            : base("name=Model12")
+        {
+        }
+
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<CongThucTongSanLuong> CongThucTongSanLuongs { get; set; }
         public virtual DbSet<CongTo> CongToes { get; set; }
         public virtual DbSet<CongTy> CongTies { get; set; }
         public virtual DbSet<DiemDo> DiemDoes { get; set; }
@@ -100,6 +100,8 @@
         public virtual DbSet<SanLuongDuKien> SanLuongDuKiens { get; set; }
         public virtual DbSet<SanLuongThucTe> SanLuongThucTes { get; set; }
         public virtual DbSet<TinhChatDiemDo> TinhChatDiemDoes { get; set; }
+        public virtual DbSet<TongSanLuong_Ngay> TongSanLuong_Ngay { get; set; }
+        public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -110,6 +112,28 @@
             modelBuilder.Entity<Account>()
                 .Property(e => e.Password)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.SaltPassword)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.Phone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.IdentifyCode)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.Email)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CongThucTongSanLuong>()
+                .HasMany(e => e.TongSanLuong_Ngay)
+                .WithRequired(e => e.CongThucTongSanLuong)
+                .HasForeignKey(e => e.CongThucID)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CongTo>()
                 .Property(e => e.Serial)
@@ -183,6 +207,12 @@
 
             modelBuilder.Entity<LoaiSanLuong>()
                 .HasMany(e => e.SanLuongDuKiens)
+                .WithRequired(e => e.LoaiSanLuong)
+                .HasForeignKey(e => e.LoaiID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<LoaiSanLuong>()
+                .HasMany(e => e.TongSanLuong_ThangNam)
                 .WithRequired(e => e.LoaiSanLuong)
                 .HasForeignKey(e => e.LoaiID)
                 .WillCascadeOnDelete(false);

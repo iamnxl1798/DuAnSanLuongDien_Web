@@ -4,6 +4,17 @@
 @{
     ViewBag.Title = "Index";
 }
+<style>
+    .datepicker td, .datepicker th {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 0.85rem;
+    }
+
+    .label {
+        word-wrap: break-word;
+    }
+</style>
 
 
 <div class="row ml-1 col-12">
@@ -19,18 +30,20 @@
             <form>
                 <div class="card-body">
                     <div class="form-group row">
-                        <div class="col-12">
+                        <div class="col-8">
                             <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
-                                <div class="dropzone-msg dz-message needsclick">
+                                <div class="dropzone-msg dz-message needsclick my-auto text-center">
                                     <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
                                     <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
+                                    <img src="~/images/upload-arrow_318-26670.jpg" class="rounded mx-auto d-block w-25 h-25 mt-7 mb-11" alt="Responsive image" />
                                 </div>
                             </div>
                         </div>
+                        <div class="col-4" id="listMissing">
+                            @Html.Partial("viewMissingDataList", Model.missingData)
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <label class="text-success" id="capNhatDuLieuLabel"></label>
+                    <label class="text-success mt-4" id="capNhatDuLieuLabel"></label>
                 </div>
             </form>
             <!--end::Form-->
@@ -49,6 +62,21 @@
             <!--begin::Form-->
             <form>
                 <div class="card-body">
+                    <div class="row">
+                        <label for="tenCongThuc" class="col-form-label ml-4 mr-10">Tên công thức</label>
+                        <div class="">
+                            <input type="text" class="form-control mr-6" id="tenCongThuc" placeholder="Tên công thức">
+                        </div>
+                        <label for="thoiGianHieuLuc" class="col-form-label ml-40 mr-10">Thời gian hiệu lực</label>
+                        <div class="">
+                            <div class="form-group mb-4">
+                                <div class="datepicker date input-group p-0 shadow-sm">
+                                    <input type="text" placeholder="Thời gian hiệu lực" class="form-control py-4 px-4" id="thoiGianHieuLuc" readonly>
+                                    <div class="input-group-append"><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <div class="col-12 d-flex justify-content-between">
                             <div class="row">
@@ -71,10 +99,10 @@
                                     </select>
                                 </div>
                                 <div class="d-inline m-3">
-                                    <button class="btn btn-success form-control" value="+"><span class="ml-3 mr-3">+</span></button>
+                                    <p class="btn btn-success form-control" value="+" onclick="operatorBtnClick('+')"><span class="ml-3 mr-3">+</span></p>
                                 </div>
                                 <div class="d-inline m-3">
-                                    <button class="btn btn-success form-control" value="-"><span class="ml-3 mr-3">-</span></button>
+                                    <p class="btn btn-success form-control" value="-" onclick="operatorBtnClick('-')"><span class="ml-3 mr-3">-</span></p>
                                 </div>
                             </div>
                             <div class="row">
@@ -83,8 +111,10 @@
                             </div>
                         </div>
                         <div class="col-12 mt-7">
-                            <input type="text" id="phepTinh" class="form-control" disabled />
+                            <textarea id="phepTinh" class="form-control" style="font-size:22px" readonly></textarea>
+                            <p class="btn btn-success btn-block mt-4" onclick="submitCongThuc()">Cập nhật</p>
                         </div>
+                        <label class="text-success mt-4 ml-3" id="capNhatCongThucLabelSuccess"></label><label class="text-danger mt-4" id="capNhatCongThucLabelError"></label>
                     </div>
                 </div>
             </form>
@@ -112,7 +142,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="text" class="form-control" />
+                        <input type="text" class="form-control " />
                     </div>
                 </div>
             </form>
@@ -122,7 +152,9 @@
     </div>
 </div>
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
+        var start = new Date(@Model.getLastDate.Year,@Model.getLastDate.Month-1,@Model.getLastDate.Day);
+        updateCalendar(start);
             $('#kt_dropzone_3').dropzone({
                 addRemoveLinks: true,
                 url: "@Url.Action("SaveDropzoneJsUploadedFiles","Admin")", // Set the url for your upload script location
@@ -132,8 +164,8 @@
                 addRemoveLinks: true,
                 acceptedFiles: "text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 accept: function (file, done) {
-                    if (file.name == "justinbieber.jpg") {
-                        done("Naha, you don't.");
+                    if (!isNaN(file.name)) {
+                        done("File khÔng hợp lệ.");
                     } else {
                         done();
                     }
@@ -143,7 +175,20 @@
                         document.getElementById("capNhatDuLieuLabel").classList.add('text-success');
                         document.getElementById("capNhatDuLieuLabel").classList.remove('text-danger');
                     }
-                    document.getElementById("capNhatDuLieuLabel").innerHTML  = "Cập nhật thành công";
+                    document.getElementById("capNhatDuLieuLabel").innerHTML = "Cập nhật thành công";
+                    $.ajax({
+                        cache: false,
+                        url: "@Url.Action("viewMissingDataList", "Admin")",
+                        data: {},
+                        success: function (data) {
+                            $('#listMissing').html(data);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            //alert('Xảy ra lỗi khi tải dữ liệu');
+                            notifyHelper.showMessage("error", "Có lỗi xảy ra trong quá trình xử lý");
+                            commonHelper.hideLoading();
+                        }
+                    });
                 },
                 removedfile: function (file) {
                     file.previewElement.remove();
@@ -173,6 +218,13 @@
             });
         });
 
+    function updateCalendar(date) {
+        $('.datepicker').datepicker({
+            startDate: date,
+            clearBtn: true,
+            format: "dd/mm/yyyy"
+        });
+    }
     function addBtnClick() {
         var text = document.getElementById('phepTinh').value;
         if (text.length != 0) {
@@ -180,16 +232,117 @@
                 var diemDo = document.getElementById("diemDo");
                 var kenh = document.getElementById("kenh");
                 var diemDoText = diemDo.options[diemDo.selectedIndex].text;
+                if (diemDoText == document.getElementById("diemDo").options[0].text) {
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "Chọn Điểm đo và Kênh";
+                    return;
+                }
+                else {
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                }
                 var kenhText = kenh.options[kenh.selectedIndex].text;
-                var result = diemDoText + '_' + kenhText + ' ';
+                if (kenhText == document.getElementById("kenh").options[0].text) {
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "Chọn Điểm đo và Kênh";
+                    return;
+                }
+                else {
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                }
+                var result = diemDoText + '~' + kenhText + ' ';
                 document.getElementById('phepTinh').value = text + result;
             }
         }
-    };
+        else {
+            var diemDo = document.getElementById("diemDo");
+            var kenh = document.getElementById("kenh");
+            var diemDoText = diemDo.options[diemDo.selectedIndex].text;
+            if (diemDoText == document.getElementById("diemDo").options[0].text) {
+                document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                document.getElementById("capNhatCongThucLabelError").innerHTML = "Chọn Điểm đo và Kênh";
+                return;
+            }
+            else {
+                document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+            }
+            var kenhText = kenh.options[kenh.selectedIndex].text;
+            if (kenhText == document.getElementById("kenh").options[0].text) {
+                document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                document.getElementById("capNhatCongThucLabelError").innerHTML = "Chọn Điểm đo và Kênh";
+                return;
+            }
+            else {
+                document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+            }
+            var result = diemDoText + '~' + kenhText + ' ';
+            document.getElementById('phepTinh').value = text + result;
+        }
+    }
 
     function delBtnClick() {
         var text = document.getElementById('phepTinh').value;
         text = text.substring(0, text.length - 1);
         document.getElementById('phepTinh').value = text.substring(0, text.lastIndexOf(' '));
+    }
+
+    function operatorBtnClick(operator) {
+        var text = document.getElementById('phepTinh').value;
+        if (text.length > 0 && text[text.length - 2] != '+' && text[text.length - 2] != '-') {
+            if (operator == '+') {
+                text += '+ ';
+            }
+            else {
+                text += '- ';
+            }
+            document.getElementById('phepTinh').value = text;
+        }
+    }
+
+    function submitCongThuc() {
+        var text = document.getElementById('phepTinh').value;
+        var nameStr = document.getElementById('tenCongThuc').value;
+        var thoiGianHieuLuc = document.getElementById('thoiGianHieuLuc').value;
+        var errorMsg = "";
+        if (nameStr.length == 0) {
+            errorMsg += "Tên không được để trống.<br/>";
+        }
+        if (thoiGianHieuLuc.length == 0) {
+            errorMsg += "Thời gian hiệu lực không được để trống.<br/>"
+        }
+        if (text.length == 0) {
+            errorMsg += "Công thức không được để trống."
+        }
+        else if (text[text.length - 2] == '+' || text[text.length - 2] == '-') {
+            errorMsg += "Công thức không đúng định dạng."
+        }
+        document.getElementById("capNhatCongThucLabelError").innerHTML = errorMsg;
+        document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+        if (errorMsg.length != 0) {
+            return;
+        }
+        if (text.length != 0 && (text.includes('+') || text.includes('-')) && text[text.length - 2] != '+' && text[text.length - 2] != '-' && nameStr.length != 0 && thoiGianHieuLuc.length != 0) {
+            $.ajax({
+                method:'POST',
+                cache: false,
+                url: "@Url.Action("UpdateFormula","Admin")",
+                data: { formula: text, name: nameStr, thoiGian: thoiGianHieuLuc },
+                dataType:'json',
+                success: function (message) {
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = message.Message;
+                    $('.datepicker').datepicker('destroy');
+                    var dateParts = thoiGianHieuLuc.split("/");
+                    updateCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]));
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "Cập nhật thất bại";
+                }
+            });
+        }
     }
 </script>

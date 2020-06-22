@@ -19,12 +19,31 @@ namespace DuAn.Models
         public string Password { get; set; }
 
         public int RoleID { get; set; }
+
+        [Required]
+        [StringLength(20)]
         public string SaltPassword { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Fullname { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Phone { get; set; }
+
+        [Required]
         public string Address { get; set; }
+
+        [Required]
+        [StringLength(20)]
         public string IdentifyCode { get; set; }
+
+        [Required]
+        [StringLength(50)]
         public string Email { get; set; }
+
+        [Column(TypeName = "date")]
         public DateTime DOB { get; set; }
 
         public virtual RoleAccount RoleAccount { get; set; }
