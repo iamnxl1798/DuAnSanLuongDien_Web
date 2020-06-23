@@ -10,7 +10,6 @@ namespace DuAn.Controllers
 {
     public class HomeController : Controller
     {
-        [CheckRoleAttribute(RoleID = new int[2] { 2, 3 })]
         public ActionResult Index()
         {
             var data = DBContext.getDuKien();

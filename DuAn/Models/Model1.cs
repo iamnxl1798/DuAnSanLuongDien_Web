@@ -1,10 +1,9 @@
-﻿namespace DuAn.Models
+namespace DuAn.Models
 {
     using System;
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    using System.Security.Cryptography;
 
     public partial class Model1 : DbContext
     {
@@ -13,76 +12,9 @@
         {
         }
 
-        public static class AccountDAO
-        {
-            public static string MaHoaMatKhau(String password)
-            {
-                //Tạo MD5 
-                MD5 mh = MD5.Create();
-                //Chuyển kiểu chuổi thành kiểu byte
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(password);
-                //mã hóa chuỗi đã chuyển
-                byte[] hash = mh.ComputeHash(inputBytes);
-                //tạo đối tượng StringBuilder (làm việc với kiểu dữ liệu lớn)
-                String sb = "";
-                for (int i = 0; i < hash.Length; i++)
-                {
-                    sb += hash[i].ToString("x");
-                }
-                return sb;
-            }
-
-            private static string RandomSaltHash()
-            {
-                string rs = "";
-                Random rd = new Random();
-                for (int i = 0; i < 20; i++)
-                {
-                    rs += Convert.ToString((Char)rd.Next(65, 90));
-                }
-                return rs;
-            }
-            static Model1 db = new Model1();
-            public static Account CheckLogin(string username, string password)
-            {
-                try
-                {
-                    var rs = db.Accounts.SingleOrDefault(x => x.Username == username);
-
-                    if (rs != null && rs.Password == MaHoaMatKhau(rs.SaltPassword + password))
-                    {
-                        return rs;
-                    }
-                }
-                catch(Exception ex)
-                {
-                    return null;
-                }
-                return null;
-            }
-            public static void AddAccount(Account acc)
-            {
-                acc.SaltPassword = RandomSaltHash();
-                // ma hoa mat khau
-                acc.Password = MaHoaMatKhau(acc.SaltPassword + acc.Password);
-                db.Accounts.Add(acc);
-                db.SaveChanges();
-            }
-            public static bool CheckUsername(string username)
-            {
-                foreach (Account c in db.Accounts)
-                {
-                    if (c.Username == username)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-        }
-
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<ChiSoChot> ChiSoChots { get; set; }
+        public virtual DbSet<CongThucTongSanLuong> CongThucTongSanLuongs { get; set; }
         public virtual DbSet<CongTo> CongToes { get; set; }
         public virtual DbSet<CongTy> CongTies { get; set; }
         public virtual DbSet<DiemDo> DiemDoes { get; set; }
@@ -99,7 +31,10 @@
         public virtual DbSet<SanLuong> SanLuongs { get; set; }
         public virtual DbSet<SanLuongDuKien> SanLuongDuKiens { get; set; }
         public virtual DbSet<SanLuongThucTe> SanLuongThucTes { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TinhChatDiemDo> TinhChatDiemDoes { get; set; }
+        public virtual DbSet<TongSanLuong_Ngay> TongSanLuong_Ngay { get; set; }
+        public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -110,6 +45,32 @@
             modelBuilder.Entity<Account>()
                 .Property(e => e.Password)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.SaltPassword)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.Phone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.IdentifyCode)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.Email)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ChiSoChot>()
+                .Property(e => e.CongToSerial)
+                .IsFixedLength();
+
+            modelBuilder.Entity<CongThucTongSanLuong>()
+                .HasMany(e => e.TongSanLuong_Ngay)
+                .WithRequired(e => e.CongThucTongSanLuong)
+                .HasForeignKey(e => e.CongThucID)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CongTo>()
                 .Property(e => e.Serial)
@@ -183,6 +144,12 @@
 
             modelBuilder.Entity<LoaiSanLuong>()
                 .HasMany(e => e.SanLuongDuKiens)
+                .WithRequired(e => e.LoaiSanLuong)
+                .HasForeignKey(e => e.LoaiID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<LoaiSanLuong>()
+                .HasMany(e => e.TongSanLuong_ThangNam)
                 .WithRequired(e => e.LoaiSanLuong)
                 .HasForeignKey(e => e.LoaiID)
                 .WillCascadeOnDelete(false);

@@ -1,0 +1,146 @@
+﻿@using DuAn.Models.CustomModel
+@using DuAn.Models
+@model AdminModel
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row ml-1 col-12">
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:95%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật dữ liệu bị thiếu</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
+                                <div class="dropzone-msg dz-message needsclick">
+                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                    <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="card-footer">
+                    </div>*@
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Mixed Widget 18-->
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:95%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật công thức tính sản lượng</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="d-inline m-3">
+                            <select class="form-control bg-primary text-white">
+                                <option value="" hidden selected>Điểm đo</option>
+                                @foreach (DiemDo item in Model.listDiemDo)
+                                {
+                                    <option value="@item.ID" class="bg-white text-dark">@item.TenDiemDo</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="d-inline m-3">
+                            <select class="form-control bg-primary text-white" ">
+                                <option value="" hidden selected>Kênh</option>
+                                @foreach (Kenh item in Model.listKenh)
+                                {
+                                    <option value="@item.ID" class="bg-white text-dark">@item.Ten</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="d-inline m-3">
+                            <button class="btn btn-success form-control p-2" value="+">+</button>
+                        </div>
+                        <div class="d-inline m-3">
+                            <button class="btn btn-success form-control p-2" value="-">-</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <input type="text" class="form-control" disabled />
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Mixed Widget 18-->
+    </div>
+    <div class="col-12">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:100%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật công thức tính sản lượng</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
+                                <div class="dropzone-msg dz-message needsclick">
+                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                    <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Mixed Widget 18-->
+    </div>
+</div>
+<script>
+        $(document).ready(function () {
+            $('#kt_dropzone_3').dropzone({
+                addRemoveLinks: true,
+                url: "@Url.Action("SaveDropzoneJsUploadedFiles","Admin")", // Set the url for your upload script location
+                paramName: "file", // The name that will be used to transfer the file
+                maxFiles: 10,
+                maxFilesize: 10, // MB
+                addRemoveLinks: true,
+                acceptedFiles: "text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                accept: function (file, done) {
+                    if (file.name == "justinbieber.jpg") {
+                        done("Naha, you don't.");
+                    } else {
+                        done();
+                    }
+                },
+                removedfile: function (file) {
+                    file.previewElement.remove();
+                    $.ajax({
+                        cache: false,
+                        url: "@Url.Action("RemoveFile","Admin")",
+                        data: { name:file.name},
+                        success: function () {
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                        }
+                    });
+                }
+            });
+        });
+</script>

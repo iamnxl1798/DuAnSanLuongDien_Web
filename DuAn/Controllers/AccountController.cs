@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
-using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
-using DuAn.Attribute;
 using DuAn.Models;
-using static DuAn.Models.Model1;
+using DuAn.Models.CustomModel;
+using System.Linq.Dynamic;
 
 namespace DuAn.Controllers
 {
-    [CheckRole(RoleID = new int[1] { 2 })]
+    //[CheckRole(RoleID = new int[1] { 2 })]
     public class AccountController : Controller
     {
         private Model1 db = new Model1();
@@ -23,7 +18,7 @@ namespace DuAn.Controllers
         // GET: Account
         public ActionResult Login()
         {
-            /*for (int i = 1; i < 10; i++)
+            /*for (int i = 13; i < 100; i++)
             {
                 Random rd = new Random();
                 Account acc = new Account
@@ -36,7 +31,7 @@ namespace DuAn.Controllers
                     Address = "123456",
                     IdentifyCode = rd.Next(999).ToString(),
                     Email = rd.Next(999).ToString() + "@gmail.com",
-                    DOB = DateTime.Parse("0" + i + "/0" + i + "/200" + i),
+                    DOB = DateTime.Parse("0" + (rd.Next(8)+1) + "/0" + (rd.Next(8) + 1) + "/200" + (rd.Next(8) + 1)),
                     RoleID = rd.Next(4)
                 };
                 AccountDAO.AddAccount(acc);
@@ -49,6 +44,7 @@ namespace DuAn.Controllers
             try
             {
                 var rs = AccountDAO.CheckLogin(username, password);
+                rs.RoleAccount = db.RoleAccounts.Find(rs.RoleID);
 
                 if (rs != null)
                 {
@@ -69,28 +65,110 @@ namespace DuAn.Controllers
             Session.Remove("User");
             return RedirectToAction("Login");
         }
-        
+
         public ActionResult ListUser()
         {
             return View();
         }
-        [HttpPost]
-        public JsonResult TableDataUser()
+        public ActionResult TableDataUser()
         {
-            var rs = (from acc in db.Accounts
-                     select new
-                     {
-                         ID = acc.ID,
-                         Username = acc.Username,
-                         Fullname = acc.Fullname,
-                         Phone = acc.Phone,
-                         Email = acc.Email,
-                         Role = acc.RoleAccount.Role,
-                         Status = 1,
-                         Type = 2,
-                         Actions = 1
-                     }).ToList();
-            return Json(rs);
+            return PartialView();
+        }
+        [HttpPost]
+        public ActionResult EditAccountForm()
+        {
+            int accID = int.Parse(HttpContext.Request["accID"]);
+            Account acc = (Account)db.Accounts.Find(accID);
+            AccountDetail acs = new AccountDetail
+            {
+                ID = acc.ID,
+                Username = acc.Username,
+                Fullname = acc.Fullname,
+                Phone = acc.Phone,
+                Email = acc.Email,
+                Role = acc.RoleAccount.Role,
+                Avatar = acc.Avatar,
+                Address = acc.Address,
+                IdentifyCode = acc.IdentifyCode,
+                DOB = acc.DOB
+            };
+            return PartialView(acs);
+        }
+        [HttpPost]
+        public JsonResult GetListAccountShort()
+        {
+            int length = int.Parse(HttpContext.Request["length"]);
+            int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"])/length))) + 1;
+            string searchValue = HttpContext.Request["search[value]"];
+            string sortColumnName = HttpContext.Request["columns["+Request["order[0][column]"] + "][name]"];
+            string sortDirection = Request["order[0][dir]"];
+
+            AccountPaging apg = new AccountPaging();
+            apg.data = new List<AccountShort>();
+            start = (start - 1) * length;
+            List<Account> listAccount = db.Accounts.ToList<Account>();
+            apg.recordsTotal = listAccount.Count;
+            //filter
+            if (!string.IsNullOrEmpty(searchValue))
+            {
+                listAccount = listAccount.Where(x => x.Username.ToLower().Contains(searchValue.ToLower())).ToList<Account>();
+            }
+            //sorting
+            if (sortColumnName.Equals("Role"))
+            {
+                //sort UTF 8
+            }
+            else
+            {
+                listAccount = listAccount.OrderBy(sortColumnName + " " + sortDirection).ToList<Account>();
+            }
+            apg.recordsFiltered = listAccount.Count;
+            //paging
+            listAccount = listAccount.Skip(start).Take(length).ToList<Account>();
+            for (int i = 0; i < listAccount.Count; i++)
+            {
+                AccountShort acs = new AccountShort
+                {
+                    ID = listAccount[i].ID,
+                    Username = listAccount[i].Username,
+                    Fullname = listAccount[i].Fullname,
+                    Phone = listAccount[i].Phone,
+                    Email = listAccount[i].Email,
+                    Role = listAccount[i].RoleAccount.Role,
+                    Avatar = listAccount[i].Avatar,
+                    Actions = ""
+                };
+                apg.data.Add(acs);
+            }
+            apg.draw = int.Parse(Request["draw"]);
+            return Json(apg, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public bool UpdateAccount(int id, string fullname, string email, string address, string phone, string icode, DateTime dob, int roleID)
+        {
+            try { 
+            Account acc = new Account()
+            {
+                ID = id,
+                Fullname = fullname,
+                Email = email,
+                Address = address,
+                Phone = phone,
+                IdentifyCode = icode,
+                DOB = dob,
+                RoleID = roleID
+            };
+            AccountDAO.UpdateAccout(acc);
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
+        public ActionResult TestDateTimePicker()
+        {
+            return View();
         }
     }
 }

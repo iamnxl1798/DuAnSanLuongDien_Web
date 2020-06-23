@@ -13,6 +13,7 @@ namespace DuAn.Models
         public LoaiSanLuong()
         {
             SanLuongDuKiens = new HashSet<SanLuongDuKien>();
+            TongSanLuong_ThangNam = new HashSet<TongSanLuong_ThangNam>();
         }
 
         public int ID { get; set; }
@@ -22,5 +23,8 @@ namespace DuAn.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SanLuongDuKien> SanLuongDuKiens { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
     }
 }

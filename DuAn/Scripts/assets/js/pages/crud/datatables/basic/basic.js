@@ -187,7 +187,7 @@ var KTDatatablesBasicBasic = function() {
 
 	var initTable2 = function() {
 		var table = $('#kt_datatable_2');
-
+		
 		// begin first table
 		table.DataTable({
 			responsive: true,
@@ -207,7 +207,7 @@ var KTDatatablesBasicBasic = function() {
 			// Order settings
 			order: [[1, 'desc']],
 
-			headerCallback: function(thead, data, start, end, display) {
+			headerCallback: function (thead, data, start, end, display) {
 				thead.getElementsByTagName('th')[0].innerHTML = `
                     <label class="checkbox checkbox-single">
                         <input type="checkbox" value="" class="group-checkable"/>

@@ -78,7 +78,7 @@
         label.horizontalCenter = "middle";
         label.verticalCenter = "middle";
         label.adapter.add("text", function (text, target) {
-            return "[font-size:18px]@Model.percentFormatThang %[/]\n[bold font-size:18px]@Model.numberFormatThang MW[/]";
+            return "[font-size:18px]@Model.percentFormatThang%[/]\n[bold font-size:18px]@Model.numberFormatThang MW[/]";
         })
 
         // Add cursor
@@ -488,7 +488,7 @@
     $('.click-chitiet').click(function () {
             var url = "@Url.Action("getModelDetail", "Home")";
             var ID = $(this).attr("data-id");
-        var params = "id=" + ID;
+            var params = "id=" + ID;
 
 
             //ajaxHelper.ajaxCall(url, params, function (result) {

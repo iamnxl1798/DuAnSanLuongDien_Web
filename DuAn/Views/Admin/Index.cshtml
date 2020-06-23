@@ -1,87 +1,160 @@
-﻿
+﻿@using DuAn.Models.CustomModel
+@using DuAn.Models
+@model AdminModel
 @{
     ViewBag.Title = "Index";
 }
+<style>
+    .datepicker td, .datepicker th {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 0.85rem;
+    }
+
+    .label {
+        word-wrap: break-word;
+    }
+</style>
 
 
-<!DOCTYPE html>
-<html lang="en">
-<!--begin::Head-->
-<head>
-    <base href="../../">
-
-    <link href="assets/plugins/global/plugins.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-    <link href="assets/plugins/custom/prismjs/prismjs.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-    <link href="assets/css/style.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-</head>
-<!--end::Head-->
-<!--begin::Body-->
-<body id="kt_body" style="background-image: url(assets/media/bg/bg-10.jpg)" class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading">
-    <!--begin::Main-->
-    <div class="d-flex flex-column flex-root">
-        <!--begin::Page-->
-        <div class="d-flex flex-row flex-column-fluid page">
-            <!--begin::Wrapper-->
-            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
-                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-                    <!--begin::Entry-->
-                    <div class="d-flex flex-column-fluid">
-                        <!--begin::Container-->
-                        <div class="container">
-                            <!--end::Notice-->
-                            <!--begin::Card-->
-                            <div class="card card-custom gutter-b">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <h3 class="card-label">Dropzone File Upload Examples</h3>
-                                    </div>
+<div class="row ml-1 col-12">
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:95%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật dữ liệu bị thiếu</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-8">
+                            <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
+                                <div class="dropzone-msg dz-message needsclick my-auto text-center">
+                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                    <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
+                                    <img src="~/images/upload-arrow_318-26670.jpg" class="rounded mx-auto d-block w-25 h-25 mt-7 mb-11" alt="Responsive image" />
                                 </div>
-                                <!--begin::Form-->
-                                <form>
-                                    <div class="card-body">
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">File Type Validation</label>
-                                            <div class="col-lg-4 col-md-9 col-sm-12">
-                                                <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
-                                                    <div class="dropzone-msg dz-message needsclick">
-                                                        <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                                                        <span class="dropzone-msg-desc">Only image, pdf and psd files are allowed for upload</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-4">
-                                                <button type="reset" class="btn btn-light-primary mr-2">Submit</button>
-                                                <button type="reset" class="btn btn-primary">Cancel</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <!--end::Form-->
                             </div>
                         </div>
-                        <!--end::Container-->
+                        <div class="col-4" id="listMissing">
+                            @Html.Partial("viewMissingDataList", Model.missingData)
+                        </div>
                     </div>
-                    <!--end::Entry-->
+                    <label class="text-success mt-4" id="capNhatDuLieuLabel"></label>
                 </div>
-                <!--end::Content-->
-            </div>
-            <!--end::Wrapper-->
+            </form>
+            <!--end::Form-->
         </div>
-        <!--end::Page-->
+        <!--end::Mixed Widget 18-->
     </div>
-    <!--begin::Global Config(global config for global JS scripts)-->
-    <script src="~/Scripts/assets/plugins/global/plugins.bundle.js"></script>
-    <script src="~/Scripts/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
-    <script src="~/Scripts/assets/js/scripts.bundle.js"></script>
-    <!--end::Global Theme Bundle-->
-    <!--begin::Page Scripts(used by this page)-->
-    <script>
-        $(document).ready(function () {
+
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:95%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật công thức tính sản lượng</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="row">
+                        <label for="tenCongThuc" class="col-form-label ml-4 mr-10">Tên công thức</label>
+                        <div class="">
+                            <input type="text" class="form-control mr-6" id="tenCongThuc" placeholder="Tên công thức">
+                        </div>
+                        <label for="thoiGianHieuLuc" class="col-form-label ml-40 mr-10">Thời gian hiệu lực</label>
+                        <div class="">
+                            <div class="form-group mb-4">
+                                <div class="datepicker date input-group p-0 shadow-sm">
+                                    <input type="text" placeholder="Thời gian hiệu lực" class="form-control py-4 px-4" id="thoiGianHieuLuc" readonly>
+                                    <div class="input-group-append"><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-12 d-flex justify-content-between">
+                            <div class="row">
+                                <div class="d-inline m-3">
+                                    <select class="form-control bg-primary text-white" id="diemDo">
+                                        <option value="" hidden selected>Điểm đo</option>
+                                        @foreach (DiemDo item in Model.listDiemDo)
+                                        {
+                                            <option value="@item.ID" class="bg-white text-dark">@item.TenDiemDo</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="d-inline m-3">
+                                    <select class="form-control bg-primary text-white" id="kenh">
+                                        <option value="" hidden selected>Kênh</option>
+                                        @foreach (Kenh item in Model.listKenh)
+                                        {
+                                            <option value="@item.ID" class="bg-white text-dark">@item.Ten</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="d-inline m-3">
+                                    <p class="btn btn-success form-control" value="+" onclick="operatorBtnClick('+')"><span class="ml-3 mr-3">+</span></p>
+                                </div>
+                                <div class="d-inline m-3">
+                                    <p class="btn btn-success form-control" value="-" onclick="operatorBtnClick('-')"><span class="ml-3 mr-3">-</span></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="d-inline m-3"><p class="btn btn-danger form-control" value="del" onclick="delBtnClick()"><span class="ml-4 mr-4">Xóa</span></p></div>
+                                <div class="d-inline m-3"><p class="btn btn-danger form-control" value="add" onclick="addBtnClick()"><span class="ml-4 mr-4">Thêm</span></p></div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-7">
+                            <textarea id="phepTinh" class="form-control" style="font-size:22px" readonly></textarea>
+                            <p class="btn btn-success btn-block mt-4" onclick="submitCongThuc()">Cập nhật</p>
+                        </div>
+                        <label class="text-success mt-4 ml-3" id="capNhatCongThucLabelSuccess"></label><label class="text-danger mt-4" id="capNhatCongThucLabelError"></label>
+                    </div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Mixed Widget 18-->
+    </div>
+    <div class="col-12">
+        <!--begin::Mixed Widget 18-->
+        <div class="card card-custom gutter-b" style="height:100%">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">Cập nhật công thức tính sản lượng</h3>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
+                                <div class="dropzone-msg dz-message needsclick">
+                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                    <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control " />
+                    </div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Mixed Widget 18-->
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var start = new Date(@Model.getLastDate.Year,@Model.getLastDate.Month-1,@Model.getLastDate.Day);
+        updateCalendar(start);
             $('#kt_dropzone_3').dropzone({
                 addRemoveLinks: true,
                 url: "@Url.Action("SaveDropzoneJsUploadedFiles","Admin")", // Set the url for your upload script location
@@ -91,52 +164,185 @@
                 addRemoveLinks: true,
                 acceptedFiles: "text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 accept: function (file, done) {
-                    if (file.name == "justinbieber.jpg") {
-                        done("Naha, you don't.");
+                    if (!isNaN(file.name)) {
+                        done("File khÔng hợp lệ.");
                     } else {
                         done();
                     }
                 },
+                success: function (file, response) {
+                    if (document.getElementById("capNhatDuLieuLabel").classList.contains('text-danger')) {
+                        document.getElementById("capNhatDuLieuLabel").classList.add('text-success');
+                        document.getElementById("capNhatDuLieuLabel").classList.remove('text-danger');
+                    }
+                    document.getElementById("capNhatDuLieuLabel").innerHTML = "Cập nhật thành công";
+                    $.ajax({
+                        cache: false,
+                        url: "@Url.Action("viewMissingDataList", "Admin")",
+                        data: {},
+                        success: function (data) {
+                            $('#listMissing').html(data);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            //alert('Xảy ra lỗi khi tải dữ liệu');
+                            notifyHelper.showMessage("error", "Có lỗi xảy ra trong quá trình xử lý");
+                            commonHelper.hideLoading();
+                        }
+                    });
+                },
                 removedfile: function (file) {
                     file.previewElement.remove();
                     $.ajax({
+                        method:'POST',
                         cache: false,
                         url: "@Url.Action("RemoveFile","Admin")",
-                        data: { name:file.name},
-                        success: function () {
+                        data: { name: file.name },
+                        dataType:'json',
+                        success: function (message) {
+                            if (document.getElementById("capNhatDuLieuLabel").classList.contains('text-danger')) {
+                                document.getElementById("capNhatDuLieuLabel").classList.add('text-success');
+                                document.getElementById("capNhatDuLieuLabel").classList.remove('text-danger');
+                            }
+                            document.getElementById("capNhatDuLieuLabel").innerHTML = message.Message;
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
+                            if (document.getElementById("capNhatDuLieuLabel").classList.contains('text-success')) {
+                                document.getElementById("capNhatDuLieuLabel").classList.add('text-danger');
+                                document.getElementById("capNhatDuLieuLabel").classList.remove('text-success');
+                            }
+                            document.getElementById("capNhatDuLieuLabel").innerHTML = "Xóa thất bại";
+                            console.log(thrownError);
                         }
                     });
                 }
             });
         });
-    </script>
-    <!--end::Page Scripts-->
-</body>
-<!--end::Body-->
-</html>
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            Dropzone.autoDiscover = false;
-            $("#dZUpload").dropzone({
-                url: "GenericHandler.ashx",
-                addRemoveLinks: true,
-                success: function (file, response) {
-                    var imgName = response;
-                    file.previewElement.classList.add("dz-success");
-                    console.log("Successfully uploaded :" + imgName);
+
+    function updateCalendar(date) {
+        $('.datepicker').datepicker({
+            startDate: date,
+            clearBtn: true,
+            format: "dd/mm/yyyy"
+        });
+    }
+    function addBtnClick() {
+        var text = document.getElementById('phepTinh').value;
+        if (text.length != 0) {
+            if (text[text.length - 2] == '+' || text[text.length - 2] == '-') {
+                var diemDo = document.getElementById("diemDo");
+                var kenh = document.getElementById("kenh");
+                var diemDoText = diemDo.options[diemDo.selectedIndex].text;
+                if (diemDoText == document.getElementById("diemDo").options[0].text) {
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "Chọn Điểm đo và Kênh";
+                    return;
+                }
+                else {
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                }
+                var kenhText = kenh.options[kenh.selectedIndex].text;
+                if (kenhText == document.getElementById("kenh").options[0].text) {
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "Chọn Điểm đo và Kênh";
+                    return;
+                }
+                else {
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                }
+                var result = diemDoText + '~' + kenhText + ' ';
+                document.getElementById('phepTinh').value = text + result;
+            }
+        }
+        else {
+            var diemDo = document.getElementById("diemDo");
+            var kenh = document.getElementById("kenh");
+            var diemDoText = diemDo.options[diemDo.selectedIndex].text;
+            if (diemDoText == document.getElementById("diemDo").options[0].text) {
+                document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                document.getElementById("capNhatCongThucLabelError").innerHTML = "Chọn Điểm đo và Kênh";
+                return;
+            }
+            else {
+                document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+            }
+            var kenhText = kenh.options[kenh.selectedIndex].text;
+            if (kenhText == document.getElementById("kenh").options[0].text) {
+                document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                document.getElementById("capNhatCongThucLabelError").innerHTML = "Chọn Điểm đo và Kênh";
+                return;
+            }
+            else {
+                document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+            }
+            var result = diemDoText + '~' + kenhText + ' ';
+            document.getElementById('phepTinh').value = text + result;
+        }
+    }
+
+    function delBtnClick() {
+        var text = document.getElementById('phepTinh').value;
+        text = text.substring(0, text.length - 1);
+        document.getElementById('phepTinh').value = text.substring(0, text.lastIndexOf(' '));
+    }
+
+    function operatorBtnClick(operator) {
+        var text = document.getElementById('phepTinh').value;
+        if (text.length > 0 && text[text.length - 2] != '+' && text[text.length - 2] != '-') {
+            if (operator == '+') {
+                text += '+ ';
+            }
+            else {
+                text += '- ';
+            }
+            document.getElementById('phepTinh').value = text;
+        }
+    }
+
+    function submitCongThuc() {
+        var text = document.getElementById('phepTinh').value;
+        var nameStr = document.getElementById('tenCongThuc').value;
+        var thoiGianHieuLuc = document.getElementById('thoiGianHieuLuc').value;
+        var errorMsg = "";
+        if (nameStr.length == 0) {
+            errorMsg += "Tên không được để trống.<br/>";
+        }
+        if (thoiGianHieuLuc.length == 0) {
+            errorMsg += "Thời gian hiệu lực không được để trống.<br/>"
+        }
+        if (text.length == 0) {
+            errorMsg += "Công thức không được để trống."
+        }
+        else if (text[text.length - 2] == '+' || text[text.length - 2] == '-') {
+            errorMsg += "Công thức không đúng định dạng."
+        }
+        document.getElementById("capNhatCongThucLabelError").innerHTML = errorMsg;
+        document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+        if (errorMsg.length != 0) {
+            return;
+        }
+        if (text.length != 0 && (text.includes('+') || text.includes('-')) && text[text.length - 2] != '+' && text[text.length - 2] != '-' && nameStr.length != 0 && thoiGianHieuLuc.length != 0) {
+            $.ajax({
+                method:'POST',
+                cache: false,
+                url: "@Url.Action("UpdateFormula","Admin")",
+                data: { formula: text, name: nameStr, thoiGian: thoiGianHieuLuc },
+                dataType:'json',
+                success: function (message) {
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = message.Message;
+                    $('.datepicker').datepicker('destroy');
+                    var dateParts = thoiGianHieuLuc.split("/");
+                    updateCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]));
                 },
-                error: function (file, response) {
-                    file.previewElement.classList.add("dz-error");
+                error: function (xhr, ajaxOptions, thrownError) {
+                    document.getElementById("capNhatCongThucLabelSuccess").innerHTML = "";
+                    document.getElementById("capNhatCongThucLabelError").innerHTML = "Cập nhật thất bại";
                 }
             });
-        });
-    </script>
-    <h2>html5-file upload drag and drop</h2>
-    <div id="dZUpload" class="dropzone">
-        <div class="dz-defaultdz-message"></div>
-    </div>*@
+        }
+    }
+</script>

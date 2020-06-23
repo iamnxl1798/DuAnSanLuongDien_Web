@@ -8,7 +8,8 @@ namespace DuAn.Models
 
     [Table("RoleAccount")]
     public partial class RoleAccount
-    {   
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RoleAccount()
         {
             Accounts = new HashSet<Account>();
@@ -19,6 +20,8 @@ namespace DuAn.Models
         [Required]
         [StringLength(20)]
         public string Role { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Account> Accounts { get; set; }
     }
 }
