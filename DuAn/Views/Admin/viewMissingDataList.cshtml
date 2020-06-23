@@ -1,0 +1,14 @@
+﻿@model List<DuAn.Models.CustomModel.MissingDataStatus>
+
+    <ul class="list-group" style="max-height:280px; overflow-x:auto; -webkit-overflow-scrolling">
+        <li class="list-group-item d-flex justify-content-between align-items-center" style="font-weight:bold">
+            Dữ liệu còn thiếu
+        </li>
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                @item.date - @item.name
+                <span class="badge badge-@item.classAttribute badge-pill">@item.status</span>
+            </li>
+        }
+    </ul>
