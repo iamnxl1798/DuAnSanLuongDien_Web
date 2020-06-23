@@ -24,4 +24,18 @@ namespace DuAn.Models.CustomModel
         public string Role { get; set; }
         public string Actions { get; set; }
     }
+    public class AccountDetail
+    {
+        public int ID { get; set; }
+        public string Username { get; set; }
+        public string Fullname { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string Address { get; set; }
+        public DateTime DOB { get; set; }
+        public string IdentifyCode { get; set; }
+        public string Avatar { get; set; }
+        public string Role { get; set; }
+        
+    }
 }

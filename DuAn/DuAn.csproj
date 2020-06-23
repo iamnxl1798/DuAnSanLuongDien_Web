@@ -136,6 +136,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RoleAccountController.cs" />
     <Compile Include="DBContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2221,7 +2222,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Views\Account\EditAccount.cshtml" />
+    <Content Include="Views\Account\EditAccountForm.cshtml" />
     <None Include="Views\Account\ListUser.cshtml" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Views\Admin\Index.cshtml" />
@@ -2243,6 +2244,8 @@
     <Content Include="Views\RoleDenied.cshtml" />
     <Content Include="Views\Account\TableDataUser.cshtml" />
     <Content Include="Views\Home\getModelDetail.cshtml" />
+    <Content Include="Views\RoleAccount\GetAllRole.cshtml" />
+    <Content Include="Views\Account\TestDateTimePicker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
