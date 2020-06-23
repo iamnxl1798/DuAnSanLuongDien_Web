@@ -1,0 +1,18 @@
+﻿@model ICollection<DuAn.Models.RoleAccount>
+
+    <div class="radio-list">
+        @foreach (var i in Model)
+        {
+            <label class="radio">
+                @if (i.Role.Equals(ViewBag.RoleAccEdit))
+                {
+                    <input type="radio" name="role" value="@i.ID" checked />@i.Role
+                }
+                else
+                {
+                    <input type="radio" name="role" value="@i.ID" />@i.Role
+                }
+                <span></span>
+            </label>
+        }
+    </div>

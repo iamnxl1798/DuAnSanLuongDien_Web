@@ -11,7 +11,7 @@
 			"serverSide": true,
 			"order": [0, "asc"],
 			"ajax": {
-				url: '@Url.Action("GetDetailAccount", "Account")',
+				url: '@Url.Action("GetListAccountShort", "Account")',
 				type: "POST",
 				dataType: 'json'
 			},
@@ -150,10 +150,10 @@
 </div>
 <!--begin::Example-->
 <!-- Modal-->
-<div class="modal" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"></div>
+<div class="modal" id="formEditAccount" tabindex="-1" role="dialog" aria-labelledby="formEditAccount" aria-hidden="true"></div>
 <script>
     $('#my_datatable').on('click','.bt-open-edit-account-form',function () {
-		var url = "@Url.Action("EditAccount", "Account")";
+		var url = "@Url.Action("EditAccountForm", "Account")";
 		var id = $(this).attr("data-id");
 			$.ajax({
 				url: url,
@@ -162,9 +162,9 @@
 					accID: id
                 },
 				success: function (data) {
-                    $('#exampleModalLong').html(data);
-					$('#exampleModalLong').modal('show');
-					$('#exampleModalLong').modal({
+                    $('#formEditAccount').html(data);
+                    $('#formEditAccount').modal('show');
+                    $('#formEditAccount').modal({
 						backdrop: false
 					});
 				},

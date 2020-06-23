@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web.Mvc;
 using DuAn.Models;
 using DuAn.Models.CustomModel;
-using static DuAn.Models.Model1;
 using System.Linq.Dynamic;
 
 namespace DuAn.Controllers
@@ -45,6 +44,7 @@ namespace DuAn.Controllers
             try
             {
                 var rs = AccountDAO.CheckLogin(username, password);
+                rs.RoleAccount = db.RoleAccounts.Find(rs.RoleID);
 
                 if (rs != null)
                 {
@@ -75,11 +75,11 @@ namespace DuAn.Controllers
             return PartialView();
         }
         [HttpPost]
-        public ActionResult EditAccount()
+        public ActionResult EditAccountForm()
         {
             int accID = int.Parse(HttpContext.Request["accID"]);
             Account acc = (Account)db.Accounts.Find(accID);
-            AccountShort acs = new AccountShort
+            AccountDetail acs = new AccountDetail
             {
                 ID = acc.ID,
                 Username = acc.Username,
@@ -88,12 +88,14 @@ namespace DuAn.Controllers
                 Email = acc.Email,
                 Role = acc.RoleAccount.Role,
                 Avatar = acc.Avatar,
-                Actions = ""
+                Address = acc.Address,
+                IdentifyCode = acc.IdentifyCode,
+                DOB = acc.DOB
             };
             return PartialView(acs);
         }
         [HttpPost]
-        public JsonResult GetDetailAccount()
+        public JsonResult GetListAccountShort()
         {
             int length = int.Parse(HttpContext.Request["length"]);
             int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"])/length))) + 1;
@@ -140,6 +142,33 @@ namespace DuAn.Controllers
             }
             apg.draw = int.Parse(Request["draw"]);
             return Json(apg, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public bool UpdateAccount(int id, string fullname, string email, string address, string phone, string icode, DateTime dob, int roleID)
+        {
+            try { 
+            Account acc = new Account()
+            {
+                ID = id,
+                Fullname = fullname,
+                Email = email,
+                Address = address,
+                Phone = phone,
+                IdentifyCode = icode,
+                DOB = dob,
+                RoleID = roleID
+            };
+            AccountDAO.UpdateAccout(acc);
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
+        public ActionResult TestDateTimePicker()
+        {
+            return View();
         }
     }
 }
