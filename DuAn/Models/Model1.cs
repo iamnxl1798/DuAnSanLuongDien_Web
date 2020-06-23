@@ -1,10 +1,9 @@
-﻿namespace DuAn.Models
+namespace DuAn.Models
 {
     using System;
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-    using System.Security.Cryptography;
 
     public partial class Model1 : DbContext
     {
@@ -13,9 +12,9 @@
         {
         }
 
-        
-
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<ChiSoChot> ChiSoChots { get; set; }
+        public virtual DbSet<CongThucTongSanLuong> CongThucTongSanLuongs { get; set; }
         public virtual DbSet<CongTo> CongToes { get; set; }
         public virtual DbSet<CongTy> CongTies { get; set; }
         public virtual DbSet<DiemDo> DiemDoes { get; set; }
@@ -32,7 +31,10 @@
         public virtual DbSet<SanLuong> SanLuongs { get; set; }
         public virtual DbSet<SanLuongDuKien> SanLuongDuKiens { get; set; }
         public virtual DbSet<SanLuongThucTe> SanLuongThucTes { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TinhChatDiemDo> TinhChatDiemDoes { get; set; }
+        public virtual DbSet<TongSanLuong_Ngay> TongSanLuong_Ngay { get; set; }
+        public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -43,6 +45,32 @@
             modelBuilder.Entity<Account>()
                 .Property(e => e.Password)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.SaltPassword)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.Phone)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.IdentifyCode)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Account>()
+                .Property(e => e.Email)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ChiSoChot>()
+                .Property(e => e.CongToSerial)
+                .IsFixedLength();
+
+            modelBuilder.Entity<CongThucTongSanLuong>()
+                .HasMany(e => e.TongSanLuong_Ngay)
+                .WithRequired(e => e.CongThucTongSanLuong)
+                .HasForeignKey(e => e.CongThucID)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CongTo>()
                 .Property(e => e.Serial)
@@ -116,6 +144,12 @@
 
             modelBuilder.Entity<LoaiSanLuong>()
                 .HasMany(e => e.SanLuongDuKiens)
+                .WithRequired(e => e.LoaiSanLuong)
+                .HasForeignKey(e => e.LoaiID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<LoaiSanLuong>()
+                .HasMany(e => e.TongSanLuong_ThangNam)
                 .WithRequired(e => e.LoaiSanLuong)
                 .HasForeignKey(e => e.LoaiID)
                 .WillCascadeOnDelete(false);

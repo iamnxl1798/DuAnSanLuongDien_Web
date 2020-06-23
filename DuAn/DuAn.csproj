@@ -142,11 +142,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\ChiSoChot.cs" />
     <Compile Include="Models\CongThucTongSanLuong.cs" />
     <Compile Include="Models\CongTo.cs" />
     <Compile Include="Models\CongTy.cs" />
     <Compile Include="Models\CustomModel\AccountPaging.cs" />
-        <Compile Include="Models\CustomModel\AdminModel.cs" />
+    <Compile Include="Models\CustomModel\AdminModel.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />
     <Compile Include="Models\CustomModel\MissingDataStatus.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Models\SanLuong.cs" />
     <Compile Include="Models\SanLuongDuKien.cs" />
     <Compile Include="Models\SanLuongThucTe.cs" />
+    <Compile Include="Models\sysdiagram.cs" />
     <Compile Include="Models\TinhChatDiemDo.cs" />
     <Compile Include="Models\TongSanLuong_Ngay.cs" />
     <Compile Include="Models\TongSanLuong_ThangNam.cs" />
@@ -187,7 +189,7 @@
     <Content Include="images\spritemap.png" />
     <Content Include="images\upload-arrow_318-26670.jpg" />
     <Content Include="phone.png" />
-        <Content Include="Scripts\Account\chuyenvien-account-ajax-server-side.js" />
+    <Content Include="Scripts\Account\chuyenvien-account-ajax-server-side.js" />
     <Content Include="Scripts\Account\account.customer.css" />
     <Content Include="Scripts\Account\account.customer.js" />
     <Content Include="Scripts\assets\css\jquery.dataTables.min.css" />
