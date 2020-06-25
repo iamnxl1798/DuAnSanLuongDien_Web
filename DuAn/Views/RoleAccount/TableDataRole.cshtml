@@ -1,46 +1,26 @@
-﻿
-<script>
+﻿<script>
 	$(document).ready(function () {
-        $('#my_datatable_account').DataTable({
+        $('#my_datatable_role').DataTable({
 			"processing": true,
 			"language": {
 				"processing": "Loading Database ....."
 			},
 			"serverSide": true,
-			"order": [0, "asc"],
+			"searching": false,
+			"ordering": false,
+			@*"order": [1, "asc"],*@
 			"ajax": {
-				url: '@Url.Action("GetListAccountShort", "Account")',
+				url: '@Url.Action("GetAllRole", "RoleAccount")',
 				type: "POST",
-				dataType: 'json'
+				dataType: 'json'@*,
+				success: function () {
+					alert("Success get all role");
+				},
+				error: function () {
+                    alert("Fail get all role");
+                }*@
 			},
-			"columns": [
-				{ "data": "ID", "name": "ID" },
-				{
-					"data": {
-						Username: "Username",
-						Avatar: "Avatar"
-					},
-					"name": "Username",
-					render: function (data, type, full) {
-						return '<img class="" src="' + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
-					}
-				},
-				{ "data": "Fullname", "name": "Fullname" },
-				{ "data": "Phone", "name": "Phone" },
-				{ "data": "Email", "name": "Email" },
-				{
-					"data": "Role", "name": "Role",
-					render: function (Role) {
-						var status = {
-							'Lãnh Đạo': 'label-light-primary',
-							'Quản Trị': ' label-light-info',
-							'Chuyên Viên': ' label-light-success'
-							//label-light-danger //label-light-warning
-						};
-						return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
-					}
-				},
-				{
+			"columns": [{
 					"data": {
 						Actions: "Actions",
 						ID: "ID"
@@ -99,7 +79,7 @@
 	                                </ul>\
 	                            </div>\
 	                        </div>\
-	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 bt-open-edit-account-form" data-id="'+ data.ID +'" title="Edit details">\
+	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 bt-open-edit-role-form" data-id="'+ data.ID +'" title="Edit details">\
 	                            <span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -124,23 +104,43 @@
 	                        </a>\
 	                    ';
 					}
+				},
+				@*{
+					"data": {
+						Username: "Username",
+						Avatar: "Avatar"
+					},
+					"name": "Username",
+					render: function (data, type, full) {
+						return '<img class="" src="' + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
+					}
+				},*@
+				{
+					"data": "Role", "name": "Role",
+                    "orderable": false,
+					render: function (Role) {
+						var status = {
+							'Lãnh Đạo': 'label-light-primary',
+							'Quản Trị': ' label-light-info',
+							'Chuyên Viên': ' label-light-success'
+							//label-light-danger //label-light-warning
+						};
+						return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
+					}
 				}
+				
 			]
 		});
 	});
 </script>
 <div class="card-body">
     <!--begin: Datatable-->
-    <table id="my_datatable_account" style="width:auto; border-bottom: none" class="table table-bordered table-hover table-checkable dataTable no-footer dtr-inline display">
+    <table id="my_datatable_role" style="width:auto; border-bottom: none" class="table table-bordered table-hover table-checkable dataTable no-footer dtr-inline display">
         <thead style="border-bottom:none">
             <tr style=" align-content: center !important;">
-                <th style="width: 40px;"><b>ID</b></th>
-                <th style="width: 200px"><b>Username</b></th>
-                <th style="width: 200px"><b>Fullname</b></th>
-                <th style="width: 150px"><b>Phone</b></th>
-                <th style="width: 200px"><b>Email</b></th>
-                <th style="width: 150px"><b>Role</b></th>
                 <th style="width: 150px"><b>Actions</b></th>
+                <th style="width: auto"><b>Role</b></th>
+
             </tr>
         </thead>
     </table>
@@ -148,30 +148,31 @@
 </div>
 <!--begin::Example-->
 <!-- Modal-->
-<div class="modal" id="formEditAccount" tabindex="-1" role="dialog" aria-labelledby="formEditAccount" aria-hidden="true"></div>
+<div class="modal" id="formEditRole" tabindex="-1" role="dialog" aria-labelledby="formEditRole" aria-hidden="true"></div>
 <script>
-    $('#my_datatable_account').on('click','.bt-open-edit-account-form',function () {
-		var url = "@Url.Action("EditAccountForm", "Account")";
-		var id = $(this).attr("data-id");
+    $('#my_datatable_role').on('click','.bt-open-edit-role-form',function () {
+		var url = "@Url.Action("PermissionTree", "RoleAccount")";
+		@*var id = $(this).attr("data-id");*@
 			$.ajax({
 				url: url,
 				type: 'POST',
-				data: {
+				@*data: {
 					accID: id
-                },
+                },*@
 				success: function (data) {
-                    $('#formEditAccount').html(data);
-                    $('#formEditAccount').modal('show');
-                    $('#formEditAccount').modal({
+                    $('#formEditRole').html(data);
+                    $('#formEditRole').modal('show');
+                    $('#formEditRole').modal({
 						backdrop: false
 					});
 				},
 				error: function (data) {
-					alert("Error load ajax edit account");
+					alert("Error load ajax edit role");
 				}
 			});
 	});
 	$('.modal').on('hidden.bs.hidden.bs.modal', function () {
-        $('#my_datatable_account').DataTable().ajax.reload(null, false);
+        $('#my_datatable_role').DataTable().ajax.reload(null, false);
 	});
 </script>
+

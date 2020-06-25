@@ -1,0 +1,40 @@
+﻿
+<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content card card-custom gutter-b example example-compact">
+        <!--Card header-->
+        <div class="card-header">
+
+        </div>
+        <!--begin::Form-->
+        <form class="form">
+            <div class="card-body">
+                <div id="jstree"></div>
+            </div>
+        </form>
+        <!--end::Form-->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" id="submit">Lưu thay đổi</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "@Url.Action("GetPermissionTree", "RoleAccount")",
+            type: 'POST',
+            success: function (data) {
+                $('#jstree').jstree({
+                    plugins: ['checkbox', 'search', 'changed', 'contextmenu'],
+                    'core': {
+                        'data': data
+                    }
+                });
+            },
+            error: function (data) {
+                alert("Error load permission");
+            }
+        });
+    });
+
+</script>

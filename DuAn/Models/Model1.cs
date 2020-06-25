@@ -35,7 +35,7 @@ namespace DuAn.Models
         public virtual DbSet<TinhChatDiemDo> TinhChatDiemDoes { get; set; }
         public virtual DbSet<TongSanLuong_Ngay> TongSanLuong_Ngay { get; set; }
         public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
-
+        public virtual DbSet<Permission> Permissions { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()

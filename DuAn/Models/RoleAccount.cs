@@ -7,7 +7,7 @@ namespace DuAn.Models
     using System.Data.Entity.Spatial;
 
     [Table("RoleAccount")]
-    public partial class RoleAccount
+    public class RoleAccount
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RoleAccount()

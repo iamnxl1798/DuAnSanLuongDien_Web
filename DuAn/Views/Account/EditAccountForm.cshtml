@@ -20,58 +20,63 @@
                     @*<span class="form-text text-muted">You can't edit this field</span>*@
                 </div>
                 <div class="form-group">
-                    <label>User Name:</label>
+                    <label>Tên đăng nhập :</label>
                     <input type="text" class="form-control form-control-solid" placeholder="Username" id="username" value="@Model.Username" disabled />
                     @*<span class="form-text text-muted">You can't edit this field</span>*@
                 </div>
                 <div class="form-group">
-                    <label>Full Name:</label>
+                    <label>Họ và tên :</label>
                     <input type="text" class="form-control form-control-solid" placeholder="Fullname" id="fullname" value="@Model.Fullname" />
-                    <span class="form-text text-muted">Please enter your full name</span>
+                    <span class="form-text text-muted">Nhập họ và tên đây đủ</span>
                 </div>
                 <div class="form-group">
-                    <label>Birth of date:</label>
-                    <div class="input-append date form_datetime">
-                        <input class="form-control form-control-solid" type="text" id="dob" data-dob="@Model.DOB" readonly>
-                        <span class="add-on"><i class="icon-th"></i></span>
+                    <label>Sinh ngày :</label>
+                    <div class="datepicker date input-group p-0 shadow-sm" data-dob="@Model.DOB">
+                        <input type="text" placeholder="Date of birth" class="form-control form-control-solid" id="dob" readonly>
+                        <div class="input-group-append"><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
                     </div>
+                    @*<div class="input-append date form_datetime">
+                            <input class="form-control form-control-solid" type="text" id="dob" data-dob="@Model.DOB" readonly>
+                            <span class="add-on"><i class="icon-th"></i></span>
+                        </div>*@
                     <script type="text/javascript">
-                        $(".form_datetime").datetimepicker({
-                            format: "Y-m-d",
-                            autoclose: true,
-                            value: '2020-2-2'
+                        var dob = new Date($('.datepicker').attr('data-dob'));
+                        $('.datepicker').datepicker({
+                            clearBtn: true,
+                            format: "dd - MM - yyyy"
                         });
-                    </script>                
+                        $('.datepicker').datepicker('setDate', dob);
+                    </script>
                 </div>
                 <div class="form-group">
-                    <label>Phone:</label>
+                    <label>Số điện thoại :</label>
                     <input type="text" class="form-control form-control-solid" placeholder="Phone" id="phone" value="@Model.Phone" />
-                    <span class="form-text text-muted">Please enter your phone</span>
+                    <span class="form-text text-muted">Nhập số điện thoại liên hệ</span>
                 </div>
                 <div class="form-group">
                     <label>Email :</label>
                     <input type="email" class="form-control form-control-solid" placeholder="Email" id="email" value="@Model.Email" />
-                    <span class="form-text text-muted">Please enter your Email</span>
+                    <span class="form-text text-muted">Nhập địa chỉ Email liên hệ</span>
                 </div>
                 <div class="form-group">
-                    <label>Address:</label>
+                    <label>Địa chỉ :</label>
                     <input type="email" class="form-control form-control-solid" placeholder="Address" id="address" value="@Model.Address" />
-                    <span class="form-text text-muted">Please enter your Address</span>
+                    <span class="form-text text-muted">Nhập địa chỉ nơi ở hiện tại</span>
                 </div>
                 <div class="form-group">
-                    <label>Address:</label>
+                    <label>CMND / CCCD :</label>
                     <input type="email" class="form-control form-control-solid" placeholder="Identify Code" id="icode" value="@Model.IdentifyCode" />
-                    <span class="form-text text-muted">Please enter your IdentifyCode</span>
+                    <span class="form-text text-muted">Nhập chứng minh nhân dân / căn cước công dân</span>
                 </div>
                 <div class="form-group" id="all-role" data-role="@Model.Role">
-                    <label>Role:</label>
+                    <label>Vai trò :</label>
                 </div>
             </div>
         </form>
         <!--end::Form-->
         <div class="modal-footer">
-            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" id="submit">Save changes</button>
+            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" id="submit">Lưu thay đổi</button>
         </div>
     </div>
 </div>
@@ -79,7 +84,7 @@
 <!--begin::Global Theme Bundle(used by all pages)-->
 <script>
     $(document).ready(function () {
-        var url = "@Url.Action("GetAllRole", "RoleAccount")";
+        var url = "@Url.Action("AllRole", "RoleAccount")";
         var role = $('#all-role').attr('data-role');
 			$.ajax({
 				url: url,
@@ -103,7 +108,6 @@
         var address = document.getElementById('address').value;
         var icode = document.getElementById('icode').value;
         var dob = document.getElementById('dob').value;
-        var dob = document.getElementById('dob').value;
         var roleID = $("input:radio[name ='role']:checked").val();
         $.ajax({
             url: "@Url.Action("UpdateAccount", "Account")",
@@ -120,11 +124,11 @@
             },
             success: function (data) {
                 if (data) {
-                    alert("update success");
+                    @*alert("update success");*@
                 } else {
                     alert("Error update account");
                 }
-                
+
             },
             error: function (data) {
                 alert("Error load udapte accout");

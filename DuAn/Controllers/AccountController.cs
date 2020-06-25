@@ -98,9 +98,9 @@ namespace DuAn.Controllers
         public JsonResult GetListAccountShort()
         {
             int length = int.Parse(HttpContext.Request["length"]);
-            int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"])/length))) + 1;
+            int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"]) / length))) + 1;
             string searchValue = HttpContext.Request["search[value]"];
-            string sortColumnName = HttpContext.Request["columns["+Request["order[0][column]"] + "][name]"];
+            string sortColumnName = HttpContext.Request["columns[" + Request["order[0][column]"] + "][name]"];
             string sortDirection = Request["order[0][dir]"];
 
             AccountPaging apg = new AccountPaging();
@@ -141,25 +141,27 @@ namespace DuAn.Controllers
                 apg.data.Add(acs);
             }
             apg.draw = int.Parse(Request["draw"]);
-            return Json(apg, JsonRequestBehavior.AllowGet);
+            return Json(apg);
         }
         [HttpPost]
-        public bool UpdateAccount(int id, string fullname, string email, string address, string phone, string icode, DateTime dob, int roleID)
+        public bool UpdateAccount(int id, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
-            try { 
-            Account acc = new Account()
+            try
             {
-                ID = id,
-                Fullname = fullname,
-                Email = email,
-                Address = address,
-                Phone = phone,
-                IdentifyCode = icode,
-                DOB = dob,
-                RoleID = roleID
-            };
-            AccountDAO.UpdateAccout(acc);
-            }catch(Exception ex)
+                Account acc = new Account()
+                {
+                    ID = id,
+                    Fullname = fullname,
+                    Email = email,
+                    Address = address,
+                    Phone = phone,
+                    IdentifyCode = icode,
+                    DOB = DateTime.ParseExact(dob, "dd - MMMM - yyyy", null),
+                    RoleID = roleID
+                };
+                AccountDAO.UpdateAccout(acc);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return false;
