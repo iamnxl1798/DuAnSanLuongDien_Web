@@ -270,6 +270,7 @@
     <Compile Include="Models\CustomModel\MissingDataStatus.cs" />
     <Compile Include="Authorization\WebPermissions.cs" />
     <Compile Include="Models\CustomModel\RolePaging.cs" />
+    <Compile Include="Models\CustomModel\StateTree.cs" />
     <Compile Include="Models\CustomModel\TreeViewNode.cs" />
     <Compile Include="Models\DiemDo.cs" />
     <Compile Include="Models\DiemDo_CongTo.cs" />

@@ -12,5 +12,6 @@ namespace DuAn.Models.CustomModel
         public string text { get; set; }
 
         public string parent { get; set; }
+        public Dictionary<String, bool> state { get; set; }
     }
 }

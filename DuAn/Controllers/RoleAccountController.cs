@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Linq.Dynamic;
 using DuAn.Models;
 using DuAn.Models.CustomModel;
+using Abp.Extensions;
 
 namespace DuAn.Controllers
 {
@@ -27,7 +28,8 @@ namespace DuAn.Controllers
                 Console.WriteLine(ex.Message);
             }
             return PartialView(db.RoleAccounts.ToList());
-        }     
+        } 
+
         public ActionResult TableDataRole()
         {
             return PartialView();
@@ -40,9 +42,9 @@ namespace DuAn.Controllers
                 /*db.Configuration.ProxyCreationEnabled = false;*/
                 int length = int.Parse(HttpContext.Request["length"]);
                 int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"]) / length))) + 1;
-                /*string searchValue = HttpContext.Request["search[value]"];
+                string searchValue = HttpContext.Request["search[value]"];
                 string sortColumnName = HttpContext.Request["columns[" + Request["order[0][column]"] + "][name]"];
-                string sortDirection = Request["order[0][dir]"];*/
+                string sortDirection = Request["order[0][dir]"];
 
                 /*int length = 10;
                 int start = 1;
@@ -54,13 +56,18 @@ namespace DuAn.Controllers
                 start = (start - 1) * length;
                 List<RoleAccount> listRole = db.RoleAccounts.ToList<RoleAccount>();
                 apg.recordsTotal = listRole.Count;
-                /*//filter
+                //filter
                 if (!string.IsNullOrEmpty(searchValue))
                 {
                     listRole = listRole.Where(x => x.Role.ToLower().Contains(searchValue.ToLower())).ToList<RoleAccount>();
                 }
                 //sorting
-                listRole = listRole.OrderBy(sortColumnName + " " + sortDirection).ToList<RoleAccount>();*/
+                if (sortColumnName.Equals("Role"))
+                {
+                    //sort UTF 8
+                    sortColumnName = "ID";
+                }
+                listRole = listRole.OrderBy(sortColumnName + " " + sortDirection).ToList<RoleAccount>();
 
                 apg.recordsFiltered = listRole.Count;
                 //paging
@@ -72,7 +79,6 @@ namespace DuAn.Controllers
                 }
 
                 apg.draw = int.Parse(Request["draw"]);
-                apg.draw = 1;
                 return Json(apg);
                 /*return Json(apg, JsonRequestBehavior.AllowGet);*/
             }
@@ -86,24 +92,33 @@ namespace DuAn.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult PermissionTree()
+        public ActionResult PermissionTree(int roleID)
         {
+            ViewBag.RoleID = roleID;
             return PartialView();
         }
         [HttpPost]
-        public JsonResult GetPermissionTree()
+        public JsonResult GetPermissionTree(int roleID)
         {
+            RoleAccount ra = db.RoleAccounts.Find(roleID);
             try
             {
                 List<TreeViewNode> ls = new List<TreeViewNode>();
                 foreach (var i in db.Permissions)
                 {
-                    ls.Add(new TreeViewNode
+                    TreeViewNode tvn = new TreeViewNode
                     {
                         id = i.ID.ToString(),
                         parent = i.Parent,
-                        text = i.Text
-                    });
+                        text = i.Text,
+                        state = new Dictionary<string, bool>()
+                    };
+
+                    if (ra.PermissionID != null && ra.PermissionID.Split(',').Contains(tvn.id.ToString()))
+                    {
+                        tvn.state.Add("selected", true);
+                    }
+                    ls.Add(tvn);
                 }
                 return Json(ls);
             }
@@ -111,8 +126,24 @@ namespace DuAn.Controllers
             {
                 return null;
             }
+        }
 
-
+        [HttpPost]
+        public bool UpdateRole(int RoleID, List<String> listPermissionID)
+        {
+            try
+            {
+                var rs = db.RoleAccounts.Find(RoleID);
+                if(rs != null)
+                {
+                    rs.PermissionID = string.Join(",", listPermissionID);
+                    db.SaveChanges();
+                }
+            }catch(Exception ex)
+            {
+                return false;
+            }
+            return true;
         }
     }
 

@@ -97,51 +97,62 @@ namespace DuAn.Controllers
         [HttpPost]
         public JsonResult GetListAccountShort()
         {
-            int length = int.Parse(HttpContext.Request["length"]);
-            int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"]) / length))) + 1;
-            string searchValue = HttpContext.Request["search[value]"];
-            string sortColumnName = HttpContext.Request["columns[" + Request["order[0][column]"] + "][name]"];
-            string sortDirection = Request["order[0][dir]"];
+            try
+            {
+                int length = int.Parse(HttpContext.Request["length"]);
+                int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"]) / length))) + 1;
+                string searchValue = HttpContext.Request["search[value]"];
+                string sortColumnName = HttpContext.Request["columns[" + Request["order[0][column]"] + "][name]"];
+                string sortDirection = Request["order[0][dir]"];
 
-            AccountPaging apg = new AccountPaging();
-            apg.data = new List<AccountShort>();
-            start = (start - 1) * length;
-            List<Account> listAccount = db.Accounts.ToList<Account>();
-            apg.recordsTotal = listAccount.Count;
-            //filter
-            if (!string.IsNullOrEmpty(searchValue))
-            {
-                listAccount = listAccount.Where(x => x.Username.ToLower().Contains(searchValue.ToLower())).ToList<Account>();
-            }
-            //sorting
-            if (sortColumnName.Equals("Role"))
-            {
-                //sort UTF 8
-            }
-            else
-            {
-                listAccount = listAccount.OrderBy(sortColumnName + " " + sortDirection).ToList<Account>();
-            }
-            apg.recordsFiltered = listAccount.Count;
-            //paging
-            listAccount = listAccount.Skip(start).Take(length).ToList<Account>();
-            for (int i = 0; i < listAccount.Count; i++)
-            {
-                AccountShort acs = new AccountShort
+                AccountPaging apg = new AccountPaging();
+                apg.data = new List<AccountShort>();
+                start = (start - 1) * length;
+                List<Account> listAccount = db.Accounts.ToList<Account>();
+                apg.recordsTotal = listAccount.Count;
+                //filter
+                if (!string.IsNullOrEmpty(searchValue))
                 {
-                    ID = listAccount[i].ID,
-                    Username = listAccount[i].Username,
-                    Fullname = listAccount[i].Fullname,
-                    Phone = listAccount[i].Phone,
-                    Email = listAccount[i].Email,
-                    Role = listAccount[i].RoleAccount.Role,
-                    Avatar = listAccount[i].Avatar,
-                    Actions = ""
-                };
-                apg.data.Add(acs);
+                    listAccount = listAccount.Where(x => x.Username.ToLower().Contains(searchValue.ToLower()) ||
+                        x.Email.ToLower().Contains(searchValue.ToLower()) ||
+                        x.Fullname.ToLower().Contains(searchValue.ToLower()) ||
+                        x.Phone.ToLower().Contains(searchValue.ToLower()) ||
+                        x.RoleAccount.Role.ToLower().Contains(searchValue.ToLower())
+                    ).ToList<Account>();
+                }
+                //sorting
+                if (sortColumnName.Equals("Role"))
+                {
+                    //sort UTF 8
+                    sortColumnName = "RoleID";
+                }
+                listAccount = listAccount.OrderBy(sortColumnName + " " + sortDirection).ToList<Account>();
+                //}
+                apg.recordsFiltered = listAccount.Count;
+                //paging
+                listAccount = listAccount.Skip(start).Take(length).ToList<Account>();
+                for (int i = 0; i < listAccount.Count; i++)
+                {
+                    AccountShort acs = new AccountShort
+                    {
+                        ID = listAccount[i].ID,
+                        Username = listAccount[i].Username,
+                        Fullname = listAccount[i].Fullname,
+                        Phone = listAccount[i].Phone,
+                        Email = listAccount[i].Email,
+                        Role = listAccount[i].RoleAccount.Role,
+                        Avatar = listAccount[i].Avatar,
+                        Actions = ""
+                    };
+                    apg.data.Add(acs);
+                }
+                apg.draw = int.Parse(Request["draw"]);
+                return Json(apg);
             }
-            apg.draw = int.Parse(Request["draw"]);
-            return Json(apg);
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
         [HttpPost]
         public bool UpdateAccount(int id, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
