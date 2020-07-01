@@ -20,15 +20,21 @@
 </div>
 <script>
     $(document).ready(function () {
+        var roleId = @ViewBag.RoleID;
         $.ajax({
             url: "@Url.Action("GetPermissionTree", "RoleAccount")",
             type: 'POST',
+            data: {
+                roleID: roleId
+            },
             success: function (data) {
                 $('#jstree').jstree({
-                    plugins: ['checkbox', 'search', 'changed', 'contextmenu'],
+                    plugins: ['checkbox'],
                     'core': {
                         'data': data
-                    }
+                    },
+                }).on('ready.jstree', function () {
+                    $('#jstree').jstree("open_all");
                 });
             },
             error: function (data) {
@@ -36,5 +42,32 @@
             }
         });
     });
+    $('#submit').on('click', function () {
+        var roleId = @ViewBag.RoleID;
 
+        //get all roleid chosen
+        var checked_ids = [];
+        var selectedNodes = $('#jstree').jstree("get_selected", true);
+        $.each(selectedNodes, function () {
+            checked_ids.push(this.id);
+        });
+        //alert(checked_ids[0]);
+
+        $.ajax({
+            url: "@Url.Action("UpdateRole", "RoleAccount")",
+            type: 'POST',
+            data: {
+                RoleID: roleId, 
+                listPermissionID: checked_ids
+            },
+            success: function (data) {
+                if (!data) {
+                    alert("Error update role ");
+                }
+            },
+            error: function (data) {
+                alert("Error load udapte role");
+            }
+        });
+    });
 </script>
