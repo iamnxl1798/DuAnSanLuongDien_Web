@@ -12,6 +12,7 @@ namespace DuAn.Models
         [Key]
         public int ID { get; set; }
 
+        [Required]
         public string Text { get; set; }
 
         public string Parent { get; set; }

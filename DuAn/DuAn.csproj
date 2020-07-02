@@ -69,6 +69,9 @@
     <Reference Include="JetBrains.Annotations, Version=2019.1.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2019.1.1\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
@@ -127,6 +130,14 @@
     <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.1\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.7.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.1\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -145,6 +156,7 @@
     </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Security.AccessControl, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Threading.Tasks" />
       <HintPath>..\packages\System.Security.AccessControl.4.5.0\lib\net461\System.Security.AccessControl.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Claims, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -237,6 +249,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -266,7 +279,9 @@
     <Compile Include="Models\CustomModel\AccountPaging.cs" />
     <Compile Include="Models\CustomModel\AdminModel.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
+    <Compile Include="Models\CustomModel\ExportExcelModel.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />
+    <Compile Include="Models\CustomModel\KenhCustom.cs" />
     <Compile Include="Models\CustomModel\MissingDataStatus.cs" />
     <Compile Include="Authorization\WebPermissions.cs" />
     <Compile Include="Models\CustomModel\RolePaging.cs" />
@@ -290,8 +305,9 @@
     <Compile Include="Models\SanLuongThucTe.cs" />
     <Compile Include="Models\sysdiagram.cs" />
     <Compile Include="Models\TinhChatDiemDo.cs" />
+    <Compile Include="Models\TongSanLuong_Nam.cs" />
     <Compile Include="Models\TongSanLuong_Ngay.cs" />
-    <Compile Include="Models\TongSanLuong_ThangNam.cs" />
+    <Compile Include="Models\TongSanLuong_Thang.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -305,8 +321,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\30.gif" />
     <Content Include="images\9151163621500882431.jpg" />
     <Content Include="images\avatarAccount\avatar_1.png" />
+    <Content Include="images\frame_apngframe1.png" />
     <Content Include="images\spritemap%402x.png" />
     <Content Include="images\spritemap.png" />
     <Content Include="images\upload-arrow_318-26670.jpg" />
@@ -2341,6 +2359,7 @@
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\dropzone.min.js" />
+    <Content Include="Scripts\HomePageScript.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -2376,6 +2395,7 @@
     <Content Include="Views\Home\getModelDetail.cshtml" />
     <Content Include="Views\Admin\viewMissingDataList.cshtml" />
     <Content Include="Views\Account\TestDateTimePicker.cshtml" />
+    <Content Include="Views\Home\homePagePartialView.cshtml" />
     <Content Include="Views\RoleAccount\AllRole.cshtml" />
     <Content Include="Views\RoleAccount\PermissionTree.cshtml" />
     <Content Include="Views\RoleAccount\TableDataRole.cshtml" />

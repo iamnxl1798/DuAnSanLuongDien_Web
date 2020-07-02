@@ -8,7 +8,7 @@
         {
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 @item.date - @item.name
-                <span class="badge badge-@item.classAttribute badge-pill">@item.status</span>
+                <span class="badge badge-@item.classAttribute badge-pill">@item.getStatusString</span>
             </li>
         }
     </ul>
