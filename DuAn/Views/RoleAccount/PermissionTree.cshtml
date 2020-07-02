@@ -99,8 +99,8 @@
                 listPermissionID: checked_ids
             },
             success: function (data) {
-                if (!data) {
-                    alert("Error insert/update role ");
+                if (data != "success") {
+                    alert(data);
                 }
             },
             error: function (data) {

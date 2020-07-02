@@ -6,10 +6,11 @@ using System.Web.Mvc;
 using DuAn.Models;
 using DuAn.Models.CustomModel;
 using System.Linq.Dynamic;
+using DuAn.Attribute;
 
 namespace DuAn.Controllers
 {
-    //[CheckRole(RoleID = new int[1] { 2 })]
+    [CheckRole(RoleID = new int[1] { 2 })]
     public class AccountController : Controller
     {
         private Model1 db = new Model1();
@@ -158,7 +159,7 @@ namespace DuAn.Controllers
             }
         }
         [HttpPost]
-        public bool UpdateAccount(int id,string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string UpdateAccount(int id,string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
@@ -177,16 +178,19 @@ namespace DuAn.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+                return ex.Message;
             }
-            return true;
+            return "success";
         }
         [HttpPost]
-        public bool InsertAccount(int id, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string InsertAccount(int id, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
+                if (!AccountDAO.CheckUsername(username))
+                {
+                    return "Username đã tồn tại !!!";
+                }
                 Account acc = new Account()
                 {
                     Username = username,
@@ -204,10 +208,9 @@ namespace DuAn.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+                return ex.Message;
             }
-            return true;
+            return "success";
         }
         [HttpPost]
         public bool DeleteAccount(int AccID)

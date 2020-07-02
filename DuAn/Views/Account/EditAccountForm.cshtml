@@ -138,12 +138,9 @@
                 roleID: roleID
             },
             success: function (data) {
-                if (data) {
-                    @*alert("update success");*@
-                } else {
-                    alert("Error insert/update account");
+                if (data != "success") {
+                    alert(data);
                 }
-
             },
             error: function (data) {
                 alert("Error load insert/udapte accout");

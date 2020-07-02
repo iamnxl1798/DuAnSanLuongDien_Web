@@ -33,7 +33,7 @@ namespace DuAn
                     DateTime nam = new DateTime(date.Year, 1, 1);
                     DateTime namEnd = new DateTime(date.AddYears(1).Year, 1, 1);
                     List<DiemDoData> list = new List<DiemDoData>();
-                    var temp1 = db.SanLuongs.Where(x => x.Ngay == date).OrderBy(x => x.DiemDo.ThuTuHienThu).ToList();
+                    var temp1 = db.SanLuongs.Where(x => x.Ngay == date).OrderBy(x => x.DiemDo.ThuTuHienThi).ToList();
                     List<int> temp = temp1.Select(x => x.DiemDoID).Distinct().ToList();
                     var allListDiemDo = db.DiemDoes.AsNoTracking().ToList();
 
@@ -46,7 +46,7 @@ namespace DuAn
                             tenDiemDo = listDiemDo?.TenDiemDo,
                             maDiemDo = (listDiemDo?.MaDiemDo).GetValueOrDefault(),
                             tinhChat = listDiemDo?.TinhChatDiemDo.TenTinhChat,
-                            thuTuHienThi = (listDiemDo?.ThuTuHienThu).GetValueOrDefault(),
+                            thuTuHienThi = (listDiemDo?.ThuTuHienThi).GetValueOrDefault(),
                             sumKwhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_GIAO).Select(x => x.GiaTri).Sum(),
                             sumKwhNhan = listSanLuong.Where(x => x.KenhID == CommonContext.KWH_NHAN).Select(x => x.GiaTri).Sum(),
                             sumKvarhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_GIAO).Select(x => x.GiaTri).Sum(),
@@ -548,5 +548,20 @@ namespace DuAn
             }
         }
 
+    }
+    public static class RoleAccountDAO
+    {
+        static Model1 db = new Model1();
+        public static bool checkRoleName(string role)
+        {
+            foreach(var i in db.RoleAccounts)
+            {
+                if (i.Role.ToLower().Equals(role.ToLower()))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }

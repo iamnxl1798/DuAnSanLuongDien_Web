@@ -135,7 +135,7 @@ namespace DuAn.Controllers
         }
 
         [HttpPost]
-        public bool UpdateRole(int RoleID, string RoleName, List<String> listPermissionID)
+        public string UpdateRole(int RoleID, string RoleName, List<String> listPermissionID)
         {
             try
             {
@@ -144,25 +144,36 @@ namespace DuAn.Controllers
                     listPermissionID = new List<string>();
                 }
                 var rs = db.RoleAccounts.Find(RoleID);
-                if (rs != null)
+                if (rs == null)
                 {
-                    rs.Role = RoleName;
-                    rs.PermissionID = string.Join(",", listPermissionID);
-                    db.SaveChanges();
+                    return "Role không tồn tại !!!";
                 }
+                if (!RoleAccountDAO.checkRoleName(RoleName))
+                {
+                    return "Role Name đã tồn tại !!!";
+                }
+
+                rs.Role = RoleName;
+                rs.PermissionID = string.Join(",", listPermissionID);
+                db.SaveChanges();
+
             }
             catch (Exception ex)
             {
-                return false;
+                return "Update Role không thành công !!!";
             }
-            return true;
+            return "success";
         }
         [HttpPost]
-        public bool InsertRole(int RoleID, string RoleName, List<String> listPermissionID)
+        public string InsertRole(int RoleID, string RoleName, List<String> listPermissionID)
         {
             try
             {
-                if(listPermissionID == null)
+                if (!RoleAccountDAO.checkRoleName(RoleName))
+                {
+                    return "Role Name đã tồn tại !!!";
+                }
+                if (listPermissionID == null)
                 {
                     listPermissionID = new List<string>();
                 }
@@ -177,9 +188,9 @@ namespace DuAn.Controllers
             }
             catch (Exception ex)
             {
-                return false;
+                return "Insert Role không thành công !!!";
             }
-            return true;
+            return "success";
         }
         public bool DeleteRole(int RoleID)
         {
