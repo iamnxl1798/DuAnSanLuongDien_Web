@@ -45,18 +45,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.11.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.11.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\..\..\..\Downloads\Microsoft.SkypeApp_kzf8qxf38zg5c!App\All\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.7.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -118,6 +137,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -138,12 +158,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\ChiSoChot.cs" />
     <Compile Include="Models\CongThucTongSanLuong.cs" />
     <Compile Include="Models\CongTo.cs" />
     <Compile Include="Models\CongTy.cs" />
     <Compile Include="Models\CustomModel\AdminModel.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
+    <Compile Include="Models\CustomModel\ExportExcelModel.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />
+    <Compile Include="Models\CustomModel\KenhCustom.cs" />
     <Compile Include="Models\CustomModel\MissingDataStatus.cs" />
     <Compile Include="Models\DiemDo.cs" />
     <Compile Include="Models\DiemDo_CongTo.cs" />
@@ -156,13 +179,15 @@
     <Compile Include="Models\LogTinhChatDiemDo.cs" />
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\NhaMay.cs" />
+    <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\RoleAccount.cs" />
     <Compile Include="Models\SanLuong.cs" />
     <Compile Include="Models\SanLuongDuKien.cs" />
     <Compile Include="Models\SanLuongThucTe.cs" />
     <Compile Include="Models\TinhChatDiemDo.cs" />
+    <Compile Include="Models\TongSanLuong_Nam.cs" />
     <Compile Include="Models\TongSanLuong_Ngay.cs" />
-    <Compile Include="Models\TongSanLuong_ThangNam.cs" />
+    <Compile Include="Models\TongSanLuong_Thang.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -176,7 +201,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\30.gif" />
     <Content Include="images\9151163621500882431.jpg" />
+    <Content Include="images\frame_apngframe1.png" />
     <Content Include="images\spritemap%402x.png" />
     <Content Include="images\spritemap.png" />
     <Content Include="images\upload-arrow_318-26670.jpg" />
@@ -2211,6 +2238,7 @@
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\dropzone.min.js" />
+    <Content Include="Scripts\HomePageScript.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -2244,6 +2272,7 @@
     <Content Include="Views\Account\TableDataUser.cshtml" />
     <Content Include="Views\Home\getModelDetail.cshtml" />
     <Content Include="Views\Admin\viewMissingDataList.cshtml" />
+    <Content Include="Views\Home\homePagePartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

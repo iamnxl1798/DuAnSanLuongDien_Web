@@ -75,13 +75,13 @@
             }
 
         }
-
         public Model1()
-            : base("name=Model12")
+            : base("name=Model17")
         {
         }
 
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<ChiSoChot> ChiSoChots { get; set; }
         public virtual DbSet<CongThucTongSanLuong> CongThucTongSanLuongs { get; set; }
         public virtual DbSet<CongTo> CongToes { get; set; }
         public virtual DbSet<CongTy> CongTies { get; set; }
@@ -95,13 +95,15 @@
         public virtual DbSet<LogNhaMay> LogNhaMays { get; set; }
         public virtual DbSet<LogTinhChatDiemDo> LogTinhChatDiemDoes { get; set; }
         public virtual DbSet<NhaMay> NhaMays { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<RoleAccount> RoleAccounts { get; set; }
         public virtual DbSet<SanLuong> SanLuongs { get; set; }
         public virtual DbSet<SanLuongDuKien> SanLuongDuKiens { get; set; }
         public virtual DbSet<SanLuongThucTe> SanLuongThucTes { get; set; }
         public virtual DbSet<TinhChatDiemDo> TinhChatDiemDoes { get; set; }
+        public virtual DbSet<TongSanLuong_Nam> TongSanLuong_Nam { get; set; }
         public virtual DbSet<TongSanLuong_Ngay> TongSanLuong_Ngay { get; set; }
-        public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
+        public virtual DbSet<TongSanLuong_Thang> TongSanLuong_Thang { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -128,6 +130,10 @@
             modelBuilder.Entity<Account>()
                 .Property(e => e.Email)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<ChiSoChot>()
+                .Property(e => e.CongToSerial)
+                .IsFixedLength();
 
             modelBuilder.Entity<CongThucTongSanLuong>()
                 .HasMany(e => e.TongSanLuong_Ngay)
@@ -211,12 +217,6 @@
                 .HasForeignKey(e => e.LoaiID)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<LoaiSanLuong>()
-                .HasMany(e => e.TongSanLuong_ThangNam)
-                .WithRequired(e => e.LoaiSanLuong)
-                .HasForeignKey(e => e.LoaiID)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<LogCongTy>()
                 .Property(e => e.TenVietTat)
                 .IsFixedLength();
@@ -250,6 +250,10 @@
                 .HasMany(e => e.LogNhaMays)
                 .WithRequired(e => e.NhaMay)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Permission>()
+                .Property(e => e.Parent)
+                .IsUnicode(false);
 
             modelBuilder.Entity<RoleAccount>()
                 .HasMany(e => e.Accounts)

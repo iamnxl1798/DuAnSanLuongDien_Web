@@ -46,6 +46,8 @@ namespace DuAn.Models
         [Column(TypeName = "date")]
         public DateTime DOB { get; set; }
 
+        public string Avatar { get; set; }
+
         public virtual RoleAccount RoleAccount { get; set; }
     }
 }
