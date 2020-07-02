@@ -7,6 +7,7 @@ namespace DuAn.Models.CustomModel
 {
     public class HomeModel
     {
+        public DateTime date { get; set; }
         public double? duKienThang { get; set; }
         public double? duKienNam { get; set; }
         public double? thucTeThang { get; set; }

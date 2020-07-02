@@ -64,6 +64,7 @@ namespace DuAn
                         thucTeNam = thucTeNam,
                         data = list,
                         sanLuongTrongNgay = dataTrongNgay,
+                        date = date
                     };
                     return await Task.FromResult(result);
                 }
@@ -74,13 +75,13 @@ namespace DuAn
             }
         }
 
-        public static DiemDoData getChiTietDiemDo(int id)
+        public static DiemDoData getChiTietDiemDo(int id, DateTime date)
         {
             using (var db = new Model1())
             {
                 try
                 {
-                    DateTime sanLuongDate = new DateTime(2020, 4, 18);
+                    DateTime sanLuongDate = date;
                     var result = db.SanLuongs.Where(x => x.DiemDo.MaDiemDo == id && x.Ngay == sanLuongDate);
                     DiemDoData obj = new DiemDoData()
                     {
@@ -207,12 +208,12 @@ namespace DuAn
             }
         }
 
-        public static FileResult exportExcel()
+        public static FileResult exportExcel(DateTime date)
         {
             using (var db = new Model1())
             {
-                DateTime thang = new DateTime(2020, 05, 01);
-                var rawData = db.ChiSoChots.Where(x => x.thang == thang);
+                DateTime thang = new DateTime(date.Year, date.Month, 1);
+                var rawData = db.ChiSoChots.Where(x => x.thang == thang).ToList();
                 List<ExportExcelModel> data = new List<ExportExcelModel>();
                 foreach (ChiSoChot item in rawData)
                 {
@@ -245,10 +246,10 @@ namespace DuAn
                     data.Add(result);
                 }
                 data.OrderBy(x => x.type);
-                return GenerateExcel(data, "rpt_PhieuTongHop_GNDN_NMD_ChiTiet.xlsx");
+                return GenerateExcel(data, "rpt_PhieuTongHop_GNDN_NMD_ChiTiet.xlsx",date);
             }
         }
-        public static FileResult GenerateExcel(List<ExportExcelModel> data, string fileDir)
+        public static FileResult GenerateExcel(List<ExportExcelModel> data, string fileDir,DateTime date)
         {
             try
             {
@@ -262,6 +263,9 @@ namespace DuAn
                 {
                     ExcelWorksheet wookSheet = package.Workbook.Worksheets[1];
                     int rowIndex = 12;
+                    wookSheet.Row(4).Style.Font.Bold = true;
+                    wookSheet.Cells[4, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    wookSheet.Cells[4, 4].Value = "BIÊN BẢN XÁC NHẬN CHỈ SỐ CÔNG TƠ VÀ ĐIỆN NĂNG THÁNG "+date.Month+" NĂM "+date.Year;
                     foreach (ExportExcelModel item in data)
                     {
                         wookSheet.Row(rowIndex).Style.Font.Bold = true;
@@ -280,8 +284,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangGiao.bieuTong;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangGiao.bieuTong;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.bieuTong;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.bieuTong;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.bieuTong * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.bieuTong * 1000;
                         rowIndex += 1;
                         wookSheet.Cells[rowIndex, 1].Value = "b";
                         wookSheet.Cells[rowIndex, 2].Value = "Điện năng tác dụng giao - Biểu 1";
@@ -289,8 +293,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangGiao.bieu1;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangGiao.bieu1;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.bieu1;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.bieu1;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.bieu1 * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.bieu1 * 1000;
                         rowIndex += 1;
                         wookSheet.Cells[rowIndex, 1].Value = "c";
                         wookSheet.Cells[rowIndex, 2].Value = "Điện năng tác dụng giao - Biểu 2";
@@ -298,8 +302,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangGiao.bieu2;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangGiao.bieu2;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.bieu2;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.bieu2;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.bieu2 * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.bieu2 * 1000;
                         rowIndex += 1;
                         wookSheet.Cells[rowIndex, 1].Value = "d";
                         wookSheet.Cells[rowIndex, 2].Value = "Điện năng tác dụng giao - Biểu 3";
@@ -307,8 +311,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangGiao.bieu3;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangGiao.bieu3;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.bieu3;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.bieu3;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.bieu3 * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.bieu3 * 1000;
                         rowIndex += 1;
                         wookSheet.Cells[rowIndex, 1].Value = "e";
                         wookSheet.Cells[rowIndex, 2].Value = "Điện năng phản kháng Giao";
@@ -316,8 +320,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangGiao.phanKhang;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangGiao.phanKhang;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.phanKhang;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.phanKhang;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangGiao.phanKhang * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangGiao.phanKhang * 1000;
 
                         //============================================================================
                         rowIndex += 1;
@@ -331,8 +335,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangNhan.bieuTong;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangNhan.bieuTong;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.bieuTong;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.bieuTong;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.bieuTong * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.bieuTong * 1000;
                         rowIndex += 1;
                         wookSheet.Cells[rowIndex, 1].Value = "b";
                         wookSheet.Cells[rowIndex, 2].Value = "Điện năng tác dụng nhận - Biểu 1";
@@ -340,8 +344,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangNhan.bieu1;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangNhan.bieu1;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.bieu1;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.bieu1;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.bieu1 * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.bieu1 * 1000;
                         rowIndex += 1;
                         wookSheet.Cells[rowIndex, 1].Value = "c";
                         wookSheet.Cells[rowIndex, 2].Value = "Điện năng tác dụng nhận - Biểu 2";
@@ -349,8 +353,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangNhan.bieu2;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangNhan.bieu2;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.bieu2;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.bieu2;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.bieu2 * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.bieu2 * 1000;
                         rowIndex += 1;
                         wookSheet.Cells[rowIndex, 1].Value = "d";
                         wookSheet.Cells[rowIndex, 2].Value = "Điện năng tác dụng nhận - Biểu 3";
@@ -358,8 +362,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangNhan.bieu3;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangNhan.bieu3;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.bieu3;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.bieu3;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.bieu3 * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.bieu3 * 1000;
                         rowIndex += 1;
                         wookSheet.Cells[rowIndex, 1].Value = "e";
                         wookSheet.Cells[rowIndex, 2].Value = "Điện năng phản kháng Nhận";
@@ -367,8 +371,8 @@ namespace DuAn
                         wookSheet.Cells[rowIndex, 8].Value = item.dienNangNhan.phanKhang;
                         wookSheet.Cells[rowIndex, 11].Value = item.dienNangNhan.phanKhang;
                         wookSheet.Cells[rowIndex, 12].Value = 1000;
-                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.phanKhang;
-                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.phanKhang;
+                        wookSheet.Cells[rowIndex, 13].Value = item.dienNangNhan.phanKhang * 1000;
+                        wookSheet.Cells[rowIndex, 15].Value = item.dienNangNhan.phanKhang * 1000;
                         rowIndex += 1;
                     }
 
