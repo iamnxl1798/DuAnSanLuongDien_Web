@@ -1,6 +1,6 @@
 ﻿@model ICollection<DuAn.Models.RoleAccount>
 
-    <div class="radio-list">
+@*<div class="radio-list">
         @foreach (var i in Model)
         {
             <label class="radio">
@@ -15,4 +15,18 @@
                 <span></span>
             </label>
         }
-    </div>
+    </div>*@
+<select class="form-control" id="role_change">
+        @foreach (var i in Model)
+        {
+            if (i.Role.Equals(ViewBag.RoleAccEdit))
+            {
+                <option style="height: 200%;" value="@i.ID" selected>@i.Role</option>
+            }
+            else
+            {
+                <option style="height: 200%;" value="@i.ID">@i.Role</option>
+            }
+        }
+    </select>
+

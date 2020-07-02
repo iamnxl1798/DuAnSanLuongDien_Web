@@ -75,10 +75,13 @@ namespace DuAn.Controllers
             return PartialView();
         }
         [HttpPost]
-        public ActionResult EditAccountForm()
+        public ActionResult EditAccountForm(int accID)
         {
-            int accID = int.Parse(HttpContext.Request["accID"]);
             Account acc = (Account)db.Accounts.Find(accID);
+            if(acc == null || accID == 0)
+            {
+                return PartialView(new AccountDetail() { DOB = DateTime.Now});
+            }
             AccountDetail acs = new AccountDetail
             {
                 ID = acc.ID,
@@ -155,7 +158,7 @@ namespace DuAn.Controllers
             }
         }
         [HttpPost]
-        public bool UpdateAccount(int id, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public bool UpdateAccount(int id,string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
@@ -178,6 +181,46 @@ namespace DuAn.Controllers
                 return false;
             }
             return true;
+        }
+        [HttpPost]
+        public bool InsertAccount(int id, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        {
+            try
+            {
+                Account acc = new Account()
+                {
+                    Username = username,
+                    //hard code password
+                    Password = "123",
+                    Fullname = fullname,
+                    Email = email,
+                    Address = address,
+                    Phone = phone,
+                    IdentifyCode = icode,
+                    DOB = DateTime.ParseExact(dob, "dd - MMMM - yyyy", null),
+                    RoleID = roleID
+                };
+                AccountDAO.AddAccount(acc);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
+        [HttpPost]
+        public bool DeleteAccount(int AccID)
+        {
+            try
+            {
+                db.Accounts.Remove(db.Accounts.Find(AccID));
+                db.SaveChanges();
+                return true;
+            }catch(Exception ex)
+            {
+                return false;
+            }
         }
         public ActionResult TestDateTimePicker()
         {

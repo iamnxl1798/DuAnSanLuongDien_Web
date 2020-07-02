@@ -111,7 +111,7 @@
 	                            </span>\
 	                        </a>\
 							\
-	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">\
+	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon bt-delete-account" data-id="'+ data.ID +'"  title="Delete">\
 								<span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -148,7 +148,7 @@
 </div>
 <!--begin::Example-->
 <!-- Modal-->
-<div class="modal" id="formEditAccount" tabindex="-1" role="dialog" aria-labelledby="formEditAccount" aria-hidden="true"></div>
+<div class="modal fade" id="formEditAccount" tabindex="-1" role="dialog" aria-labelledby="formEditAccount" aria-hidden="true"></div>
 <script>
     $('#my_datatable_account').on('click','.bt-open-edit-account-form',function () {
 		var url = "@Url.Action("EditAccountForm", "Account")";
@@ -171,7 +171,33 @@
 				}
 			});
 	});
-	$('.modal').on('hidden.bs.hidden.bs.modal', function () {
+    var reloadAccountDatatable = function () {
         $('#my_datatable_account').DataTable().ajax.reload(null, false);
+    };
+	$('.modal').on('hidden.bs.hidden.bs.modal', reloadAccountDatatable);
+
+    $('#my_datatable_account').on('click', '.bt-delete-account', function () {
+		//add xac thuc trc khi xoa
+		//
+		var url = "@Url.Action("DeleteAccount", "Account")";
+		var id = $(this).attr("data-id");
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: {
+				AccID: id
+			},
+			success: function (data) {
+				if (!data) {
+					alert("Error delete Account ");
+				} else {
+                    reloadAccountDatatable();
+				}
+			},
+			error: function (data) {
+                alert("Error load ajax delete Account");
+			}
+		});
 	});
+
 </script>

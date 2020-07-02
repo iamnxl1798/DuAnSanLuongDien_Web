@@ -166,7 +166,7 @@ namespace DuAn
             }
         }
     }
-   
+
 
     public static class AccountDAO
     {
@@ -219,11 +219,18 @@ namespace DuAn
         }
         public static void AddAccount(Account acc)
         {
-            acc.SaltPassword = RandomSaltHash();
-            // ma hoa mat khau
-            acc.Password = MaHoaMatKhau(acc.SaltPassword + acc.Password);
-            db.Accounts.Add(acc);
-            db.SaveChanges();
+            try
+            {
+                acc.SaltPassword = RandomSaltHash();
+                // ma hoa mat khau
+                acc.Password = MaHoaMatKhau(acc.SaltPassword + acc.Password);
+                db.Accounts.Add(acc);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public static bool CheckUsername(string username)
         {
@@ -238,22 +245,29 @@ namespace DuAn
         }
         public static void UpdateAccout(Account acc)
         {
-            using (var db = new Model1())
+            try
             {
-                var result = db.Accounts.SingleOrDefault(b => b.ID == acc.ID);
-                if (result != null)
+                using (var db = new Model1())
                 {
-                    result.Fullname =  acc.Fullname;
-                    result.Phone = acc.Phone;
-                    result.Email = acc.Email;
-                    result.Address = acc.Address;
-                    result.IdentifyCode = acc.IdentifyCode;
-                    result.RoleID = acc.RoleID;
-                    result.DOB = acc.DOB;
-                    db.SaveChanges();
+                    var result = db.Accounts.SingleOrDefault(b => b.ID == acc.ID);
+                    if (result != null)
+                    {
+                        result.Fullname = acc.Fullname;
+                        result.Phone = acc.Phone;
+                        result.Email = acc.Email;
+                        result.Address = acc.Address;
+                        result.IdentifyCode = acc.IdentifyCode;
+                        result.RoleID = acc.RoleID;
+                        result.DOB = acc.DOB;
+                        db.SaveChanges();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-        
+
     }
 }

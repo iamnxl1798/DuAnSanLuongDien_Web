@@ -28,7 +28,7 @@ namespace DuAn.Controllers
                 Console.WriteLine(ex.Message);
             }
             return PartialView(db.RoleAccounts.ToList());
-        } 
+        }
 
         public ActionResult TableDataRole()
         {
@@ -73,7 +73,7 @@ namespace DuAn.Controllers
                 //paging
                 listRole = listRole.Skip(start).Take(length).ToList<RoleAccount>();
 
-                foreach(var i in listRole)
+                foreach (var i in listRole)
                 {
                     apg.data.Add(new RoleModel(i));
                 }
@@ -92,17 +92,22 @@ namespace DuAn.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult PermissionTree(int roleID)
+        public ActionResult PermissionTree(int RoleID)
         {
-            ViewBag.RoleID = roleID;
-            return PartialView();
+            if (RoleID == 0)
+            {
+                return PartialView(new RoleAccount());
+            }
+            var rs = db.RoleAccounts.Find(RoleID);
+            return PartialView(rs);
         }
         [HttpPost]
-        public JsonResult GetPermissionTree(int roleID)
+        public JsonResult GetPermissionTree(int RoleID)
         {
-            RoleAccount ra = db.RoleAccounts.Find(roleID);
+
             try
             {
+                RoleAccount ra = db.RoleAccounts.Find(RoleID);
                 List<TreeViewNode> ls = new List<TreeViewNode>();
                 foreach (var i in db.Permissions)
                 {
@@ -114,12 +119,13 @@ namespace DuAn.Controllers
                         state = new Dictionary<string, bool>()
                     };
 
-                    if (ra.PermissionID != null && ra.PermissionID.Split(',').Contains(tvn.id.ToString()))
+                    if (ra != null && RoleID != 0 && ra.PermissionID != null && ra.PermissionID.Split(',').Contains(tvn.id.ToString()))
                     {
                         tvn.state.Add("selected", true);
                     }
                     ls.Add(tvn);
                 }
+
                 return Json(ls);
             }
             catch (Exception ex)
@@ -129,17 +135,61 @@ namespace DuAn.Controllers
         }
 
         [HttpPost]
-        public bool UpdateRole(int RoleID, List<String> listPermissionID)
+        public bool UpdateRole(int RoleID, string RoleName, List<String> listPermissionID)
+        {
+            try
+            {
+                if (listPermissionID == null)
+                {
+                    listPermissionID = new List<string>();
+                }
+                var rs = db.RoleAccounts.Find(RoleID);
+                if (rs != null)
+                {
+                    rs.Role = RoleName;
+                    rs.PermissionID = string.Join(",", listPermissionID);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+        [HttpPost]
+        public bool InsertRole(int RoleID, string RoleName, List<String> listPermissionID)
+        {
+            try
+            {
+                if(listPermissionID == null)
+                {
+                    listPermissionID = new List<string>();
+                }
+                var rs = new RoleAccount()
+                {
+                    Role = RoleName,
+                    PermissionID = string.Join(",", listPermissionID)
+                };
+                db.RoleAccounts.Add(rs);
+                db.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+        public bool DeleteRole(int RoleID)
         {
             try
             {
                 var rs = db.RoleAccounts.Find(RoleID);
-                if(rs != null)
-                {
-                    rs.PermissionID = string.Join(",", listPermissionID);
-                    db.SaveChanges();
-                }
-            }catch(Exception ex)
+                db.RoleAccounts.Remove(rs);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
             {
                 return false;
             }
