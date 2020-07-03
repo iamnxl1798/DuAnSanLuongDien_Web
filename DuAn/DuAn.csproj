@@ -168,6 +168,7 @@
     <Compile Include="Models\CustomModel\HomeModel.cs" />
     <Compile Include="Models\CustomModel\KenhCustom.cs" />
     <Compile Include="Models\CustomModel\MissingDataStatus.cs" />
+    <Compile Include="Models\CustomModel\NumberOfMissingData.cs" />
     <Compile Include="Models\DiemDo.cs" />
     <Compile Include="Models\DiemDo_CongTo.cs" />
     <Compile Include="Models\Kenh.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\TongSanLuong_Nam.cs" />
     <Compile Include="Models\TongSanLuong_Ngay.cs" />
     <Compile Include="Models\TongSanLuong_Thang.cs" />
+    <Compile Include="Models\TongSanLuong_ThangNam.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

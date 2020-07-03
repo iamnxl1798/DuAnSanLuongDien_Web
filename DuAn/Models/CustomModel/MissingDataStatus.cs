@@ -7,6 +7,7 @@ namespace DuAn.Models.CustomModel
 {
     public class MissingDataStatus
     {
+        public string type { get; set; }
         public string date { get; set; }
         public string name { get; set; }
         public int status { get; set; }

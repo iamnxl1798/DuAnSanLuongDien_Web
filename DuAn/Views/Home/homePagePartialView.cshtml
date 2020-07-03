@@ -4,7 +4,7 @@
 @{ Layout = null;}
 
 
-<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+<div class="col-sm-3">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
@@ -13,8 +13,6 @@
                 <div class="card-label">
                     Lũy kế tháng @Model.date.Month
                 </div>
-            </div>
-            <div class="card-toolbar">
             </div>
         </div>
         <!--end::Header-->
@@ -54,14 +52,13 @@
                 <!--end::Widget Item-->
             </div>
             <!--end::Items-->
-            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 414px; height: 446px;"></div></div><div class="contract-trigger"></div></div>
         </div>
         <!--end::Body-->
     </div>
     <!--end::Mixed Widget 18-->
 </div>
 
-<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+<div class="col-sm-3">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
@@ -69,10 +66,7 @@
             <div class="card-title font-weight-bolder">
                 <div class="card-label">
                     Lũy kế năm @Model.date.Year
-                    <div id="duKienChart2" class="font-size-sm text-muted mt-2"></div>
                 </div>
-            </div>
-            <div class="card-toolbar">
             </div>
         </div>
         <!--end::Header-->
@@ -80,7 +74,6 @@
         <div class="card-body" style="position: relative;">
             <!--begin::Chart-->
             <div id="insert_chart2" class="d-flex justify-content-center d-flex align-items-center" style="height: 250px; min-height: 192.089px;margin-bottom:60px;"><h1 id="chart2Label"></h1></div>
-            <h1 id="chart2EmptyLabel"></h1>
             <!--end::Chart-->
             <!--begin::Items-->
             <div class="mt-n12 position-relative zindex-0">
@@ -105,7 +98,7 @@
                     <!--end::Symbol-->
                     <!--begin::Title-->
                     <div>
-                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.duKienThang MW</p>
+                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.duKienNam MW</p>
                         <div class="font-size-sm text-muted font-weight-bold mt-1">Sản lượng kế hoạch</div>
                     </div>
                     <!--end::Title-->
@@ -113,7 +106,53 @@
                 <!--end::Widget Item-->
             </div>
             <!--end::Items-->
-            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 414px; height: 446px;"></div></div><div class="contract-trigger"></div></div>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Mixed Widget 18-->
+</div>
+
+<div class="col-sm-6">
+    <!--begin::Mixed Widget 18-->
+    <div class="card card-custom gutter-b card-stretch">
+        <!--begin::Header-->
+        <div class="card-header border-0 pt-5">
+            <div class="card-title font-weight-bolder">
+                <div class="card-label">
+                    Tình hình thu thập dữ liệu tại nhà máy
+                </div>
+            </div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body" style="position: relative;">
+            <div class="col-md-6">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Loại điểm đo</th>
+                            <th scope="col">Đã thu thập</th>
+                            <th scope="col">Thu thập thiếu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(NumberOfMissingData item in Model.countMissingData)
+                        {
+                            <tr>
+                                <td>
+                                    @item.type
+                                </td>
+                                <td class="text-right text-success">
+                                    @item.done
+                                </td>
+                                <td class="text-right text-danger">
+                                    @item.notYet
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!--end::Body-->
     </div>

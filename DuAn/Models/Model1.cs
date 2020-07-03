@@ -76,7 +76,7 @@
 
         }
         public Model1()
-            : base("name=Model17")
+            : base("name=Model1")
         {
         }
 
@@ -104,6 +104,7 @@
         public virtual DbSet<TongSanLuong_Nam> TongSanLuong_Nam { get; set; }
         public virtual DbSet<TongSanLuong_Ngay> TongSanLuong_Ngay { get; set; }
         public virtual DbSet<TongSanLuong_Thang> TongSanLuong_Thang { get; set; }
+        public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -253,6 +254,10 @@
 
             modelBuilder.Entity<Permission>()
                 .Property(e => e.Parent)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<RoleAccount>()
+                .Property(e => e.PermissionID)
                 .IsUnicode(false);
 
             modelBuilder.Entity<RoleAccount>()

@@ -14,6 +14,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using System.Threading.Tasks;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
 namespace DuAn
 {
@@ -32,7 +33,7 @@ namespace DuAn
                     DateTime nam = new DateTime(date.Year, 1, 1);
                     DateTime namEnd = new DateTime(date.AddYears(1).Year, 1, 1);
                     List<DiemDoData> list = new List<DiemDoData>();
-                    var temp1 = db.SanLuongs.Where(x => x.Ngay == date).OrderBy(x => x.DiemDo.ThuTuHienThu).ToList();
+                    var temp1 = db.SanLuongs.Where(x => x.Ngay == date).OrderBy(x => x.DiemDo.ThuTuHienThi).ToList();
                     List<int> temp = temp1.Select(x => x.DiemDoID).Distinct().ToList();
                     var allListDiemDo = db.DiemDoes.AsNoTracking().ToList();
 
@@ -45,7 +46,7 @@ namespace DuAn
                             tenDiemDo = listDiemDo?.TenDiemDo,
                             maDiemDo = (listDiemDo?.MaDiemDo).GetValueOrDefault(),
                             tinhChat = listDiemDo?.TinhChatDiemDo.TenTinhChat,
-                            thuTuHienThi = (listDiemDo?.ThuTuHienThu).GetValueOrDefault(),
+                            thuTuHienThi = (listDiemDo?.ThuTuHienThi).GetValueOrDefault(),
                             sumKwhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_GIAO).Select(x => x.GiaTri).Sum(),
                             sumKwhNhan = listSanLuong.Where(x => x.KenhID == CommonContext.KWH_NHAN).Select(x => x.GiaTri).Sum(),
                             sumKvarhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_GIAO).Select(x => x.GiaTri).Sum(),
@@ -56,6 +57,19 @@ namespace DuAn
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
                     var thucteThangg = db.TongSanLuong_Thang.Where(x => x.Thang == date.Month && x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault().GetValueOrDefault();
                     var thucTeNam = db.TongSanLuong_Nam.Where(x => x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault().GetValueOrDefault();
+                    var missingData = getMissingData();
+                    var missingDataCount = new List<NumberOfMissingData>();
+                    var distincMissingType = missingData.Select(x => x.type).Distinct();
+                    foreach(string item in distincMissingType)
+                    {
+                        var tempData = missingData.Where(x => x.type == item);
+                        missingDataCount.Add(new NumberOfMissingData
+                        {
+                            type = item,
+                            notYet = tempData.Where(x => x.status == 0 || x.status == -1).Count(),
+                            done = tempData.Where(x => x.status == 1).Count()
+                        }) ;
+                    }
                     var result = new HomeModel
                     {
                         duKienThang = db.SanLuongDuKiens.Where(x => x.LoaiID == CommonContext.LOAI_SAN_LUONG_THANG && x.ThoiGian == thang).Select(x => x.SanLuong).FirstOrDefault(),
@@ -64,7 +78,8 @@ namespace DuAn
                         thucTeNam = thucTeNam,
                         data = list,
                         sanLuongTrongNgay = dataTrongNgay,
-                        date = date
+                        date = date,
+                        countMissingData=missingDataCount
                     };
                     return await Task.FromResult(result);
                 }
@@ -82,7 +97,7 @@ namespace DuAn
                 try
                 {
                     DateTime sanLuongDate = date;
-                    var result = db.SanLuongs.Where(x => x.DiemDo.MaDiemDo == id && x.Ngay == sanLuongDate);
+                    var result = db.SanLuongs.Where(x => x.DiemDo.MaDiemDo == id && x.Ngay == sanLuongDate).ToList();
                     DiemDoData obj = new DiemDoData()
                     {
                         tenDiemDo = result.Select(x => x.DiemDo.TenDiemDo).FirstOrDefault(),
@@ -140,6 +155,7 @@ namespace DuAn
         {
             using (var db = new Model1())
             {
+
                 IEnumerable<DiemDo> listDiemDo = db.DiemDoes;
                 if (data.Count() == 0 && name.Length == 0)
                 {
@@ -159,7 +175,8 @@ namespace DuAn
                                     {
                                         date = date.ToString("dd/MM/yyyy"),
                                         name = item.TenDiemDo,
-                                        status = 0
+                                        status = 0,
+                                        type=item.TinhChatDiemDo.TenTinhChat
                                     });
                                 }
                                 else
@@ -168,9 +185,20 @@ namespace DuAn
                                     {
                                         date = date.ToString("dd/MM/yyyy"),
                                         name = item.TenDiemDo,
-                                        status = -1
+                                        status = -1,
+                                        type = item.TinhChatDiemDo.TenTinhChat
                                     });
                                 }
+                            }
+                            else
+                            {
+                                data.Add(new MissingDataStatus
+                                {
+                                    date = date.ToString("dd/MM/yyyy"),
+                                    name = item.TenDiemDo,
+                                    status = 1,
+                                    type = item.TinhChatDiemDo.TenTinhChat
+                                });
                             }
                         }
                     }

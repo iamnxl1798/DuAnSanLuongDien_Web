@@ -8,6 +8,7 @@ namespace DuAn.Models.CustomModel
     public class HomeModel
     {
         public DateTime date { get; set; }
+        public List<NumberOfMissingData> countMissingData { get; set; }
         public double? duKienThang { get; set; }
         public double? duKienNam { get; set; }
         public double? thucTeThang { get; set; }
@@ -17,9 +18,6 @@ namespace DuAn.Models.CustomModel
         public string percentFormatNam { get { return String.Format("{0:#.##}", thucTeNam / duKienNam * 100).Length == 0 ? "0" : String.Format("{0:#.##}", thucTeNam / duKienNam * 100); } }
         public string percentFormatThang { get { return String.Format("{0:#.##}", thucTeThang / duKienThang * 100).Length == 0 ? "0" : String.Format("{0:#.##}", thucTeThang / duKienThang * 100); } }
         public List<DiemDoData> data { get; set; }
-        public List<SanLuong> sanLuong { get; set; }
         public List<TongSanLuong_Ngay> sanLuongTrongNgay { get; set; }
-
-
     }
 }
