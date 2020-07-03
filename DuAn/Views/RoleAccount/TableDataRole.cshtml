@@ -7,9 +7,9 @@
 			"language": {
 				"processing": "Loading Database ....."
 			},
-			@*"searching": true,
-			"ordering": false,*@
-			"order": [1, "asc"],
+			"searching": true,
+			@*"ordering": false,*@
+			"order": [0, "asc"],
 			"ajax": {
 				url: '@Url.Action("GetAllRole", "RoleAccount")',
 				type: "POST",
@@ -21,7 +21,13 @@
                     alert("Fail get all role");
                 }*@
 			},
-			"columns": [{
+			"columns": [
+				{
+					"data": "ID",
+					"name": "ID",
+					orderable: true
+				},
+				{
 					"data": {
 						Actions: "Actions",
 						ID: "ID"
@@ -45,6 +51,7 @@
 	                            </a>\
 	                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
 									<a class="dropdown-item bt-open-edit-role-form" style="color: #007AD9 !important" data-toggle="modal" data-id="'+ data.ID +'" href="#">Edit</a>\
+									<a class="dropdown-item bt-delete-role" style="color: #007AD9 !important" data-id="'+ data.ID +'" href="#">Delete</a>\
 	                                @*<ul class="navi flex-column navi-hover py-2">\
 	                                    <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">\
 	                                        Choose an action:\
@@ -157,8 +164,8 @@
     <table id="my_datatable_role" style="width:auto; border-bottom: none" class="table table-bordered table-hover table-checkable dataTable no-footer dtr-inline display">
         <thead style="border-bottom:none">
             <tr style=" align-content: center !important;">
+                <th style="width: 20px"><b>ID</b></th>
                 <th style="width: 150px"><b>Actions</b></th>
-               @* <th style="width: 40px"><b>ID</b></th>*@
                 <th style="width: auto"><b>Role</b></th>
 
             </tr>
@@ -168,7 +175,36 @@
 </div>
 <!--begin::Example-->
 <!-- Modal-->
-<div class="modal" id="formEditRole" tabindex="-1" role="dialog" aria-labelledby="formEditRole" aria-hidden="true"></div>
+<div class="modal fade modal-edit-role" id="formInsertEditRole" tabindex="-1" role="dialog" aria-labelledby="formInsertEditRole" aria-hidden="true"></div>
+<!-- start: Delete Coupon Modal -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Warning!</h3>
+
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to DELETE?</h4>
+
+            </div>
+            <!--/modal-body-collapse -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="btnDelteYes" href="#" data-dismiss="modal">Yes</button>
+            </div>
+            <!--/modal-footer-collapse -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <script>
     $('#my_datatable_role').on('click','.bt-open-edit-role-form',function () {
 		var url = "@Url.Action("PermissionTree", "RoleAccount")";
@@ -177,12 +213,12 @@
 				url: url,
 				type: 'POST',
 				data: {
-					roleID: id
+					RoleID: id
                 },
 				success: function (data) {
-                    $('#formEditRole').html(data);
-                    $('#formEditRole').modal('show');
-                    $('#formEditRole').modal({
+                    $('#formInsertEditRole').html(data);
+                    $('#formInsertEditRole').modal('show');
+                    $('#formInsertEditRole').modal({
 						backdrop: false
 					});
 				},
@@ -191,8 +227,66 @@
 				}
 			});
 	});
-	$('.modal').on('hidden.bs.hidden.bs.modal', function () {
+
+    var reloadRoleDatatable = function () {
         $('#my_datatable_role').DataTable().ajax.reload(null, false);
+    };
+
+    $('.modal-edit-role').on('hidden.bs.hidden.bs.modal', reloadRoleDatatable);
+
+    $('#my_datatable_role').on('click', '.bt-delete-role', function () {
+        //add xac thuc trc khi xoa
+        var id = $(this).attr("data-id");
+        $('#btnDelteYes').attr("data-id", id);
+        $('#confirmDelete').modal('show');
+        $('#confirmDelete').modal({
+            backdrop: true
+		});
+
+		@*var url = "@Url.Action("DeleteRole", "RoleAccount")";
+		var id = $(this).attr("data-id");
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: {
+				roleID: id
+			},
+			success: function (data) {
+				if (!data) {
+					alert("Error delete role ");
+				} else {
+                    reloadRoleDatatable();
+				}
+			},
+			error: function (data) {
+				alert("Error load ajax delete role");
+			}
+		});*@
 	});
+
+
+    $('#btnDelteYes').on('click', function (e) {
+        e.preventDefault();
+        var url = "@Url.Action("DeleteRole", "RoleAccount")";
+		var id = $(this).attr("data-id");
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: {
+				roleID: id
+			},
+			success: function (data) {
+				if (!data) {
+					alert("Error delete role ");
+				} else {
+                    reloadRoleDatatable();
+				}
+			},
+			error: function (data) {
+				alert("Error load ajax delete role");
+			}
+		});
+    });
+
 </script>
 

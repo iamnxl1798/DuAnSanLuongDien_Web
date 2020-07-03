@@ -6,10 +6,11 @@ using System.Web.Mvc;
 using DuAn.Models;
 using DuAn.Models.CustomModel;
 using System.Linq.Dynamic;
+using DuAn.Attribute;
 
 namespace DuAn.Controllers
 {
-    //[CheckRole(RoleID = new int[1] { 2 })]
+    [CheckRole(RoleID = new int[1] { 2 })]
     public class AccountController : Controller
     {
         private Model1 db = new Model1();
@@ -75,10 +76,13 @@ namespace DuAn.Controllers
             return PartialView();
         }
         [HttpPost]
-        public ActionResult EditAccountForm()
+        public ActionResult EditAccountForm(int accID)
         {
-            int accID = int.Parse(HttpContext.Request["accID"]);
             Account acc = (Account)db.Accounts.Find(accID);
+            if(acc == null || accID == 0)
+            {
+                return PartialView(new AccountDetail() { DOB = DateTime.Now});
+            }
             AccountDetail acs = new AccountDetail
             {
                 ID = acc.ID,
@@ -155,7 +159,7 @@ namespace DuAn.Controllers
             }
         }
         [HttpPost]
-        public bool UpdateAccount(int id, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string UpdateAccount(int id,string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
@@ -174,10 +178,52 @@ namespace DuAn.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                return ex.Message;
+            }
+            return "success";
+        }
+        [HttpPost]
+        public string InsertAccount(int id, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        {
+            try
+            {
+                if (!AccountDAO.CheckUsername(username))
+                {
+                    return "Username đã tồn tại !!!";
+                }
+                Account acc = new Account()
+                {
+                    Username = username,
+                    //hard code password
+                    Password = "123",
+                    Fullname = fullname,
+                    Email = email,
+                    Address = address,
+                    Phone = phone,
+                    IdentifyCode = icode,
+                    DOB = DateTime.ParseExact(dob, "dd - MMMM - yyyy", null),
+                    RoleID = roleID
+                };
+                AccountDAO.AddAccount(acc);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+            return "success";
+        }
+        [HttpPost]
+        public bool DeleteAccount(int AccID)
+        {
+            try
+            {
+                db.Accounts.Remove(db.Accounts.Find(AccID));
+                db.SaveChanges();
+                return true;
+            }catch(Exception ex)
+            {
                 return false;
             }
-            return true;
         }
         public ActionResult TestDateTimePicker()
         {

@@ -9,7 +9,6 @@ namespace DuAn.Models
     [Table("LogDiemDo")]
     public partial class LogDiemDo
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
 
         public DateTime ThoiGian { get; set; }

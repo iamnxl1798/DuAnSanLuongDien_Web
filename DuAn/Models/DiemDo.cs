@@ -30,7 +30,7 @@ namespace DuAn.Models
 
         public int TinhChatID { get; set; }
 
-        public int ThuTuHienThu { get; set; }
+        public int ThuTuHienThi { get; set; }
 
         public virtual NhaMay NhaMay { get; set; }
 

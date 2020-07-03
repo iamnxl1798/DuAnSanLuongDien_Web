@@ -111,7 +111,7 @@
 	                            </span>\
 	                        </a>\
 							\
-	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">\
+	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon bt-delete-account" data-id="'+ data.ID +'"  title="Delete">\
 								<span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -148,7 +148,36 @@
 </div>
 <!--begin::Example-->
 <!-- Modal-->
-<div class="modal" id="formEditAccount" tabindex="-1" role="dialog" aria-labelledby="formEditAccount" aria-hidden="true"></div>
+<div class="modal fade modal-edit-account" id="formEditAccount" tabindex="-1" role="dialog" aria-labelledby="formEditAccount" aria-hidden="true"></div>
+<!-- start: Delete Coupon Modal -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">
+                    &times;
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Warning!</h3>
+
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to DELETE?</h4>
+
+            </div>
+            <!--/modal-body-collapse -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="btnDelteYes" href="#" data-dismiss="modal">Yes</button>
+            </div>
+            <!--/modal-footer-collapse -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 <script>
     $('#my_datatable_account').on('click','.bt-open-edit-account-form',function () {
 		var url = "@Url.Action("EditAccountForm", "Account")";
@@ -171,7 +200,62 @@
 				}
 			});
 	});
-	$('.modal').on('hidden.bs.hidden.bs.modal', function () {
+    var reloadAccountDatatable = function () {
         $('#my_datatable_account').DataTable().ajax.reload(null, false);
+    };
+    $('.modal-edit-account').on('hidden.bs.hidden.bs.modal', reloadAccountDatatable);
+
+	$('#my_datatable_account').on('click', '.bt-delete-account', function () {
+		//add xac thuc trc khi xoa
+		var id = $(this).attr("data-id");
+        $('#btnDelteYes').attr("data-id", id);
+        $('#confirmDelete').modal('show');
+		$('#confirmDelete').modal({
+			backdrop: true
+        });
+		//
+		@*var url = "@Url.Action("DeleteAccount", "Account")";
+		var id = $(this).attr("data-id");
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: {
+				AccID: id
+			},
+			success: function (data) {
+				if (!data) {
+					alert("Error delete Account ");
+				} else {
+                    reloadAccountDatatable();
+				}
+			},
+			error: function (data) {
+                alert("Error load ajax delete Account");
+			}
+		});*@
 	});
+
+    $('#btnDelteYes').on('click', function (e) {
+        e.preventDefault();
+        var url = "@Url.Action("DeleteAccount", "Account")";
+        var id = $(this).attr("data-id");
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                AccID: id
+            },
+            success: function (data) {
+                if (!data) {
+                    alert("Error delete Account ");
+                } else {
+                    reloadAccountDatatable();
+                }
+            },
+            error: function (data) {
+                alert("Error load ajax delete Account");
+            }
+        });
+    });
+
 </script>

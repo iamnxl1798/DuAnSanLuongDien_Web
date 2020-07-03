@@ -14,16 +14,13 @@ namespace DuAn.Controllers
         // GET: Admin
         public ActionResult Index()
         {
-            string math = "100 * 5 - 2";
-            string value = new DataTable().Compute(math, null).ToString();
             AdminModel item = DBContext.getDataAdminModel();
             return View(item);
         }
 
-        public ActionResult viewMissingDataList()
+        public ActionResult viewMissingDataList(string fileName = "")
         {
-            var data = DBContext.getMissingData();
-            data = data.GetRange(0, 5);
+            var data = DBContext.getMissingData(fileName);
             return PartialView(data);
         }
 
@@ -34,8 +31,8 @@ namespace DuAn.Controllers
                 HttpPostedFileBase file = Request.Files[fileName];
                 if (file != null && file.ContentLength > 0)
                 {
-
-                    var pathString = new DirectoryInfo(string.Format("{0}images", Server.MapPath(@"\"))).ToString();
+                    var parentDir = new DirectoryInfo(Server.MapPath("\\")).Parent.Parent.FullName;
+                    var pathString = parentDir + "\\DocDuLieuCongTo\\TestTheoDoi";
 
                     var fileName1 = Path.GetFileName(file.FileName);
 
@@ -54,39 +51,47 @@ namespace DuAn.Controllers
 
         public ActionResult RemoveFile(string name)
         {
-            foreach (string fileName in Request.Files)
+            try
             {
-                HttpPostedFileBase file = Request.Files[fileName];
-                if (file != null && file.ContentLength > 0)
+                foreach (string fileName in Request.Files)
                 {
+                    HttpPostedFileBase file = Request.Files[fileName];
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var parentDirRmv = new DirectoryInfo(Server.MapPath("\\")).Parent.Parent.FullName;
+                        var pathString = parentDirRmv + "\\DocDuLieuCongTo\\TestTheoDoi";
 
-                    var pathString = new DirectoryInfo(string.Format("{0}images", Server.MapPath(@"\"))).ToString();
+                        var fileName1 = Path.GetFileName(file.FileName);
 
-                    var fileName1 = Path.GetFileName(file.FileName);
+                        bool isExists = System.IO.Directory.Exists(pathString);
 
-                    bool isExists = System.IO.Directory.Exists(pathString);
+                        if (!isExists)
+                            System.IO.Directory.CreateDirectory(pathString);
 
-                    if (!isExists)
-                        System.IO.Directory.CreateDirectory(pathString);
-
-                    var path = string.Format("{0}\\{1}", pathString, file.FileName);
-                    file.SaveAs(path);
+                        var path = string.Format("{0}\\{1}", pathString, file.FileName);
+                        file.SaveAs(path);
+                    }
                 }
+                var parentDir = new DirectoryInfo(Server.MapPath("\\")).Parent.Parent.FullName;
+                var folderPath = parentDir + "\\DocDuLieuCongTo\\TestTheoDoi";
+                DirectoryInfo dir = new DirectoryInfo(folderPath);
+                FileInfo[] files = dir.GetFiles(name, SearchOption.TopDirectoryOnly);
+                foreach (var item in files)
+                {
+                    if (System.IO.File.Exists(Path.Combine(folderPath, name)))
+                    {
+                        System.IO.File.Delete(Path.Combine(folderPath, name));
+                    }
+                }
+                return Json(new { Message = "Thanhcong" });
             }
-            string folderPath = new DirectoryInfo(string.Format("{0}images", Server.MapPath(@"\"))).ToString();
-            DirectoryInfo dir = new DirectoryInfo(folderPath);
-            FileInfo[] files = dir.GetFiles(name, SearchOption.TopDirectoryOnly);
-            foreach (var item in files)
+            catch (Exception ex)
             {
-                if (System.IO.File.Exists(Path.Combine(folderPath, name)))
-                {
-                    System.IO.File.Delete(Path.Combine(folderPath, name));
-                }
+                return Json(new { Message = "Xuly" });
             }
-            return Json(new { Message = "Xóa thành công" });
         }
 
-        public ActionResult UpdateFormula(string formula,string name, string thoiGian)
+        public ActionResult UpdateFormula(string formula, string name, string thoiGian)
         {
             DBContext.updateFormula(formula, name, thoiGian);
             return Json(new { Message = "Cập nhật thành công" });

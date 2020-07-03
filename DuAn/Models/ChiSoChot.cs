@@ -17,14 +17,24 @@ namespace DuAn.Models
         [Column(TypeName = "date")]
         public DateTime? thang { get; set; }
 
-        public double Tong { get; set; }
+        public double TongGiao { get; set; }
 
-        public double ThapDiem { get; set; }
+        public double ThapDiemGiao { get; set; }
 
-        public double BinhThuong { get; set; }
+        public double BinhThuongGiao { get; set; }
 
-        public double CaoDiem { get; set; }
+        public double CaoDiemGiao { get; set; }
 
-        public double PhanKhang { get; set; }
+        public double PhanKhangGiao { get; set; }
+
+        public double TongNhan { get; set; }
+
+        public double ThapDiemNhan { get; set; }
+
+        public double BinhThuongNhan { get; set; }
+
+        public double CaoDiemNhan { get; set; }
+
+        public double PhangKhangNhan { get; set; }
     }
 }

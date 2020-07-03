@@ -105,8 +105,8 @@
                     </div>
                     <!--end::Dropdown-->
                     <!--begin::Button-->
-                    <a href="#" class="btn btn-primary font-weight-bolder">
-                        <span class="svg-icon svg-icon-md">
+                    <a href="#" class="btn btn-primary font-weight-bolder" id="newrole" data-toggle="modal" data-id="0">
+                        <span class="svg-icon svg-icon-md" >
                             <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -116,7 +116,7 @@
                                 </g>
                             </svg>
                             <!--end::Svg Icon-->
-                        </span>New Record
+                        </span>New Role
                     </a>
                     <!--end::Button-->
                 </div>
@@ -133,7 +133,7 @@
 </div>
 <!--end::Entry-->
 <!--begin::Page Scripts(used by this page)-->
-
+@*<div class="modal" id="formNewRole" tabindex="-1" role="dialog" aria-labelledby="formNewRole" aria-hidden="true"></div>*@
 
 <script>
     $(document).ready(function () {
@@ -150,6 +150,30 @@
             }
         });
     });
+
+    $('#newrole').on('click', function () {
+        var url = "@Url.Action("PermissionTree", "RoleAccount")";
+        var id = $(this).attr("data-id");
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: {
+					roleID: id,
+                },
+				success: function (data) {
+                    $('#formInsertEditRole').html(data);
+                    $('#formInsertEditRole').modal('show');
+                    $('#formInsertEditRole').modal({
+						backdrop: false
+					});
+				},
+				error: function (data) {
+					alert("Error load ajax edit role");
+				}
+			});
+    });
+
 </script>
+
 
 <!--end::Page Scripts-->

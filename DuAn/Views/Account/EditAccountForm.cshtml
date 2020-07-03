@@ -21,7 +21,7 @@
                 </div>
                 <div class="form-group">
                     <label>Tên đăng nhập :</label>
-                    <input type="text" class="form-control form-control-solid" placeholder="Username" id="username" value="@Model.Username" disabled />
+                    <input type="text" class="form-control form-control-solid" placeholder="Username" id="username" value="@Model.Username" />
                     @*<span class="form-text text-muted">You can't edit this field</span>*@
                 </div>
                 <div class="form-group">
@@ -68,7 +68,7 @@
                     <input type="email" class="form-control form-control-solid" placeholder="Identify Code" id="icode" value="@Model.IdentifyCode" />
                     <span class="form-text text-muted">Nhập chứng minh nhân dân / căn cước công dân</span>
                 </div>
-                <div class="form-group" id="all-role" data-role="@Model.Role">
+                <div class="form-group" style="margin-right: 20px" id="all-role" data-role="@Model.Role">
                     <label>Vai trò :</label>
                 </div>
             </div>
@@ -83,6 +83,12 @@
 <!--end::Card-->
 <!--begin::Global Theme Bundle(used by all pages)-->
 <script>
+    // if edit
+    var checkAcc = document.getElementById("username");
+    if (@Model.ID != 0) {
+        checkAcc.setAttribute("disabled", "");
+    }
+
     $(document).ready(function () {
         var url = "@Url.Action("AllRole", "RoleAccount")";
         var role = $('#all-role').attr('data-role');
@@ -102,18 +108,27 @@
     });
     $('#submit').on('click', function () {
         var id = document.getElementById('id').value;
+        var username = document.getElementById('username').value;
         var fullname = document.getElementById('fullname').value;
         var phone = document.getElementById('phone').value;
         var email = document.getElementById('email').value;
         var address = document.getElementById('address').value;
         var icode = document.getElementById('icode').value;
         var dob = document.getElementById('dob').value;
-        var roleID = $("input:radio[name ='role']:checked").val();
+        var roleID = $('#role_change').children("option:selected").val();
+
+        if (id != 0) {
+            url =  "@Url.Action("UpdateAccount", "Account")";
+        } else {
+             url = "@Url.Action("InsertAccount", "Account")";
+        }
+
         $.ajax({
-            url: "@Url.Action("UpdateAccount", "Account")",
+            url: url,
             type: 'POST',
             data: {
                 id: id,
+                username: username,
                 fullname: fullname,
                 phone: phone,
                 email: email,
@@ -123,15 +138,12 @@
                 roleID: roleID
             },
             success: function (data) {
-                if (data) {
-                    @*alert("update success");*@
-                } else {
-                    alert("Error update account");
+                if (data != "success") {
+                    alert(data);
                 }
-
             },
             error: function (data) {
-                alert("Error load udapte accout");
+                alert("Error load insert/udapte accout");
             }
         });
     });

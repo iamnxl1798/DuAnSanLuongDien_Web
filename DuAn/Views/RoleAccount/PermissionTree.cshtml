@@ -1,31 +1,62 @@
-﻿
+﻿@model DuAn.Models.RoleAccount
+
 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-    <div class="modal-content card card-custom gutter-b example example-compact">
+    <div class="modal-content">
         <!--Card header-->
         <div class="card-header">
-
+            <h5 class="modal-title" id="exampleModalLabel">Edit Permissions</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
         </div>
-        <!--begin::Form-->
-        <form class="form">
-            <div class="card-body">
-                <div id="jstree"></div>
+        <!--Card body-->
+        <div class="modal-body">
+            <!-- Tab Menu -->
+            <ul class="nav nav-tabs nav-boldest">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Role</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">Permissions</a>
+                </li>
+            </ul>
+            <!--begin::Content-->
+            <div class="tab-content mt-5" id="myTabContent">
+                <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                    <div class="form-group">
+                        <label>Role name :</label>
+                        <input type="text" id="role-name" class="form-control" placeholder="Enter role name" value="@Model.Role"/>
+                        <span class="form-text text-muted">You can change name of role here.</span>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                    <form class="form">
+                        <div class="card-body">
+                            <div id="jstree"></div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
-        <!--end::Form-->
+            <!--end::Content-->
+        </div>
+        <!--end::card body-->
+        <!--begin::footer-->
         <div class="modal-footer">
             <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
             <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" id="submit">Lưu thay đổi</button>
         </div>
+        <!--End::footer-->
     </div>
 </div>
 <script>
+    // load jstree
     $(document).ready(function () {
-        var roleId = @ViewBag.RoleID;
+        var RoleId = @Model.ID ;
         $.ajax({
             url: "@Url.Action("GetPermissionTree", "RoleAccount")",
             type: 'POST',
             data: {
-                roleID: roleId
+                roleID: RoleId
             },
             success: function (data) {
                 $('#jstree').jstree({
@@ -42,8 +73,14 @@
             }
         });
     });
+    // update or insert Role
     $('#submit').on('click', function () {
-        var roleId = @ViewBag.RoleID;
+        var RoleId = @Model.ID ;
+        if (RoleId != 0) {
+            var url = "@Url.Action("UpdateRole", "RoleAccount")";
+        } else {
+            var url = "@Url.Action("InsertRole", "RoleAccount")";
+        }
 
         //get all roleid chosen
         var checked_ids = [];
@@ -51,22 +88,23 @@
         $.each(selectedNodes, function () {
             checked_ids.push(this.id);
         });
-        //alert(checked_ids[0]);
+        var rolename = document.getElementById("role-name").value;
 
         $.ajax({
-            url: "@Url.Action("UpdateRole", "RoleAccount")",
+            url: url,
             type: 'POST',
             data: {
-                RoleID: roleId, 
+                RoleID: RoleId,
+                RoleName: rolename,
                 listPermissionID: checked_ids
             },
             success: function (data) {
-                if (!data) {
-                    alert("Error update role ");
+                if (data != "success") {
+                    alert(data);
                 }
             },
             error: function (data) {
-                alert("Error load udapte role");
+                alert("Error load insert/udapte role");
             }
         });
     });

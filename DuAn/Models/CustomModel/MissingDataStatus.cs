@@ -9,7 +9,39 @@ namespace DuAn.Models.CustomModel
     {
         public string date { get; set; }
         public string name { get; set; }
-        public string status { get; set; }
-        public string classAttribute { get { return status == "Chưa cập nhật" ? "primary" : "warning"; } }
+        public int status { get; set; }
+
+        public string getStatusString
+        {
+            get
+            {
+                if (status == 0)
+                {
+                    return "Đang cập nhật";
+                }
+                else if (status == 1)
+                {
+                    return "Đã cập nhật";
+                }
+                else
+                {
+                    return "Chưa cập nhật";
+                }
+            }
+        }
+        public string classAttribute { get {
+                if (status == 0)
+                {
+                    return "warning";
+                }
+                else if (status == 1)
+                {
+                    return "success";
+                }
+                else
+                {
+                    return "primary";
+                }
+            } }
     }
 }

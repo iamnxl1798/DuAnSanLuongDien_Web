@@ -105,7 +105,7 @@
                     </div>
                     <!--end::Dropdown-->
                     <!--begin::Button-->
-                    <a href="#" class="btn btn-primary font-weight-bolder">
+                    <a href="#" class="btn btn-primary font-weight-bolder" id="newaccount" data-toggle="modal" data-id="0">
                         <span class="svg-icon svg-icon-md">
                             <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Flatten.svg-->
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -149,6 +149,27 @@
                 alert("Error load ajax");
             }
         });
+    });
+    $('#newaccount').on('click', function () {
+        var url = "@Url.Action("EditAccountForm", "Account")";
+        var id = $(this).attr("data-id");
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: {
+                    accID: id
+                },
+				success: function (data) {
+                    $('#formEditAccount').html(data);
+                    $('#formEditAccount').modal('show');
+                    $('#formEditAccount').modal({
+						backdrop: false
+					});
+				},
+				error: function (data) {
+					alert("Error load ajax edit/insert role");
+				}
+			});
     });
 </script>
 
