@@ -4,17 +4,15 @@
 @{ Layout = null;}
 
 
-<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+<div class="col-sm-3">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
         <div class="card-header border-0 pt-5">
             <div class="card-title font-weight-bolder d-flex justify-content-between">
                 <div class="card-label">
-                    Lũy kế tháng @DateTime.Now.Month
+                    Lũy kế tháng @Model.date.Month
                 </div>
-            </div>
-            <div class="card-toolbar">
             </div>
         </div>
         <!--end::Header-->
@@ -46,7 +44,7 @@
                     <!--end::Symbol-->
                     <!--begin::Title-->
                     <div>
-                        <a href="#" class="font-size-h6 text-dark-75 text-hover-primary font-weight-bolder">@Model.duKienThang MW</a>
+                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.duKienThang MW</p>
                         <div class="font-size-sm text-muted font-weight-bold mt-1">Sản lượng kế hoạch</div>
                     </div>
                     <!--end::Title-->
@@ -54,25 +52,21 @@
                 <!--end::Widget Item-->
             </div>
             <!--end::Items-->
-            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 414px; height: 446px;"></div></div><div class="contract-trigger"></div></div>
         </div>
         <!--end::Body-->
     </div>
     <!--end::Mixed Widget 18-->
 </div>
 
-<div class="col-md-6 col-sm-6 col-lg-6 col-xl-6">
+<div class="col-sm-3">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
         <div class="card-header border-0 pt-5">
             <div class="card-title font-weight-bolder">
                 <div class="card-label">
-                    Lũy kế năm @DateTime.Now.Year
-                    <div id="duKienChart2" class="font-size-sm text-muted mt-2"></div>
+                    Lũy kế năm @Model.date.Year
                 </div>
-            </div>
-            <div class="card-toolbar">
             </div>
         </div>
         <!--end::Header-->
@@ -80,7 +74,6 @@
         <div class="card-body" style="position: relative;">
             <!--begin::Chart-->
             <div id="insert_chart2" class="d-flex justify-content-center d-flex align-items-center" style="height: 250px; min-height: 192.089px;margin-bottom:60px;"><h1 id="chart2Label"></h1></div>
-            <h1 id="chart2EmptyLabel"></h1>
             <!--end::Chart-->
             <!--begin::Items-->
             <div class="mt-n12 position-relative zindex-0">
@@ -105,7 +98,7 @@
                     <!--end::Symbol-->
                     <!--begin::Title-->
                     <div>
-                        <a href="#" class="font-size-h6 text-dark-75 text-hover-primary font-weight-bolder">@Model.duKienNam MW</a>
+                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.duKienNam MW</p>
                         <div class="font-size-sm text-muted font-weight-bold mt-1">Sản lượng kế hoạch</div>
                     </div>
                     <!--end::Title-->
@@ -113,7 +106,53 @@
                 <!--end::Widget Item-->
             </div>
             <!--end::Items-->
-            <div class="resize-triggers"><div class="expand-trigger"><div style="width: 414px; height: 446px;"></div></div><div class="contract-trigger"></div></div>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Mixed Widget 18-->
+</div>
+
+<div class="col-sm-6">
+    <!--begin::Mixed Widget 18-->
+    <div class="card card-custom gutter-b card-stretch">
+        <!--begin::Header-->
+        <div class="card-header border-0 pt-5">
+            <div class="card-title font-weight-bolder">
+                <div class="card-label">
+                    Tình hình thu thập dữ liệu tại nhà máy
+                </div>
+            </div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body" style="position: relative;">
+            <div class="col-md-6">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Loại điểm đo</th>
+                            <th scope="col">Đã thu thập</th>
+                            <th scope="col">Thu thập thiếu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(NumberOfMissingData item in Model.countMissingData)
+                        {
+                            <tr>
+                                <td>
+                                    @item.type
+                                </td>
+                                <td class="text-right text-success">
+                                    @item.done
+                                </td>
+                                <td class="text-right text-danger">
+                                    @item.notYet
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
         <!--end::Body-->
     </div>
@@ -125,7 +164,7 @@
         <div class="card-header border-0 pt-5">
             <div class="card-title font-weight-bolder">
                 <div class="card-label" style=" font:Open">
-                    Sản lượng trong ngày @DateTime.Now.AddDays(-1).ToString("d-M-yyyy")
+                    Sản lượng trong ngày @Model.date.ToString("dd/MM/yyyy")
                 </div>
             </div>
         </div>
@@ -156,7 +195,7 @@
                     <div class="tab-content">
                         <!--begin::Table-->
                         <div class="table-responsive">
-                            <table class="table table-striped table-borderless table-vertical-center text-center" id="myTable">
+                            <table class="table table-striped table-bordered table-vertical-center text-center" id="myTable">
                                 <thead>
                                     <tr class="text-white font-weight-bolder text-uppercase bg-primary">
                                         <th style="">Mã điểm đo</th>
@@ -192,16 +231,16 @@
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@Model.data[i].tinhChat</span>
                                             </td>
                                             <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@Model.data[i].sumKwhGiao</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.data[i].sumKwhGiao</span>
                                             </td>
                                             <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@Model.data[i].sumKwhNhan</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.data[i].sumKwhNhan</span>
                                             </td>
                                             <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@Model.data[i].sumKvarhGiao</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.data[i].sumKvarhGiao</span>
                                             </td>
                                             <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@Model.data[i].sumKvarhNhan</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.data[i].sumKvarhNhan</span>
                                             </td>
                                             <td>
                                                 <a href="javascript:void(0)" data-id="@Model.data[i].maDiemDo" class="btn btn-light-success font-weight-bolder font-size-sm mt-4 click-chitiet">Chi tiết</a>
@@ -210,19 +249,19 @@
                                     }
                                     <tr class="" style="border-top:1px solid black">
                                         <td class="pl-0 py-8" colspan="3">
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">Tổng</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-center">Tổng</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@sumKWHGiao</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@sumKWHGiao</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@sumKWHNhan</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@sumKWHNhan</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@sumKvarGiao</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@sumKvarGiao</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@sumKvarNhan</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@sumKvarNhan</span>
                                         </td>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
@@ -244,6 +283,26 @@
 </div>
 
 <script>
+    $('.click-chitiet').click(function () {
+        var url = "@Url.Action("getModelDetail", "Home")";
+        var ID = $(this).attr("data-id");
+        var date = "@Model.date.ToString("dd/MM/yyyy")";
+        $.ajax({
+            cache: false,
+            url: url,
+            data: { id:ID, date:date },
+            success: function (data) {
+                $('#exampleModalCenter').html(data);
+                $('#exampleModalCenter').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //alert('Xảy ra lỗi khi tải dữ liệu');
+                notifyHelper.showMessage("error", "Có lỗi xảy ra trong quá trình xử lý");
+                commonHelper.hideLoading();
+            }
+        });
+    });
+
     $(document).ready(function () {
     var duKienThang = @Html.Raw(Json.Encode(Model.duKienThang));
     var duKienNam = @Html.Raw(Json.Encode(Model.duKienNam));

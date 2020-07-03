@@ -14,23 +14,19 @@ namespace DuAn.Controllers
     {
         public ActionResult Index(string dateStr="")
         {
-            DateTime date = DateTime.Now.AddDays(-1);
-            if (dateStr != "")
-            {
-                date = DateTime.ParseExact(dateStr, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-            }
-            var data = DBContext.getDuKien(date.Date).Result;
-            return View(data);
+            return View();
         }
-        public ActionResult getModelDetail(int id)
+        public ActionResult getModelDetail(int id, string date)
         {
-            var result = DBContext.getChiTietDiemDo(id);
+            DateTime dateObject= DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var result = DBContext.getChiTietDiemDo(id,dateObject);
             return PartialView(result);
         }
 
-        public ActionResult exportExcel()
+        public ActionResult exportExcel(string date)
         {
-            var result= DBContext.exportExcel();
+            DateTime dateObject= DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var result= DBContext.exportExcel(dateObject);
             return result;
         }
 

@@ -27,7 +27,9 @@
             clearBtn: true,
             format: "dd/mm/yyyy"
         });
-        var d = new Date().toJSON().slice(0, 10)
+        var date = new Date();
+        date.setDate(date.getDate() - 1);
+        var d = date.toJSON().slice(0, 10)
         var dateParts = d.split("-");
         var strDate = dateParts[2] + '/' + dateParts[1] + '/' + dateParts[0];
         $('#thoiGianHieuLuc').val(strDate);
@@ -38,7 +40,8 @@
     }
 
     function exportExcel() {
-        window.location="@Url.Action("exportExcel", "Home")" ;
+        var dateStr = $("#thoiGianHieuLuc").val();
+        window.location = "@Url.Action("exportExcel", "Home")" + "?date=" + dateStr;
     }
 
     @*function reloadPage(date) {
