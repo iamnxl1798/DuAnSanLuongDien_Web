@@ -10,7 +10,7 @@ using DuAn.Attribute;
 
 namespace DuAn.Controllers
 {
-    [CheckRole(RoleID = new int[1] { 2 })]
+    /*[CheckRole(RoleID = new int[1] { 2 })]*/
     public class AccountController : Controller
     {
         private Model1 db = new Model1();
@@ -19,24 +19,6 @@ namespace DuAn.Controllers
         // GET: Account
         public ActionResult Login()
         {
-            /*for (int i = 13; i < 100; i++)
-            {
-                Random rd = new Random();
-                Account acc = new Account
-                {
-                    Username = "test_" + i,
-                    SaltPassword = "1234567",
-                    Password = AccountDAO.MaHoaMatKhau("123"),
-                    Fullname = "test_" + i,
-                    Phone = rd.Next(999).ToString(),
-                    Address = "123456",
-                    IdentifyCode = rd.Next(999).ToString(),
-                    Email = rd.Next(999).ToString() + "@gmail.com",
-                    DOB = DateTime.Parse("0" + (rd.Next(8)+1) + "/0" + (rd.Next(8) + 1) + "/200" + (rd.Next(8) + 1)),
-                    RoleID = rd.Next(4)
-                };
-                AccountDAO.AddAccount(acc);
-            }*/
             return View();
         }
         [AllowAnonymous]

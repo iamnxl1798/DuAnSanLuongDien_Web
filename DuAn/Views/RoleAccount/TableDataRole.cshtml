@@ -151,7 +151,11 @@
 							'Chuyên Viên': ' label-light-success'
 							//label-light-danger //label-light-warning
 						};
-						return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
+                        if (Role in status) {
+                            return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
+                        } else {
+                            return '<span class="label label-lg font-weight-bold label-light-danger label-inline">' + Role + '</span>';
+                        }
 					}
 				}
 

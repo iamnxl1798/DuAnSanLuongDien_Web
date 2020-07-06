@@ -32,12 +32,17 @@
 					"data": "Role", "name": "Role",
 					render: function (Role) {
 						var status = {
-							'Lãnh Đạo': 'label-light-primary',
+                            'Lãnh Đạo': 'label-light-danger',
 							'Quản Trị': ' label-light-info',
-							'Chuyên Viên': ' label-light-success'
+                            'Chuyên Viên': 'label-light-primary'
 							//label-light-danger //label-light-warning
 						};
-						return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
+						if (Role in status) {
+							return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
+						} else {
+                            return '<span class="label label-lg font-weight-bold  label-light-success label-inline">' + Role + '</span>';
+                        }
+						
 					}
 				},
 				{
