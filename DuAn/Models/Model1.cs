@@ -8,7 +8,7 @@ namespace DuAn.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=Model1")
+            : base("name=Model17")
         {
         }
 
@@ -21,23 +21,19 @@ namespace DuAn.Models
         public virtual DbSet<DiemDo_CongTo> DiemDo_CongTo { get; set; }
         public virtual DbSet<Kenh> Kenhs { get; set; }
         public virtual DbSet<LoaiSanLuong> LoaiSanLuongs { get; set; }
-        public virtual DbSet<LogCongTy> LogCongTies { get; set; }
-        public virtual DbSet<LogDiemDo> LogDiemDoes { get; set; }
-        public virtual DbSet<LogKenh> LogKenhs { get; set; }
-        public virtual DbSet<LogNhaMay> LogNhaMays { get; set; }
-        public virtual DbSet<LogTinhChatDiemDo> LogTinhChatDiemDoes { get; set; }
         public virtual DbSet<NhaMay> NhaMays { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<RoleAccount> RoleAccounts { get; set; }
         public virtual DbSet<SanLuong> SanLuongs { get; set; }
         public virtual DbSet<SanLuongDuKien> SanLuongDuKiens { get; set; }
         public virtual DbSet<SanLuongThucTe> SanLuongThucTes { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<ThongSoVanHanh> ThongSoVanHanhs { get; set; }
         public virtual DbSet<TinhChatDiemDo> TinhChatDiemDoes { get; set; }
         public virtual DbSet<TongSanLuong_Nam> TongSanLuong_Nam { get; set; }
         public virtual DbSet<TongSanLuong_Ngay> TongSanLuong_Ngay { get; set; }
         public virtual DbSet<TongSanLuong_Thang> TongSanLuong_Thang { get; set; }
         public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()
@@ -66,11 +62,7 @@ namespace DuAn.Models
 
             modelBuilder.Entity<ChiSoChot>()
                 .Property(e => e.CongToSerial)
-                .IsFixedLength();
-
-            modelBuilder.Entity<ChiSoChot>()
-                .Property(e => e.CongToSerial)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<CongThucTongSanLuong>()
                 .HasMany(e => e.TongSanLuong_Ngay)
@@ -80,7 +72,7 @@ namespace DuAn.Models
 
             modelBuilder.Entity<CongTo>()
                 .Property(e => e.Serial)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<CongTo>()
                 .HasMany(e => e.DiemDo_CongTo)
@@ -90,11 +82,6 @@ namespace DuAn.Models
             modelBuilder.Entity<CongTy>()
                 .Property(e => e.TenVietTat)
                 .IsFixedLength();
-
-            modelBuilder.Entity<CongTy>()
-                .HasMany(e => e.LogCongTies)
-                .WithRequired(e => e.CongTy)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CongTy>()
                 .HasMany(e => e.NhaMays)
@@ -111,11 +98,6 @@ namespace DuAn.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<DiemDo>()
-                .HasMany(e => e.LogDiemDoes)
-                .WithRequired(e => e.DiemDo)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<DiemDo>()
                 .HasMany(e => e.SanLuongs)
                 .WithRequired(e => e.DiemDo)
                 .WillCascadeOnDelete(false);
@@ -128,11 +110,6 @@ namespace DuAn.Models
             modelBuilder.Entity<Kenh>()
                 .Property(e => e.Ten)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<Kenh>()
-                .HasMany(e => e.LogKenhs)
-                .WithRequired(e => e.Kenh)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Kenh>()
                 .HasMany(e => e.SanLuongs)
@@ -154,37 +131,12 @@ namespace DuAn.Models
                 .HasForeignKey(e => e.LoaiID)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<LogCongTy>()
-                .Property(e => e.TenVietTat)
-                .IsFixedLength();
-
-            modelBuilder.Entity<LogDiemDo>()
-                .Property(e => e.TenDiemDo)
-                .IsFixedLength();
-
-            modelBuilder.Entity<LogDiemDo>()
-                .Property(e => e.NhaMayID)
-                .IsFixedLength();
-
-            modelBuilder.Entity<LogKenh>()
-                .Property(e => e.Ten)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<LogNhaMay>()
-                .Property(e => e.TenVietTat)
-                .IsFixedLength();
-
             modelBuilder.Entity<NhaMay>()
                 .Property(e => e.TenVietTat)
                 .IsFixedLength();
 
             modelBuilder.Entity<NhaMay>()
                 .HasMany(e => e.DiemDoes)
-                .WithRequired(e => e.NhaMay)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<NhaMay>()
-                .HasMany(e => e.LogNhaMays)
                 .WithRequired(e => e.NhaMay)
                 .WillCascadeOnDelete(false);
 
@@ -202,15 +154,18 @@ namespace DuAn.Models
                 .HasForeignKey(e => e.RoleID)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<ThongSoVanHanh>()
+                .Property(e => e.Serial)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ThongSoVanHanh>()
+                .Property(e => e.Phase_Rotation)
+                .IsUnicode(false);
+
             modelBuilder.Entity<TinhChatDiemDo>()
                 .HasMany(e => e.DiemDoes)
                 .WithRequired(e => e.TinhChatDiemDo)
                 .HasForeignKey(e => e.TinhChatID)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<TinhChatDiemDo>()
-                .HasMany(e => e.LogTinhChatDiemDoes)
-                .WithRequired(e => e.TinhChatDiemDo)
                 .WillCascadeOnDelete(false);
         }
     }

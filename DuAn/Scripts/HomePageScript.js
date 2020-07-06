@@ -24,11 +24,14 @@ var percentThang;
 var percentNam;
 var formatThang;
 var formatNam;
+var daThuThap;
+var chuaThuThap;
 var chart1;
 var chart2;
 var chart3;
+var chart4;
 
-var setValue = function (duKienT, duKienN, thucTeT, thucTeN, sanLuong, percentT, percentN, formatT, formatN) {
+var setValue = function (duKienT, duKienN, thucTeT, thucTeN, sanLuong, percentT, percentN, formatT, formatN,done,notyet) {
     duKienThang = duKienT;
     duKienNam = duKienN;
     thucTeThang = thucTeT;
@@ -38,6 +41,8 @@ var setValue = function (duKienT, duKienN, thucTeT, thucTeN, sanLuong, percentT,
     percentNam = percentN;
     formatThang = formatT;
     formatNam = formatN;
+    daThuThap = done;
+    chuaThuThap = notyet;
     runMain();
 }
 function runMain() {
@@ -222,7 +227,7 @@ function runMain() {
             var dataChart = sanLuongTrongNgay;
             chart3.data = dataChart;
 
-            chart3.zoomOutButton.disabled = false;
+            chart3.zoomOutButton.disabled = true;
             chart3.logo.disabled = true;
 
             var dateAxis = chart3.xAxes.push(new am4charts.ValueAxis());
@@ -285,7 +290,11 @@ function runMain() {
                     return false;
                 }
             });
-            chart3.cursor = new am4charts.XYCursor();
+            var cursor = new am4charts.XYCursor();
+            cursor.behavior = "";
+            chart3.cursor = cursor;
+            cursor.lineX.disabled = true;
+
 
 
 
@@ -294,5 +303,82 @@ function runMain() {
     }
     else {
         document.getElementById("chart3Label").innerHTML = "Không có dữ liệu để hiển thị";
+    }
+    if (daThuThap!=null && chuaThuThap!=null) {
+        if (chart4 != null) {
+            chart4 = null;
+        }
+        $("chart4Label").val('');
+        am4core.ready(function () {
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+            // Create chart instance
+            var chart4 = am4core.create("insert_chart4", am4charts.PieChart);
+
+            // Add and configure Series
+            var pieSeries = chart4.series.push(new am4charts.PieSeries());
+            pieSeries.dataFields.value = "value";
+            pieSeries.dataFields.category = "name";
+
+            // Let's cut a hole in our Pie chart the size of 30% the radius
+            chart4.innerRadius = am4core.percent(55);
+            chart4.logo.disabled = true;
+            chart4.paddingLeft = 0;
+            chart4.marginLeft = 0;
+
+            // Put a thick white border around each Slice
+            pieSeries.slices.template.stroke = am4core.color("#fff");
+            pieSeries.slices.template.strokeWidth = 2;
+            pieSeries.slices.template.strokeOpacity = 1;
+            pieSeries.slices.template
+                // change the cursor on hover to make it apparent the object can be interacted with
+                .cursorOverStyle = [
+                    {
+                        "property": "cursor",
+                        "value": "pointer"
+                    }
+                ];
+
+            pieSeries.labels.template.disabled = true;
+
+            pieSeries.ticks.template.disabled = true;
+
+            // Create a base filter effect (as if it's not there) for the hover to return to
+            var shadow = pieSeries.slices.template.filters.push(new am4core.DropShadowFilter);
+            shadow.opacity = 0;
+
+            // Create hover state
+            var hoverState = pieSeries.slices.template.states.getKey("hover"); // normally we have to create the hover state, in this case it already exists
+
+            // Slightly shift the shadow and make it more prominent on hover
+            var hoverShadow = hoverState.filters.push(new am4core.DropShadowFilter);
+            hoverShadow.opacity = 0.7;
+            hoverShadow.blur = 5;
+
+            // Add a legend
+            chart4.legend = new am4charts.Legend();
+            chart4.legend.position = "right";
+            chart4.legend.valign = "middle";
+
+            chart4.data = [{
+                "name": "Đã thu thập",
+                "value": daThuThap
+            }, {
+                "name": "Thu thập thiếu",
+                "value": chuaThuThap
+            }];
+            var label = pieSeries.createChild(am4core.Label);
+            label.text = daThuThap + chuaThuThap;
+            label.horizontalCenter = "middle";
+            label.verticalCenter = "middle";
+            label.fontSize = 30;
+
+        }); // end am4core.ready()
+    }
+    else {
+        document.getElementById("chart4Label").innerHTML = "Không có dữ liệu để hiển thị";
     }
 }

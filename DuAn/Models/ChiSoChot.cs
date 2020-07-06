@@ -11,6 +11,7 @@ namespace DuAn.Models
     {
         public int ID { get; set; }
 
+        [Required]
         [StringLength(10)]
         public string CongToSerial { get; set; }
 

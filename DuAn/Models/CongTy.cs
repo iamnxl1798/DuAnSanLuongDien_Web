@@ -12,7 +12,6 @@ namespace DuAn.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CongTy()
         {
-            LogCongTies = new HashSet<LogCongTy>();
             NhaMays = new HashSet<NhaMay>();
         }
 
@@ -25,9 +24,6 @@ namespace DuAn.Models
         [Required]
         [StringLength(10)]
         public string TenVietTat { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LogCongTy> LogCongTies { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NhaMay> NhaMays { get; set; }

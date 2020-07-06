@@ -30,3 +30,6 @@ _ReSharper*/
 .vs/
 #Nuget packages folder
 packages/
+/DuAn/Controllers/AdminController.cs~RF4b1ccf3.TMP
+/DuAn/Controllers/HomeController.cs~RFdce53b8.TMP
+/DuAn/DBContext.cs~RF82eea85.TMP

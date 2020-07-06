@@ -1,0 +1,89 @@
+﻿@using DuAn.Models.CustomModel;
+@using DuAn.Models;
+@model ThongSoVanHanh
+
+<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"> @Model.Serial - @Model.ThoiGianCongTo</h5>
+            <button type="button" class="close" data-dismiss-modal="modal2" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered table-striped mb-0 text-center">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Thấp điểm</th>
+                        <th scope="col">Bình thường</th>
+                        <th scope="col">Cao điểm</th>
+                        <th scope="col">Tổng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>P giao</td>
+                        <td>
+                            @Model.P_Giao_TD
+                        </td>
+                        <td>
+                            @Model.P_Giao_BT
+                        </td>
+                        <td>
+                            @Model.P_Giao_CD
+                        </td>
+                        <td>
+                            @Model.P_Giao
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>P nhận</td>
+                        <td>
+                            @Model.P_Nhan_TD
+                        </td>
+                        <td>
+                            @Model.P_Nhan_BT
+                        </td>
+                        <td>
+                            @Model.P_Nhan_CD
+                        </td>
+                        <td>
+                            @Model.P_Nhan
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Q giao</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            @Model.Q_Giao
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Q nhận</td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            @Model.Q_Nhan
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("button[data-dismiss-modal=modal2]").click(function () {
+        $('#ModalThongSoDetail').modal('hide');
+    });
+</script>

@@ -21,7 +21,7 @@ namespace DuAn.Controllers
         public ActionResult viewMissingDataList(string fileName = "")
         {
             var data = DBContext.getMissingData(fileName);
-            return PartialView(data.Where(x=>x.status==-1||x.status==0));
+            return PartialView(data.ToList());
         }
 
         public ActionResult SaveDropzoneJsUploadedFiles()

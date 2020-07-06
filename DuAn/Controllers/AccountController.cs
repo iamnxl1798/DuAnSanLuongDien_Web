@@ -10,7 +10,7 @@ using DuAn.Attribute;
 
 namespace DuAn.Controllers
 {
-    [CheckRole(RoleID = new int[1] { 2 })]
+    //[CheckRole(RoleID = new int[1] { 2 })]
     public class AccountController : Controller
     {
         private Model1 db = new Model1();
