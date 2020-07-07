@@ -152,66 +152,73 @@
                                             <thead>
                                                 <tr class="bg-secondary">
                                                     <th></th>
-                                                    <th>Thấp điểm</th>
-                                                    <th>Bình thường</th>
-                                                    <th >Cao điểm</th>
-                                                    <th >Tổng</th>
+                                                    <th>Dòng điện</th>
+                                                    <th>Điện áp</th>
+                                                    <th>Hệ số công suất</th>
+                                                    <th>Tần số</th>
+                                                    <th>Góc pha</th>
+                                                    <th>Chiều quay</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>P giao</td>
+                                                    <td>Pha A</td>
                                                     <td>
-                                                        @Model.thongSo[i].thongSo.P_Giao_TD
+                                                        @Model.thongSo[i].thongSo.PhaseA_Amps
                                                     </td>
                                                     <td>
-                                                        @Model.thongSo[i].thongSo.P_Giao_BT
+                                                        @Model.thongSo[i].thongSo.PhaseA_Volts
                                                     </td>
                                                     <td>
-                                                        @Model.thongSo[i].thongSo.P_Giao_CD
+                                                        @Model.thongSo[i].thongSo.PhaseA_PowerFactor
                                                     </td>
                                                     <td>
-                                                        @Model.thongSo[i].thongSo.P_Giao
+                                                        @Model.thongSo[i].thongSo.PhaseA_Frequency
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.PhaseA_Angle
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pha B</td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.PhaseB_Amps
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.PhaseB_Volts
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.PhaseB_PowerFactor
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.PhaseB_Frequency
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.PhaseB_Angle
+                                                    </td>
+                                                    <td >
+                                                        @Model.thongSo[i].thongSo.Phase_Rotation
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>P nhận</td>
+                                                    <td>Pha A</td>
                                                     <td>
-                                                        @Model.thongSo[i].thongSo.P_Nhan_TD
+                                                        @Model.thongSo[i].thongSo.PhaseC_Amps
                                                     </td>
                                                     <td>
-                                                        @Model.thongSo[i].thongSo.P_Nhan_BT
+                                                        @Model.thongSo[i].thongSo.PhaseC_Volts
                                                     </td>
                                                     <td>
-                                                        @Model.thongSo[i].thongSo.P_Nhan_CD
+                                                        @Model.thongSo[i].thongSo.PhaseC_PowerFactor
                                                     </td>
                                                     <td>
-                                                        @Model.thongSo[i].thongSo.P_Nhan
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Q giao</td>
-                                                    <td>
+                                                        @Model.thongSo[i].thongSo.PhaseC_Frequency
                                                     </td>
                                                     <td>
+                                                        @Model.thongSo[i].thongSo.PhaseC_Angle
                                                     </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.Q_Giao
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Q nhận</td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.Q_Nhan
-                                                    </td>
+                                                    <td></td>
                                                 </tr>
                                             </tbody>
                                         </table>
