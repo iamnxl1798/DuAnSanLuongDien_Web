@@ -1,0 +1,40 @@
+﻿@using DuAn.Models.CustomModel;
+@model HomeModel
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<div class="row ml-1 col-12 d-flex justify-content-end">
+    <div class="form-group mb-4 mr-4">
+        <div class=" input-group p-0 shadow-sm">
+            <input type="text" placeholder="Thời gian hiệu lực" class="form-control datepicker date" id="thoiGianHieuLuc" readonly>
+            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+        </div>
+    </div>
+</div>
+<div class="row ml-1 col-12" id="bodyHomePage">
+    @Html.Partial("homePagePartialView", Model)
+</div>
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                clearBtn: true,
+                format: "dd/mm/yyyy",
+                onSelect: function (dateText) {
+                    alert("Selected date: " + dateText + "; input's current value: " + this.value);
+                }
+            })
+        });
+
+    function reloadPage(date) {
+            $.ajax({
+                cache: false,
+                url: "@Url.Action("homePagePartialView", "Home")",
+                data: { dateStr: date },
+                success: function (data) {
+                    $('#bodyHomePage').html(data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(thrownError)
+                }
+            });
+    }
+
+</script>

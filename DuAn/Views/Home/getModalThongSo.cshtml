@@ -1,0 +1,250 @@
+﻿@using DuAn.Models.CustomModel;
+@using DuAn.Models;
+@model ThongSoPatialModel
+<style>
+    .my-custom-scrollbar {
+        position: relative;
+        height: 350px;
+        overflow: auto;
+    }
+
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+    tr.hide-table-padding td {
+        padding: 0;
+    }
+    .table tbody > tr > td {
+        vertical-align: middle !important;
+    }
+    .click-chitiet {
+        margin: auto;
+    }
+    table.table.table-condensed {
+        border: 1px solid black;
+    }
+</style>
+<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Thông số vận hành</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row mb-2">
+                <div class="col-3 mr-3">
+                    <select class="form-control bg-primary text-white" onchange="selectionChange()" id="diemDo">
+                        <option value="" hidden selected>Điểm đo</option>
+                        <option value="" class="bg-white text-dark">Tất cả</option>
+                        @for (int i=0;i< Model.allDiemDo.Count();i++)
+                        {
+                            <option value="@Model.allDiemDo[i].ID" @Model.getDiemDoAttr(i) class="bg-white text-dark">@Model.allDiemDo[i].TenDiemDo</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select class="form-control bg-primary text-white" onchange="selectionChange()" id="thoiGian">
+                        <option value="" hidden selected>Thời gian</option>
+                        <option value="" class="bg-white text-dark">Tất cả</option>
+                        @for (int i=0;i<Model.dateDistinc.Count();i++)
+                        {
+                            <option value="@Model.dateDistinc[i].ToString("dd/MM/yyyy")" @Model.getThoiGianAttr(i) class="bg-white text-dark">@Model.dateDistinc[i].ToString("dd/MM/yyyy")</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="">
+                <table class="table table-borderless myTable text-center">
+                    <thead>
+                        <tr style="background: #d1d1d1" class="bg-primary text-white">
+                            <th scope="col">STT</th>
+                            <th scope="col">Điểm đo</th>
+                            <th scope="col">Thời điểm đọc</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.thongSo.Count; i++)
+                        {
+                            <tr class="border-bottom">
+                                <td>@{var stt = i + 1; @stt}</td>
+                                <td>
+                                    @Model.thongSo[i].TenDiemDo
+                                </td>
+                                <td>
+                                    @Model.getTime(Model.thongSo[i].thongSo.ThoiGianCongTo)
+                                </td>
+                                <td><p class="btn btn-success click-chitiet" data-toggle="collapse" data-target="@("#accordion" + i)" data-value="@i">Chi tiết</p></td>
+                            </tr>
+                            <tr class="hide-table-padding border-bottom" style="background:none">
+                                <td colspan="4">
+                                    <div id="@("accordion" + i)" class="collapse">
+                                        <table class="table table-bordered table-condensed table-hover mt-4 mb-4 mb-0 text-center">
+                                            <thead>
+                                                <tr class="bg-secondary">
+                                                    <th scope="col"></th>
+                                                    <th scope="col">Thấp điểm</th>
+                                                    <th scope="col">Bình thường</th>
+                                                    <th scope="col">Cao điểm</th>
+                                                    <th scope="col">Tổng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>P giao</td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Giao_TD
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Giao_BT
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Giao_CD
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Giao
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>P nhận</td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Nhan_TD
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Nhan_BT
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Nhan_CD
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Nhan
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Q giao</td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.Q_Giao
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Q nhận</td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.Q_Nhan
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-bordered table-condensed table-hover mb-4 text-center">
+                                            <thead>
+                                                <tr class="bg-secondary">
+                                                    <th></th>
+                                                    <th>Thấp điểm</th>
+                                                    <th>Bình thường</th>
+                                                    <th >Cao điểm</th>
+                                                    <th >Tổng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>P giao</td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Giao_TD
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Giao_BT
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Giao_CD
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Giao
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>P nhận</td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Nhan_TD
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Nhan_BT
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Nhan_CD
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.P_Nhan
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Q giao</td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.Q_Giao
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Q nhận</td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        @Model.thongSo[i].thongSo.Q_Nhan
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectionChange() {
+        var url = "@Url.Action("getModalThongSo", "Home")";
+        var id = document.getElementById("diemDo").value;
+        var date = document.getElementById("thoiGian").value;
+        $.ajax({
+            cache: false,
+            url: url,
+            data: { date: date , id: id},
+            success: function (data) {
+                $('#modalThongSo').html();
+                $('#modalThongSo').html(data);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    }
+</script>

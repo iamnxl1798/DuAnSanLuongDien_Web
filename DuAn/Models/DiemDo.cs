@@ -13,7 +13,6 @@ namespace DuAn.Models
         public DiemDo()
         {
             DiemDo_CongTo = new HashSet<DiemDo_CongTo>();
-            LogDiemDoes = new HashSet<LogDiemDo>();
             SanLuongs = new HashSet<SanLuong>();
             SanLuongThucTes = new HashSet<SanLuongThucTe>();
         }
@@ -30,7 +29,7 @@ namespace DuAn.Models
 
         public int TinhChatID { get; set; }
 
-        public int ThuTuHienThi { get; set; }
+        public int? ThuTuHienThi { get; set; }
 
         public virtual NhaMay NhaMay { get; set; }
 
@@ -38,9 +37,6 @@ namespace DuAn.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiemDo_CongTo> DiemDo_CongTo { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LogDiemDo> LogDiemDoes { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SanLuong> SanLuongs { get; set; }

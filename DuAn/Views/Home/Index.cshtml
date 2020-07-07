@@ -1,27 +1,53 @@
 ﻿@using DuAn.Models.CustomModel;
 @model HomeModel
 <style>
-    .datepicker{
-        width:100px;
-    }
 </style>
 <div class="row ml-1 col-12 d-flex justify-content-end">
-    <div><p class="btn btn-success mr-4" onclick="exportExcel()">Xuất Excel</p></div>
     <div class="form-group mb-4 mr-4">
         <div class="datepicker date input-group p-0 shadow-sm">
             <input type="text" placeholder="Thời gian hiệu lực" onchange="sendReloadPage(this.value)" class="form-control" id="thoiGianHieuLuc" readonly>
             <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
         </div>
     </div>
+    <div><p class="btn btn-success mr-4" onclick="exportExcel()">Xuất báo cáo</p></div>
+    <div>
+        <a href="javascript:void(0)" class="btn btn-success mr-4" onclick="clickThongSo()">Thông số vận hành</a>
+    </div>
 </div>
 <div class="row ml-1 col-12" id="bodyHomePage">
 </div>
+
+<div class="modal fade" id="modalThongSo" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+</div>
+
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script src="https://www.amcharts.com/lib/4/core.js"></script>
 <script src="https://www.amcharts.com/lib/4/charts.js"></script>
 <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
 <script src="~/Scripts/HomePageScript.js"></script>
 <script type="text/javascript">
+    function clickThongSo() {
+        var url = "@Url.Action("getModalThongSo", "Home")";
+        $.ajax({
+            cache: false,
+            url: url,
+            data: {},
+            success: function (data) {
+                $('#modalThongSo').html(data);
+                $('#modalThongSo').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    }
+    function sendReloadPage(strDate) {
+        reloadPage(strDate,"@Url.Action("homePagePartialView", "Home")");
+    }
+
+    function exportExcel() {
+        var dateStr = $("#thoiGianHieuLuc").val();
+        window.location = "@Url.Action("exportExcel", "Home")" + "?date=" + dateStr;
+    }
     $(document).ready(function () {
         $('.datepicker').datepicker({
             clearBtn: true,
@@ -35,30 +61,6 @@
         $('#thoiGianHieuLuc').val(strDate);
         reloadPage(strDate,"@Url.Action("homePagePartialView", "Home")");
     });
-    function sendReloadPage(strDate) {
-        reloadPage(strDate,"@Url.Action("homePagePartialView", "Home")");
-    }
 
-    function exportExcel() {
-        var dateStr = $("#thoiGianHieuLuc").val();
-        window.location = "@Url.Action("exportExcel", "Home")" + "?date=" + dateStr;
-    }
 
-    @*function reloadPage(date) {
-            $.ajax({
-                url: "@Url.Action("reloadPage", "Home")",
-                type: 'GET',
-                data: { dateStr: date },
-                dataType: "json",
-
-                success: function (data) {
-                    if (data) {
-                        setValue(data.duKienThang, data.duKienNam, data.thucTeThang, data.thucTeNam, data.sanLuongTrongNgay, data.percentFormatThang, data.percentFormatNam, data.numberFormatThang, data.numberFormatNam);
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert(thrownError)
-                }
-            });
-    }*@
 </script>

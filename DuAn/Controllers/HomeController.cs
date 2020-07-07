@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using DuAn.Models.CustomModel;
 
 namespace DuAn.Controllers
 {
@@ -21,6 +22,17 @@ namespace DuAn.Controllers
             DateTime dateObject= DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             var result = DBContext.getChiTietDiemDo(id,dateObject);
             return PartialView(result);
+        }
+        
+        public ActionResult getModalThongSo(string date="",string id="")
+        {
+            DateTime dateObject = DateTime.MinValue;
+            if (date.Length > 0)
+            {
+                dateObject = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+            var thongso = DBContext.getThongSoVanHanh(id, dateObject);
+            return PartialView(thongso);
         }
 
         public ActionResult exportExcel(string date)

@@ -9,6 +9,17 @@ namespace DuAn.Models.CustomModel
     {
         public DateTime date { get; set; }
         public List<NumberOfMissingData> countMissingData { get; set; }
+        public int daThuThap { get
+            {
+                return countMissingData.Select(x => x.done).Sum();
+            } }
+        public int chuaThuThap
+        {
+            get
+            {
+                return countMissingData.Select(x => x.notYet).Sum();
+            }
+        }
         public double? duKienThang { get; set; }
         public double? duKienNam { get; set; }
         public double? thucTeThang { get; set; }

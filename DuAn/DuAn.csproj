@@ -66,8 +66,8 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="EPPlus, Version=5.2.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.5.2.0\lib\net45\EPPlus.dll</HintPath>
+    <Reference Include="EPPlus, Version=3.1.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.3.1.1\lib\net35\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=2019.1.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2019.1.1\lib\net20\JetBrains.Annotations.dll</HintPath>
@@ -291,16 +291,13 @@
     <Compile Include="Models\CustomModel\NumberOfMissingData.cs" />
     <Compile Include="Models\CustomModel\RolePaging.cs" />
     <Compile Include="Models\CustomModel\StateTree.cs" />
+    <Compile Include="Models\CustomModel\ThongSoAndTenDiemDo.cs" />
+    <Compile Include="Models\CustomModel\ThongSoPatialModel.cs" />
     <Compile Include="Models\CustomModel\TreeViewNode.cs" />
     <Compile Include="Models\DiemDo.cs" />
     <Compile Include="Models\DiemDo_CongTo.cs" />
     <Compile Include="Models\Kenh.cs" />
     <Compile Include="Models\LoaiSanLuong.cs" />
-    <Compile Include="Models\LogCongTy.cs" />
-    <Compile Include="Models\LogDiemDo.cs" />
-    <Compile Include="Models\LogKenh.cs" />
-    <Compile Include="Models\LogNhaMay.cs" />
-    <Compile Include="Models\LogTinhChatDiemDo.cs" />
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\NhaMay.cs" />
     <Compile Include="Models\Permission.cs" />
@@ -308,7 +305,7 @@
     <Compile Include="Models\SanLuong.cs" />
     <Compile Include="Models\SanLuongDuKien.cs" />
     <Compile Include="Models\SanLuongThucTe.cs" />
-    <Compile Include="Models\sysdiagram.cs" />
+    <Compile Include="Models\ThongSoVanHanh.cs" />
     <Compile Include="Models\TinhChatDiemDo.cs" />
     <Compile Include="Models\TongSanLuong_Nam.cs" />
     <Compile Include="Models\TongSanLuong_Ngay.cs" />
@@ -2406,6 +2403,8 @@
     <Content Include="Views\RoleAccount\PermissionTree.cshtml" />
     <Content Include="Views\RoleAccount\TableDataRole.cshtml" />
     <Content Include="Views\RoleAccount\ListRole.cshtml" />
+    <Content Include="Views\Home\getModalThongSo.cshtml" />
+    <Content Include="Views\Home\getThongSoDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

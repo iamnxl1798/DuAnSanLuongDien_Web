@@ -9,10 +9,14 @@ namespace DuAn.Models
     [Table("DiemDo-CongTo")]
     public partial class DiemDo_CongTo
     {
-        public int ID { get; set; }
-
+        [Key]
+        [Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int DiemDoID { get; set; }
 
+        [Key]
+        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CongToID { get; set; }
 
         public DateTime ThoiGianBatDau { get; set; }

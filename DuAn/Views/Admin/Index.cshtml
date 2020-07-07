@@ -188,7 +188,8 @@
                     $.ajax({
                             cache: false,
                             url: "@Url.Action("viewMissingDataList", "Admin")",
-                            data: {fileName:file.name},
+                        data: { fileName: file.name },
+                        dataType:'html',
                             success: function (data) {
                                 $('#listMissing').html(data);
                             },
@@ -245,7 +246,7 @@
         $('.datepickerDiv').datepicker({
             startDate: date,
             clearBtn: true,
-            format: "dd/MM/yyyy"
+            format: "dd/mm/yyyy"
         });
     }
     function addBtnClick() {

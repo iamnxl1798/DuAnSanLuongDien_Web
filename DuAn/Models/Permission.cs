@@ -9,7 +9,6 @@ namespace DuAn.Models
     [Table("Permission")]
     public partial class Permission
     {
-        [Key]
         public int ID { get; set; }
 
         [Required]

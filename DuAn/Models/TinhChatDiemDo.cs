@@ -13,7 +13,6 @@ namespace DuAn.Models
         public TinhChatDiemDo()
         {
             DiemDoes = new HashSet<DiemDo>();
-            LogTinhChatDiemDoes = new HashSet<LogTinhChatDiemDo>();
         }
 
         public int ID { get; set; }
@@ -26,8 +25,5 @@ namespace DuAn.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiemDo> DiemDoes { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LogTinhChatDiemDo> LogTinhChatDiemDoes { get; set; }
     }
 }

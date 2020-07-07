@@ -8,11 +8,6 @@ using System.Web.Mvc;
 using DuAn.COMMON;
 using System.IO;
 using System.Security.Cryptography;
-using iTextSharp.text.pdf;
-/*using DocumentFormat.OpenXml.Drawing.Charts;
-using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
-using DocumentFormat.OpenXml.Office.CustomUI;*/
 using System.Threading.Tasks;
 using OfficeOpenXml;
 
@@ -55,9 +50,9 @@ namespace DuAn
                     }
                     db.Configuration.LazyLoadingEnabled = false;
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
-                    var thucteThangg = db.TongSanLuong_Thang.Where(x => x.Thang == date.Month && x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault().GetValueOrDefault();
-                    var thucTeNam = db.TongSanLuong_Nam.Where(x => x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault().GetValueOrDefault();
-                    var missingData = getMissingData();
+                    var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay==date).Select(x => x.GiaTriThang).FirstOrDefault();
+                    var thucTeNam = db.TongSanLuong_ThangNam.Where(x => x.Ngay == date).Select(x => x.GiaTriNam).FirstOrDefault();
+                    var missingData = getMissingCount();
                     var missingDataCount = new List<NumberOfMissingData>();
                     var distincMissingType = missingData.Select(x => x.type).Distinct();
                     foreach(string item in distincMissingType)
@@ -113,6 +108,59 @@ namespace DuAn
                 {
                     return null;
                 }
+            }
+        }
+
+        public static ThongSoPatialModel getThongSoVanHanh(string id, DateTime date)
+        {
+            using (var db = new Model1())
+            {
+                var data = db.ThongSoVanHanhs.ToList();
+                var allDiemDo = db.DiemDoes.ToList();
+                var listDate = data.Select(x => x.ThoiGianCongTo.Date).Distinct().ToList();
+                var idInt=-1;
+                if (id != "")
+                {
+                    idInt = int.Parse(id);
+                    var join = (from bridge in db.DiemDo_CongTo select new { s = bridge.DiemDo, c = bridge.CongTo }).Where(x => x.s.ID == idInt);
+                    var serial= join.Select(x => x.c.Serial).FirstOrDefault();
+                    data = data.Where(x => x.Serial == serial).ToList();
+                }
+                if (date != DateTime.MinValue)
+                {
+                    data = data.Where(x => x.ThoiGianCongTo.Date==date.Date).ToList();
+                }
+                data = data.OrderByDescending(x => x.ThoiGianCongTo).ToList();
+                var finalData = new List<ThongSoAndTenDiemDo>();
+                var diemDoIndex = -1;
+                var thoiGianIndex = -1;
+                for (int i = 0; i < data.Count; i++)
+                {
+                    var serial = data[i].Serial;
+                    var joinedTable = (from bridge in db.DiemDo_CongTo select new { s = bridge.DiemDo, c = bridge.CongTo }).Where(x => x.c.Serial == serial);
+                    finalData.Add(new ThongSoAndTenDiemDo
+                    {
+                        thongSo = data[i],
+                        TenDiemDo = joinedTable.Select(x => x.s.TenDiemDo).FirstOrDefault(),
+                    });
+                }
+                thoiGianIndex = listDate.IndexOf(date);
+                for(int i = 0; i < allDiemDo.Count; i++)
+                {
+                    if (allDiemDo[i].ID == idInt)
+                    {
+                        diemDoIndex = i;
+                    }
+                }
+                var result = new ThongSoPatialModel
+                {
+                    allDiemDo = allDiemDo,
+                    thongSo = finalData,
+                    dateDistinc = listDate,
+                    diemDoIndex = diemDoIndex,
+                    thoiGianIndex = thoiGianIndex
+                };
+                return result;
             }
         }
         public static AdminModel getDataAdminModel()
@@ -190,16 +238,6 @@ namespace DuAn
                                     });
                                 }
                             }
-                            else
-                            {
-                                data.Add(new MissingDataStatus
-                                {
-                                    date = date.ToString("dd/MM/yyyy"),
-                                    name = item.TenDiemDo,
-                                    status = 1,
-                                    type = item.TinhChatDiemDo.TenTinhChat
-                                });
-                            }
                         }
                     }
                     return data;
@@ -214,25 +252,71 @@ namespace DuAn
                     string year = fileName.Substring(4, 1);
                     year = DateTime.Now.Year.ToString().Substring(0, 3) + year;
                     DateTime date = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
-                    int id = db.DiemDoes.Where(x => x.MaDiemDo == MaDiemDo).Select(x => x.ID).FirstOrDefault();
+                    var diemDo = db.DiemDoes.Where(x => x.MaDiemDo == MaDiemDo).FirstOrDefault();
+                    int id = diemDo.ID;
+                    string tenDiemDo = diemDo.TenDiemDo;
                     if (db.SanLuongs.Where(x => x.Ngay == date).Where(x => x.DiemDoID == id).Count() > 0)
                     {
-                        int index = data.FindIndex(x => x.date == date.ToString("dd/MM/yyyy"));
-                        var obj = data[index];
-                        obj.status = 1;
-                        data.RemoveAt(index);
-                        data.Insert(0, obj);
+                        int index = data.FindIndex(x =>x.name== tenDiemDo && x.date == date.ToString("dd/MM/yyyy"));
+                        if (index != -1)
+                        {
+                            var obj = data[index];
+                            obj.status = 1;
+                            data.RemoveAt(index);
+                            data.Insert(0, obj);
+                        }
                     }
                     else
                     {
-                        int index = data.FindIndex(x => x.date == date.ToString("dd/MM/yyyy"));
-                        var obj = data[index];
-                        obj.status = 0;
-                        data.RemoveAt(index);
-                        data.Insert(0, obj);
+                        int index = data.FindIndex(x => x.name == tenDiemDo && x.date == date.ToString("dd/MM/yyyy"));
+                        if (index != -1)
+                        {
+                            var obj = data[index];
+                            obj.status = 0;
+                            data.RemoveAt(index);
+                            data.Insert(0, obj);
+                        }
                     }
                     return data;
                 }
+            }
+        }
+
+        public static List<MissingDataStatus> getMissingCount()
+        {
+            using(var db=new Model1())
+            {
+                var result= new List<MissingDataStatus>();
+                var listDiemDo = db.DiemDoes.ToList();
+                DateTime startDay = db.SanLuongs.Min(x => x.Ngay);
+                DateTime endDay = DateTime.Now.AddDays(-1);
+                for (DateTime date = startDay; date <= endDay; date = date.AddDays(1))
+                {
+                    foreach (DiemDo item in listDiemDo)
+                    {
+                        if (db.SanLuongs.Where(x => x.Ngay == date).Where(x => x.DiemDoID == item.ID).Count() == 0)
+                        {
+                            result.Add(new MissingDataStatus()
+                                {
+                                    date = date.ToString("dd/MM/yyyy"),
+                                    name = item.TenDiemDo,
+                                    status = -1,
+                                    type = item.TinhChatDiemDo.TenTinhChat
+                                });
+                        }
+                        else
+                        {
+                            result.Add(new MissingDataStatus
+                            {
+                                date = date.ToString("dd/MM/yyyy"),
+                                name = item.TenDiemDo,
+                                status = 1,
+                                type = item.TinhChatDiemDo.TenTinhChat
+                            });
+                        }
+                    }
+                }
+                return result;
             }
         }
 

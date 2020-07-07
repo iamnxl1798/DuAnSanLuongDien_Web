@@ -4,7 +4,7 @@
 @{ Layout = null;}
 
 
-<div class="col-sm-3">
+<div class="col-lg-3 col-12 col-md-6">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
@@ -58,7 +58,7 @@
     <!--end::Mixed Widget 18-->
 </div>
 
-<div class="col-sm-3">
+<div class="col-lg-3 col-12 col-md-6">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
@@ -112,7 +112,7 @@
     <!--end::Mixed Widget 18-->
 </div>
 
-<div class="col-sm-6">
+<div class="col-lg-6">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
@@ -126,32 +126,37 @@
         <!--end::Header-->
         <!--begin::Body-->
         <div class="card-body" style="position: relative;">
-            <div class="col-md-6">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Loại điểm đo</th>
-                            <th scope="col">Đã thu thập</th>
-                            <th scope="col">Thu thập thiếu</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach(NumberOfMissingData item in Model.countMissingData)
-                        {
+            <div class="row d-flex justify-content-center" style="height:100%">
+                <div class="col-xl-6">
+                    <table class="table table-hover table-bordered" style="height:100%">
+                        <thead>
                             <tr>
-                                <td>
-                                    @item.type
-                                </td>
-                                <td class="text-right text-success">
-                                    @item.done
-                                </td>
-                                <td class="text-right text-danger">
-                                    @item.notYet
-                                </td>
+                                <th scope="col" class="text-center">Loại điểm đo</th>
+                                <th scope="col" class="text-center">Đã thu thập</th>
+                                <th scope="col" class="text-center">Thu thập thiếu</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (NumberOfMissingData item in Model.countMissingData)
+                            {
+                                <tr>
+                                    <td class="align-middle">
+                                        @item.type
+                                    </td>
+                                    <td class="text-right text-success align-middle">
+                                        @item.done
+                                    </td>
+                                    <td class="text-right text-danger align-middle">
+                                        @item.notYet
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xl-6 col-sm-8 insert_chart4">
+                    <h1 id="chart4Label"></h1>
+                </div>
             </div>
         </div>
         <!--end::Body-->
@@ -279,7 +284,7 @@
         <!--end::Body-->
     </div>
 </div>
-<div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
 </div>
 
 <script>
@@ -296,9 +301,6 @@
                 $('#exampleModalCenter').modal('show');
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                //alert('Xảy ra lỗi khi tải dữ liệu');
-                notifyHelper.showMessage("error", "Có lỗi xảy ra trong quá trình xử lý");
-                commonHelper.hideLoading();
             }
         });
     });
@@ -313,6 +315,8 @@
     var percentFormatNam =@Html.Raw(Json.Encode(Model.percentFormatNam));
     var numberFormatThang =@Html.Raw(Json.Encode(Model.numberFormatThang));
     var numberFormatNam =@Html.Raw(Json.Encode(Model.numberFormatNam));
-    setValue(duKienThang, duKienNam, thucTeThang, thucTeNam, sanLuongTrongNgay, percentFormatThang, percentFormatNam, numberFormatThang, numberFormatNam);
+    var daThuThap=@Html.Raw(Json.Encode(Model.daThuThap));
+    var chuaThuThap =@Html.Raw(Json.Encode(Model.chuaThuThap));
+    setValue(duKienThang, duKienNam, thucTeThang, thucTeNam, sanLuongTrongNgay, percentFormatThang, percentFormatNam, numberFormatThang, numberFormatNam, daThuThap, chuaThuThap);
     });
 </script>
