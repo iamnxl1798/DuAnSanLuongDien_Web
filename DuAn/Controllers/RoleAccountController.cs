@@ -133,7 +133,15 @@ namespace DuAn.Controllers
                 return null;
             }
         }
-
+        [HttpPost]
+        public JsonResult CheckRolename(string rolename)
+        {
+            if (!RoleAccountDAO.checkRoleName(rolename))
+            {
+                return Json("Fail", JsonRequestBehavior.AllowGet);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public string UpdateRole(int RoleID, string RoleName, List<String> listPermissionID)
         {

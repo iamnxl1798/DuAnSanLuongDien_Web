@@ -236,7 +236,7 @@
         $('#my_datatable_role').DataTable().ajax.reload(null, false);
     };
 
-    $('.modal-edit-role').on('hidden.bs.hidden.bs.modal', reloadRoleDatatable);
+    @*$('.modal-edit-role').on('hidden.bs.hidden.bs.modal', reloadRoleDatatable);*@
 
     $('#my_datatable_role').on('click', '.bt-delete-role', function () {
         //add xac thuc trc khi xoa
@@ -246,26 +246,6 @@
         $('#confirmDelete').modal({
             backdrop: true
 		});
-
-		@*var url = "@Url.Action("DeleteRole", "RoleAccount")";
-		var id = $(this).attr("data-id");
-		$.ajax({
-			url: url,
-			type: 'POST',
-			data: {
-				roleID: id
-			},
-			success: function (data) {
-				if (!data) {
-					alert("Error delete role ");
-				} else {
-                    reloadRoleDatatable();
-				}
-			},
-			error: function (data) {
-				alert("Error load ajax delete role");
-			}
-		});*@
 	});
 
 

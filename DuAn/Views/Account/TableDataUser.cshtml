@@ -33,7 +33,7 @@
 					render: function (Role) {
 						var status = {
                             'Lãnh Đạo': 'label-light-danger',
-							'Quản Trị': ' label-light-info',
+							'Quản Trị': 'label-light-info',
                             'Chuyên Viên': 'label-light-primary'
 							//label-light-danger //label-light-warning
 						};
@@ -174,7 +174,7 @@
             <!--/modal-body-collapse -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-danger" id="btnDelteYes" href="#" data-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-danger" id="btnDelteYes" data-dismiss="modal">Yes</button>
             </div>
             <!--/modal-footer-collapse -->
         </div>
@@ -208,7 +208,7 @@
     var reloadAccountDatatable = function () {
         $('#my_datatable_account').DataTable().ajax.reload(null, false);
     };
-    $('.modal-edit-account').on('hidden.bs.hidden.bs.modal', reloadAccountDatatable);
+    @*$('.modal-edit-account').on('hidden.bs.hidden.bs.modal', reloadAccountDatatable);*@
 
 	$('#my_datatable_account').on('click', '.bt-delete-account', function () {
 		//add xac thuc trc khi xoa
@@ -218,26 +218,6 @@
 		$('#confirmDelete').modal({
 			backdrop: true
         });
-		//
-		@*var url = "@Url.Action("DeleteAccount", "Account")";
-		var id = $(this).attr("data-id");
-		$.ajax({
-			url: url,
-			type: 'POST',
-			data: {
-				AccID: id
-			},
-			success: function (data) {
-				if (!data) {
-					alert("Error delete Account ");
-				} else {
-                    reloadAccountDatatable();
-				}
-			},
-			error: function (data) {
-                alert("Error load ajax delete Account");
-			}
-		});*@
 	});
 
     $('#btnDelteYes').on('click', function (e) {

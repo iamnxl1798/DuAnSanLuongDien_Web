@@ -164,6 +164,16 @@ namespace DuAn.Controllers
             }
             return "success";
         }
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult CheckUsername(string username)
+        {
+            if (!AccountDAO.CheckUsername(username))
+            {
+                return Json("Fail", JsonRequestBehavior.AllowGet);
+            }
+            return Json("Success", JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public string InsertAccount(int id, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
