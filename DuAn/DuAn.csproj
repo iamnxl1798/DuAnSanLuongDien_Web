@@ -2397,7 +2397,6 @@
     <Content Include="Views\Account\TableDataUser.cshtml" />
     <Content Include="Views\Home\getModelDetail.cshtml" />
     <Content Include="Views\Admin\viewMissingDataList.cshtml" />
-    <Content Include="Views\Account\TestDateTimePicker.cshtml" />
     <Content Include="Views\Home\homePagePartialView.cshtml" />
     <Content Include="Views\RoleAccount\AllRole.cshtml" />
     <Content Include="Views\RoleAccount\PermissionTree.cshtml" />

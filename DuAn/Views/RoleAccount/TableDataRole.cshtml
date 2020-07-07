@@ -146,15 +146,15 @@
                     @*"orderable": false,*@
 					render: function (Role) {
 						var status = {
-							'Lãnh Đạo': 'label-light-primary',
-							'Quản Trị': ' label-light-info',
-							'Chuyên Viên': ' label-light-success'
+                            'Lãnh Đạo': 'label-light-danger',
+                            'Quản Trị': 'label-light-info',
+                            'Chuyên Viên': 'label-light-primary'
 							//label-light-danger //label-light-warning
 						};
                         if (Role in status) {
                             return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
                         } else {
-                            return '<span class="label label-lg font-weight-bold label-light-danger label-inline">' + Role + '</span>';
+                            return '<span class="label label-lg font-weight-bold label-light-success label-inline">' + Role + '</span>';
                         }
 					}
 				}

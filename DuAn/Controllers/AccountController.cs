@@ -217,9 +217,6 @@ namespace DuAn.Controllers
                 return false;
             }
         }
-        public ActionResult TestDateTimePicker()
-        {
-            return View();
-        }
+        
     }
 }
