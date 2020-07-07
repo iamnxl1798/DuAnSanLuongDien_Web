@@ -15,9 +15,9 @@ namespace DuAn.Models.CustomModel
         public List<double> kwhNhan { get; set; }
         public List<double> kvarhGiao { get; set; }
         public List<double> kvarhNhan { get; set; }
-        public double sumKwhGiao { get; set; }
-        public double sumKwhNhan { get; set; }
-        public double sumKvarhGiao { get; set; }
-        public double sumKvarhNhan { get; set; } 
+        public double sumKwhGiao { get { return kwhGiao!=null?kwhGiao.Sum():0; } }
+        public double sumKwhNhan { get { return kwhNhan != null ? kwhNhan.Sum() : 0; } }
+        public double sumKvarhGiao { get { return kvarhGiao != null ? kvarhGiao.Sum() : 0; } }
+        public double sumKvarhNhan { get { return kvarhNhan != null ? kvarhNhan.Sum() : 0; } } 
     }
 }

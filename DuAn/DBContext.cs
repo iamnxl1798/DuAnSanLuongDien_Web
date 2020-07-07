@@ -42,10 +42,10 @@ namespace DuAn
                             maDiemDo = (listDiemDo?.MaDiemDo).GetValueOrDefault(),
                             tinhChat = listDiemDo?.TinhChatDiemDo.TenTinhChat,
                             thuTuHienThi = (listDiemDo?.ThuTuHienThi).GetValueOrDefault(),
-                            sumKwhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_GIAO).Select(x => x.GiaTri).Sum(),
-                            sumKwhNhan = listSanLuong.Where(x => x.KenhID == CommonContext.KWH_NHAN).Select(x => x.GiaTri).Sum(),
-                            sumKvarhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_GIAO).Select(x => x.GiaTri).Sum(),
-                            sumKvarhNhan = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_NHAN).Select(x => x.GiaTri).Sum()
+                            kwhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KWH_GIAO).Select(x => x.GiaTri).ToList(),
+                            kwhNhan = listSanLuong.Where(x => x.KenhID == CommonContext.KWH_NHAN).Select(x => x.GiaTri).ToList(),
+                            kvarhGiao = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_GIAO).Select(x => x.GiaTri).ToList(),
+                            kvarhNhan = listSanLuong.Where(x => x.KenhID == CommonContext.KVARH_NHAN).Select(x => x.GiaTri).ToList()
                         });
                     }
                     db.Configuration.LazyLoadingEnabled = false;
