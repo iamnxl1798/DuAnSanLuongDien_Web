@@ -1,0 +1,307 @@
+﻿var duKienThang;
+var duKienNam;
+var thucTeThang;
+var thucTeNam;
+var sanLuongTrongNga;
+
+var setValue = function (duKienT, duKienN, thucTeT, thucTeN, sanLuong) {
+    duKienThang = duKienT;
+    duKienNam = duKienN;
+    thucTeThang = thucTeT;
+    thucTeNam = thucTeN;
+    sanLuongTrongNga = sanLuong;
+
+    runMain();
+}
+function runMain() {
+    if (duKienThang != null && duKienThang != 0) {
+        document.getElementById("chart1Label").innerHTML = "";
+        am4core.ready(function () {
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+
+
+            // Create chart instance
+            var chart = am4core.create("insert_chart", am4charts.RadarChart);
+
+            // Add data
+            chart.data = [{
+                "category": "Tháng",
+                "value": thucTeThang,
+                "full": duKienThang
+            }];
+
+            // Make chart not full circle
+            chart.radius = am4core.percent(95);
+            chart.startAngle = 160;
+            chart.endAngle = 380;
+            chart.innerRadius = am4core.percent(70);
+            chart.logo.disabled = true;
+            chart.paddingTop = 0;
+            chart.marginTop = 0;
+
+            // Set number format
+
+            // Create axes
+            var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "category";
+            categoryAxis.renderer.grid.template.location = 0;
+            categoryAxis.renderer.grid.template.strokeOpacity = 0;
+            categoryAxis.renderer.minGridDistance = 10;
+            categoryAxis.disabled = true;
+
+            var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+            valueAxis.renderer.grid.template.strokeOpacity = 0;
+            valueAxis.min = 0;
+            valueAxis.max = duKienThang;
+            valueAxis.strictMinMax = true;
+            valueAxis.disabled = true;
+
+
+            // Create series
+            var series1 = chart.series.push(new am4charts.RadarColumnSeries());
+            series1.dataFields.valueX = "full";
+            series1.dataFields.categoryY = "category";
+            series1.clustered = false;
+            series1.columns.template.fill = new am4core.InterfaceColorSet().getFor("alternativeBackground");
+            series1.columns.template.fillOpacity = 0.08;
+            series1.columns.template.cornerRadiusTopLeft = 20;
+            series1.columns.template.strokeWidth = 0;
+            series1.columns.template.radarColumn.cornerRadius = 10;
+
+            var series2 = chart.series.push(new am4charts.RadarColumnSeries());
+            series2.dataFields.valueX = "value";
+            series2.dataFields.categoryY = "category";
+            series2.clustered = false;
+            series2.columns.template.strokeWidth = 0;
+            series2.columns.template.tooltipText = "{category}: [bold]{value}MW[/]";
+            series2.columns.template.radarColumn.cornerRadius = 20;
+
+            series2.columns.template.adapter.add("fill", function (fill, target) {
+                return chart.colors.getIndex(target.dataItem.index);
+            });
+            var label = chart.seriesContainer.createChild(am4core.Label);
+            label.textAlign = "middle";
+            label.horizontalCenter = "middle";
+            label.verticalCenter = "middle";
+            label.adapter.add("text", function (text, target) {
+                return "[font-size:18px]@Model.percentFormatThang%[/]\n[bold font-size:18px]@Model.numberFormatThang MW[/]";
+            })
+
+            // Add cursor
+
+        }); // end am4core.ready()
+    }
+    else {
+        document.getElementById("chart1Label").innerHTML = "Không có dữ liệu để hiển thị";
+    }
+
+    if (duKienNam != null && duKienNam != 0) {
+        document.getElementById("chart2Label").innerHTML = "";
+        am4core.ready(function () {
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+
+
+            // Create chart instance
+            var chart = am4core.create("insert_chart2", am4charts.RadarChart);
+
+            // Add data
+            chart.data = [{
+                "category": "Năm",
+                "value": thucTeNam,
+                "full": duKienNam
+            }];
+
+            // Make chart not full circle
+            chart.radius = am4core.percent(95);
+            chart.startAngle = 160;
+            chart.endAngle = 380;
+            chart.innerRadius = am4core.percent(70);
+            chart.logo.disabled = true;
+            chart.paddingTop = 0;
+            chart.marginTop = 0;
+
+            // Set number format
+
+            // Create axes
+            var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "category";
+            categoryAxis.renderer.grid.template.location = 0;
+            categoryAxis.renderer.grid.template.strokeOpacity = 0;
+            categoryAxis.renderer.minGridDistance = 10;
+            categoryAxis.disabled = true;
+
+            var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
+            valueAxis.renderer.grid.template.strokeOpacity = 0;
+            valueAxis.min = 0;
+            valueAxis.max = duKienNam;
+            valueAxis.strictMinMax = true;
+            valueAxis.disabled = true;
+
+
+            // Create series
+            var series1 = chart.series.push(new am4charts.RadarColumnSeries());
+            series1.dataFields.valueX = "full";
+            series1.dataFields.categoryY = "category";
+            series1.clustered = false;
+            series1.columns.template.fill = new am4core.InterfaceColorSet().getFor("alternativeBackground");
+            series1.columns.template.fillOpacity = 0.08;
+            series1.columns.template.cornerRadiusTopLeft = 20;
+            series1.columns.template.strokeWidth = 0;
+            series1.columns.template.radarColumn.cornerRadius = 10;
+
+            var series2 = chart.series.push(new am4charts.RadarColumnSeries());
+            series2.dataFields.valueX = "value";
+            series2.dataFields.categoryY = "category";
+            series2.clustered = false;
+            series2.columns.template.strokeWidth = 0;
+            series2.columns.template.tooltipText = "{category}: [bold]{value}MW[/]";
+            series2.columns.template.radarColumn.cornerRadius = 20;
+
+            series2.columns.template.adapter.add("fill", function (fill, target) {
+                return chart.colors.getIndex(target.dataItem.index);
+            });
+            var label = chart.seriesContainer.createChild(am4core.Label);
+            label.textAlign = "middle";
+            label.horizontalCenter = "middle";
+            label.verticalCenter = "middle";
+            label.adapter.add("text", function (text, target) {
+                return "[font-size:18px]@Model.percentFormatNam %[/]\n[bold font-size:18px]@Model.numberFormatNam MW[/]";
+            })
+
+            // Add cursor
+
+        }); // end am4core.ready()
+    }
+    else {
+        document.getElementById("chart2Label").innerHTML = "Không có dữ liệu để hiển thị";
+    }
+
+    if (sanLuongTrongNgay != null) {
+        document.getElementById("chart3Label").innerHTML = "";
+        am4core.ready(function () {
+
+            // Themes begin
+            am4core.useTheme(am4themes_animated);
+            // Themes end
+
+            /**
+             * Chart design taken from Samsung health app
+             */
+
+            var chart = am4core.create("sanLuongTrongNgay", am4charts.XYChart);
+            chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+            var dataChart = sanLuongTrongNgay;
+            chart.data = dataChart;
+
+            chart.zoomOutButton.disabled = false;
+            chart.logo.disabled = true;
+
+            var dateAxis = chart.xAxes.push(new am4charts.ValueAxis());
+            dateAxis.renderer.grid.template.strokeOpacity = 0;
+            dateAxis.renderer.minGridDistance = 10;
+            dateAxis.tooltip.hiddenState.properties.opacity = 1;
+            dateAxis.tooltip.hiddenState.properties.visible = true;
+            dateAxis.startLocation = 0.5;
+            dateAxis.endLocation = 0.5;
+            dateAxis.min = 0;
+            dateAxis.max = 49;
+            dateAxis.renderer.labels.template.adapter.add("text", function (text, target) {
+                return text.match('49|50') ? "" : text;
+            });
+            dateAxis.cursorTooltipEnabled = false;
+
+
+
+            var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            valueAxis.renderer.labels.template.fillOpacity = 0.3;
+            valueAxis.renderer.grid.template.strokeOpacity = 0;
+            valueAxis.min = 0;
+
+
+
+            var series = chart.series.push(new am4charts.ColumnSeries);
+            series.dataFields.valueY = "GiaTri";
+            series.dataFields.valueX = "ChuKy";
+            series.columns.template.tooltipText = "[bold]{valueY}[/]";
+            series.tooltip.pointerOrientation = "horizontal";
+            series.sequencedInterpolation = true;
+            series.tooltip.pointerOrientation = "vertical";
+            series.tooltip.hiddenState.properties.opacity = 1;
+            series.tooltip.hiddenState.properties.visible = true;
+            var columnTemplate = series.columns.template;
+            columnTemplate.width = 20;
+            columnTemplate.strokeOpacity = 0;
+            chart.responsive.enabled = true;
+            chart.useDefault = false;
+            chart.responsive.rules.push({
+                relevant: function (target) {
+                    if (target.pixelWidth < 400) {
+                        dateAxis.renderer.minGridDistance = 20;
+                        columnTemplate.width = 2;
+                        return false;
+                    }
+                    else if (target.pixelWidth >= 400 && target.pixelWidth <= 600) {
+                        dateAxis.renderer.minGridDistance = 20;
+                        columnTemplate.width = 5;
+                        return false;
+                    }
+                    else if (target.pixelWidth > 600 && target.pixelWidth <= 1100) {
+                        columnTemplate.width = 10;
+                        return false;
+                    }
+                    else if (target.pixelWidth > 1100) {
+                        columnTemplate.width = 20;
+                        return false;
+                    }
+                    return false;
+                }
+            });
+            chart.cursor = new am4charts.XYCursor();
+
+
+
+            var label = chart.plotContainer.createChild(am4core.Label);
+        }); // end am4core.ready()
+    }
+    else {
+        document.getElementById("chart3Label").innerHTML = "Không có dữ liệu để hiển thị";
+    }
+}
+
+//$('.click-chitiet').click(function () {
+//    var url = "@Url.Action("getModelDetail", "Home")";
+//    var ID = $(this).attr("data-id");
+//    var params = "id=" + ID;
+
+
+//    //ajaxHelper.ajaxCall(url, params, function (result) {
+
+//    //});
+
+//    $.ajax({
+//        cache: false,
+//        url: url,
+//        data: params,
+//        success: function (data) {
+//            $('#exampleModalCenter').html(data);
+//            $('#exampleModalCenter').modal('show');
+//        },
+//        error: function (xhr, ajaxOptions, thrownError) {
+//            //alert('Xảy ra lỗi khi tải dữ liệu');
+//            notifyHelper.showMessage("error", "Có lỗi xảy ra trong quá trình xử lý");
+//            commonHelper.hideLoading();
+//        }
+//    });
+//});
+
+//function exportExcel() {
+//    window.location = "@Url.Action("exportExcel","Home")";
+//}
