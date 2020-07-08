@@ -135,45 +135,8 @@
 <!--begin::Page Scripts(used by this page)-->
 @*<div class="modal" id="formNewRole" tabindex="-1" role="dialog" aria-labelledby="formNewRole" aria-hidden="true"></div>*@
 
-<script>
-    $(document).ready(function () {
-        var url = "@Url.Action("TableDataRole", "RoleAccount")";
-        $.ajax({
-            url: url,
-            type: 'POST',
-            success: function (data) {
-                $('#datatable_ajax').html(data);
-                @*$('#test_ajax').modal('show');*@
-            },
-            error: function (data) {
-                alert("Error load role ajax");
-            }
-        });
-    });
+<script src="~/Scripts/Role/ListRole.js"></script>
 
-    $('#newrole').on('click', function () {
-        var url = "@Url.Action("PermissionTree", "RoleAccount")";
-        var id = $(this).attr("data-id");
-			$.ajax({
-				url: url,
-				type: 'POST',
-				data: {
-					roleID: id,
-                },
-				success: function (data) {
-                    $('#formInsertEditRole').html(data);
-                    $('#formInsertEditRole').modal('show');
-                    $('#formInsertEditRole').modal({
-						backdrop: false
-					});
-				},
-				error: function (data) {
-					alert("Error load ajax edit role");
-				}
-			});
-    });
-
-</script>
 
 
 <!--end::Page Scripts-->

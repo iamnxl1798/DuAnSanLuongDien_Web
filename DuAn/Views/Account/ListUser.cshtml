@@ -1,28 +1,5 @@
 ﻿@model ICollection<DuAn.Models.Account>
 
-<head>
-    <base href="../../../">
-    <meta charset="utf-8" />
-    <title>Metronic | List Datatable</title>
-    <meta name="description" content="User datatable listing" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!--begin::Fonts-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-    <!--end::Fonts-->
-    <!--begin::Global Theme Styles(used by all pages)-->
-
-    <link href="~/Scripts/assets/plugins/global/plugins.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-    <link href="~/Scripts/assets/plugins/custom/prismjs/prismjs.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-    <link href="~/Scripts/assets/css/style.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
-    <!--begin::Page Vendors Styles(used by this page)-->
-    <!--<link href="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" />
-    <script src="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.js"></script>-->
-    <!--end::Global Theme Styles-->
-    <!--begin::Layout Themes(used by all pages)-->
-    <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="~/Scripts/assets/media/logos/favicon.ico" />
-</head>
-<div id="test"></div>
 <!--begin::Entry-->
 <div class="d-flex flex-column-fluid" style="width:auto">
     <!--begin::Container-->
@@ -132,45 +109,6 @@
     <!--end::Container-->
 </div>
 <!--end::Entry-->
-<!--begin::Page Scripts(used by this page)-->
-
-
-<script>
-    $(document).ready(function () {
-        var url = "@Url.Action("TableDataUser", "Account")";
-        $.ajax({
-            url: url,
-            type: 'POST',
-            success: function (data) {
-                $('#datatable_ajax').html(data);
-                @*$('#test_ajax').modal('show');*@
-            },
-            error: function (data) {
-                alert("Error load ajax");
-            }
-        });
-    });
-    $('#newaccount').on('click', function () {
-        var url = "@Url.Action("EditAccountForm", "Account")";
-        var id = $(this).attr("data-id");
-			$.ajax({
-				url: url,
-				type: 'POST',
-				data: {
-                    accID: id
-                },
-				success: function (data) {
-                    $('#formEditAccount').html(data);
-                    $('#formEditAccount').modal('show');
-                    $('#formEditAccount').modal({
-						backdrop: false
-					});
-				},
-				error: function (data) {
-					alert("Error load ajax edit/insert role");
-				}
-			});
-    });
-</script>
+<script src="~/Scripts/Account/ListUser.js"></script>
 
 <!--end::Page Scripts-->

@@ -332,8 +332,9 @@
     <Content Include="images\spritemap.png" />
     <Content Include="images\upload-arrow_318-26670.jpg" />
     <Content Include="phone.png" />
-    <Content Include="Scripts\Account\account.customer.css" />
-    <Content Include="Scripts\Account\account.customer.js" />
+    <Content Include="Scripts\Account\EditAccountForm.js" />
+    <Content Include="Scripts\Account\TableDataUser.js" />
+    <Content Include="Scripts\Account\ListUser.js" />
     <Content Include="Scripts\assets\css\jquery.dataTables.min.css" />
     <Content Include="Scripts\assets\css\pages\error\error-3.css" />
     <Content Include="Scripts\assets\css\pages\error\error-3.min.css" />
@@ -2374,6 +2375,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\Role\TableDateRole.js" />
+    <Content Include="Scripts\Role\PermissionTree.js" />
+    <Content Include="Scripts\Role\ListRole.js" />
     <Content Include="Views\Account\EditAccountForm.cshtml" />
     <None Include="Views\Account\ListUser.cshtml" />
     <Content Include="Scripts\respond.js" />

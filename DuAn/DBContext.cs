@@ -50,12 +50,12 @@ namespace DuAn
                     }
                     db.Configuration.LazyLoadingEnabled = false;
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
-                    var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay==date).Select(x => x.GiaTriThang).FirstOrDefault();
+                    var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay == date).Select(x => x.GiaTriThang).FirstOrDefault();
                     var thucTeNam = db.TongSanLuong_ThangNam.Where(x => x.Ngay == date).Select(x => x.GiaTriNam).FirstOrDefault();
                     var missingData = getMissingCount();
                     var missingDataCount = new List<NumberOfMissingData>();
                     var distincMissingType = missingData.Select(x => x.type).Distinct();
-                    foreach(string item in distincMissingType)
+                    foreach (string item in distincMissingType)
                     {
                         var tempData = missingData.Where(x => x.type == item);
                         missingDataCount.Add(new NumberOfMissingData
@@ -63,7 +63,7 @@ namespace DuAn
                             type = item,
                             notYet = tempData.Where(x => x.status == 0 || x.status == -1).Count(),
                             done = tempData.Where(x => x.status == 1).Count()
-                        }) ;
+                        });
                     }
                     var result = new HomeModel
                     {
@@ -74,7 +74,7 @@ namespace DuAn
                         data = list,
                         sanLuongTrongNgay = dataTrongNgay,
                         date = date,
-                        countMissingData=missingDataCount
+                        countMissingData = missingDataCount
                     };
                     return await Task.FromResult(result);
                 }
@@ -118,17 +118,17 @@ namespace DuAn
                 var data = db.ThongSoVanHanhs.ToList();
                 var allDiemDo = db.DiemDoes.ToList();
                 var listDate = data.Select(x => x.ThoiGianCongTo.Date).Distinct().ToList();
-                var idInt=-1;
+                var idInt = -1;
                 if (id != "")
                 {
                     idInt = int.Parse(id);
                     var join = (from bridge in db.DiemDo_CongTo select new { s = bridge.DiemDo, c = bridge.CongTo }).Where(x => x.s.ID == idInt);
-                    var serial= join.Select(x => x.c.Serial).FirstOrDefault();
+                    var serial = join.Select(x => x.c.Serial).FirstOrDefault();
                     data = data.Where(x => x.Serial == serial).ToList();
                 }
                 if (date != DateTime.MinValue)
                 {
-                    data = data.Where(x => x.ThoiGianCongTo.Date==date.Date).ToList();
+                    data = data.Where(x => x.ThoiGianCongTo.Date == date.Date).ToList();
                 }
                 data = data.OrderByDescending(x => x.ThoiGianCongTo).ToList();
                 var finalData = new List<ThongSoAndTenDiemDo>();
@@ -145,7 +145,7 @@ namespace DuAn
                     });
                 }
                 thoiGianIndex = listDate.IndexOf(date);
-                for(int i = 0; i < allDiemDo.Count; i++)
+                for (int i = 0; i < allDiemDo.Count; i++)
                 {
                     if (allDiemDo[i].ID == idInt)
                     {
@@ -224,7 +224,7 @@ namespace DuAn
                                         date = date.ToString("dd/MM/yyyy"),
                                         name = item.TenDiemDo,
                                         status = 0,
-                                        type=item.TinhChatDiemDo.TenTinhChat
+                                        type = item.TinhChatDiemDo.TenTinhChat
                                     });
                                 }
                                 else
@@ -257,7 +257,7 @@ namespace DuAn
                     string tenDiemDo = diemDo.TenDiemDo;
                     if (db.SanLuongs.Where(x => x.Ngay == date).Where(x => x.DiemDoID == id).Count() > 0)
                     {
-                        int index = data.FindIndex(x =>x.name== tenDiemDo && x.date == date.ToString("dd/MM/yyyy"));
+                        int index = data.FindIndex(x => x.name == tenDiemDo && x.date == date.ToString("dd/MM/yyyy"));
                         if (index != -1)
                         {
                             var obj = data[index];
@@ -284,9 +284,9 @@ namespace DuAn
 
         public static List<MissingDataStatus> getMissingCount()
         {
-            using(var db=new Model1())
+            using (var db = new Model1())
             {
-                var result= new List<MissingDataStatus>();
+                var result = new List<MissingDataStatus>();
                 var listDiemDo = db.DiemDoes.ToList();
                 DateTime startDay = db.SanLuongs.Min(x => x.Ngay);
                 DateTime endDay = DateTime.Now.AddDays(-1);
@@ -297,12 +297,12 @@ namespace DuAn
                         if (db.SanLuongs.Where(x => x.Ngay == date).Where(x => x.DiemDoID == item.ID).Count() == 0)
                         {
                             result.Add(new MissingDataStatus()
-                                {
-                                    date = date.ToString("dd/MM/yyyy"),
-                                    name = item.TenDiemDo,
-                                    status = -1,
-                                    type = item.TinhChatDiemDo.TenTinhChat
-                                });
+                            {
+                                date = date.ToString("dd/MM/yyyy"),
+                                name = item.TenDiemDo,
+                                status = -1,
+                                type = item.TinhChatDiemDo.TenTinhChat
+                            });
                         }
                         else
                         {
@@ -358,10 +358,10 @@ namespace DuAn
                     data.Add(result);
                 }
                 data.OrderBy(x => x.type);
-                return GenerateExcel(data, "rpt_PhieuTongHop_GNDN_NMD_ChiTiet.xlsx",date);
+                return GenerateExcel(data, "rpt_PhieuTongHop_GNDN_NMD_ChiTiet.xlsx", date);
             }
         }
-        public static FileResult GenerateExcel(List<ExportExcelModel> data, string fileDir,DateTime date)
+        public static FileResult GenerateExcel(List<ExportExcelModel> data, string fileDir, DateTime date)
         {
             try
             {
@@ -377,7 +377,7 @@ namespace DuAn
                     int rowIndex = 12;
                     wookSheet.Row(4).Style.Font.Bold = true;
                     wookSheet.Cells[4, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                    wookSheet.Cells[4, 4].Value = "BIÊN BẢN XÁC NHẬN CHỈ SỐ CÔNG TƠ VÀ ĐIỆN NĂNG THÁNG "+date.Month+" NĂM "+date.Year;
+                    wookSheet.Cells[4, 4].Value = "BIÊN BẢN XÁC NHẬN CHỈ SỐ CÔNG TƠ VÀ ĐIỆN NĂNG THÁNG " + date.Month + " NĂM " + date.Year;
                     foreach (ExportExcelModel item in data)
                     {
                         wookSheet.Row(rowIndex).Style.Font.Bold = true;
@@ -591,7 +591,6 @@ namespace DuAn
             }
             return rs;
         }
-        static Model1 db = new Model1();
         public static Account CheckLogin(string username, string password)
         {
             using (Model1 db = new Model1())
@@ -613,29 +612,35 @@ namespace DuAn
         }
         public static void AddAccount(Account acc)
         {
-            try
+            using (Model1 db = new Model1())
             {
-                acc.SaltPassword = RandomSaltHash();
-                // ma hoa mat khau
-                acc.Password = MaHoaMatKhau(acc.SaltPassword + acc.Password);
-                db.Accounts.Add(acc);
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                try
+                {
+                    acc.SaltPassword = RandomSaltHash();
+                    // ma hoa mat khau
+                    acc.Password = MaHoaMatKhau(acc.SaltPassword + acc.Password);
+                    db.Accounts.Add(acc);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
         public static bool CheckUsername(string username)
         {
-            foreach (Account c in db.Accounts)
+            using (Model1 db = new Model1())
             {
-                if (c.Username == username)
+                foreach (Account c in db.Accounts)
                 {
-                    return false;
+                    if (c.Username == username)
+                    {
+                        return false;
+                    }
                 }
+                return true;
             }
-            return true;
         }
         public static void UpdateAccout(Account acc)
         {
@@ -666,17 +671,39 @@ namespace DuAn
     }
     public static class RoleAccountDAO
     {
-        static Model1 db = new Model1();
         public static bool checkRoleName(string role)
         {
-            foreach(var i in db.RoleAccounts)
+            using (var db = new Model1())
             {
-                if (i.Role.ToLower().Equals(role.ToLower()))
+                foreach (var i in db.RoleAccounts)
                 {
-                    return false;
+                    if (i.Role.ToLower().Equals(role.ToLower()))
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
+        }
+        public static void UpdateRole(RoleAccount role)
+        {
+            try
+            {
+                using (var db = new Model1())
+                {
+                    var result = db.RoleAccounts.SingleOrDefault(b => b.ID == role.ID);
+                    if (result != null)
+                    {
+                        result.Role = role.Role;
+                        result.PermissionID = role.PermissionID;
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

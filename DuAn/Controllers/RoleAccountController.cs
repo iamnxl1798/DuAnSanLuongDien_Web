@@ -147,23 +147,25 @@ namespace DuAn.Controllers
         {
             try
             {
-                if (listPermissionID == null)
-                {
-                    listPermissionID = new List<string>();
-                }
-                var rs = db.RoleAccounts.Find(RoleID);
-                if (rs == null)
-                {
-                    return "Role không tồn tại !!!";
-                }
                 if (!RoleAccountDAO.checkRoleName(RoleName))
                 {
                     return "Role Name đã tồn tại !!!";
                 }
-
-                rs.Role = RoleName;
-                rs.PermissionID = string.Join(",", listPermissionID);
-                db.SaveChanges();
+                if (listPermissionID == null)
+                {
+                    listPermissionID = new List<string>();
+                }
+                RoleAccount ra = new RoleAccount()
+                {
+                    ID = RoleID,
+                    Role = RoleName,
+                    PermissionID = string.Join(",", listPermissionID)
+                };
+                /*if (rs == null)
+                {
+                    return "Role không tồn tại !!!";
+                }*/
+                RoleAccountDAO.UpdateRole(ra);
 
             }
             catch (Exception ex)

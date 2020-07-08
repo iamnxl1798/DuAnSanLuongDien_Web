@@ -31,6 +31,7 @@ namespace DuAn.Controllers
 
                 if (rs != null)
                 {
+                    rs.RoleAccount = db.RoleAccounts.Find(rs.RoleID);
                     Session["User"] = rs;
                     return Json("Success", JsonRequestBehavior.AllowGet);
                 }
@@ -53,6 +54,7 @@ namespace DuAn.Controllers
         {
             return View();
         }
+        [HttpPost]
         public ActionResult TableDataUser()
         {
             return PartialView();
