@@ -81,9 +81,9 @@
                             <tr class="hide-table-padding border-bottom" style="background:none">
                                 <td colspan="4">
                                     <div id="@("accordion" + i)" class="collapse">
-                                        <table class="table table-bordered table-condensed table-hover mt-4 mb-4 mb-0 text-center">
+                                        <table class="table table-bordered table-condensed table-hover mt-4 mb-4 mb-0 text-right">
                                             <thead>
-                                                <tr class="bg-secondary">
+                                                <tr class="bg-secondary text-center">
                                                     <th scope="col"></th>
                                                     <th scope="col">Thấp điểm</th>
                                                     <th scope="col">Bình thường</th>
@@ -93,64 +93,64 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>P giao</td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.P_Giao_TD
+                                                    <td class="text-left" style="border-right: 2px solid #DCDCDC;font-weight:bold;"><div class="ml-2">P giao</div></td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.P_Giao_TD)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.P_Giao_BT
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.P_Giao_BT)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.P_Giao_CD
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.P_Giao_CD)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.P_Giao
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>P nhận</td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.P_Nhan_TD
-                                                    </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.P_Nhan_BT
-                                                    </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.P_Nhan_CD
-                                                    </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.P_Nhan
+                                                    <td >
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.P_Giao)</div>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Q giao</td>
-                                                    <td>
+                                                    <td class="text-left" style="border-right: 2px solid #DCDCDC;font-weight:bold;"><div class="ml-2">P nhận</div></td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.P_Nhan_TD)</div>
+                                                    </td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.P_Nhan_BT)</div>
+                                                    </td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.P_Nhan_CD)</div>
                                                     </td>
                                                     <td>
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.Q_Giao
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.P_Nhan)</div>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Q nhận</td>
-                                                    <td>
+                                                    <td class="text-left" style="border-right: 2px solid #DCDCDC;font-weight:bold;"><div class="ml-2">Q giao</div></td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                    </td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                    </td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
                                                     </td>
                                                     <td>
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.Q_Giao)</div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-left" style="border-right: 2px solid #DCDCDC;font-weight:bold;"><div class="ml-2">Q nhận</div></td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                    </td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
+                                                    </td>
+                                                    <td style="border-right: 2px solid #DCDCDC">
                                                     </td>
                                                     <td>
-                                                    </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.Q_Nhan
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.Q_Nhan)</div>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <table class="table table-bordered table-condensed table-hover mb-4 text-center">
+                                        <table class="table table-bordered table-condensed table-hover mb-4 text-right">
                                             <thead>
-                                                <tr class="bg-secondary">
+                                                <tr class="bg-secondary text-center">
                                                     <th></th>
                                                     <th>Dòng điện</th>
                                                     <th>Điện áp</th>
@@ -162,61 +162,61 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>Pha A</td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseA_Amps
+                                                    <td class="text-left" style="border-right: 2px solid #DCDCDC;font-weight:bold;"><div class="ml-2">Pha A</div></td>
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseA_Amps)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseA_Volts
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseA_Volts)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseA_PowerFactor
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseA_PowerFactor)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseA_Frequency
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseA_Frequency)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseA_Angle
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseA_Angle)</div>
                                                     </td>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Pha B</td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseB_Amps
+                                                    <td class="text-left" style="border-right: 2px solid #DCDCDC;font-weight:bold;"><div class="ml-2">Pha B</div></td>
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseB_Amps)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseB_Volts
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseB_Volts)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseB_PowerFactor
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseB_PowerFactor)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseB_Frequency
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseB_Frequency)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseB_Angle
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseB_Angle)</div>
                                                     </td>
-                                                    <td >
+                                                    <td class="text-center">
                                                         @Model.thongSo[i].thongSo.Phase_Rotation
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Pha A</td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseC_Amps
+                                                    <td class="text-left" style="border-right: 2px solid #DCDCDC;font-weight:bold;"><div class="ml-2">Pha C</div></td>
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseC_Amps)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseC_Volts
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseC_Volts)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseC_PowerFactor
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseC_PowerFactor)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseC_Frequency
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseC_Frequency)</div>
                                                     </td>
-                                                    <td>
-                                                        @Model.thongSo[i].thongSo.PhaseC_Angle
+                                                    <td style="border-right: 2px solid #DCDCDC;">
+                                                        <div class="mr-2">@Model.formatNumber(Model.thongSo[i].thongSo.PhaseC_Angle)</div>
                                                     </td>
                                                     <td></td>
                                                 </tr>

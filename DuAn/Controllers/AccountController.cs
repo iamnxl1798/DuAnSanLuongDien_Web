@@ -45,10 +45,9 @@ namespace DuAn.Controllers
             try
             {
                 var rs = AccountDAO.CheckLogin(username, password);
-                rs.RoleAccount = db.RoleAccounts.Find(rs.RoleID);
-
                 if (rs != null)
                 {
+                    rs.RoleAccount = db.RoleAccounts.Find(rs.RoleID);
                     Session["User"] = rs;
                     return Json("Success", JsonRequestBehavior.AllowGet);
                 }

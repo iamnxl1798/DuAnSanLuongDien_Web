@@ -11,7 +11,7 @@
         <div class="card-header border-0 pt-5">
             <div class="card-title font-weight-bolder d-flex justify-content-between">
                 <div class="card-label">
-                    Lũy kế tháng @Model.date.Month
+                    <i class="icon-xl fab fa-buffer text-primary"></i> Lũy kế tháng @Model.date.Month
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                     <!--end::Symbol-->
                     <!--begin::Title-->
                     <div>
-                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.duKienThang MW</p>
+                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.numberFormatDuKienThang MW</p>
                         <div class="font-size-sm text-muted font-weight-bold mt-1">Sản lượng kế hoạch</div>
                     </div>
                     <!--end::Title-->
@@ -65,7 +65,7 @@
         <div class="card-header border-0 pt-5">
             <div class="card-title font-weight-bolder">
                 <div class="card-label">
-                    Lũy kế năm @Model.date.Year
+                    <i class="icon-xl fab fa-buffer text-primary"></i> Lũy kế năm @Model.date.Year
                 </div>
             </div>
         </div>
@@ -98,7 +98,7 @@
                     <!--end::Symbol-->
                     <!--begin::Title-->
                     <div>
-                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.duKienNam MW</p>
+                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.numberFormatDuKienNam MW</p>
                         <div class="font-size-sm text-muted font-weight-bold mt-1">Sản lượng kế hoạch</div>
                     </div>
                     <!--end::Title-->
@@ -119,7 +119,7 @@
         <div class="card-header border-0 pt-5">
             <div class="card-title font-weight-bolder">
                 <div class="card-label">
-                    Tình hình thu thập dữ liệu tại nhà máy
+                    <i class="icon-xl fab fa-searchengin text-primary"></i> Tình hình thu thập dữ liệu tại nhà máy
                 </div>
             </div>
         </div>
@@ -169,7 +169,7 @@
         <div class="card-header border-0 pt-5">
             <div class="card-title font-weight-bolder">
                 <div class="card-label" style=" font:Open">
-                    Sản lượng trong ngày @Model.date.ToString("dd/MM/yyyy")
+                    <i class="icon-xl far fa-chart-bar text-primary"></i> Sản lượng trong ngày @Model.date.ToString("dd/MM/yyyy")
                 </div>
             </div>
         </div>
@@ -189,7 +189,7 @@
         <div class="card-header border-0 pt-5">
             <div class="card-title font-weight-bolder d-flex justify-content-between" style="width:100%">
                 <div class="card-label">
-                    Sản lượng chi tiết
+                    <i class="icon-xl fas fa-info-circle text-primary"></i> Sản lượng chi tiết
                 </div>
             </div>
         </div>
@@ -236,16 +236,16 @@
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg">@Model.data[i].tinhChat</span>
                                             </td>
                                             <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.data[i].sumKwhGiao</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.data[i].sumKwhGiao)</span>
                                             </td>
                                             <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.data[i].sumKwhNhan</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.data[i].sumKwhNhan)</span>
                                             </td>
                                             <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.data[i].sumKvarhGiao</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.data[i].sumKvarhGiao)</span>
                                             </td>
                                             <td>
-                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.data[i].sumKvarhNhan</span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.data[i].sumKvarhNhan)</span>
                                             </td>
                                             <td>
                                                 <a href="javascript:void(0)" data-id="@Model.data[i].maDiemDo" class="btn btn-light-success font-weight-bolder font-size-sm mt-4 click-chitiet">Chi tiết</a>
@@ -257,16 +257,16 @@
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-center">Tổng</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@sumKWHGiao</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(sumKWHGiao)</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@sumKWHNhan</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(sumKWHNhan)</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@sumKvarGiao</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(sumKvarGiao)</span>
                                         </td>
                                         <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@sumKvarNhan</span>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(sumKvarNhan)</span>
                                         </td>
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg"></span>
@@ -306,6 +306,8 @@
     });
 
     $(document).ready(function () {
+        $('#pageTitle').text('Thống kê sản lượng');
+        $('#pageDirectory').text('Home');
     var duKienThang = @Html.Raw(Json.Encode(Model.duKienThang));
     var duKienNam = @Html.Raw(Json.Encode(Model.duKienNam));
     var thucTeThang=@Html.Raw(Json.Encode(Model.thucTeThang));

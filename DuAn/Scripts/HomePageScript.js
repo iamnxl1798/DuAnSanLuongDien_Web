@@ -322,6 +322,11 @@ function runMain() {
             var pieSeries = chart4.series.push(new am4charts.PieSeries());
             pieSeries.dataFields.value = "value";
             pieSeries.dataFields.category = "name";
+            var colorSet = new am4core.ColorSet();
+            colorSet.list = ["#28a745", "#dc3545"].map(function (color) {
+                return new am4core.color(color);
+            });
+            pieSeries.colors = colorSet;
 
             // Let's cut a hole in our Pie chart the size of 30% the radius
             chart4.innerRadius = am4core.percent(55);

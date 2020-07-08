@@ -18,6 +18,11 @@ namespace DuAn.Models.CustomModel
         public double sumKwhGiao { get { return kwhGiao!=null?kwhGiao.Sum():0; } }
         public double sumKwhNhan { get { return kwhNhan != null ? kwhNhan.Sum() : 0; } }
         public double sumKvarhGiao { get { return kvarhGiao != null ? kvarhGiao.Sum() : 0; } }
-        public double sumKvarhNhan { get { return kvarhNhan != null ? kvarhNhan.Sum() : 0; } } 
+        public double sumKvarhNhan { get { return kvarhNhan != null ? kvarhNhan.Sum() : 0; } }
+        public string formatNumber(double num)
+        {
+            var result = String.Format("{0:### ### ### ###.##}", num);
+            return result == "   " ? "0" : result;
+        }
     }
 }

@@ -21,5 +21,10 @@ namespace DuAn.Models.CustomModel
         {
             return index == thoiGianIndex ? "selected" : "";
         }
+        public string formatNumber(double num)
+        {
+            var result = String.Format("{0:### ### ### ###.##}", num);
+            return result== "   "? "0":result;
+        }
     }
 }

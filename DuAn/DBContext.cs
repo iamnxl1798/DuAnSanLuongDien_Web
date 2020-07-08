@@ -52,7 +52,7 @@ namespace DuAn
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
                     var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay==date).Select(x => x.GiaTriThang).FirstOrDefault();
                     var thucTeNam = db.TongSanLuong_ThangNam.Where(x => x.Ngay == date).Select(x => x.GiaTriNam).FirstOrDefault();
-                    var missingData = getMissingCount();
+                    var missingData = getMissingCount(date);
                     var missingDataCount = new List<NumberOfMissingData>();
                     var distincMissingType = missingData.Select(x => x.type).Distinct();
                     foreach(string item in distincMissingType)
@@ -282,38 +282,33 @@ namespace DuAn
             }
         }
 
-        public static List<MissingDataStatus> getMissingCount()
+        public static List<MissingDataStatus> getMissingCount(DateTime date)
         {
             using(var db=new Model1())
             {
                 var result= new List<MissingDataStatus>();
                 var listDiemDo = db.DiemDoes.ToList();
-                DateTime startDay = db.SanLuongs.Min(x => x.Ngay);
-                DateTime endDay = DateTime.Now.AddDays(-1);
-                for (DateTime date = startDay; date <= endDay; date = date.AddDays(1))
+                foreach (DiemDo item in listDiemDo)
                 {
-                    foreach (DiemDo item in listDiemDo)
+                    if (db.SanLuongs.Where(x => x.Ngay == date).Where(x => x.DiemDoID == item.ID).Count() == 0)
                     {
-                        if (db.SanLuongs.Where(x => x.Ngay == date).Where(x => x.DiemDoID == item.ID).Count() == 0)
+                        result.Add(new MissingDataStatus()
                         {
-                            result.Add(new MissingDataStatus()
-                                {
-                                    date = date.ToString("dd/MM/yyyy"),
-                                    name = item.TenDiemDo,
-                                    status = -1,
-                                    type = item.TinhChatDiemDo.TenTinhChat
-                                });
-                        }
-                        else
+                            date = date.ToString("dd/MM/yyyy"),
+                            name = item.TenDiemDo,
+                            status = -1,
+                            type = item.TinhChatDiemDo.TenTinhChat
+                        });
+                    }
+                    else
+                    {
+                        result.Add(new MissingDataStatus
                         {
-                            result.Add(new MissingDataStatus
-                            {
-                                date = date.ToString("dd/MM/yyyy"),
-                                name = item.TenDiemDo,
-                                status = 1,
-                                type = item.TinhChatDiemDo.TenTinhChat
-                            });
-                        }
+                            date = date.ToString("dd/MM/yyyy"),
+                            name = item.TenDiemDo,
+                            status = 1,
+                            type = item.TinhChatDiemDo.TenTinhChat
+                        });
                     }
                 }
                 return result;

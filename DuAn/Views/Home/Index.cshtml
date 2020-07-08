@@ -9,9 +9,14 @@
             <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
         </div>
     </div>
-    <div><p class="btn btn-success mr-4" onclick="exportExcel()">Xuất báo cáo</p></div>
     <div>
-        <a href="javascript:void(0)" class="btn btn-success mr-4" onclick="clickThongSo()">Thông số vận hành</a>
+        <button class="btn btn-success dropdown-toggle mr-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Menu
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a href="javascript:void(0)" class="dropdown-item" onclick="exportExcel()">Xuất báo cáo</a>
+            <a href="javascript:void(0)" class="dropdown-item" onclick="clickThongSo()">Thông số vận hành</a>
+        </div>
     </div>
 </div>
 <div class="row ml-1 col-12" id="bodyHomePage">

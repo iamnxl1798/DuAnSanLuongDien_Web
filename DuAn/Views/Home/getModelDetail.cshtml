@@ -28,16 +28,16 @@
                                     @chuky
                                 </td>
                                 <td class="pl-0 py-8 text-right">
-                                    <span class="">@Model.kwhGiao[i]</span>
+                                    <span class="">@Model.formatNumber(Model.kwhGiao[i])</span>
                                 </td>
                                 <td class="pl-0 py-8 text-right">
-                                    <span class="">@Model.kwhNhan[i]</span>
+                                    <span class="">@Model.formatNumber(Model.kwhNhan[i])</span>
                                 </td>
                                 <td class="pl-0 py-8 text-right">
-                                    <span class="">@Model.kvarhGiao[i]</span>
+                                    <span class="">@Model.formatNumber(Model.kvarhGiao[i])</span>
                                 </td>
                                 <td class="pl-0 py-8 text-right">
-                                    <span class="">@Model.kvarhNhan[i]</span>
+                                    <span class="">@Model.formatNumber(Model.kvarhNhan[i])</span>
                                 </td>
                             </tr>
                         }
@@ -46,16 +46,16 @@
                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-center">Tổng</span>
                             </td>
                             <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.sumKwhGiao</span>
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhGiao)</span>
                             </td>
                             <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.sumKwhNhan</span>
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhNhan)</span>
                             </td>
                             <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.sumKvarhGiao</span>
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhGiao)</span>
                             </td>
                             <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.sumKvarhNhan</span>
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhNhan)</span>
                             </td>
                         </tr>
                     </tbody>
