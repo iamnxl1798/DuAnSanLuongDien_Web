@@ -3,12 +3,17 @@
 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
     <div class="modal-content">
         <!--Card header-->
-        <div class="card-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Permissions</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i aria-hidden="true" class="ki ki-close"></i>
-            </button>
+        <div class="modal-header">
+            @if (Model.ID == 0)
+            {
+                <h5 class="modal-title">Create new role :</h5>
+            }
+            else
+            {
+                <h5 class="modal-title">Edit role :</h5>
+            }
         </div>
+        <div id="idRoleAccount" data-id="@Model.ID" hidden></div>
         <!--Card body-->
         <div class="modal-body">
             <!-- Tab Menu -->
@@ -25,10 +30,39 @@
                 <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                     <div class="form-group">
                         <label>Role name :</label>
-                        <input type="text" id="role-name" class="form-control" placeholder="Enter role name" value="@Model.Role"/>
+                        <input type="text" id="role-name" class="form-control" placeholder="Enter role name" value="@Model.Role"
+                               onblur='CheckRolename()' onchange='hideError("errorRolename")' onkeypress='hideError("errorRolename")' />
                         <span class="form-text text-muted">You can change name of role here.</span>
+                        <div class="errorRegistration" id="errorRolename" style="color:red"></div>
                     </div>
                 </div>
+                <script type="text/javascript">
+                        function CheckRolename() {
+                            var rolename = document.getElementById("role-name").value;
+                            $.ajax({
+                                type: "POST",
+                                dataType: 'json',
+                                data: {
+                                    rolename: rolename
+                                },
+                                url: '@Url.Action("CheckRolename", "RoleAccount")',
+                                success: function (response) {
+                                    if (response == "Fail") {
+                                        document.getElementById("errorRolename").innerText = "Rolename has been existed !!!";
+                                    } else {
+                                        document.getElementById("errorRolename").innerText = "";
+                                    }
+                                },
+                                error: function (response) {
+                                    alert("Can't get result !!!");
+                                }
+                            });
+                    };
+                    function hideError(name) {
+                        document.getElementById(name).innerText = "";
+                        document.getElementById('result').innerText = "";
+                    }
+                </script>
                 <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                     <form class="form">
                         <div class="card-body">
@@ -42,70 +76,12 @@
         <!--end::card body-->
         <!--begin::footer-->
         <div class="modal-footer">
+            <label id="result" class="label label-lg font-weight-bold label-light-info label-inline"></label>
             <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
-            <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal" id="submit">Lưu thay đổi</button>
+            <button type="button" class="btn btn-primary font-weight-bold" id="submit">Lưu thay đổi</button>
         </div>
         <!--End::footer-->
     </div>
 </div>
-<script>
-    // load jstree
-    $(document).ready(function () {
-        var RoleId = @Model.ID ;
-        $.ajax({
-            url: "@Url.Action("GetPermissionTree", "RoleAccount")",
-            type: 'POST',
-            data: {
-                roleID: RoleId
-            },
-            success: function (data) {
-                $('#jstree').jstree({
-                    plugins: ['checkbox'],
-                    'core': {
-                        'data': data
-                    },
-                }).on('ready.jstree', function () {
-                    $('#jstree').jstree("open_all");
-                });
-            },
-            error: function (data) {
-                alert("Error load permission");
-            }
-        });
-    });
-    // update or insert Role
-    $('#submit').on('click', function () {
-        var RoleId = @Model.ID ;
-        if (RoleId != 0) {
-            var url = "@Url.Action("UpdateRole", "RoleAccount")";
-        } else {
-            var url = "@Url.Action("InsertRole", "RoleAccount")";
-        }
 
-        //get all roleid chosen
-        var checked_ids = [];
-        var selectedNodes = $('#jstree').jstree("get_selected", true);
-        $.each(selectedNodes, function () {
-            checked_ids.push(this.id);
-        });
-        var rolename = document.getElementById("role-name").value;
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-                RoleID: RoleId,
-                RoleName: rolename,
-                listPermissionID: checked_ids
-            },
-            success: function (data) {
-                if (data != "success") {
-                    alert(data);
-                }
-            },
-            error: function (data) {
-                alert("Error load insert/udapte role");
-            }
-        });
-    });
-</script>
+<script src="~/Scripts/Role/PermissionTree.js"></script>

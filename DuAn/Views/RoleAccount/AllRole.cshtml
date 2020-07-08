@@ -16,7 +16,7 @@
             </label>
         }
     </div>*@
-<select class="form-control" id="role_change">
+<select class="form-control" id="role_change" onchange="changeRole()">
         @foreach (var i in Model)
         {
             if (i.Role.Equals(ViewBag.RoleAccEdit))
@@ -30,3 +30,8 @@
         }
     </select>
 
+<script>
+    function changeRole() {
+        document.getElementById('result').innerText = "";
+    }
+</script>
