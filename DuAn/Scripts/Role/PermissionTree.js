@@ -3,7 +3,7 @@
 $(document).ready(function () {
     var RoleId = $('#idRoleAccount').attr('data-id');
     $.ajax({
-        url: "/RoleAccount/PermissionTree",
+        url: "/RoleAccount/GetPermissionTree",
         type: 'POST',
         data: {
             roleID: RoleId
