@@ -37,8 +37,10 @@
                     </div>
                 </div>
                 <script type="text/javascript">
-                        function CheckRolename() {
-                            var rolename = document.getElementById("role-name").value;
+                    var currentRole = document.getElementById("role-name").value;
+                    function CheckRolename() {
+                        var rolename = document.getElementById("role-name").value;
+                        if (rolename != currentRole) {
                             $.ajax({
                                 type: "POST",
                                 dataType: 'json',
@@ -57,13 +59,14 @@
                                     alert("Can't get result !!!");
                                 }
                             });
+                        }
                     };
                     function hideError(name) {
                         document.getElementById(name).innerText = "";
                         document.getElementById('result').innerText = "";
                     }
                 </script>
-                <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpane2" aria-labelledby="kt_tab_pane_2">
                     <form class="form">
                         <div class="card-body">
                             <div id="jstree"></div>

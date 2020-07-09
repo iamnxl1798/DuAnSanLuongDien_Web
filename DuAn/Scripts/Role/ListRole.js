@@ -6,8 +6,7 @@ $(document).ready(function () {
         type: 'POST',
         success: function (data) {
             $('#datatable_role_ajax').html(data);
-            /*@* $('#test_ajax').modal('show');*@*/
-            },
+        },
         error: function (data) {
             alert("Error load role ajax");
         }
