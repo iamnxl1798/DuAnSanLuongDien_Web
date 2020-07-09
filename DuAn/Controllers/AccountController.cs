@@ -50,7 +50,7 @@ namespace DuAn.Controllers
 
         public ActionResult ListUser()
         {
-            return View();
+            return PartialView();
         }
         [HttpPost]
         public ActionResult TableDataUser()

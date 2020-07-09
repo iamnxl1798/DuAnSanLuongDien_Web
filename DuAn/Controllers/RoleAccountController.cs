@@ -89,7 +89,7 @@ namespace DuAn.Controllers
         }
         public ActionResult ListRole()
         {
-            return View();
+            return PartialView();
         }
         [HttpPost]
         public ActionResult PermissionTree(int RoleID)
