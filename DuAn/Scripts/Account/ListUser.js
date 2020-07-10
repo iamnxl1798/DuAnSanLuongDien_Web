@@ -37,3 +37,9 @@ jQuery(document).ready(function () {
 		}
 	});
 });
+
+$('#reloadAccountTable').on('click', function (e) {
+	e.preventDefault();
+	$('#my_datatable_account').DataTable().destroy();
+	loadDataTableAccount();
+});

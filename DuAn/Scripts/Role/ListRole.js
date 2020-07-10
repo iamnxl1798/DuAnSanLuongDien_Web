@@ -34,3 +34,9 @@ $('#newrole').on('click', function () {
         }
     });
 });
+
+$('#reloadRoleTable').on('click', function (e) {
+    e.preventDefault();
+    $('#my_datatable_role').DataTable().destroy();
+    loadDatatableRole();
+});
