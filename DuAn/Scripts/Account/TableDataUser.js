@@ -54,7 +54,7 @@ $(document).ready(function () {
                 "render": function (data, type, full) {
 					return '\
 						<div class="dropdown dropdown-inline">\
-	                            <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown">\
+	                            <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown" title="Other options">\
 									<span class="svg-icon svg-icon-md">\
 										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-icon">\
 											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -191,4 +191,9 @@ $('#btnDelteYes').on('click', function (e) {
 			alert("Error load ajax delete Account");
 		}
 	});
+});
+
+$('#reloadAccountTable').on('click', function (e) {
+	e.preventDefault();
+	/*$('#my_datatable_account').DataTable().column('abc:name').search("").draw();*/
 });

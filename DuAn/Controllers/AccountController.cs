@@ -89,6 +89,7 @@ namespace DuAn.Controllers
                 int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"]) / length))) + 1;
                 string searchValue = HttpContext.Request["search[value]"];
                 string sortColumnName = HttpContext.Request["columns[" + Request["order[0][column]"] + "][name]"];
+                string searchRoleValue = HttpContext.Request["columns[5][search][value]"];// search theo role
                 string sortDirection = Request["order[0][dir]"];
 
                 AccountPaging apg = new AccountPaging();
@@ -97,6 +98,14 @@ namespace DuAn.Controllers
                 List<Account> listAccount = db.Accounts.ToList<Account>();
                 apg.recordsTotal = listAccount.Count;
                 //filter
+                    // search theo Role
+                if (!string.IsNullOrEmpty(searchRoleValue))
+                {
+                    listAccount = listAccount.Where(x 
+                        => x.RoleAccount.Role.ToLower().Equals(searchRoleValue.ToLower())
+                    ).ToList<Account>();
+                }
+                    // search total
                 if (!string.IsNullOrEmpty(searchValue))
                 {
                     listAccount = listAccount.Where(x => x.Username.ToLower().Contains(searchValue.ToLower()) ||
@@ -109,7 +118,6 @@ namespace DuAn.Controllers
                 //sorting
                 if (sortColumnName.Equals("Role"))
                 {
-                    //sort UTF 8
                     sortColumnName = "RoleID";
                 }
                 listAccount = listAccount.OrderBy(sortColumnName + " " + sortDirection).ToList<Account>();

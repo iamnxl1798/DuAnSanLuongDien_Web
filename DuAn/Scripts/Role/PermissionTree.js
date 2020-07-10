@@ -55,6 +55,9 @@ $('#submit').on('click', function () {
                 } else {
                     document.getElementById('result').innerText = 'Successfully';
                     reloadRoleDatatable();
+                    if (url.endsWith("UpdateRole")) {
+                        searchAccountFollowRole(rolename);
+                    }
                 }
             },
             error: function (data) {
