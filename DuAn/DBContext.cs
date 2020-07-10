@@ -700,5 +700,42 @@ namespace DuAn
                 throw ex;
             }
         }
+        public static void InsertRole(RoleAccount role)
+        {
+            try
+            {
+                using (var db = new Model1())
+                {
+                    if (checkRoleName(role.Role))
+                    {
+                        db.RoleAccounts.Add(role);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static void Delete(int roleID)
+        {
+            try
+            {
+                using (var db = new Model1())
+                {
+                    var result = db.RoleAccounts.SingleOrDefault(b => b.ID == roleID);
+                    if (result != null)
+                    {
+                        db.RoleAccounts.Remove(result);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
