@@ -1,7 +1,7 @@
-﻿
+﻿"use strict"
 //EditAccountForm
-$('#submit').on('click', function () {
-    if (CheckTotal()) {
+$('#submitAccount').on('click', function () {
+    if (CheckTotalAccount()) {
         var id = document.getElementById('id').value;
         var username = document.getElementById('username').value;
         var fullname = document.getElementById('fullname').value;
@@ -12,6 +12,7 @@ $('#submit').on('click', function () {
         var dob = document.getElementById('dob').value;
         var roleID = $('#role_change').children("option:selected").val();
 
+        var url = "";
         if (id != 0) {
             url = "/Account/UpdateAccount";
         } else {
@@ -34,14 +35,14 @@ $('#submit').on('click', function () {
             },
             success: function (data) {
                 if (data != "success") {
-                    document.getElementById('result').innerText = data;
+                    document.getElementById('resultAccount').innerText = data;
                 } else {
-                    document.getElementById('result').innerText = 'Successfully';
+                    document.getElementById('resultAccount').innerText = 'Successfully';
                     reloadAccountDatatable();
                 }
             },
             error: function (data) {
-                document.getElementById('result').innerText = 'Error load insert/udapte accout';
+                document.getElementById('resultAccount').innerText = 'Error load insert/udapte account';
                 /*@* alert("Error load insert/udapte accout");*@*/
                 }
         });
@@ -49,9 +50,9 @@ $('#submit').on('click', function () {
 });
 function hideError(name) {
     document.getElementById(name).innerText = "";
-    document.getElementById('result').innerText = "";
+    document.getElementById('resultAccount').innerText = "";
 }
-function CheckTotal() {
+function CheckTotalAccount() {
     var username = document.getElementById('username').value;
     var fullname = document.getElementById('fullname').value;
     var phone = document.getElementById('phone').value;
@@ -88,7 +89,7 @@ function CheckTotal() {
         document.getElementById("errorDOB").innerText = "You need to fill it";
 
     }
-    var error = document.getElementsByClassName("errorRegistration");
+    var error = document.getElementsByClassName("errorRegistrationAccount");
     for (var i = 0; i < error.length; i++) {
         if (error[i].innerText != "" && error[i].innerText != null) {
             return false;

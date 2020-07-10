@@ -147,10 +147,6 @@ namespace DuAn.Controllers
         {
             try
             {
-                if (!RoleAccountDAO.checkRoleName(RoleName))
-                {
-                    return "Role Name đã tồn tại !!!";
-                }
                 if (listPermissionID == null)
                 {
                     listPermissionID = new List<string>();
@@ -179,10 +175,6 @@ namespace DuAn.Controllers
         {
             try
             {
-                if (!RoleAccountDAO.checkRoleName(RoleName))
-                {
-                    return "Role Name đã tồn tại !!!";
-                }
                 if (listPermissionID == null)
                 {
                     listPermissionID = new List<string>();
@@ -192,8 +184,7 @@ namespace DuAn.Controllers
                     Role = RoleName,
                     PermissionID = string.Join(",", listPermissionID)
                 };
-                db.RoleAccounts.Add(rs);
-                db.SaveChanges();
+                RoleAccountDAO.InsertRole(rs);
 
             }
             catch (Exception ex)
@@ -206,9 +197,7 @@ namespace DuAn.Controllers
         {
             try
             {
-                var rs = db.RoleAccounts.Find(RoleID);
-                db.RoleAccounts.Remove(rs);
-                db.SaveChanges();
+                RoleAccountDAO.Delete(RoleID);
             }
             catch (Exception ex)
             {

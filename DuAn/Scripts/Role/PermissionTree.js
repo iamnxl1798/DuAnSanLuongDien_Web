@@ -23,9 +23,13 @@ $(document).ready(function () {
         }
     });
 });
+function hideError(name) {
+    document.getElementById(name).innerText = "";
+    document.getElementById('resultRole').innerText = "";
+}
 // update or insert Role
-$('#submit').on('click', function () {
-    if (CheckTotal()) {
+$('#submitRole').on('click', function () {
+    if (CheckTotalRole()) {
         var RoleId = $('#idRoleAccount').attr('data-id');
         if (RoleId != 0) {
             var url = "/RoleAccount/UpdateRole";
@@ -51,9 +55,9 @@ $('#submit').on('click', function () {
             },
             success: function (data) {
                 if (data != "success") {
-                    document.getElementById('result').innerText = data;
+                    document.getElementById('resultRole').innerText = data;
                 } else {
-                    document.getElementById('result').innerText = 'Successfully';
+                    document.getElementById('resultRole').innerText = 'Successfully';
                     reloadRoleDatatable();
                     if (url.endsWith("UpdateRole")) {
                         searchAccountFollowRole(rolename);
@@ -61,24 +65,24 @@ $('#submit').on('click', function () {
                 }
             },
             error: function (data) {
-                document.getElementById('result').innerText = 'Error load insert / udapte role';
+                document.getElementById('resultRole').innerText = 'Error load insert / udapte role';
             }
         });
     }
 });
-function CheckTotal() {
+function CheckTotalRole() {
     var errorRolename = document.getElementById('errorRolename').innerText;
     var rolename = document.getElementById('role-name').value;
 
     if (errorRolename != "" && errorRolename != null) {
-        document.getElementById("result").innerText = "You need to change rolename";
+        document.getElementById("resultRole").innerText = "You need to change rolename";
     }
     if (rolename == "" || rolename == null) {
         document.getElementById("errorRolename").innerText = "You need to fill it";
-        document.getElementById("result").innerText = "You need to fill rolename";
+        document.getElementById("resultRole").innerText = "You need to fill rolename";
     }
 
-    var error = document.getElementsByClassName("errorRegistration");
+    var error = document.getElementsByClassName("errorRegistrationRole");
     for (var i = 0; i < error.length; i++) {
         if (error[i].innerText != "" && error[i].innerText != null) {
             return false;

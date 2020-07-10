@@ -33,7 +33,7 @@
                         <input type="text" id="role-name" class="form-control" placeholder="Enter role name" value="@Model.Role"
                                onblur='CheckRolename()' onchange='hideError("errorRolename")' onkeypress='hideError("errorRolename")' />
                         <span class="form-text text-muted">You can change name of role here.</span>
-                        <div class="errorRegistration" id="errorRolename" style="color:red"></div>
+                        <div class="errorRegistrationRole" id="errorRolename" style="color:red"></div>
                     </div>
                 </div>
                 <script type="text/javascript">
@@ -61,10 +61,6 @@
                             });
                         }
                     };
-                    function hideError(name) {
-                        document.getElementById(name).innerText = "";
-                        document.getElementById('result').innerText = "";
-                    }
                 </script>
                 <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpane2" aria-labelledby="kt_tab_pane_2">
                     <form class="form">
@@ -79,9 +75,9 @@
         <!--end::card body-->
         <!--begin::footer-->
         <div class="modal-footer">
-            <label id="result" class="label label-lg font-weight-bold label-light-info label-inline"></label>
+            <label id="resultRole" class="label label-lg font-weight-bold label-light-info label-inline"></label>
             <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
-            <button type="button" class="btn btn-primary font-weight-bold" id="submit">Lưu thay đổi</button>
+            <button type="button" class="btn btn-primary font-weight-bold" id="submitRole">Lưu thay đổi</button>
         </div>
         <!--End::footer-->
     </div>
