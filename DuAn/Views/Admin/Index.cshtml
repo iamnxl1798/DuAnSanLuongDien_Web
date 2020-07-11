@@ -1,5 +1,5 @@
 ﻿@using DuAn.Models.CustomModel
-@using DuAn.Models
+@using DuAn.Models.DbModel
 @model AdminModel
 @{
     ViewBag.Title = "Index";
@@ -149,7 +149,6 @@
     $(document).ready(function () {
         $('#pageTitle').text('Quản lý dữ liệu');
         $('#pageDirectory').text('Admin');
-        $('#example').DataTable();
         var start = new Date(@Model.getLastDate.Year,@Model.getLastDate.Month-1,@Model.getLastDate.Day);
         updateCalendar(start);
             $('#kt_dropzone_3').dropzone({

@@ -10,6 +10,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using OfficeOpenXml;
+using DuAn.Models.DbModel;
 
 namespace DuAn
 {
@@ -646,6 +647,7 @@ namespace DuAn
                     var result = db.Accounts.SingleOrDefault(b => b.ID == acc.ID);
                     if (result != null)
                     {
+                        result.Avatar = acc.Avatar;
                         result.Fullname = acc.Fullname;
                         result.Phone = acc.Phone;
                         result.Email = acc.Email;

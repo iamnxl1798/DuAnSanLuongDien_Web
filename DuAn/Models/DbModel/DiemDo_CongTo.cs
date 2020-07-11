@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace DuAn.Models
 
         public DateTime ThoiGianBatDau { get; set; }
 
-        public DateTime? ThoiGianKetThuc { get; set; }
+        public DateTime ThoiGianKetThuc { get; set; }
 
         public virtual CongTo CongTo { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿
 var loadDatatableRole = function () {
     $('#my_datatable_role').DataTable({
+        "responsive": true,
         "serverSide": true,
         "processing": true,
         "language": {

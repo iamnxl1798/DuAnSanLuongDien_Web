@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -13,9 +13,9 @@ namespace DuAn.Models
         [Column(TypeName = "date")]
         public DateTime Ngay { get; set; }
 
-        public int? ChuKy { get; set; }
+        public int ChuKy { get; set; }
 
-        public double? GiaTri { get; set; }
+        public double GiaTri { get; set; }
 
         public int CongThucID { get; set; }
 

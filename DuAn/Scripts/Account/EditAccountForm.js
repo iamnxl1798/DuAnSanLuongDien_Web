@@ -1,7 +1,11 @@
 ﻿"use strict"
 //EditAccountForm
+var _avatar = new KTImageInput('kt_user_add_avatar');
+
 $('#submitAccount').on('click', function () {
     if (CheckTotalAccount()) {
+        alert("haha");
+        var avatar = document.getElementById('avatar');
         var id = document.getElementById('id').value;
         var username = document.getElementById('username').value;
         var fullname = document.getElementById('fullname').value;
@@ -24,6 +28,7 @@ $('#submitAccount').on('click', function () {
             type: 'POST',
             data: {
                 id: id,
+                avatar: avatar,
                 username: username,
                 fullname: fullname,
                 phone: phone,

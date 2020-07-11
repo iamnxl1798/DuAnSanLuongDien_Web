@@ -8,6 +8,7 @@ using System.Linq.Dynamic;
 using DuAn.Models;
 using DuAn.Models.CustomModel;
 using Abp.Extensions;
+using DuAn.Models.DbModel;
 
 namespace DuAn.Controllers
 {

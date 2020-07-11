@@ -1,6 +1,8 @@
 ﻿//TableDataUser
+
 var loadDataTableAccount = function () {
-		$('#my_datatable_account').DataTable({
+	$('#my_datatable_account').DataTable({
+		"responsive": true,
 		"processing": true,
 		"language": {
 			"processing": "Loading Database ....."
@@ -155,6 +157,7 @@ $('#my_datatable_account').on('click', '.bt-open-edit-account-form', function ()
 		}
 	});
 });
+
 
 var reloadAccountDatatable = function () {
 	$('#my_datatable_account').DataTable().ajax.reload(null, false);

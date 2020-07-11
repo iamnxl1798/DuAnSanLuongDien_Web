@@ -5,6 +5,8 @@
 <!--end::Page Vendors Styles-->
 <!--begin::Global Theme Styles(used by all pages)-->
 <!--begin::Card-->
+
+
 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
     <div class="modal-content card card-custom gutter-b example example-compact">
         <!--Card header-->
@@ -21,15 +23,50 @@
         <!--begin::Form-->
         <form class="form">
             <div class="card-body">
-                <div class="form-group">
-                    <label>ID:</label>
-                    <input type="text" class="form-control form-control-solid" placeholder="ID" id="id" value="@Model.ID" disabled />
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label text-left">Avatar:</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <div class="image-input image-input-outline" id="kt_user_add_avatar">
+                            <div class="image-input-wrapper" style="background-image: url(@Model.Avatar)"></div>
+                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                <i class="fa fa-pen icon-sm text-muted"></i>
+                                <input type="file" id="avatar" name="profile_avatar" accept=".png, .jpg, .jpeg" />
+                                <input type="hidden" name="profile_avatar_remove" />
+                            </label>
+                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                <i class="ki ki-bold-close icon-xs text-muted"></i>
+                            </span>
+                        </div>
+                    </div>
+                    @*<script>
+                        function getDataUrl() {
+                            // Create canvas
+                            var avatar = document.getElementById('avatar');
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            // Set width and height
+                            canvas.width = avatar.width;
+                            canvas.height = avatar.height;
+                            // Draw the image
+                            ctx.drawImage(avatar, 0, 0);
+                            return canvas.toDataURL('image/jpeg');
+                        }
+                        alert(getDataUrl());
+                    </script>*@
                 </div>
-                <div class="form-group">
-                    <label>Tên đăng nhập :</label>
-                    <input type="text" class="form-control form-control-solid" placeholder="Nhập username" id="username" value="@Model.Username"
-                           onblur='CheckUsername()' onchange='hideError("errorUsername")' onkeypress='hideError("errorUsername")' />
-                    <div class="errorRegistrationAccount" id="errorUsername" style="color:red"></div>
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">ID:</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <input type="text" class="form-control form-control-solid form-control-lg" placeholder="ID" id="id" value="@Model.ID" disabled />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Tên đăng nhập :</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <input type="text" class="form-control form-control-solid" placeholder="Nhập username" id="username" value="@Model.Username"
+                               onblur='CheckUsername()' onchange='hideError("errorUsername")' onkeypress='hideError("errorUsername")' />
+                        <div class="errorRegistrationAccount" id="errorUsername" style="color:red"></div>
+                    </div>
                     <script type="text/javascript">
                         function CheckUsername() {
                             var username = document.getElementById("username").value;
@@ -54,39 +91,41 @@
                         };
                     </script>
                 </div>
-                <div class="form-group">
-                    <label>Họ và tên :</label>
-                    <input type="text" class="form-control form-control-solid" placeholder="Nhập họ và tên đây đủ" id="fullname" value="@Model.Fullname"
-                           onkeypress='hideError("errorFullname")' onchange='hideError("errorFullname")' />
-                    <div class="errorRegistrationAccount" id="errorFullname" style="color:red"></div>
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Họ và tên :</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <input type="text" class="form-control form-control-solid" placeholder="Nhập họ và tên đây đủ" id="fullname" value="@Model.Fullname"
+                               onkeypress='hideError("errorFullname")' onchange='hideError("errorFullname")' />
+                        <div class="errorRegistrationAccount" id="errorFullname" style="color:red"></div>
+                    </div>
                     @*<span class="form-text text-muted">Nhập họ và tên đây đủ</span>*@
                 </div>
 
-                <div class="form-group">
-                    <label>Sinh ngày :</label>
-                    <div class="datepicker date input-group p-0 shadow-sm" data-dob="@Model.DOB">
-                        <input type="text" placeholder="Date of birth" class="form-control" id="dob" readonly>
-                        <div class="input-group-append"><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Sinh ngày :</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <div class="datepicker date input-group p-0 shadow-sm" data-dob="@Model.DOB">
+                            <input type="text" placeholder="Date of birth" class="form-control" id="dob" readonly>
+                            <div class="input-group-append"><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
+                        </div>
+                        <script type="text/javascript">
+                            var dob = new Date($('.datepicker').attr('data-dob'));
+                            $('.datepicker').datepicker({
+                                clearBtn: true,
+                                format: "dd - MM - yyyy"
+                            });
+                            $('.datepicker').datepicker('setDate', dob);
+                        </script>
                     </div>
-                    @*<div class="input-append date form_datetime">
-                            <input class="form-control form-control-solid" type="text" id="dob" data-dob="@Model.DOB" readonly>
-                            <span class="add-on"><i class="icon-th"></i></span>
-                        </div>*@
-                    <script type="text/javascript">
-                        var dob = new Date($('.datepicker').attr('data-dob'));
-                        $('.datepicker').datepicker({
-                            clearBtn: true,
-                            format: "dd - MM - yyyy"
-                        });
-                        $('.datepicker').datepicker('setDate', dob);
-                    </script>
                 </div>
-                <div class="form-group">
-                    <label>Số điện thoại :</label>
-                    <input type="text" class="form-control form-control-solid" placeholder="Nhập số điện thoại liên hệ" id="phone" value="@Model.Phone"
-                           onkeypress='hideError("errorPhone")' onblur="checkPhone()" onchange='hideError("errorPhone")' />
-                    @*<span class="form-text text-muted">Nhập số điện thoại liên hệ</span>*@
-                    <div class="errorRegistrationAccount" id="errorPhone" style="color:red"></div>
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Số điện thoại :</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <input type="text" class="form-control form-control-solid" placeholder="Nhập số điện thoại liên hệ" id="phone" value="@Model.Phone"
+                               onkeypress='hideError("errorPhone")' onblur="checkPhone()" onchange='hideError("errorPhone")' />
+                        @*<span class="form-text text-muted">Nhập số điện thoại liên hệ</span>*@<span class="form-text text-muted"></span><span class="form-text text-muted"></span>
+                        <div class="errorRegistrationAccount" id="errorPhone" style="color:red"></div>
+                    </div>
                 </div>
 
                 <script>
@@ -99,31 +138,40 @@
                         }
                     }
                 </script>
-                <div class="form-group">
-                    <label>Email :</label>
-                    <input type="email" class="form-control form-control-solid" placeholder="Nhập địa chỉ Email liên hệ" id="email" value="@Model.Email"
-                           onkeypress='hideError("errorEmail")' onchange='hideError("errorEmail")' />
-                    <div class="errorRegistrationAccount" id="errorEmail" style="color:red"></div>
-                    @* <span class="form-text text-muted">Nhập địa chỉ Email liên hệ</span>*@
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Email :</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <input type="email" class="form-control form-control-solid" placeholder="Nhập địa chỉ Email liên hệ" id="email" value="@Model.Email"
+                               onkeypress='hideError("errorEmail")' onchange='hideError("errorEmail")' />
+                        <div class="errorRegistrationAccount" id="errorEmail" style="color:red"></div>
+                        @* <span class="form-text text-muted">Nhập địa chỉ Email liên hệ</span>*@
+                        <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Địa chỉ :</label>
-                    <input type="email" class="form-control form-control-solid" placeholder="Nhập địa chỉ nơi ở hiện tại" id="address" value="@Model.Address"
-                           onkeypress='hideError("errorAddress")' onchange='hideError("errorAddress")' />
-                    <div class="errorRegistrationAccount" id="errorAddress" style="color:red"></div>
-                    @*<span class="form-text text-muted">Nhập địa chỉ nơi ở hiện tại</span>*@
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Địa chỉ :</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <input type="email" class="form-control form-control-solid" placeholder="Nhập địa chỉ nơi ở hiện tại" id="address" value="@Model.Address"
+                               onkeypress='hideError("errorAddress")' onchange='hideError("errorAddress")' />
+                        <div class="errorRegistrationAccount" id="errorAddress" style="color:red"></div>
+                        @*<span class="form-text text-muted">Nhập địa chỉ nơi ở hiện tại</span>*@
+                        <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>CMND / CCCD :</label>
-                    <input type="email" class="form-control form-control-solid" placeholder="Nhập chứng minh nhân dân / căn cước công dân" id="icode" value="@Model.IdentifyCode"
-                           onkeypress='hideError("errorIdentifyCode")' onchange='hideError("errorIdentifyCode")' />
-                    <div class="errorRegistrationAccount" id="errorIdentifyCode" style="color:red"></div>
-                    @*<span class="form-text text-muted">Nhập chứng minh nhân dân / căn cước công dân</span>*@
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">CMND / CCCD :</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <input type="email" class="form-control form-control-solid" placeholder="Nhập chứng minh nhân dân / căn cước công dân" id="icode" value="@Model.IdentifyCode"
+                               onkeypress='hideError("errorIdentifyCode")' onchange='hideError("errorIdentifyCode")' />
+                        <div class="errorRegistrationAccount" id="errorIdentifyCode" style="color:red"></div>
+                        @*<span class="form-text text-muted">Nhập chứng minh nhân dân / căn cước công dân</span>*@
+                        <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
+                    </div>
                 </div>
-                <div class="form-group" style="margin-right: 20px" id="all-role" data-role="@Model.Role">
-                    <label>Vai trò :</label>
+                <div class="form-group row" style="margin-right: 20px" id="all-role" data-role="@Model.Role">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Vai trò :</label>
                 </div>
             </div>
         </form>
@@ -141,6 +189,7 @@
     var checkAcc = document.getElementById("username");
 if (@Model.ID != 0) {
     checkAcc.setAttribute("disabled", "");
-}
+    }
 </script>
 <script src="~/Scripts/Account/EditAccountForm.js"></script>
+

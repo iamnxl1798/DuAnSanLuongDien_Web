@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Data.Entity;
@@ -8,7 +8,7 @@ namespace DuAn.Models
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=Model17")
+            : base("name=Model1")
         {
         }
 
@@ -21,6 +21,11 @@ namespace DuAn.Models
         public virtual DbSet<DiemDo_CongTo> DiemDo_CongTo { get; set; }
         public virtual DbSet<Kenh> Kenhs { get; set; }
         public virtual DbSet<LoaiSanLuong> LoaiSanLuongs { get; set; }
+        public virtual DbSet<LogCongTy> LogCongTies { get; set; }
+        public virtual DbSet<LogDiemDo> LogDiemDoes { get; set; }
+        public virtual DbSet<LogKenh> LogKenhs { get; set; }
+        public virtual DbSet<LogNhaMay> LogNhaMays { get; set; }
+        public virtual DbSet<LogTinhChatDiemDo> LogTinhChatDiemDoes { get; set; }
         public virtual DbSet<NhaMay> NhaMays { get; set; }
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<RoleAccount> RoleAccounts { get; set; }
@@ -84,16 +89,26 @@ namespace DuAn.Models
                 .IsFixedLength();
 
             modelBuilder.Entity<CongTy>()
+                .HasMany(e => e.LogCongTies)
+                .WithRequired(e => e.CongTy)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CongTy>()
                 .HasMany(e => e.NhaMays)
                 .WithRequired(e => e.CongTy)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<DiemDo>()
                 .Property(e => e.TenDiemDo)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<DiemDo>()
                 .HasMany(e => e.DiemDo_CongTo)
+                .WithRequired(e => e.DiemDo)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<DiemDo>()
+                .HasMany(e => e.LogDiemDoes)
                 .WithRequired(e => e.DiemDo)
                 .WillCascadeOnDelete(false);
 
@@ -110,6 +125,11 @@ namespace DuAn.Models
             modelBuilder.Entity<Kenh>()
                 .Property(e => e.Ten)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<Kenh>()
+                .HasMany(e => e.LogKenhs)
+                .WithRequired(e => e.Kenh)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Kenh>()
                 .HasMany(e => e.SanLuongs)
@@ -131,12 +151,37 @@ namespace DuAn.Models
                 .HasForeignKey(e => e.LoaiID)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<NhaMay>()
+            modelBuilder.Entity<LogCongTy>()
                 .Property(e => e.TenVietTat)
                 .IsFixedLength();
 
+            modelBuilder.Entity<LogDiemDo>()
+                .Property(e => e.TenDiemDo)
+                .IsFixedLength();
+
+            modelBuilder.Entity<LogDiemDo>()
+                .Property(e => e.NhaMayID)
+                .IsFixedLength();
+
+            modelBuilder.Entity<LogKenh>()
+                .Property(e => e.Ten)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<LogNhaMay>()
+                .Property(e => e.TenVietTat)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<NhaMay>()
+                .Property(e => e.TenVietTat)
+                .IsUnicode(false);
+
             modelBuilder.Entity<NhaMay>()
                 .HasMany(e => e.DiemDoes)
+                .WithRequired(e => e.NhaMay)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<NhaMay>()
+                .HasMany(e => e.LogNhaMays)
                 .WithRequired(e => e.NhaMay)
                 .WillCascadeOnDelete(false);
 
@@ -166,6 +211,11 @@ namespace DuAn.Models
                 .HasMany(e => e.DiemDoes)
                 .WithRequired(e => e.TinhChatDiemDo)
                 .HasForeignKey(e => e.TinhChatID)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<TinhChatDiemDo>()
+                .HasMany(e => e.LogTinhChatDiemDoes)
+                .WithRequired(e => e.TinhChatDiemDo)
                 .WillCascadeOnDelete(false);
         }
     }

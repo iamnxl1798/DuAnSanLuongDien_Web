@@ -7,6 +7,9 @@ using DuAn.Models;
 using DuAn.Models.CustomModel;
 using System.Linq.Dynamic;
 using DuAn.Attribute;
+using System.Web;
+using DuAn.Models.DbModel;
+using System.IO;
 
 namespace DuAn.Controllers
 {
@@ -149,13 +152,22 @@ namespace DuAn.Controllers
             }
         }
         [HttpPost]
-        public string UpdateAccount(int id,string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string UpdateAccount(int id, HttpPostedFileBase avatar, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
+                string path_avatar = "";
+                if (avatar != null)
+                {
+                    string pic = System.IO.Path.GetFileName(avatar.FileName);
+                    path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/avatarAccount"), pic);
+                    // file is uploaded
+                    avatar.SaveAs(path_avatar);
+                }
                 Account acc = new Account()
                 {
                     ID = id,
+                    Avatar = path_avatar,
                     Fullname = fullname,
                     Email = email,
                     Address = address,
@@ -183,10 +195,12 @@ namespace DuAn.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public string InsertAccount(int id, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string InsertAccount(int id, string avatar, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
+                string[] split = avatar.Split('\\');
+                string avatar_str = split.ElementAt(split.Length - 1);
                 if (!AccountDAO.CheckUsername(username))
                 {
                     return "Username đã tồn tại !!!";
@@ -196,6 +210,7 @@ namespace DuAn.Controllers
                     Username = username,
                     //hard code password
                     Password = "123",
+                    Avatar = "../images/avatarAccount/" + avatar_str,
                     Fullname = fullname,
                     Email = email,
                     Address = address,

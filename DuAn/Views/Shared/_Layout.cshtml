@@ -27,6 +27,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="/Scripts/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css?v=7.0.3" rel="stylesheet" type="text/css" />
     <link href="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <link href="~/Scripts/assets/css/pages/wizard/wizard-4.css" rel="stylesheet" />
     <!--end::Page Vendors Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
 
@@ -138,7 +139,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <!--begin::Toggle-->
                                 @if (Session["User"] != null)
                                 {
-                                    DuAn.Models.Account ac = (DuAn.Models.Account)Session["User"];
+                                    DuAn.Models.DbModel.Account ac = (DuAn.Models.DbModel.Account)Session["User"];
                                     <div class="topbar-item" data-toggle="dropdown" data-offset="0px,0px">
                                         <div class="btn btn-icon btn-hover-transparent-white d-flex align-items-center btn-lg px-md-2 w-md-auto">
 

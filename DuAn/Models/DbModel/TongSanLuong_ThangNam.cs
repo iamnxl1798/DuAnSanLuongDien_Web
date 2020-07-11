@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -6,14 +6,15 @@ namespace DuAn.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Permission")]
-    public partial class Permission
+    public partial class TongSanLuong_ThangNam
     {
         public int ID { get; set; }
 
-        [Required]
-        public string Text { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime Ngay { get; set; }
 
-        public string Parent { get; set; }
+        public double GiaTriThang { get; set; }
+
+        public double GiaTriNam { get; set; }
     }
 }
