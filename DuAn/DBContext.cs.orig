@@ -10,7 +10,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using OfficeOpenXml;
-using DuAn.Models.DbModel;
 
 namespace DuAn
 {
@@ -200,17 +199,16 @@ namespace DuAn
             }
         }
         static List<MissingDataStatus> data = new List<MissingDataStatus>();
-        static DateTime startDay=DateTime.MinValue;
-        static DateTime endDay=DateTime.MaxValue;
         public static List<MissingDataStatus> getMissingData(string name = "")
         {
             using (var db = new Model1())
             {
+
+                IEnumerable<DiemDo> listDiemDo = db.DiemDoes;
                 if (data.Count() == 0 && name.Length == 0)
                 {
-                    startDay = db.SanLuongs.Min(x => x.Ngay);
-                    endDay = DateTime.Now.AddDays(-1);
-                    IEnumerable<DiemDo> listDiemDo = db.DiemDoes;
+                    DateTime startDay = db.SanLuongs.Min(x => x.Ngay);
+                    DateTime endDay = DateTime.Now.AddDays(-1);
                     for (DateTime date = startDay; date <= endDay; date = date.AddDays(1))
                     {
                         foreach (DiemDo item in listDiemDo)
@@ -254,11 +252,6 @@ namespace DuAn
                     string year = fileName.Substring(4, 1);
                     year = DateTime.Now.Year.ToString().Substring(0, 3) + year;
                     DateTime date = new DateTime(int.Parse(year), int.Parse(month), int.Parse(day));
-                    if (date < startDay || date > endDay)
-                    {
-                        data.Clear();
-                        return getMissingData();
-                    }
                     var diemDo = db.DiemDoes.Where(x => x.MaDiemDo == MaDiemDo).FirstOrDefault();
                     int id = diemDo.ID;
                     string tenDiemDo = diemDo.TenDiemDo;
@@ -301,6 +294,7 @@ namespace DuAn
                     {
                         result.Add(new MissingDataStatus()
                         {
+<<<<<<< HEAD
                             date = date.ToString("dd/MM/yyyy"),
                             name = item.TenDiemDo,
                             status = -1,
@@ -310,6 +304,17 @@ namespace DuAn
                     else
                     {
                         result.Add(new MissingDataStatus
+=======
+                            result.Add(new MissingDataStatus()
+                            {
+                                date = date.ToString("dd/MM/yyyy"),
+                                name = item.TenDiemDo,
+                                status = -1,
+                                type = item.TinhChatDiemDo.TenTinhChat
+                            });
+                        }
+                        else
+>>>>>>> origin/master
                         {
                             date = date.ToString("dd/MM/yyyy"),
                             name = item.TenDiemDo,
@@ -653,10 +658,6 @@ namespace DuAn
                     var result = db.Accounts.SingleOrDefault(b => b.ID == acc.ID);
                     if (result != null)
                     {
-                        if (!string.IsNullOrEmpty(acc.Avatar))
-                        {
-                            result.Avatar = acc.Avatar;
-                        } 
                         result.Fullname = acc.Fullname;
                         result.Phone = acc.Phone;
                         result.Email = acc.Email;
@@ -702,43 +703,6 @@ namespace DuAn
                     {
                         result.Role = role.Role;
                         result.PermissionID = role.PermissionID;
-                        db.SaveChanges();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public static void InsertRole(RoleAccount role)
-        {
-            try
-            {
-                using (var db = new Model1())
-                {
-                    if (checkRoleName(role.Role))
-                    {
-                        db.RoleAccounts.Add(role);
-                        db.SaveChanges();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public static void Delete(int roleID)
-        {
-            try
-            {
-                using (var db = new Model1())
-                {
-                    var result = db.RoleAccounts.SingleOrDefault(b => b.ID == roleID);
-                    if (result != null)
-                    {
-                        db.RoleAccounts.Remove(result);
                         db.SaveChanges();
                     }
                 }

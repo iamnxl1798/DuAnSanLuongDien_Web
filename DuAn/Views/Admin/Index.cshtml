@@ -28,7 +28,7 @@
             <form>
                 <div class="card-body">
                     <div class="form-group row">
-                        <div class="col-lg-8 mb-4">
+                        <div class="col-lg-7 mb-4">
                             <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
                                 <div class="dropzone-msg dz-message needsclick my-auto text-center">
                                     <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4" id="listMissing">
+                        <div class="col-lg-5" id="listMissing">
                             @Html.Partial("viewMissingDataList", Model.missingData)
                         </div>
                     </div>
@@ -160,10 +160,26 @@
                 addRemoveLinks: true,
                 acceptedFiles: "text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv",
                 accept: function (file, done) {
-                    if (!isNaN(file.name || file.name.length > 8)) {
+                    var name = file.name;
+                    try {
+                        var day = parseInt(name.substring(0, 2));
+                        var month = parseInt(name.substring(2, 4))-1;
+                        var year = parseInt(new Date().getFullYear().toString().substring(0, 3)+name.substring(4, 5));
+                        var ID = parseInt(name.substring(5));
+                        var myDate = new Date(year, month, day);
+                        if (myDate.getDate() != day || myDate.getMonth() != month || myDate.getFullYear() != year) {
+                            showMessage("File không hợp lệ", false);
+                            done("File không hợp lệ.");
+                        }
+                        else if (!isNaN(file.name) || file.name.split('.')[0].length > 8) {
+                            showMessage("File không hợp lệ", false);
+                            done("File không hợp lệ.");
+                        } else {
+                            done();
+                        }
+                    }
+                    catch{
                         done("File khÔng hợp lệ.");
-                    } else {
-                        done();
                     }
                 },
                 success: function (file, response) {
