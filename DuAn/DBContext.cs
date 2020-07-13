@@ -10,6 +10,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using OfficeOpenXml;
+using DuAn.Models.DbModel;
 
 namespace DuAn
 {
@@ -652,6 +653,7 @@ namespace DuAn
                     var result = db.Accounts.SingleOrDefault(b => b.ID == acc.ID);
                     if (result != null)
                     {
+                        result.Avatar = acc.Avatar;
                         result.Fullname = acc.Fullname;
                         result.Phone = acc.Phone;
                         result.Email = acc.Email;
@@ -697,6 +699,43 @@ namespace DuAn
                     {
                         result.Role = role.Role;
                         result.PermissionID = role.PermissionID;
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static void InsertRole(RoleAccount role)
+        {
+            try
+            {
+                using (var db = new Model1())
+                {
+                    if (checkRoleName(role.Role))
+                    {
+                        db.RoleAccounts.Add(role);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static void Delete(int roleID)
+        {
+            try
+            {
+                using (var db = new Model1())
+                {
+                    var result = db.RoleAccounts.SingleOrDefault(b => b.ID == roleID);
+                    if (result != null)
+                    {
+                        db.RoleAccounts.Remove(result);
                         db.SaveChanges();
                     }
                 }

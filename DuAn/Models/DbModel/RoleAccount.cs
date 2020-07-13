@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -6,32 +6,24 @@ namespace DuAn.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("NhaMay")]
-    public partial class NhaMay
+    [Table("RoleAccount")]
+    public partial class RoleAccount
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public NhaMay()
+        public RoleAccount()
         {
-            DiemDoes = new HashSet<DiemDo>();
+            Accounts = new HashSet<Account>();
         }
 
         public int ID { get; set; }
 
         [Required]
-        public string TenNhaMay { get; set; }
+        [StringLength(20)]
+        public string Role { get; set; }
 
-        [Required]
-        [StringLength(10)]
-        public string TenVietTat { get; set; }
-
-        [Required]
-        public string DiaChi { get; set; }
-
-        public int CongTyID { get; set; }
-
-        public virtual CongTy CongTy { get; set; }
+        public string PermissionID { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DiemDo> DiemDoes { get; set; }
+        public virtual ICollection<Account> Accounts { get; set; }
     }
 }

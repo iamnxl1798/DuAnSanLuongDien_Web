@@ -1,4 +1,4 @@
-﻿@model ICollection<DuAn.Models.RoleAccount>
+﻿@model ICollection<DuAn.Models.DbModel.RoleAccount>
 
 @*<div class="radio-list">
         @foreach (var i in Model)
@@ -16,7 +16,8 @@
             </label>
         }
     </div>*@
-<select class="form-control" id="role_change" onchange="changeRole()">
+<div class="col-lg-9 col-xl-9">
+    <select class="form-control" id="role_change" onchange="changeRole()">
         @foreach (var i in Model)
         {
             if (i.Role.Equals(ViewBag.RoleAccEdit))
@@ -29,7 +30,7 @@
             }
         }
     </select>
-
+</div>
 <script>
     function changeRole() {
         document.getElementById('result').innerText = "";

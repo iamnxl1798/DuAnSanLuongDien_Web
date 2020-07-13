@@ -5,9 +5,8 @@ $(document).ready(function () {
         url: url,
         type: 'POST',
         success: function (data) {
-            $('#datatable_ajax').html(data);
-            /*@* $('#test_ajax').modal('show');*@*/
-            },
+            $('#datatable_role_ajax').html(data);
+        },
         error: function (data) {
             alert("Error load role ajax");
         }
@@ -34,4 +33,10 @@ $('#newrole').on('click', function () {
             alert("Error load ajax edit role");
         }
     });
+});
+
+$('#reloadRoleTable').on('click', function (e) {
+    e.preventDefault();
+    $('#my_datatable_role').DataTable().destroy();
+    loadDatatableRole();
 });

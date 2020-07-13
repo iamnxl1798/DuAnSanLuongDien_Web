@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -6,14 +6,12 @@ namespace DuAn.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class TongSanLuong_Thang
+    public partial class TongSanLuong_Nam
     {
         public int ID { get; set; }
 
-        public int Thang { get; set; }
-
         public int Nam { get; set; }
 
-        public double? GiaTri { get; set; }
+        public double GiaTri { get; set; }
     }
 }

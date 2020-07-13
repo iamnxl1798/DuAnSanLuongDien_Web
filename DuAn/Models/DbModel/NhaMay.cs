@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -6,24 +6,36 @@ namespace DuAn.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("TinhChatDiemDo")]
-    public partial class TinhChatDiemDo
+    [Table("NhaMay")]
+    public partial class NhaMay
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TinhChatDiemDo()
+        public NhaMay()
         {
             DiemDoes = new HashSet<DiemDo>();
+            LogNhaMays = new HashSet<LogNhaMay>();
         }
 
         public int ID { get; set; }
 
         [Required]
-        [StringLength(20)]
-        public string TenTinhChat { get; set; }
+        public string TenNhaMay { get; set; }
 
-        public int STT { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string TenVietTat { get; set; }
+
+        [Required]
+        public string DiaChi { get; set; }
+
+        public int CongTyID { get; set; }
+
+        public virtual CongTy CongTy { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DiemDo> DiemDoes { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LogNhaMay> LogNhaMays { get; set; }
     }
 }

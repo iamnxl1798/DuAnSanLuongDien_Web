@@ -275,11 +275,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account.cs" />
-    <Compile Include="Models\ChiSoChot.cs" />
-    <Compile Include="Models\CongThucTongSanLuong.cs" />
-    <Compile Include="Models\CongTo.cs" />
-    <Compile Include="Models\CongTy.cs" />
     <Compile Include="Models\CustomModel\AccountPaging.cs" />
     <Compile Include="Models\CustomModel\AdminModel.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
@@ -294,23 +289,33 @@
     <Compile Include="Models\CustomModel\ThongSoAndTenDiemDo.cs" />
     <Compile Include="Models\CustomModel\ThongSoPatialModel.cs" />
     <Compile Include="Models\CustomModel\TreeViewNode.cs" />
-    <Compile Include="Models\DiemDo.cs" />
-    <Compile Include="Models\DiemDo_CongTo.cs" />
-    <Compile Include="Models\Kenh.cs" />
-    <Compile Include="Models\LoaiSanLuong.cs" />
-    <Compile Include="Models\Model1.cs" />
-    <Compile Include="Models\NhaMay.cs" />
-    <Compile Include="Models\Permission.cs" />
-    <Compile Include="Models\RoleAccount.cs" />
-    <Compile Include="Models\SanLuong.cs" />
-    <Compile Include="Models\SanLuongDuKien.cs" />
-    <Compile Include="Models\SanLuongThucTe.cs" />
-    <Compile Include="Models\ThongSoVanHanh.cs" />
-    <Compile Include="Models\TinhChatDiemDo.cs" />
-    <Compile Include="Models\TongSanLuong_Nam.cs" />
-    <Compile Include="Models\TongSanLuong_Ngay.cs" />
-    <Compile Include="Models\TongSanLuong_Thang.cs" />
-    <Compile Include="Models\TongSanLuong_ThangNam.cs" />
+    <Compile Include="Models\DbModel\Account.cs" />
+    <Compile Include="Models\DbModel\ChiSoChot.cs" />
+    <Compile Include="Models\DbModel\CongThucTongSanLuong.cs" />
+    <Compile Include="Models\DbModel\CongTo.cs" />
+    <Compile Include="Models\DbModel\CongTy.cs" />
+    <Compile Include="Models\DbModel\DiemDo.cs" />
+    <Compile Include="Models\DbModel\DiemDo_CongTo.cs" />
+    <Compile Include="Models\DbModel\Kenh.cs" />
+    <Compile Include="Models\DbModel\LoaiSanLuong.cs" />
+    <Compile Include="Models\DbModel\LogCongTy.cs" />
+    <Compile Include="Models\DbModel\LogDiemDo.cs" />
+    <Compile Include="Models\DbModel\LogKenh.cs" />
+    <Compile Include="Models\DbModel\LogNhaMay.cs" />
+    <Compile Include="Models\DbModel\LogTinhChatDiemDo.cs" />
+    <Compile Include="Models\DbModel\Model1.cs" />
+    <Compile Include="Models\DbModel\NhaMay.cs" />
+    <Compile Include="Models\DbModel\Permission.cs" />
+    <Compile Include="Models\DbModel\RoleAccount.cs" />
+    <Compile Include="Models\DbModel\SanLuong.cs" />
+    <Compile Include="Models\DbModel\SanLuongDuKien.cs" />
+    <Compile Include="Models\DbModel\SanLuongThucTe.cs" />
+    <Compile Include="Models\DbModel\ThongSoVanHanh.cs" />
+    <Compile Include="Models\DbModel\TinhChatDiemDo.cs" />
+    <Compile Include="Models\DbModel\TongSanLuong_Nam.cs" />
+    <Compile Include="Models\DbModel\TongSanLuong_Ngay.cs" />
+    <Compile Include="Models\DbModel\TongSanLuong_Thang.cs" />
+    <Compile Include="Models\DbModel\TongSanLuong_ThangNam.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -6,26 +6,21 @@ namespace DuAn.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("CongTy")]
-    public partial class CongTy
+    [Table("LoaiSanLuong")]
+    public partial class LoaiSanLuong
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CongTy()
+        public LoaiSanLuong()
         {
-            NhaMays = new HashSet<NhaMay>();
+            SanLuongDuKiens = new HashSet<SanLuongDuKien>();
         }
 
         public int ID { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string TenCongTy { get; set; }
-
-        [Required]
         [StringLength(10)]
-        public string TenVietTat { get; set; }
+        public string Loai { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<NhaMay> NhaMays { get; set; }
+        public virtual ICollection<SanLuongDuKien> SanLuongDuKiens { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;

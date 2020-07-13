@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -6,21 +6,19 @@ namespace DuAn.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("SanLuong")]
-    public partial class SanLuong
+    [Table("SanLuongThucTe")]
+    public partial class SanLuongThucTe
     {
         public int ID { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime Ngay { get; set; }
-
         public int DiemDoID { get; set; }
+
+        public double SanLuong { get; set; }
 
         public int KenhID { get; set; }
 
-        public short ChuKy { get; set; }
-
-        public double GiaTri { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime Ngay { get; set; }
 
         public virtual DiemDo DiemDo { get; set; }
 

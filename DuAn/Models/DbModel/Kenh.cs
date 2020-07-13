@@ -1,4 +1,4 @@
-namespace DuAn.Models
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +12,7 @@ namespace DuAn.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Kenh()
         {
+            LogKenhs = new HashSet<LogKenh>();
             SanLuongs = new HashSet<SanLuong>();
             SanLuongThucTes = new HashSet<SanLuongThucTe>();
         }
@@ -21,6 +22,9 @@ namespace DuAn.Models
         [Required]
         [StringLength(10)]
         public string Ten { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LogKenh> LogKenhs { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SanLuong> SanLuongs { get; set; }

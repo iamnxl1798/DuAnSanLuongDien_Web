@@ -1,60 +1,62 @@
 ﻿//TableDataUser
-$(document).ready(function () {
-    $('#my_datatable_account').DataTable({
-        "processing": true,
-        "language": {
-            "processing": "Loading Database ....."
-        },
-        "serverSide": true,
-        "order": [0, "asc"],
-        "ajax": {
-			url: '/Account/GetListAccountShort',
-            type: "POST",
-            dataType: 'json'
-        },
-        "columns": [
-            { "data": "ID", "name": "ID" },
-            {
-                "data": {
-                    Username: "Username",
-                    Avatar: "Avatar"
-                },
-                "name": "Username",
-                render: function (data, type, full) {
-                    return '<img class="" src="' + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
-                }
-            },
-            { "data": "Fullname", "name": "Fullname" },
-            { "data": "Phone", "name": "Phone" },
-            { "data": "Email", "name": "Email" },
-            {
-                "data": "Role", "name": "Role",
-                render: function (Role) {
-                    var status = {
-                        'Lãnh Đạo': 'label-light-danger',
-                        'Quản Trị': 'label-light-info',
-                        'Chuyên Viên': 'label-light-primary'
-                        //label-light-danger //label-light-warning
-                    };
-                    if (Role in status) {
-                        return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
-                    } else {
-                        return '<span class="label label-lg font-weight-bold  label-light-success label-inline">' + Role + '</span>';
-                    }
 
-                }
-            },
-            {
-                "data": {
-                    Actions: "Actions",
-                    ID: "ID"
-                },
-                "name": "Actions",
-                "orderable": false,
-                "render": function (data, type, full) {
-                    return '\
-	                        <div class="dropdown dropdown-inline">\
-	                            <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown">\
+var loadDataTableAccount = function () {
+	$('#my_datatable_account').DataTable({
+		"responsive": true,
+		"processing": true,
+		"language": {
+			"processing": "Loading Database ....."
+		},
+		"serverSide": true,
+		"order": [0, "asc"],
+		"ajax": {
+			url: '/Account/GetListAccountShort',
+			type: "POST",
+			dataType: 'json'
+		},
+		"columns": [
+			{ "data": "ID", "name": "ID" },
+			{
+				"data": {
+					Username: "Username",
+					Avatar: "Avatar"
+				},
+				"name": "Username",
+				render: function (data, type, full) {
+					return '<img class="" src="' + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
+				}
+			},
+			{ "data": "Fullname", "name": "Fullname" },
+			{ "data": "Phone", "name": "Phone" },
+			{ "data": "Email", "name": "Email" },
+			{
+				"data": "Role", "name": "Role",
+				render: function (Role) {
+					var status = {
+						'Lãnh Đạo': 'label-light-danger',
+						'Quản Trị': 'label-light-info',
+						'Chuyên Viên': 'label-light-primary'
+						//label-light-danger //label-light-warning
+					};
+					if (Role in status) {
+						return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
+					} else {
+						return '<span class="label label-lg font-weight-bold  label-light-success label-inline">' + Role + '</span>';
+					}
+
+				}
+			},
+			{
+				"data": {
+					Actions: "Actions",
+					ID: "ID"
+				},
+				"name": "Actions",
+				"orderable": false,
+				"render": function (data, type, full) {
+					return '\
+						<div class="dropdown dropdown-inline">\
+	                            <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown" title="Other options">\
 									<span class="svg-icon svg-icon-md">\
 										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-icon">\
 											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -127,11 +129,12 @@ $(document).ready(function () {
 								</span>\
 	                        </a>\
 	                    ';
-                }
-            }
-        ]
-    });
-});
+				}
+			}
+		]
+	});
+}
+$(document).ready(loadDataTableAccount);
 
 $('#my_datatable_account').on('click', '.bt-open-edit-account-form', function () {
 	var url = "/Account/EditAccountForm";
@@ -154,6 +157,7 @@ $('#my_datatable_account').on('click', '.bt-open-edit-account-form', function ()
 		}
 	});
 });
+
 
 var reloadAccountDatatable = function () {
 	$('#my_datatable_account').DataTable().ajax.reload(null, false);
