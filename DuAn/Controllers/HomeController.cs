@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using DuAn.Models.CustomModel;
+using DuAn.Models.DbModel;
 
 namespace DuAn.Controllers
 {
@@ -54,16 +55,10 @@ namespace DuAn.Controllers
         }
 
 
-        //[HttpGet]
-        //public async Task<JsonResult> reloadPage(string dateStr = "")
-        //{
-        //    DateTime date = DateTime.Now.AddDays(-1);
-        //    if (dateStr != "")
-        //    {
-        //        date = DateTime.ParseExact(dateStr, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-        //    }
-        //    var data = await DBContext.getDuKien(date.Date);
-        //    return await Task.FromResult(Json(data, JsonRequestBehavior.AllowGet));
-        //}
+        public ActionResult Profile()
+        {
+            Account acc = (Account)Session["User"];
+            return View(acc);
+        }
     }
 }
