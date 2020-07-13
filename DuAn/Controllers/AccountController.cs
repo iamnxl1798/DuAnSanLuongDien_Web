@@ -64,9 +64,9 @@ namespace DuAn.Controllers
         public ActionResult EditAccountForm(int accID)
         {
             Account acc = (Account)db.Accounts.Find(accID);
-            if(acc == null || accID == 0)
+            if (acc == null || accID == 0)
             {
-                return PartialView(new AccountDetail() { DOB = DateTime.Now});
+                return PartialView(new AccountDetail() { DOB = DateTime.Now });
             }
             AccountDetail acs = new AccountDetail
             {
@@ -101,14 +101,14 @@ namespace DuAn.Controllers
                 List<Account> listAccount = db.Accounts.ToList<Account>();
                 apg.recordsTotal = listAccount.Count;
                 //filter
-                    // search theo Role
+                // search theo Role
                 if (!string.IsNullOrEmpty(searchRoleValue))
                 {
-                    listAccount = listAccount.Where(x 
+                    listAccount = listAccount.Where(x
                         => x.RoleAccount.Role.ToLower().Equals(searchRoleValue.ToLower())
                     ).ToList<Account>();
                 }
-                    // search total
+                // search total
                 if (!string.IsNullOrEmpty(searchValue))
                 {
                     listAccount = listAccount.Where(x => x.Username.ToLower().Contains(searchValue.ToLower()) ||
@@ -156,18 +156,17 @@ namespace DuAn.Controllers
         {
             try
             {
-                string path_avatar = "";
                 if (avatar != null)
                 {
-                    string pic = System.IO.Path.GetFileName(avatar.FileName);
-                    path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/avatarAccount"), pic);
+                    string fileName = System.IO.Path.GetFileName(avatar.FileName);
+                    string path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/avatarAccount"), fileName);
                     // file is uploaded
                     avatar.SaveAs(path_avatar);
                 }
                 Account acc = new Account()
                 {
                     ID = id,
-                    Avatar = path_avatar,
+                    Avatar = (avatar != null ? avatar.FileName : ""),
                     Fullname = fullname,
                     Email = email,
                     Address = address,
@@ -195,22 +194,23 @@ namespace DuAn.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public string InsertAccount(int id, string avatar, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string InsertAccount(int id, HttpPostedFileBase avatar, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
-                string[] split = avatar.Split('\\');
-                string avatar_str = split.ElementAt(split.Length - 1);
-                if (!AccountDAO.CheckUsername(username))
+                if (avatar != null)
                 {
-                    return "Username đã tồn tại !!!";
+                    string fileName = System.IO.Path.GetFileName(avatar.FileName);
+                    string path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/avatarAccount"), fileName);
+                    // file is uploaded
+                    avatar.SaveAs(path_avatar);
                 }
                 Account acc = new Account()
                 {
                     Username = username,
                     //hard code password
                     Password = "123",
-                    Avatar = "../images/avatarAccount/" + avatar_str,
+                    Avatar = (avatar != null ? avatar.FileName : "default.png"),
                     Fullname = fullname,
                     Email = email,
                     Address = address,
@@ -235,11 +235,12 @@ namespace DuAn.Controllers
                 db.Accounts.Remove(db.Accounts.Find(AccID));
                 db.SaveChanges();
                 return true;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
         }
-        
+
     }
 }

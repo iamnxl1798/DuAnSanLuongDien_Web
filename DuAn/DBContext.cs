@@ -647,7 +647,10 @@ namespace DuAn
                     var result = db.Accounts.SingleOrDefault(b => b.ID == acc.ID);
                     if (result != null)
                     {
-                        result.Avatar = acc.Avatar;
+                        if (!string.IsNullOrEmpty(acc.Avatar))
+                        {
+                            result.Avatar = acc.Avatar;
+                        } 
                         result.Fullname = acc.Fullname;
                         result.Phone = acc.Phone;
                         result.Email = acc.Email;

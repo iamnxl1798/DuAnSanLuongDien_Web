@@ -21,16 +21,16 @@
             }
         </div>
         <!--begin::Form-->
-        <form class="form">
+        <form class="form"@* action="/Account/UpdateAccount" method="POST"*@>
             <div class="card-body">
                 <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label text-left">Avatar:</label>
                     <div class="col-lg-9 col-xl-9">
                         <div class="image-input image-input-outline" id="kt_user_add_avatar">
-                            <div class="image-input-wrapper" style="background-image: url(@Model.Avatar)"></div>
+                            <div class="image-input-wrapper" style="background-image: url(images/avatarAccount/@Model.Avatar)"></div>
                             <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
                                 <i class="fa fa-pen icon-sm text-muted"></i>
-                                <input type="file" id="avatar" name="profile_avatar" accept=".png, .jpg, .jpeg" />
+                                <input type="file" id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
                                 <input type="hidden" name="profile_avatar_remove" />
                             </label>
                             <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
@@ -39,25 +39,25 @@
                         </div>
                     </div>
                     @*<script>
-                        function getDataUrl() {
-                            // Create canvas
-                            var avatar = document.getElementById('avatar');
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
-                            // Set width and height
-                            canvas.width = avatar.width;
-                            canvas.height = avatar.height;
-                            // Draw the image
-                            ctx.drawImage(avatar, 0, 0);
-                            return canvas.toDataURL('image/jpeg');
-                        }
-                        alert(getDataUrl());
-                    </script>*@
+                            function getDataUrl() {
+                                // Create canvas
+                                var avatar = document.getElementById('avatar');
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                // Set width and height
+                                canvas.width = avatar.width;
+                                canvas.height = avatar.height;
+                                // Draw the image
+                                ctx.drawImage(avatar, 0, 0);
+                                return canvas.toDataURL('image/jpeg');
+                            }
+                            alert(getDataUrl());
+                        </script>*@
                 </div>
                 <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">ID:</label>
                     <div class="col-lg-9 col-xl-9">
-                        <input type="text" class="form-control form-control-solid form-control-lg" placeholder="ID" id="id" value="@Model.ID" disabled />
+                        <input type="number" class="form-control form-control-solid form-control-lg" placeholder="ID" name="id" id="id" value="@Model.ID" disabled />
                     </div>
                 </div>
                 <div class="form-group row">
@@ -152,7 +152,7 @@
                 <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">Địa chỉ :</label>
                     <div class="col-lg-9 col-xl-9">
-                        <input type="email" class="form-control form-control-solid" placeholder="Nhập địa chỉ nơi ở hiện tại" id="address" value="@Model.Address"
+                        <input type="text" class="form-control form-control-solid" placeholder="Nhập địa chỉ nơi ở hiện tại" id="address" value="@Model.Address"
                                onkeypress='hideError("errorAddress")' onchange='hideError("errorAddress")' />
                         <div class="errorRegistrationAccount" id="errorAddress" style="color:red"></div>
                         @*<span class="form-text text-muted">Nhập địa chỉ nơi ở hiện tại</span>*@
@@ -163,7 +163,7 @@
                 <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">CMND / CCCD :</label>
                     <div class="col-lg-9 col-xl-9">
-                        <input type="email" class="form-control form-control-solid" placeholder="Nhập chứng minh nhân dân / căn cước công dân" id="icode" value="@Model.IdentifyCode"
+                        <input type="text" class="form-control form-control-solid" placeholder="Nhập chứng minh nhân dân / căn cước công dân" id="icode" value="@Model.IdentifyCode"
                                onkeypress='hideError("errorIdentifyCode")' onchange='hideError("errorIdentifyCode")' />
                         <div class="errorRegistrationAccount" id="errorIdentifyCode" style="color:red"></div>
                         @*<span class="form-text text-muted">Nhập chứng minh nhân dân / căn cước công dân</span>*@
@@ -174,13 +174,14 @@
                     <label class="col-xl-3 col-lg-3 col-form-label">Vai trò :</label>
                 </div>
             </div>
+
+            <!--end::Form-->
+            <div class="modal-footer">
+                <label id="resultAccount" class="label label-lg font-weight-bold label-light-info label-inline"></label>
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary font-weight-bold" @*onclick="return CheckTotalAccount()"*@ id="submitAccount">Lưu thay đổi</button>
+            </div>
         </form>
-        <!--end::Form-->
-        <div class="modal-footer">
-            <label id="resultAccount" class="label label-lg font-weight-bold label-light-info label-inline"></label>
-            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
-            <button type="button" class="btn btn-primary font-weight-bold" id="submitAccount">Lưu thay đổi</button>
-        </div>
     </div>
 </div>
 <!--end::Card-->

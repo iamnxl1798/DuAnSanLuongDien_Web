@@ -17,7 +17,7 @@
         }
     </div>*@
 <div class="col-lg-9 col-xl-9">
-    <select class="form-control" id="role_change" onchange="changeRole()">
+    <select class="form-control" id="role_change" name="roleID" onchange="changeRole()">
         @foreach (var i in Model)
         {
             if (i.Role.Equals(ViewBag.RoleAccEdit))

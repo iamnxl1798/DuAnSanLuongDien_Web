@@ -23,7 +23,7 @@ var loadDataTableAccount = function () {
 				},
 				"name": "Username",
 				render: function (data, type, full) {
-					return '<img class="" src="' + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
+					return '<img class="" src="' + "images/avatarAccount/"+data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
 				}
 			},
 			{ "data": "Fullname", "name": "Fullname" },
