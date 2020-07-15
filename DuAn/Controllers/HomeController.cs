@@ -1,13 +1,7 @@
-﻿using DuAn.Attribute;
-using DuAn.Models.CustomModel;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using DuAn.Models.CustomModel;
 using DuAn.Models.DbModel;
 
 namespace DuAn.Controllers
@@ -55,11 +49,35 @@ namespace DuAn.Controllers
             return PartialView(data);
         }
 
+        public ActionResult ChangeInfoPartial()
+        {
+            Account acc = (Account)Session["User"];
+            return PartialView(acc);
+        }
+
+        public ActionResult ChangePasswordPartial()
+        {
+            Account acc = (Account)Session["User"];
+            return PartialView(acc);
+        }
+
+        public string CheckPassword(string pass,string newPass)
+        {
+            Account acc = (Account)Session["User"];
+            return AccountDAO.ChangePassword(acc, pass, newPass);
+        }
 
         public ActionResult Profile()
         {
             Account acc = (Account)Session["User"];
             return View(acc);
+        }
+
+        public string ChangeInfo(HttpPostedFileBase avatar, string fullname, string email, string address, string phone, string dob, string id)
+        {
+            Account result = DBContext.ChangeInfo(avatar, fullname, email, address, phone, dob, id);
+            Session["User"] = result;
+            return result!=null?"success":"";
         }
     }
 }

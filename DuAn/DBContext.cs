@@ -1,4 +1,4 @@
-﻿using DuAn.Models;
+﻿using System.Data.Entity;
 using DuAn.Models.CustomModel;
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using OfficeOpenXml;
 using DuAn.Models.DbModel;
+using System.Globalization;
 
 namespace DuAn
 {
@@ -85,7 +86,36 @@ namespace DuAn
                 }
             }
         }
-
+        public static Account ChangeInfo(HttpPostedFileBase avatar, string fullname, string email, string address, string phone, string dob, string id)
+        {
+            using(var db=new Model1())
+            {
+                int inInt = int.Parse(id);
+                var acc = db.Accounts.Include(x=>x.RoleAccount).FirstOrDefault(x=>x.ID==inInt);
+                try
+                {
+                    if (avatar != null)
+                    {
+                        string fileName = System.IO.Path.GetFileName(avatar.FileName);
+                        string path_avatar = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory.ToString()) + "\\images\\avatarAccount\\" + fileName;
+                        // file is uploaded
+                        avatar.SaveAs(path_avatar);
+                        acc.Avatar = fileName;
+                    }
+                    acc.Fullname = fullname;
+                    acc.Email = email;
+                    acc.Address = address;
+                    acc.Phone = phone;
+                    acc.DOB= DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+                return acc;
+            }
+        }
         public static DiemDoData getChiTietDiemDo(int id, DateTime date)
         {
             using (var db = new Model1())
@@ -627,6 +657,26 @@ namespace DuAn
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+        }
+
+        public static string ChangePassword(Account acc,string pass,string newPass)
+        {
+            using (Model1 db = new Model1())
+            {
+                var currentAcc = db.Accounts.SingleOrDefault(x => x.Username == acc.Username);
+                if (currentAcc != null && currentAcc.Password == MaHoaMatKhau(currentAcc.SaltPassword + pass))
+                {
+                    string newHash= RandomSaltHash();
+                    currentAcc.Password = MaHoaMatKhau(newHash + newPass);
+                    currentAcc.SaltPassword = newHash;
+                    db.SaveChanges();
+                    return "success";
+                }
+                else
+                {
+                    return "";
                 }
             }
         }
