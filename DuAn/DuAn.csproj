@@ -264,9 +264,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Attribute\CheckRoleAttribute.cs" />
+    <Compile Include="Attribute\CheckTotalRoleAttribute.cs" />
+    <Compile Include="Attribute\CheckLoginAttribute.cs" />
     <Compile Include="Authorization\WebAuthorizationProvider.cs" />
     <Compile Include="COMMON\CommonContext.cs" />
+    <Compile Include="COMMON\RoleContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -284,6 +286,7 @@
     <Compile Include="Models\CustomModel\MissingDataStatus.cs" />
     <Compile Include="Authorization\WebPermissions.cs" />
     <Compile Include="Models\CustomModel\NumberOfMissingData.cs" />
+    <Compile Include="Models\CustomModel\RoleChecking.cs" />
     <Compile Include="Models\CustomModel\RolePaging.cs" />
     <Compile Include="Models\CustomModel\StateTree.cs" />
     <Compile Include="Models\CustomModel\ThongSoAndTenDiemDo.cs" />
@@ -2385,6 +2388,7 @@
     <Content Include="Scripts\Role\PermissionTree.js" />
     <Content Include="Scripts\Role\ListRole.js" />
     <Content Include="Views\Account\EditAccountForm.cshtml" />
+    <Content Include="Views\Account\AccessDenied.cshtml" />
     <None Include="Views\Account\ListUser.cshtml" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Views\Admin\Index.cshtml" />

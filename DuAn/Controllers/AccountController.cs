@@ -10,10 +10,12 @@ using DuAn.Attribute;
 using System.Web;
 using DuAn.Models.DbModel;
 using System.IO;
+using DuAn.COMMON;
 
 namespace DuAn.Controllers
 {
-    /*[CheckRole(RoleID = new int[1] { 2 })]*/
+    [CheckLogin(/*RoleID = new int[1] { 2 }*/)]
+    [CheckTotalRole(RoleID = RoleContext.Expertise)]
     public class AccountController : Controller
     {
         private Model1 db = new Model1();
@@ -51,12 +53,18 @@ namespace DuAn.Controllers
             return RedirectToAction("Login");
         }
 
+        [CheckTotalRole(RoleID = RoleContext.Expertise)]
         public ActionResult ListUser()
         {
             return PartialView();
         }
+
         [HttpPost]
         public ActionResult TableDataUser()
+        {
+            return PartialView();
+        }
+        public ActionResult AccessDenied()
         {
             return PartialView();
         }
@@ -83,6 +91,7 @@ namespace DuAn.Controllers
             };
             return PartialView(acs);
         }
+
         [HttpPost]
         public JsonResult GetListAccountShort()
         {
@@ -183,7 +192,6 @@ namespace DuAn.Controllers
             }
             return "success";
         }
-        [AllowAnonymous]
         [HttpPost]
         public JsonResult CheckUsername(string username)
         {

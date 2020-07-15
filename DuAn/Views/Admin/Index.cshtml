@@ -137,7 +137,7 @@
         @Html.Action("ListRole", "RoleAccount")
     </div>
     <div class="col-lg-8">
-        @Html.Action("ListUser", "Account")
+        @{Html.RenderAction("ListUser", "Account");}
     </div>
     <!--end::Mixed Widget 18-->
 </div>

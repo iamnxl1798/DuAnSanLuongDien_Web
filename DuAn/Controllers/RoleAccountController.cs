@@ -9,10 +9,13 @@ using DuAn.Models;
 using DuAn.Models.CustomModel;
 using Abp.Extensions;
 using DuAn.Models.DbModel;
+using DuAn.Attribute;
+using DuAn.COMMON;
 
 namespace DuAn.Controllers
 {
-    //[CheckRole(RoleID = new int[1] { 2 })]
+    [CheckLogin(/*RoleID = new int[1] { 2 }*/)]
+    [CheckTotalRole(RoleID = RoleContext.Expertise)]
     public class RoleAccountController : Controller
     {
         private Model1 db = new Model1();

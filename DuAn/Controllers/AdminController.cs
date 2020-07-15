@@ -1,4 +1,5 @@
-﻿using DuAn.Models.CustomModel;
+﻿using DuAn.Attribute;
+using DuAn.Models.CustomModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace DuAn.Controllers
 {
+    [CheckLogin(/*RoleID = new int[1] { 2 }*/)]
     public class AdminController : Controller
     {
         // GET: Admin
