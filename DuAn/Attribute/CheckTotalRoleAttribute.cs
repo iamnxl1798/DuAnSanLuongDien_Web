@@ -1,4 +1,5 @@
-﻿using DuAn.Models;
+﻿using Abp.Extensions;
+using DuAn.Models;
 using DuAn.Models.CustomModel;
 using DuAn.Models.DbModel;
 using iTextSharp.text;
@@ -13,24 +14,26 @@ namespace DuAn.Attribute
 {
     public class CheckTotalRoleAttribute : AuthorizeAttribute
     {
-        public int RoleID { get; set; }
+        public int[] RoleID { get; set; }
 
         // call hàm này để check xem có được phép truy cập
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             List<int> listRole = new List<int>();
-            listRole.Add(RoleID);
-            listRole = RoleChecking.CheckRole(listRole, RoleID);
-
+            foreach (var i in RoleID.ToList())
+            {
+                listRole.Add(i);
+                listRole = RoleChecking.CheckRole(listRole, i);
+            }
             var account = (Account)HttpContext.Current.Session["User"];
             using (Model1 db = new Model1())
             {
                 var listRoleAcc = db.RoleAccounts.Find(account.RoleID).PermissionID.Split(',');
-                foreach(var i in listRoleAcc)
+                foreach (var i in listRoleAcc)
                 {
-                    foreach(var u in listRole)
+                    foreach (var u in listRole)
                     {
-                        if(int.Parse(i) == u)
+                        if (int.Parse(i) == u)
                         {
                             return true;
                         }

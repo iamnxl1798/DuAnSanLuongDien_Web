@@ -153,7 +153,7 @@ $('#my_datatable_account').on('click', '.bt-open-edit-account-form', function ()
 			});
 		},
 		error: function (data) {
-			alert("Error load ajax edit account");
+			showMessage('Error load ajax edit account', false);
 		}
 	});
 });
@@ -186,13 +186,13 @@ $('#btnDelteYes').on('click', function (e) {
 		},
 		success: function (data) {
 			if (!data) {
-				alert("Error delete Account ");
+				showMessage('Error delete Account', false);
 			} else {
 				reloadAccountDatatable();
 			}
 		},
 		error: function (data) {
-			alert("Error load ajax delete Account");
+			showMessage('Bạn không có quyền này', false);
 		}
 	});
 });

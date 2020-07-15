@@ -17,7 +17,7 @@ jQuery('#newaccount').on('click', function () {
 			});
 		},
 		error: function (data) {
-			alert("Error load ajax edit/insert role");
+			showMessage('Error load ajax edit/insert role', false);
 		}
 	});
 });
@@ -33,7 +33,7 @@ jQuery(document).ready(function () {
 			/*@* $('#test_ajax').modal('show');*@*/
 		},
 		error: function (data) {
-			alert("Error load dataTable ajax");
+			showMessage('Error load dataTable ajax', false);
 		}
 	});
 });

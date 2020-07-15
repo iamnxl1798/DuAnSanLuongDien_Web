@@ -48,28 +48,17 @@ $('#submitAccount').on('click', function () {
             type: 'POST',
             processData: false,
             contentType: false,
-            data: formData /*{
-                id: id,
-                *//*avatar: avatar_str,*//*
-                username: username,
-                fullname: fullname,
-                phone: phone,
-                email: email,
-                address: address,
-                icode: icode,
-                dob: dob,
-                roleID: roleID
-            }*/,
+            data: formData,
             success: function (data) {
                 if (data != "success") {
-                    document.getElementById('resultAccount').innerText = data;
+                    showMessage(data, false);
                 } else {
-                    document.getElementById('resultAccount').innerText = 'Successfully';
+                    showMessage('Successfully', true);
                     reloadAccountDatatable();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                document.getElementById('resultAccount').innerText = 'Error load insert/udapte account :' + jqXHR.status;
+                showMessage('Bạn không có quyền này', false);
                 //*@* alert("Error load insert/udapte accout");*@*//*
             }
         });

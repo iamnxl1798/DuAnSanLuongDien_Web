@@ -19,7 +19,7 @@ $(document).ready(function () {
             });
         },
         error: function (data) {
-            alert("Error load permission");
+            showMessage('Error load permission', false);
         }
     });
 });
@@ -55,9 +55,11 @@ $('#submitRole').on('click', function () {
             },
             success: function (data) {
                 if (data != "success") {
-                    document.getElementById('resultRole').innerText = data;
+                    showMessage(data, false);
+                    /*document.getElementById('resultRole').innerText = data;*/
                 } else {
-                    document.getElementById('resultRole').innerText = 'Successfully';
+                    showMessage('Successfully', true);
+                    /*document.getElementById('resultRole').innerText = 'Successfully';*/
                     reloadRoleDatatable();
                     if (url.endsWith("UpdateRole")) {
                         searchAccountFollowRole(rolename);
@@ -65,7 +67,8 @@ $('#submitRole').on('click', function () {
                 }
             },
             error: function (data) {
-                document.getElementById('resultRole').innerText = 'Error load insert / udapte role';
+                showMessage('Error load insert / udapte role', false);
+                /*document.getElementById('resultRole').innerText = 'Error load insert / udapte role';*/
             }
         });
     }

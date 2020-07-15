@@ -8,7 +8,7 @@ $(document).ready(function () {
             $('#datatable_role_ajax').html(data);
         },
         error: function (data) {
-            alert("Error load role ajax");
+            showMessage('Error load role ajax', false);
         }
     });
 });
@@ -30,7 +30,7 @@ $('#newrole').on('click', function () {
             });
         },
         error: function (data) {
-            alert("Error load ajax edit role");
+            showMessage('Error load ajax edit role', false);
         }
     });
 });
