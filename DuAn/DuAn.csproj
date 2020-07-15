@@ -2417,6 +2417,8 @@
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Home\ChangeInfoPartial.cshtml" />
     <Content Include="Views\Home\ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Admin\MissingDataPartial.cshtml" />
+    <Content Include="Views\Admin\InsertFormula.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
