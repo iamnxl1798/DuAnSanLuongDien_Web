@@ -58,15 +58,18 @@ $('#submitAccount').on('click', function () {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                showMessage('Bạn không có quyền này', false);
-                //*@* alert("Error load insert/udapte accout");*@*//*
+                if (jqXHR.status == 401) {
+                    showMessage('Bạn không có quyền này', false);
+                } else {
+                    showMessage(jqXHR.responseText, false);
+                }
             }
         });
     }
 });
 function hideError(name) {
     document.getElementById(name).innerText = "";
-    document.getElementById('resultAccount').innerText = "";
+    //document.getElementById('resultAccount').innerText = "";
 }
 function CheckTotalAccount() {
     var username = document.getElementById('username').value;
@@ -129,7 +132,7 @@ $(document).ready(function () {
             $('#all-role').append(data);
         },
         error: function (data) {
-            alert("Error load ajax get role");
+            showMessage('Error load ajax get role', false);
         }
     });
 });

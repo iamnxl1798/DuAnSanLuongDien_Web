@@ -7,9 +7,14 @@ $(document).ready(function () {
         success: function (data) {
             $('#datatable_role_ajax').html(data);
         },
-        error: function (data) {
-            showMessage('Error load role ajax', false);
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load role ajax: ' + jqXHR.responseText, false);
+            }
         }
+
     });
 });
 
@@ -29,8 +34,12 @@ $('#newrole').on('click', function () {
                 backdrop: false
             });
         },
-        error: function (data) {
-            showMessage('Error load ajax edit role', false);
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load ajax edit role: ' + jqXHR.responseText, false);
+            }
         }
     });
 });

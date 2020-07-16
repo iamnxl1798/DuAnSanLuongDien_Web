@@ -112,8 +112,12 @@ $('#my_datatable_role').on('click', '.bt-open-edit-role-form', function () {
                 backdrop: false
             });
         },
-        error: function (data) {
-            alert("Error load ajax edit role");
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load ajax edit role: ' + jqXHR.responseText, false);
+            }
         }
     });
 });
@@ -143,13 +147,18 @@ $('#btnDelteYesRole').on('click', function (e) {
         },
         success: function (data) {
             if (!data) {
-                alert("Error delete role ");
+                showMessage("Error delete role", false);
             } else {
+                showMessage('Xóa thành công !!!', true);
                 reloadRoleDatatable();
             }
         },
-        error: function (data) {
-            alert("Error load ajax delete role");
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load ajax delete role : ' + jqXHR.responseText, false);
+            }
         }
     });
 });
