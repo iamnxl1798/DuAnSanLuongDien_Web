@@ -105,7 +105,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <i class="menu-arrow"></i>
                                             </a>
                                         </li>
-                                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                                        <li class="menu-item menu-item-submenu menu-item-rel" id="adminPage" data-menu-toggle="click" aria-haspopup="true">
                                             <a href="@Url.Action("Index", "Admin")" class="menu-link ">
                                                 <span class="menu-text">Quản trị</span>
                                                 <span class="menu-desc"></span>
@@ -113,6 +113,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </a>
                                         </li>
                                     </ul>
+                                    @{
+                                        DuAn.Models.DbModel.Account acc = (DuAn.Models.DbModel.Account)Session["User"];
+                                        <input type="hidden" id="permissionRole" value="@acc.RoleAccount.PermissionID" />
+                                    }
                                     <!--end::Header Nav-->
                                 </div>
                                 <!--end::Header Menu-->
@@ -142,10 +146,11 @@ License: You must have a valid license purchased only from themeforest(the above
                                     DuAn.Models.DbModel.Account ac = (DuAn.Models.DbModel.Account)Session["User"];
                                     <div class="topbar-item" data-toggle="dropdown" data-offset="0px,0px">
                                         <div class="btn btn-icon btn-hover-transparent-white d-flex align-items-center btn-lg px-md-2 w-md-auto">
-
                                             <span class="text-white opacity-90 font-weight-bolder font-size-base d-none d-md-inline mr-4">@ac.Username / @ac.RoleAccount.Role</span>
                                             <span class="symbol symbol-35">
-                                                <span class="symbol-label text-white font-size-h5 font-weight-bold bg-white-o-30">@ac.Username.ToCharArray()[0]</span>
+                                                <span class="symbol-label text-white font-size-h5 font-weight-bold bg-white-o-30">
+                                                    <span><img class="" src="images/avatarAccount/@ac.Avatar" style="float:left; width:20px; height:20px" /></span>
+                                                </span>
                                             </span>
                                         </div>
                                     </div>
@@ -321,6 +326,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <!--end::Global Theme Bundle-->
     <!--begin::Page Vendors(used by this page)-->
+    <script src="~/Scripts/LayoutJS/Layout.js"></script>
     <!--use for datatable in TableDataUser-->
     <script src="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--use for jstree in EditRoleForm-->

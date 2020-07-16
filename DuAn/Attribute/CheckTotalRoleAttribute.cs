@@ -33,7 +33,7 @@ namespace DuAn.Attribute
                 {
                     foreach (var u in listRole)
                     {
-                        if (int.Parse(i) == u)
+                        if (!string.IsNullOrEmpty(i) && int.Parse(i) == u)
                         {
                             return true;
                         }
