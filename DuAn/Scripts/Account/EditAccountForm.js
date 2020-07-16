@@ -15,6 +15,9 @@ $('#submitAccount').on('click', function () {
         var username = document.getElementById('username').value;
         formData.append('username', username);
 
+        var password = document.getElementById('password').value;
+        formData.append('password', password);
+
         var fullname = document.getElementById('fullname').value;
         formData.append('fullname', fullname);
 
@@ -53,8 +56,8 @@ $('#submitAccount').on('click', function () {
                 if (data != "success") {
                     showMessage(data, false);
                 } else {
-                    showMessage('Successfully', true);
                     reloadAccountDatatable();
+                    showMessage('Successfully', true);                    
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -73,6 +76,7 @@ function hideError(name) {
 }
 function CheckTotalAccount() {
     var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
     var fullname = document.getElementById('fullname').value;
     var phone = document.getElementById('phone').value;
     var email = document.getElementById('email').value;
@@ -82,6 +86,10 @@ function CheckTotalAccount() {
 
     if (username == "" || username == null) {
         document.getElementById("errorUsername").innerText = "You need to fill it";
+
+    }
+    if (password == "" || password == null) {
+        document.getElementById("errorPassword").innerText = "You need to fill it";
 
     }
     if (fullname == "" || fullname == null) {

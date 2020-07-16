@@ -2385,7 +2385,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Role\TableDateRole.js" />
-    <Content Include="Scripts\Role\PermissionTree.js" />
+    <Content Include="Scripts\Role\EditRoleForm.js" />
     <Content Include="Scripts\Role\ListRole.js" />
     <Content Include="Views\Account\EditAccountForm.cshtml" />
     <Content Include="Views\Account\AccessDenied.cshtml" />
@@ -2413,7 +2413,7 @@
     <Content Include="Views\Admin\viewMissingDataList.cshtml" />
     <Content Include="Views\Home\homePagePartialView.cshtml" />
     <Content Include="Views\RoleAccount\AllRole.cshtml" />
-    <Content Include="Views\RoleAccount\PermissionTree.cshtml" />
+    <Content Include="Views\RoleAccount\EditRoleForm.cshtml" />
     <Content Include="Views\RoleAccount\TableDataRole.cshtml" />
     <Content Include="Views\RoleAccount\ListRole.cshtml" />
     <Content Include="Views\Home\getModalThongSo.cshtml" />

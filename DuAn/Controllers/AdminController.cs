@@ -1,4 +1,5 @@
 ﻿using DuAn.Attribute;
+using DuAn.COMMON;
 using DuAn.Models.CustomModel;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Web.Mvc;
 namespace DuAn.Controllers
 {
     [CheckLogin(/*RoleID = new int[1] { 2 }*/)]
+    [CheckTotalRole(RoleID = new int[2] { RoleContext.Expertise, RoleContext.Administration })]
     public class AdminController : Controller
     {
         // GET: Admin
@@ -20,12 +22,14 @@ namespace DuAn.Controllers
             return View(item);
         }
 
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
         public ActionResult viewMissingDataList(string fileName = "")
         {
             var data = DBContext.getMissingData(fileName);
             return PartialView(data.ToList());
         }
 
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
         public ActionResult SaveDropzoneJsUploadedFiles()
         {
             foreach (string fileName in Request.Files)
@@ -51,6 +55,7 @@ namespace DuAn.Controllers
             return Json(new { Message = string.Empty });
         }
 
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
         public ActionResult RemoveFile(string name)
         {
             try
@@ -93,18 +98,21 @@ namespace DuAn.Controllers
             }
         }
 
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateRecipe })]
         public ActionResult UpdateFormula(string formula, string name, string thoiGian)
         {
             DBContext.updateFormula(formula, name, thoiGian);
             return Json(new { Message = "Cập nhật thành công" });
         }
 
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
         public ActionResult MissingDataPartial()
         {
             var result = DBContext.getMissingData();
             return PartialView(result);
         }
 
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
         public ActionResult InsertFormula()
         {
             var result = DBContext.getDataAdminModel();

@@ -152,8 +152,12 @@ $('#my_datatable_account').on('click', '.bt-open-edit-account-form', function ()
                 backdrop: false
             });
         },
-        error: function (data) {
-            showMessage('Error load ajax edit account', false);
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load ajax edit account: ' + jqXHR.responseText, false);
+            }
         }
     });
 });

@@ -1,14 +1,10 @@
 ﻿
 //ListUser
 jQuery('#newaccount').on('click', function () {
-	var url = "/Account/EditAccountForm";
-	var id = $(this).attr("data-id");
+	var url = "/Account/CreateAccountForm";
 	$.ajax({
 		url: url,
 		type: 'POST',
-		data: {
-			accID: id
-		},
 		success: function (data) {
 			$('#formEditAccount').html(data);
 			$('#formEditAccount').modal('show');
@@ -16,8 +12,12 @@ jQuery('#newaccount').on('click', function () {
 				backdrop: false
 			});
 		},
-		error: function (data) {
-			showMessage('Error load ajax edit/insert role', false);
+		error: function (jqXHR, textStatus, errorThrown) {
+			if (jqXHR.status == 401) {
+				showMessage('Bạn không có quyền này', false);
+			} else {
+				showMessage('Error load ajax edit/insert account: ' + jqXHR.responseText, false);
+			}
 		}
 	});
 });

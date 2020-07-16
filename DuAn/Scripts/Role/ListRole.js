@@ -19,7 +19,7 @@ $(document).ready(function () {
 });
 
 $('#newrole').on('click', function () {
-    var url = "/RoleAccount/PermissionTree";
+    var url = "/RoleAccount/CreateRoleForm";
     var id = $(this).attr("data-id");
     $.ajax({
         url: url,

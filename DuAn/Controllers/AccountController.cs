@@ -69,18 +69,26 @@ namespace DuAn.Controllers
             return PartialView();
         }
         [HttpPost]
-        [CheckTotalRole(RoleID = new int[2] { RoleContext.Expertise_Accounts_Create, RoleContext.Expertise_Accounts_Edit})]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Create })]
+        public ActionResult CreateAccountForm()
+        {
+            return PartialView("EditAccountForm", new AccountDetail() { DOB = DateTime.Now });
+            //return PartialView(new AccountDetail() { DOB = DateTime.Now });
+        }
+
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Edit })]
         public ActionResult EditAccountForm(int accID)
         {
             Account acc = (Account)db.Accounts.Find(accID);
-            if (acc == null || accID == 0)
+            if (acc == null)
             {
-                return PartialView(new AccountDetail() { DOB = DateTime.Now });
+                return null ;
             }
             AccountDetail acs = new AccountDetail
             {
                 ID = acc.ID,
                 Username = acc.Username,
+                Password = acc.Password,
                 Fullname = acc.Fullname,
                 Phone = acc.Phone,
                 Email = acc.Email,
@@ -94,7 +102,7 @@ namespace DuAn.Controllers
         }
 
         [HttpPost]
-        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts } )]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts })]
         public JsonResult GetListAccountShort()
         {
             try
@@ -164,7 +172,7 @@ namespace DuAn.Controllers
         }
         [HttpPost]
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Edit })]
-        public string UpdateAccount(int id, HttpPostedFileBase avatar, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string UpdateAccount(int id, HttpPostedFileBase avatar, string password, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
@@ -178,6 +186,7 @@ namespace DuAn.Controllers
                 Account acc = new Account()
                 {
                     ID = id,
+                    Password = password,
                     Avatar = (avatar != null ? avatar.FileName : ""),
                     Fullname = fullname,
                     Email = email,
@@ -206,7 +215,7 @@ namespace DuAn.Controllers
         }
         [HttpPost]
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Create })]
-        public string InsertAccount(int id, HttpPostedFileBase avatar, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string InsertAccount(int id, HttpPostedFileBase avatar, string password, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
             try
             {
@@ -220,8 +229,7 @@ namespace DuAn.Controllers
                 Account acc = new Account()
                 {
                     Username = username,
-                    //hard code password
-                    Password = "123",
+                    Password = password,
                     Avatar = (avatar != null ? avatar.FileName : "default.png"),
                     Fullname = fullname,
                     Email = email,
