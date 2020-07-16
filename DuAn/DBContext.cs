@@ -203,7 +203,6 @@ namespace DuAn
                     listDiemDo = db.DiemDoes.ToList(),
                     listKenh = db.Kenhs.ToList(),
                     getLastDate = db.CongThucTongSanLuongs.Count() != 0 ? db.CongThucTongSanLuongs.OrderByDescending(x => x.ThoiGianKetThuc).Select(x => x.ThoiGianKetThuc).First().AddDays(1) : DateTime.MinValue.AddMonths(1),
-                    missingData = getMissingData()
                 };
                 return result;
             }

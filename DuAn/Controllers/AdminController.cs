@@ -99,6 +99,18 @@ namespace DuAn.Controllers
             return Json(new { Message = "Cập nhật thành công" });
         }
 
+        public ActionResult MissingDataPartial()
+        {
+            var result = DBContext.getMissingData();
+            return PartialView(result);
+        }
+
+        public ActionResult InsertFormula()
+        {
+            var result = DBContext.getDataAdminModel();
+            return PartialView(result);
+        }
+
 
     }
 }
