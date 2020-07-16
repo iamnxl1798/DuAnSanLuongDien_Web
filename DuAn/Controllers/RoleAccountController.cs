@@ -9,10 +9,13 @@ using DuAn.Models;
 using DuAn.Models.CustomModel;
 using Abp.Extensions;
 using DuAn.Models.DbModel;
+using DuAn.Attribute;
+using DuAn.COMMON;
 
 namespace DuAn.Controllers
 {
-    //[CheckRole(RoleID = new int[1] { 2 })]
+    [CheckLogin(/*RoleID = new int[1] { 2 }*/)]
+    [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise })]
     public class RoleAccountController : Controller
     {
         private Model1 db = new Model1();
@@ -30,12 +33,13 @@ namespace DuAn.Controllers
             }
             return PartialView(db.RoleAccounts.ToList());
         }
-
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
         public ActionResult TableDataRole()
         {
             return PartialView();
         }
         [HttpPost]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
         public JsonResult GetAllRole()
         {
             try
@@ -88,21 +92,30 @@ namespace DuAn.Controllers
                 return null;
             }
         }
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
         public ActionResult ListRole()
         {
             return PartialView();
         }
+
         [HttpPost]
-        public ActionResult PermissionTree(int RoleID)
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Create })]
+        public ActionResult CreateRoleForm()
         {
-            if (RoleID == 0)
-            {
-                return PartialView(new RoleAccount());
-            }
+                return PartialView("EditRoleForm",new RoleAccount());
+        }
+
+        [HttpPost]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Edit })]
+        public ActionResult EditRoleForm(int RoleID)
+        {
             var rs = db.RoleAccounts.Find(RoleID);
+            if (rs == null) return null;
             return PartialView(rs);
         }
+
         [HttpPost]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
         public JsonResult GetPermissionTree(int RoleID)
         {
 
@@ -135,6 +148,7 @@ namespace DuAn.Controllers
             }
         }
         [HttpPost]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
         public JsonResult CheckRolename(string rolename)
         {
             if (!RoleAccountDAO.checkRoleName(rolename))
@@ -144,6 +158,7 @@ namespace DuAn.Controllers
             return Json("Success", JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Edit })]
         public string UpdateRole(int RoleID, string RoleName, List<String> listPermissionID)
         {
             try
@@ -172,6 +187,7 @@ namespace DuAn.Controllers
             return "success";
         }
         [HttpPost]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Create })]
         public string InsertRole(int RoleID, string RoleName, List<String> listPermissionID)
         {
             try
@@ -194,6 +210,8 @@ namespace DuAn.Controllers
             }
             return "success";
         }
+        [HttpPost]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Delete })]
         public bool DeleteRole(int RoleID)
         {
             try

@@ -7,14 +7,19 @@ $(document).ready(function () {
         success: function (data) {
             $('#datatable_role_ajax').html(data);
         },
-        error: function (data) {
-            alert("Error load role ajax");
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load role ajax: ' + jqXHR.responseText, false);
+            }
         }
+
     });
 });
 
 $('#newrole').on('click', function () {
-    var url = "/RoleAccount/PermissionTree";
+    var url = "/RoleAccount/CreateRoleForm";
     var id = $(this).attr("data-id");
     $.ajax({
         url: url,
@@ -29,8 +34,12 @@ $('#newrole').on('click', function () {
                 backdrop: false
             });
         },
-        error: function (data) {
-            alert("Error load ajax edit role");
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load ajax edit role: ' + jqXHR.responseText, false);
+            }
         }
     });
 });

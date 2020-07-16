@@ -7,7 +7,7 @@
 <!--begin::Card-->
 
 
-<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+<div class="modal-dialog modal-dialog-centered modal-xl" style="width:600px !important" role="document">
     <div class="modal-content card card-custom gutter-b example example-compact">
         <!--Card header-->
         <div class="modal-header">
@@ -38,26 +38,11 @@
                             </span>
                         </div>
                     </div>
-                    @*<script>
-                            function getDataUrl() {
-                                // Create canvas
-                                var avatar = document.getElementById('avatar');
-                                const canvas = document.createElement('canvas');
-                                const ctx = canvas.getContext('2d');
-                                // Set width and height
-                                canvas.width = avatar.width;
-                                canvas.height = avatar.height;
-                                // Draw the image
-                                ctx.drawImage(avatar, 0, 0);
-                                return canvas.toDataURL('image/jpeg');
-                            }
-                            alert(getDataUrl());
-                        </script>*@
                 </div>
                 <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">ID:</label>
                     <div class="col-lg-9 col-xl-9">
-                        <input type="number" class="form-control form-control-solid form-control-lg" placeholder="ID" name="id" id="id" value="@Model.ID" disabled />
+                        <input type="number" class="form-control form-control-solid" placeholder="ID" name="id" id="id" value="@Model.ID" disabled />
                     </div>
                 </div>
                 <div class="form-group row">
@@ -92,6 +77,32 @@
                     </script>
                 </div>
                 <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Password:</label>
+                    <div class="col-lg-9 col-xl-9">
+                        <div class="input-group">
+                            <input style="float:left" type="password" class="form-control form-control-solid" placeholder="Password" name="password" id="password" value="@Model.Password" />
+                            <div class="input-group-append"><span class="input-group-text px-4" style="border:none"><i id="pass-status" class="fa fa-eye" aria-hidden="true" onClick="viewPassword()"></i></span></div>
+                        </div>            
+                        <div class="errorRegistrationAccount" id="errorPassword" style="color:red"></div>
+                    </div>
+                </div>
+                <script>
+                    function viewPassword() {
+                        var passwordInput = document.getElementById('password');
+                        var passStatus = document.getElementById('pass-status');
+
+                        if (passwordInput.type == 'password') {
+                            passwordInput.type = 'text';
+                            passStatus.className = 'fa fa-eye-slash';
+
+                        }
+                        else {
+                            passwordInput.type = 'password';
+                            passStatus.className = 'fa fa-eye';
+                        }
+                    }
+                </script>
+                <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">Họ và tên :</label>
                     <div class="col-lg-9 col-xl-9">
                         <input type="text" class="form-control form-control-solid" placeholder="Nhập họ và tên đây đủ" id="fullname" value="@Model.Fullname"
@@ -104,7 +115,7 @@
                 <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">Sinh ngày :</label>
                     <div class="col-lg-9 col-xl-9">
-                        <div class="datepicker date input-group p-0 shadow-sm" data-dob="@Model.DOB">
+                        <div class="datepicker date input-group p-0" data-dob="@Model.DOB">
                             <input type="text" placeholder="Date of birth" class="form-control" id="dob" readonly>
                             <div class="input-group-append"><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
                         </div>
@@ -177,7 +188,7 @@
 
             <!--end::Form-->
             <div class="modal-footer">
-                <label id="resultAccount" class="label label-lg font-weight-bold label-light-info label-inline"></label>
+                @*<label id="resultAccount" class="label label-lg font-weight-bold label-light-info label-inline"></label>*@
                 <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
                 <button type="button" class="btn btn-primary font-weight-bold" @*onclick="return CheckTotalAccount()"*@ id="submitAccount">Lưu thay đổi</button>
             </div>

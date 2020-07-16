@@ -705,7 +705,10 @@ namespace DuAn
                         if (!string.IsNullOrEmpty(acc.Avatar))
                         {
                             result.Avatar = acc.Avatar;
-                        } 
+                        }
+                        result.SaltPassword = RandomSaltHash();
+                        // ma hoa mat khau
+                        result.Password = MaHoaMatKhau(result.SaltPassword + acc.Password);
                         result.Fullname = acc.Fullname;
                         result.Phone = acc.Phone;
                         result.Email = acc.Email;

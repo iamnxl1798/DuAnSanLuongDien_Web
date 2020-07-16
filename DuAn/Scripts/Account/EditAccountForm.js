@@ -15,6 +15,9 @@ $('#submitAccount').on('click', function () {
         var username = document.getElementById('username').value;
         formData.append('username', username);
 
+        var password = document.getElementById('password').value;
+        formData.append('password', password);
+
         var fullname = document.getElementById('fullname').value;
         formData.append('fullname', fullname);
 
@@ -48,39 +51,32 @@ $('#submitAccount').on('click', function () {
             type: 'POST',
             processData: false,
             contentType: false,
-            data: formData /*{
-                id: id,
-                *//*avatar: avatar_str,*//*
-                username: username,
-                fullname: fullname,
-                phone: phone,
-                email: email,
-                address: address,
-                icode: icode,
-                dob: dob,
-                roleID: roleID
-            }*/,
+            data: formData,
             success: function (data) {
                 if (data != "success") {
-                    document.getElementById('resultAccount').innerText = data;
+                    showMessage(data, false);
                 } else {
-                    document.getElementById('resultAccount').innerText = 'Successfully';
                     reloadAccountDatatable();
+                    showMessage('Successfully', true);                    
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                document.getElementById('resultAccount').innerText = 'Error load insert/udapte account :' + jqXHR.status;
-                //*@* alert("Error load insert/udapte accout");*@*//*
+                if (jqXHR.status == 401) {
+                    showMessage('Bạn không có quyền này', false);
+                } else {
+                    showMessage(jqXHR.responseText, false);
+                }
             }
         });
     }
 });
 function hideError(name) {
     document.getElementById(name).innerText = "";
-    document.getElementById('resultAccount').innerText = "";
+    //document.getElementById('resultAccount').innerText = "";
 }
 function CheckTotalAccount() {
     var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
     var fullname = document.getElementById('fullname').value;
     var phone = document.getElementById('phone').value;
     var email = document.getElementById('email').value;
@@ -90,6 +86,10 @@ function CheckTotalAccount() {
 
     if (username == "" || username == null) {
         document.getElementById("errorUsername").innerText = "You need to fill it";
+
+    }
+    if (password == "" || password == null) {
+        document.getElementById("errorPassword").innerText = "You need to fill it";
 
     }
     if (fullname == "" || fullname == null) {
@@ -140,7 +140,7 @@ $(document).ready(function () {
             $('#all-role').append(data);
         },
         error: function (data) {
-            alert("Error load ajax get role");
+            showMessage('Error load ajax get role', false);
         }
     });
 });

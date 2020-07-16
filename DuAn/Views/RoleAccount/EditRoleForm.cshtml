@@ -1,6 +1,6 @@
 ﻿@model DuAn.Models.DbModel.RoleAccount
 
-<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+<div class="modal-dialog modal-dialog-centered modal-xl" style="width:600px !important" role="document">
     <div class="modal-content">
         <!--Card header-->
         <div class="modal-header">
@@ -75,7 +75,7 @@
         <!--end::card body-->
         <!--begin::footer-->
         <div class="modal-footer">
-            <label id="resultRole" class="label label-lg font-weight-bold label-light-info label-inline"></label>
+            @*<label id="resultRole" class="label label-lg font-weight-bold label-light-info label-inline"></label>*@
             <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
             <button type="button" class="btn btn-primary font-weight-bold" id="submitRole">Lưu thay đổi</button>
         </div>
@@ -83,4 +83,4 @@
     </div>
 </div>
 
-<script src="~/Scripts/Role/PermissionTree.js"></script>
+<script src="~/Scripts/Role/EditRoleForm.js"></script>

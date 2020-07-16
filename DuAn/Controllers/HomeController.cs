@@ -2,10 +2,12 @@
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
+using DuAn.Attribute;
 using DuAn.Models.DbModel;
 
 namespace DuAn.Controllers
 {
+    [CheckLogin(/*RoleID = new int[1] { 2 }*/)]
     public class HomeController : Controller
     {
         public ActionResult Index(string dateStr="")

@@ -18,14 +18,18 @@ $(document).ready(function () {
                 $('#jstree').jstree("open_all");
             });
         },
-        error: function (data) {
-            alert("Error load permission");
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load permission : ' + jqXHR.responseText, false);
+            }
         }
     });
 });
 function hideError(name) {
     document.getElementById(name).innerText = "";
-    document.getElementById('resultRole').innerText = "";
+    //document.getElementById('resultRole').innerText = "";
 }
 // update or insert Role
 $('#submitRole').on('click', function () {
@@ -55,17 +59,23 @@ $('#submitRole').on('click', function () {
             },
             success: function (data) {
                 if (data != "success") {
-                    document.getElementById('resultRole').innerText = data;
+                    showMessage(data, false);
+                    /*document.getElementById('resultRole').innerText = data;*/
                 } else {
-                    document.getElementById('resultRole').innerText = 'Successfully';
+                    showMessage('Successfully', true);
+                    /*document.getElementById('resultRole').innerText = 'Successfully';*/
                     reloadRoleDatatable();
                     if (url.endsWith("UpdateRole")) {
                         searchAccountFollowRole(rolename);
                     }
                 }
             },
-            error: function (data) {
-                document.getElementById('resultRole').innerText = 'Error load insert / udapte role';
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 401) {
+                    showMessage('Bạn không có quyền này', false);
+                } else {
+                    showMessage('Error load insert / udapte role: ' + jqXHR.responseText, false);
+                }
             }
         });
     }
@@ -75,11 +85,13 @@ function CheckTotalRole() {
     var rolename = document.getElementById('role-name').value;
 
     if (errorRolename != "" && errorRolename != null) {
-        document.getElementById("resultRole").innerText = "You need to change rolename";
+        showMessage('You need to change rolename', false);
+        //document.getElementById("resultRole").innerText = "You need to change rolename";
     }
     if (rolename == "" || rolename == null) {
         document.getElementById("errorRolename").innerText = "You need to fill it";
-        document.getElementById("resultRole").innerText = "You need to fill rolename";
+        showMessage('You need to fill rolename', false);
+        //document.getElementById("resultRole").innerText = "You need to fill rolename";
     }
 
     var error = document.getElementsByClassName("errorRegistrationRole");

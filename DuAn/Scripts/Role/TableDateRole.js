@@ -97,7 +97,7 @@ var loadDatatableRole = function () {
 $(document).ready(loadDatatableRole);
 
 $('#my_datatable_role').on('click', '.bt-open-edit-role-form', function () {
-    var url = "/RoleAccount/PermissionTree";
+    var url = "/RoleAccount/EditRoleForm";
     var id = $(this).attr("data-id");
     $.ajax({
         url: url,
@@ -112,8 +112,12 @@ $('#my_datatable_role').on('click', '.bt-open-edit-role-form', function () {
                 backdrop: false
             });
         },
-        error: function (data) {
-            alert("Error load ajax edit role");
+        error: function (xhr, textStatus, errorThrown) {
+            if (xhr.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load ajax edit role: ' + xhr.responseText, false);
+            }
         }
     });
 });
@@ -143,13 +147,18 @@ $('#btnDelteYesRole').on('click', function (e) {
         },
         success: function (data) {
             if (!data) {
-                alert("Error delete role ");
+                showMessage("Error delete role", false);
             } else {
+                showMessage('Xóa thành công !!!', true);
                 reloadRoleDatatable();
             }
         },
-        error: function (data) {
-            alert("Error load ajax delete role");
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 401) {
+                showMessage('Bạn không có quyền này', false);
+            } else {
+                showMessage('Error load ajax delete role : ' + jqXHR.responseText, false);
+            }
         }
     });
 });

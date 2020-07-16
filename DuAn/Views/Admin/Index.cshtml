@@ -18,13 +18,13 @@
 <div class="row ml-1 col-12">
     <div class="col-lg-6" id="capNhatDuLieuDiv">
         <!--begin::Mixed Widget 18-->
-       
+        @Html.Action("MissingDataPartial", "Admin")
         <!--end::Mixed Widget 18-->
     </div>
 
     <div class="col-lg-6" id="capNhatCongThucDiv">
         <!--begin::Mixed Widget 18-->
-        
+        @Html.Action("InsertFormula", "Admin")
         <!--end::Mixed Widget 18-->
     </div>
 </div>
@@ -33,20 +33,22 @@
         @Html.Action("ListRole", "RoleAccount")
     </div>
     <div class="col-lg-8">
-        @Html.Action("ListUser", "Account")
+        @{Html.RenderAction("ListUser", "Account");}
     </div>
     <!--end::Mixed Widget 18-->
 </div>
 <script>
-    $.ajax({
+   @* $.ajax({
             cache: false,
             url: "@Url.Action("MissingDataPartial", "Admin")",
         dataType:'html',
             success: function (data) {
                 $('#capNhatDuLieuDiv').html(data);
             },
-            error: function (xhr, ajaxOptions, thrownError) {
-                showMessage("Không thể hiển thị dữ liệu bị thiếu", false);
+        error: function (xhr, ajaxOptions, thrownError) {
+                if (!xhr.status == 401) {
+                    showMessage("Không thể hiển thị dữ liệu bị thiếu", false);
+                }
             }
         });
         $.ajax({
@@ -57,9 +59,11 @@
                 $('#capNhatCongThucDiv').html(data);
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                showMessage("Không thể hiển thị Form cập nhật công thức", false);
+                if (!xhr.status == 401) {
+                    showMessage("Không thể hiển thị Form cập nhật công thức", false);
+                }
             }
-        });
+        });*@
     const sleep = milliseconds => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     };
