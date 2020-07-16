@@ -80,5 +80,10 @@ namespace DuAn.Controllers
             Session["User"] = result;
             return result!=null?"success":"";
         }
+        public ActionResult ProfilePartial()
+        {
+            Account acc = (Account)Session["User"];
+            return PartialView(acc);
+        }
     }
 }

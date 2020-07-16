@@ -103,4 +103,10 @@
 <script src="~/Scripts/assets/js/scripts.bundle.js"></script>
 <script>
     var _avatar = new KTImageInput('kt_user_add_avatar');
+    $(document).ready(function () {
+            $('.datepickerDiv').datepicker({
+                clearBtn: true,
+                format: "dd/mm/yyyy"
+            });
+        });
 </script>
