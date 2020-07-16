@@ -2389,7 +2389,6 @@
     <Content Include="Scripts\Role\EditRoleForm.js" />
     <Content Include="Scripts\Role\ListRole.js" />
     <Content Include="Views\Account\EditAccountForm.cshtml" />
-    <Content Include="Views\Account\AccessDenied.cshtml" />
     <None Include="Views\Account\ListUser.cshtml" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Views\Admin\Index.cshtml" />

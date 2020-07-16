@@ -64,16 +64,11 @@ namespace DuAn.Controllers
         {
             return PartialView();
         }
-        public ActionResult AccessDenied()
-        {
-            return PartialView();
-        }
         [HttpPost]
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Create })]
         public ActionResult CreateAccountForm()
         {
             return PartialView("EditAccountForm", new AccountDetail() { DOB = DateTime.Now });
-            //return PartialView(new AccountDetail() { DOB = DateTime.Now });
         }
 
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Edit })]
@@ -183,6 +178,7 @@ namespace DuAn.Controllers
                     // file is uploaded
                     avatar.SaveAs(path_avatar);
                 }
+
                 Account acc = new Account()
                 {
                     ID = id,

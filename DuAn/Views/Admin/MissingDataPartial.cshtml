@@ -1,29 +1,31 @@
 ﻿@model List<DuAn.Models.CustomModel.MissingDataStatus>
-<div class="card card-custom gutter-b" style="height:95%">
-    <div class="card-header">
-        <div class="card-title">
-            <h3 class="card-label"><i class="icon-xl fas fa-upload text-primary"></i> Cập nhật sản lượng trong ngày bị thiếu</h3>
+<div class="col-lg-6">
+    <div class="card card-custom gutter-b" style="height:95%">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="card-label"><i class="icon-xl fas fa-upload text-primary"></i> Cập nhật sản lượng trong ngày bị thiếu</h3>
+            </div>
         </div>
-    </div>
-    <!--begin::Form-->
-    <form>
-        <div class="card-body">
-            <div class="form-group row">
-                <div class="col-lg-7 mb-4">
-                    <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
-                        <div class="dropzone-msg dz-message needsclick my-auto text-center">
-                            <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                            <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
-                            <img src="~/images/upload-arrow_318-26670.jpg" class="rounded mx-auto d-block w-25 h-25 mt-7 mb-11" alt="Responsive image" />
+        <!--begin::Form-->
+        <form>
+            <div class="card-body">
+                <div class="form-group row">
+                    <div class="col-lg-7 mb-4">
+                        <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
+                            <div class="dropzone-msg dz-message needsclick my-auto text-center">
+                                <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
+                                <img src="~/images/upload-arrow_318-26670.jpg" class="rounded mx-auto d-block w-25 h-25 mt-7 mb-11" alt="Responsive image" />
+                            </div>
                         </div>
                     </div>
+                    <div class="col-lg-5" id="listMissing">
+                        @Html.Partial("viewMissingDataList", Model)
+                    </div>
                 </div>
-                <div class="col-lg-5" id="listMissing">
-                    @Html.Partial("viewMissingDataList", Model)
-                </div>
+                <label class="text-success mt-4" id="capNhatDuLieuLabel"></label>
             </div>
-            <label class="text-success mt-4" id="capNhatDuLieuLabel"></label>
-        </div>
-    </form>
-    <!--end::Form-->
+        </form>
+        <!--end::Form-->
+    </div>
 </div>

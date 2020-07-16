@@ -112,13 +112,11 @@ namespace DuAn.Controllers
             return PartialView(result);
         }
 
-        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateRecipe })]
         public ActionResult InsertFormula()
         {
             var result = DBContext.getDataAdminModel();
             return PartialView(result);
         }
-
-
     }
 }
