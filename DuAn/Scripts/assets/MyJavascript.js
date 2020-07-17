@@ -1,4 +1,5 @@
-﻿function showMessage(text, status) {
+﻿
+function showMessage(text, status) {
     if (status == true) {
         toastr.options = {
             "closeButton": false,

@@ -86,6 +86,16 @@
                     } else {
                         showMessage("Cập nhật tài khoản thành công", true);
                         renderProfileSide();
+                        $.ajax({
+                url: "@Url.Action("layoutUser","Home")",
+                type: 'GET',
+            success: function (data) {
+                $("#layoutUser").html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    showMessage("Lỗi thay đổi mật khẩu", false)
+                }
+            });
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
