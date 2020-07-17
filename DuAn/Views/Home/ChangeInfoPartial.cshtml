@@ -23,7 +23,7 @@
             <label class="col-xl-3 col-lg-3 col-form-label text-right">Avatar</label>
             <div class="col-lg-9 col-xl-6">
                 <div class="image-input image-input-outline" id="kt_user_add_avatar" )">
-                    <div class="image-input-wrapper" style="background-image: url('../images/avatarAccount/@(Model.Avatar)')"></div>
+                        <div class="image-input-wrapper" style="background-image: url('../images/avatarAccount/@Model.Avatar')"></div>
                     <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
                         <i class="fa fa-pen icon-sm text-muted"></i>
                         <input type="file" id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
@@ -50,7 +50,7 @@
             <div class="col-lg-9 col-xl-6">
                 <div class="datepickerDiv date input-group p-0 shadow-sm" width="100% !important">
                     <input type="text" value="@Model.DOB.ToString("dd/MM/yyyy")" class="form-control form-control-lg form-control-solid" id="dob" readonly>
-                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                    <div class="input-group-append"><span class="input-group-text" style="border:none"><i class="fa fa-calendar"></i></span></div>
                 </div>
             </div>
         </div>

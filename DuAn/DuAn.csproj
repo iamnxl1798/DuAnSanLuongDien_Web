@@ -2383,12 +2383,12 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\LayoutJS\Layout.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Role\TableDateRole.js" />
     <Content Include="Scripts\Role\EditRoleForm.js" />
     <Content Include="Scripts\Role\ListRole.js" />
     <Content Include="Views\Account\EditAccountForm.cshtml" />
-    <Content Include="Views\Account\AccessDenied.cshtml" />
     <None Include="Views\Account\ListUser.cshtml" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Views\Admin\Index.cshtml" />

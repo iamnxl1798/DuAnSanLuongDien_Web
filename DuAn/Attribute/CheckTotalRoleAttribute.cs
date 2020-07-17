@@ -33,7 +33,7 @@ namespace DuAn.Attribute
                 {
                     foreach (var u in listRole)
                     {
-                        if (int.Parse(i) == u)
+                        if (!string.IsNullOrEmpty(i) && int.Parse(i) == u)
                         {
                             return true;
                         }
@@ -46,11 +46,6 @@ namespace DuAn.Attribute
         //nếu không được phép truy cập sẽ call hàm này
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            /*filterContext.Result = new RedirectToRouteResult
-            (
-                new RouteValueDictionary(new { controller = "Account", action = "AccessDenied" })
-            );*/
-            //filterContext.Result = new ViewResult { ViewName = "AccessDenied" };
             //filterContext.Result = new RedirectResult("/Account/AccessDenied");
             base.HandleUnauthorizedRequest(filterContext);
         }

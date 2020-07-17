@@ -105,7 +105,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                                 <i class="menu-arrow"></i>
                                             </a>
                                         </li>
-                                        <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+                                        <li class="menu-item menu-item-submenu menu-item-rel" id="adminPage" data-menu-toggle="click" aria-haspopup="true">
                                             <a href="@Url.Action("Index", "Admin")" class="menu-link ">
                                                 <span class="menu-text">Quản trị</span>
                                                 <span class="menu-desc"></span>
@@ -113,6 +113,10 @@ License: You must have a valid license purchased only from themeforest(the above
                                             </a>
                                         </li>
                                     </ul>
+                                    @{
+                                        DuAn.Models.DbModel.Account acc = (DuAn.Models.DbModel.Account)Session["User"];
+                                        <input type="hidden" id="permissionRole" value="@acc.RoleAccount.PermissionID" />
+                                    }
                                     <!--end::Header Nav-->
                                 </div>
                                 <!--end::Header Menu-->
@@ -238,6 +242,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <!--end::Global Theme Bundle-->
     <!--begin::Page Vendors(used by this page)-->
+    <script src="~/Scripts/LayoutJS/Layout.js"></script>
     <!--use for datatable in TableDataUser-->
     <script src="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--use for jstree in EditRoleForm-->

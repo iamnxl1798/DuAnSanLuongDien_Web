@@ -706,9 +706,12 @@ namespace DuAn
                         {
                             result.Avatar = acc.Avatar;
                         }
-                        result.SaltPassword = RandomSaltHash();
-                        // ma hoa mat khau
-                        result.Password = MaHoaMatKhau(result.SaltPassword + acc.Password);
+                        //check password current
+                        if(acc.Password != result.Password)
+                        {
+                            result.SaltPassword = RandomSaltHash();
+                            result.Password = MaHoaMatKhau(result.SaltPassword + acc.Password);
+                        }
                         result.Fullname = acc.Fullname;
                         result.Phone = acc.Phone;
                         result.Email = acc.Email;
