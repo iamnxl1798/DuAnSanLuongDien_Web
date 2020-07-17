@@ -22,6 +22,7 @@ namespace DuAn.Models.CustomModel
         public string Email { get; set; }
         public string Avatar { get; set; }
         public string Role { get; set; }
+        public string RoleColorClass { get; set; }
         public string Actions { get; set; }
     }
     public class AccountDetail

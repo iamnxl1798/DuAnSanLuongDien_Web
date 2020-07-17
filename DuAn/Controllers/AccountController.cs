@@ -142,6 +142,8 @@ namespace DuAn.Controllers
                 apg.recordsFiltered = listAccount.Count;
                 //paging
                 listAccount = listAccount.Skip(start).Take(length).ToList<Account>();
+                Dictionary<string, string> Role_Color = StatusContext.GetColorForRole();
+                int count = StatusContext.Color.Count;
                 for (int i = 0; i < listAccount.Count; i++)
                 {
                     AccountShort acs = new AccountShort
@@ -152,6 +154,7 @@ namespace DuAn.Controllers
                         Phone = listAccount[i].Phone,
                         Email = listAccount[i].Email,
                         Role = listAccount[i].RoleAccount.Role,
+                        RoleColorClass = Role_Color[listAccount[i].RoleAccount.Role],
                         Avatar = listAccount[i].Avatar,
                         Actions = ""
                     };

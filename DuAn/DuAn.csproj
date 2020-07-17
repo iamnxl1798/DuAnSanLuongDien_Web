@@ -269,6 +269,7 @@
     <Compile Include="Authorization\WebAuthorizationProvider.cs" />
     <Compile Include="COMMON\CommonContext.cs" />
     <Compile Include="COMMON\RoleContext.cs" />
+    <Compile Include="COMMON\StatusContext.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -279,6 +280,7 @@
     </Compile>
     <Compile Include="Models\CustomModel\AccountPaging.cs" />
     <Compile Include="Models\CustomModel\AdminModel.cs" />
+    <Compile Include="Models\CustomModel\AllRole.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
     <Compile Include="Models\CustomModel\ExportExcelModel.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />

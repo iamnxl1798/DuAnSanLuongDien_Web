@@ -30,19 +30,23 @@ var loadDataTableAccount = function () {
             { "data": "Phone", "name": "Phone" },
             { "data": "Email", "name": "Email" },
             {
-                "data": "Role", "name": "Role",
-                render: function (Role) {
-                    var status = {
+                "data": {
+                    Role: "Role",
+                    RoleColorClass: "RoleColorClass"
+                },
+                "name": "Role",
+                render: function (data) {
+                    /*var status = {
                         'Lãnh Đạo': 'label-light-danger',
                         'Quản Trị': 'label-light-info',
                         'Chuyên Viên': 'label-light-primary'
                         //label-light-danger //label-light-warning
                     };
-                    if (Role in status) {
-                        return '<span class="label label-lg font-weight-bold ' + status[Role] + ' label-inline">' + Role + '</span>';
-                    } else {
+                    if (Role in status) {*/
+                    return '<span class="label label-lg font-weight-bold ' + data.RoleColorClass + ' label-inline">' + data.Role + '</span>';
+                    /*} else {
                         return '<span class="label label-lg font-weight-bold  label-light-success label-inline">' + Role + '</span>';
-                    }
+                    }*/
 
                 }
             },

@@ -17,11 +17,13 @@ namespace DuAn.Models.CustomModel
     {
         public int ID { get; set; }
         public string Role { get; set; }
+        public string RoleColorClass { get; set; }
         public string Actions { get; set; }
-        public RoleModel(RoleAccount racc)
+        public RoleModel(RoleAccount racc, string colorClass)
         {
             ID = racc.ID;
             Role = racc.Role;
+            RoleColorClass = colorClass;
             Actions = "";
         }
     }

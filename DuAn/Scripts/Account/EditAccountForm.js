@@ -1,9 +1,10 @@
-﻿"use strict"
+﻿
 //EditAccountForm
 var _avatar = new KTImageInput('kt_user_add_avatar');
 
 $('#submitAccount').on('click', function () {
     if (CheckTotalAccount()) {
+
         var avatar = document.getElementById('avatar');
         var formData = new FormData();
 
@@ -36,7 +37,7 @@ $('#submitAccount').on('click', function () {
         var dob = document.getElementById('dob').value;
         formData.append('dob', dob);
 
-        var roleID = $('#role_change').children("option:selected").val();
+        var roleID = document.getElementById('dropdownRoleButton').value;
         formData.append('roleID', roleID);
 
         var url = "";

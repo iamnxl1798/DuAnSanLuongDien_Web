@@ -1,38 +1,81 @@
-﻿@model ICollection<DuAn.Models.DbModel.RoleAccount>
+﻿@model ICollection<DuAn.Models.CustomModel.AllRole>
 
-@*<div class="radio-list">
-        @foreach (var i in Model)
-        {
-            <label class="radio">
-                @if (i.Role.Equals(ViewBag.RoleAccEdit))
+<style>
+    #allRole {
+        max-height: 150px;
+        overflow: auto;
+    }
+    #allRole::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    #allRole {
+        -ms-overflow-style: none; /* IE and Edge */
+    }
+</style>
+
+@*<div class="col-lg-9 col-xl-9" id="allRole">
+        <select class="form-control" id="role_change" name="roleID">
+            @foreach (var i in Model)
+            {
+                if (i.Role.Equals(ViewBag.RoleAccEdit))
                 {
-                    <input type="radio" name="role" value="@i.ID" checked />@i.Role
+                    <option style="height: 200%;" value="@i.ID" selected>@i.Role</option>
                 }
                 else
                 {
-                    <input type="radio" name="role" value="@i.ID" />@i.Role
+                    <option style="height: 200%;" value="@i.ID">@i.Role</option>
                 }
-                <span></span>
-            </label>
-        }
+            }
+        </select>
     </div>*@
-<div class="col-lg-9 col-xl-9">
-    <select class="form-control" id="role_change" name="roleID" onchange="changeRole()">
+<div class="dropdown col-lg-9 col-xl-9">
+    <button class="btn dropdown-toggle label label-xl font-weight-bold @ViewBag.RoleColorClass label-inline" type="button" id="dropdownRoleButton" value="@ViewBag.RoleIDAccEdit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        @ViewBag.RoleAccEdit
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownRoleButton" id="allRole">
         @foreach (var i in Model)
         {
-            if (i.Role.Equals(ViewBag.RoleAccEdit))
-            {
-                <option style="height: 200%;" value="@i.ID" selected>@i.Role</option>
-            }
-            else
-            {
-                <option style="height: 200%;" value="@i.ID">@i.Role</option>
-            }
+        <a class="dropdown-item label label-xl font-weight-bold @i.ColorClass label-inline" style="margin-top: 5px" href="javascript:changeRole(@i.ID,'@i.Role', '@i.ColorClass');"
+           @*data-toggle="tooltip" data-html="true" title="And here's some amazing <span class='label label-inline font-weight-bold label-light-primary'>HTML</span> content. It's very <code>engaging</code>. Right?" *@>@i.Role</a>
         }
-    </select>
+    </div>
 </div>
 <script>
-    function changeRole() {
-        document.getElementById('result').innerText = "";
+    var currentColorClass = '@ViewBag.RoleColorClass' ;
+    function changeRole(id, name, colorClass) {
+        document.getElementById('dropdownRoleButton').value = id;
+        document.getElementById('dropdownRoleButton').innerText = name;
+        document.getElementById('dropdownRoleButton').classList.remove(currentColorClass);
+        document.getElementById('dropdownRoleButton').classList.add(colorClass);
+        currentColorClass = colorClass;
     }
+    function ShowRoleTree(id) {
+        //var RoleId = $('#idRoleAccount').attr('data-id');
+        $.ajax({
+            url: "/RoleAccount/GetPermissionTree",
+            type: 'POST',
+            data: {
+                roleID: id
+            },
+            success: function (data) {
+                $('#jstree_2').jstree({
+                    plugins: ['checkbox'],
+                    'core': {
+                        'data': data
+                    },
+                }).on('ready.jstree', function () {
+                    $('#jstree_2').jstree("open_all");
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 401) {
+                    showMessage('Bạn không có quyền này', false);
+                } else {
+                    showMessage('Error load permission : ' + jqXHR.responseText, false);
+                }
+            }
+        });
+    };
 </script>

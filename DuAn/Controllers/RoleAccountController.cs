@@ -23,15 +23,37 @@ namespace DuAn.Controllers
         [HttpPost]
         public ActionResult AllRole(string role)
         {
+            List<AllRole> list = new List<AllRole>();
             try
             {
-                ViewBag.RoleAccEdit = role;
+                Dictionary<string, string> Role_Color = StatusContext.GetColorForRole();
+                if (string.IsNullOrEmpty(role))
+                {
+                    return null;
+                }
+                foreach (var i in db.RoleAccounts)
+                {
+                    if (i.Role.ToLower().Equals(role.ToLower()))
+                    {
+                        ViewBag.RoleIDAccEdit = role;
+                        ViewBag.RoleAccEdit = role;
+                        ViewBag.RoleColorClass = Role_Color[i.Role];
+                    }
+                    AllRole alr = new AllRole()
+                    {
+                        ID = i.ID,
+                        Role = i.Role,
+                        ColorClass = Role_Color[i.Role]
+                    };
+                    list.Add(alr);
+                }
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            return PartialView(db.RoleAccounts.ToList());
+            return PartialView(list);
         }
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
         public ActionResult TableDataRole()
@@ -60,6 +82,7 @@ namespace DuAn.Controllers
                 apg.data = new List<RoleModel>();
                 start = (start - 1) * length;
                 List<RoleAccount> listRole = db.RoleAccounts.ToList<RoleAccount>();
+                Dictionary<string, string> Role_Color = StatusContext.GetColorForRole();
                 apg.recordsTotal = listRole.Count;
                 //filter
                 if (!string.IsNullOrEmpty(searchValue))
@@ -80,7 +103,7 @@ namespace DuAn.Controllers
 
                 foreach (var i in listRole)
                 {
-                    apg.data.Add(new RoleModel(i));
+                    apg.data.Add(new RoleModel(i, Role_Color[i.Role]));
                 }
 
                 apg.draw = int.Parse(Request["draw"]);
@@ -115,7 +138,7 @@ namespace DuAn.Controllers
         }
 
         [HttpPost]
-        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise })]
         public JsonResult GetPermissionTree(int RoleID)
         {
 

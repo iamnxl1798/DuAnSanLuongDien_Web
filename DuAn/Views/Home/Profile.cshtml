@@ -29,8 +29,8 @@
 <script src="~/Scripts/assets/js/scripts.bundle.js"></script>
 <script>
         $('#pageTitle').text('Thông tin người dùng');
-    $('#pageDirectory').text('Home - Profile');
-    renderProfileSide();
+        $('#pageDirectory').text('Home - Profile');
+        renderProfileSide();
         $(document).ready(function () {
             changePartial('infoButton');
         });
@@ -86,15 +86,15 @@
                         showMessage("Cập nhật tài khoản thành công", true);
                         renderProfileSide();
                         $.ajax({
-                url: "@Url.Action("layoutUser","Home")",
-                type: 'GET',
-            success: function (data) {
-                $("#layoutUser").html(data);
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    showMessage("Lỗi thay đổi mật khẩu", false)
-                }
-            });
+                        url: "@Url.Action("layoutUser","Home")",
+                        type: 'GET',
+                            success: function (data) {
+                                $("#layoutUser").html(data);
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    showMessage("Lỗi thay đổi mật khẩu", false)
+                                }
+                            });
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
