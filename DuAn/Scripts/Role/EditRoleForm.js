@@ -47,6 +47,7 @@ $('#submitRole').on('click', function () {
         $.each(selectedNodes, function () {
             checked_ids.push(this.id);
         });
+
         var rolename = document.getElementById("role-name").value;
 
         $.ajax({
