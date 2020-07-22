@@ -37,7 +37,7 @@
     <div class="dropdown-menu" aria-labelledby="dropdownRoleButton" id="allRole">
         @foreach (var i in Model)
         {
-        <a class="dropdown-item label label-xl font-weight-bold @i.ColorClass label-inline" style="margin-top: 5px" href="javascript:changeRole(@i.ID,'@i.Role', '@i.ColorClass');"
+        <a class="dropdown-item label label-xl font-weight-bold @i.ColorClass label-inline" style="margin-top: 5px; margin-left:10px" href="javascript:changeRole(@i.ID,'@i.Role', '@i.ColorClass');"
            @*data-toggle="tooltip" data-html="true" title="And here's some amazing <span class='label label-inline font-weight-bold label-light-primary'>HTML</span> content. It's very <code>engaging</code>. Right?" *@>@i.Role</a>
         }
     </div>

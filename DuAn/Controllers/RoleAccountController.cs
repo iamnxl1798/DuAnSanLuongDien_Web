@@ -35,7 +35,7 @@ namespace DuAn.Controllers
                 {
                     if (i.Role.ToLower().Equals(role.ToLower()))
                     {
-                        ViewBag.RoleIDAccEdit = role;
+                        ViewBag.RoleIDAccEdit = i.ID;
                         ViewBag.RoleAccEdit = role;
                         ViewBag.RoleColorClass = Role_Color[i.Role];
                     }
