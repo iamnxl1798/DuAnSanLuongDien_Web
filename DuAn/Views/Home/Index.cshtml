@@ -14,7 +14,7 @@
             Menu
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a href="javascript:void(0)" class="dropdown-item" onclick="exportExcel()">Xuất báo cáo</a>
+            <a href="javascript:void(0)" class="dropdown-item" onclick="exportExcel()">Trích xuất dữ liệu</a>
             <a href="javascript:void(0)" class="dropdown-item" onclick="clickThongSo()">Thông số vận hành</a>
         </div>
     </div>
@@ -30,7 +30,12 @@
 <script src="https://www.amcharts.com/lib/4/charts.js"></script>
 <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
 <script src="~/Scripts/HomePageScript.js"></script>
+
 <script type="text/javascript">
+    $(document).ready(function () {
+        capNhatPageDirectory("Thống kê sản lượng", ['Trang chủ']);
+    });
+    
     function clickThongSo() {
         var url = "@Url.Action("getModalThongSo", "Home")";
         $.ajax({

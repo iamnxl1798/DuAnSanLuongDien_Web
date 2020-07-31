@@ -16,10 +16,39 @@ namespace DuAn.Controllers
     public class AdminController : Controller
     {
         // GET: Admin
-        public ActionResult Index()
+        /*public ActionResult Index()
         {
             AdminModel item = DBContext.getDataAdminModel();
             return View(item);
+        }*/
+
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
+        public ActionResult CauHinhSanLuong()
+        {
+            AdminModel item = DBContext.getDataAdminModel();
+            return View(item);
+        }
+
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateRecipe })]
+        public ActionResult CauHinhCongThuc()
+        {
+            return View();
+        }
+
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
+        public ActionResult QuanTriVaiTro()
+        {
+            return View();
+        }
+
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts })]
+        public ActionResult QuanTriNguoiDung()
+        {
+            return View();
+        }
+        public ActionResult QuanTriCauHinh()
+        {
+            return View();
         }
 
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]

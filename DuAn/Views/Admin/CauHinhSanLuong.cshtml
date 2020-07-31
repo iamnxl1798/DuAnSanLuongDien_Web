@@ -1,0 +1,118 @@
+﻿@using DuAn.Models.CustomModel
+@using DuAn.Models.DbModel
+@model AdminModel
+@{
+    ViewBag.Title = "CauHinhSanLuong";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row ml-1 col-12" style="justify-content: center;">
+    @Html.Action("MissingDataPartial", "Admin")
+</div>
+<script>
+    var listDirect = ["Cấu Hình", "Cập nhật sản lượng ngày"];
+    $(document).ready(function () {
+        capNhatPageDirectory('Cập nhật sản lượng ngày', listDirect);
+
+        var start = new Date(@Model.getLastDate.Year,@Model.getLastDate.Month-1,@Model.getLastDate.Day);
+
+        updateCalendar(start);
+
+        $('#kt_dropzone_3').dropzone({
+            addRemoveLinks: true,
+            url: "@Url.Action("SaveDropzoneJsUploadedFiles","Admin")", // Set the url for your upload script location
+            paramName: "file", // The name that will be used to transfer the file
+            maxFiles: 10,
+            maxFilesize: 10, // MB
+            addRemoveLinks: true,
+            acceptedFiles: "text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv",
+            accept: function (file, done) {
+                var name = file.name;
+                try {
+                    var day = parseInt(name.substring(0, 2));
+                    var month = parseInt(name.substring(2, 4))-1;
+                    var year = parseInt(new Date().getFullYear().toString().substring(0, 3)+name.substring(4, 5));
+                    var ID = parseInt(name.substring(5));
+                    var myDate = new Date(year, month, day);
+                    if (myDate.getDate() != day || myDate.getMonth() != month || myDate.getFullYear() != year) {
+                        showMessage("File không hợp lệ", false);
+                        done("File không hợp lệ.");
+                    }
+                    else if (!isNaN(file.name) || file.name.split('.')[0].length > 8) {
+                        showMessage("File không hợp lệ", false);
+                        done("File không hợp lệ.");
+                    } else {
+                        done();
+                    }
+                }
+                catch{
+                    done("File khÔng hợp lệ.");
+                }
+            },
+            success: function (file, response) {
+                showMessage("Thêm file thành công, đang chờ xử lý", true);
+                $.ajax({
+                        cache: false,
+                        url: "@Url.Action("viewMissingDataList", "Admin")",
+                    data: { fileName: file.name },
+                    dataType:'html',
+                        success: function (data) {
+                            $('#listMissing').html(data);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            showMessage("Xảy ra lỗi khi cập nhật dữ liệu", false);
+                        }
+                    });
+                sleep(10000).then(() => {
+                    $.ajax({
+                        cache: false,
+                        url: "@Url.Action("viewMissingDataList", "Admin")",
+                        data: {fileName:file.name},
+                        success: function (data) {
+                            $('#listMissing').html(data);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            showMessage("Xảy ra lỗi khi cập nhật dữ liệu", false);
+                        }
+                    });
+                });
+
+            },
+            removedfile: function (file) {
+                sleep(0).then(() => {
+                    $.ajax({
+                        method:'POST',
+                        cache: false,
+                        url: "@Url.Action("RemoveFile","Admin")",
+                        data: { name: file.name },
+                        dataType:'json',
+                        success: function (message) {
+                            if (message.Message == 'Thanhcong') {
+                                file.previewElement.remove();
+                                showMessage("Xóa thành công", true);
+                            }
+                            else if (message.Message == 'Xuly') {
+                                showMessage("Đang chờ xử lý", false)
+                            }
+                            else {
+                                showMessage("Xóa thất bại", true);
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            showMessage("Xóa thất bại", false);
+                            console.log(thrownError);
+                        }
+                    });
+                });
+            }
+        });
+    });
+
+    function updateCalendar(date) {
+        $('.datepickerDiv').datepicker({
+            startDate: date,
+            clearBtn: true,
+            format: "dd/mm/yyyy"
+        });
+    }
+</script>

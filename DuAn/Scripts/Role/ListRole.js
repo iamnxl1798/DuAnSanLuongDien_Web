@@ -11,7 +11,7 @@ $(document).ready(function () {
             if (jqXHR.status == 401) {
                 showMessage('Bạn không có quyền này', false);
             } else {
-                showMessage('Error load role ajax: ' + jqXHR.responseText, false);
+                showMessage('Đã xảy ra lỗi trong quá trình tải bảng vai trò: ' + jqXHR.responseText, false);
             }
         }
 
@@ -38,7 +38,7 @@ $('#newrole').on('click', function () {
             if (jqXHR.status == 401) {
                 showMessage('Bạn không có quyền này', false);
             } else {
-                showMessage('Error load ajax edit role: ' + jqXHR.responseText, false);
+                showMessage('Đã xảy ra lỗi trong quá trình tải form thêm mới vai trò: ' + jqXHR.responseText, false);
             }
         }
     });

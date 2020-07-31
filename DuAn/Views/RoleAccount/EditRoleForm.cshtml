@@ -6,11 +6,11 @@
         <div class="modal-header">
             @if (Model.ID == 0)
             {
-                <h5 class="modal-title">Create new role :</h5>
+                <h5 class="modal-title">Tạo mới vai trò :</h5>
             }
             else
             {
-                <h5 class="modal-title">Edit role :</h5>
+                <h5 class="modal-title">Chỉnh sửa vai trò :</h5>
             }
         </div>
         <div id="idRoleAccount" data-id="@Model.ID" hidden></div>
@@ -19,20 +19,20 @@
             <!-- Tab Menu -->
             <ul class="nav nav-tabs nav-boldest">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Role</a>
+                    <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Vai trò</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">Permissions</a>
+                    <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">Phân quyền</a>
                 </li>
             </ul>
             <!--begin::Content-->
             <div class="tab-content mt-5" id="myTabContent">
                 <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
                     <div class="form-group">
-                        <label>Role name :</label>
-                        <input type="text" id="role-name" class="form-control" placeholder="Enter role name" value="@Model.Role"
+                        <label>Tên vai trò :</label>
+                        <input type="text" id="role-name" class="form-control" placeholder="Nhập tên vai trò" value="@Model.Role"
                                onblur='CheckRolename()' onchange='hideError("errorRolename")' onkeypress='hideError("errorRolename")' />
-                        <span class="form-text text-muted">You can change name of role here.</span>
+                        <span class="form-text text-muted">Bạn có thể thay đổi tên vai trò ở đây.</span>
                         <div class="errorRegistrationRole" id="errorRolename" style="color:red"></div>
                     </div>
                 </div>
@@ -50,13 +50,13 @@
                                 url: '@Url.Action("CheckRolename", "RoleAccount")',
                                 success: function (response) {
                                     if (response == "Fail") {
-                                        document.getElementById("errorRolename").innerText = "Rolename has been existed !!!";
+                                        document.getElementById("errorRolename").innerText = "Tên vai trò đã tồn tại !!!";
                                     } else {
                                         document.getElementById("errorRolename").innerText = "";
                                     }
                                 },
                                 error: function (response) {
-                                    alert("Can't get result !!!");
+                                    alert("Không thể truy cập dữ liệu !!!");
                                 }
                             });
                         }

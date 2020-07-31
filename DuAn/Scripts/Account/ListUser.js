@@ -16,7 +16,7 @@ jQuery('#newaccount').on('click', function () {
 			if (jqXHR.status == 401) {
 				showMessage('Bạn không có quyền này', false);
 			} else {
-				showMessage('Error load ajax edit/insert account: ' + jqXHR.responseText, false);
+				showMessage('Đã xảy ra lỗi trong quá trình chỉnh sửa/ thêm mới tài khoản ' + jqXHR.responseText, false);
 			}
 		}
 	});
@@ -33,7 +33,7 @@ jQuery(document).ready(function () {
 			/*@* $('#test_ajax').modal('show');*@*/
 		},
 		error: function (data) {
-			showMessage('Error load dataTable ajax', false);
+			showMessage('Đã xả ra lỗi trong quá trình lấy dữ liệu bảng', false);
 		}
 	});
 });

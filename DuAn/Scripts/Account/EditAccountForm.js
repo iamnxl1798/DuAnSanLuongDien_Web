@@ -58,7 +58,7 @@ $('#submitAccount').on('click', function () {
                     showMessage(data, false);
                 } else {
                     reloadAccountDatatable();
-                    showMessage('Successfully', true);                    
+                    showMessage('Thành công !!!', true);                    
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -86,35 +86,35 @@ function CheckTotalAccount() {
     var identifycode = document.getElementById("icode").value;
 
     if (username == "" || username == null) {
-        document.getElementById("errorUsername").innerText = "You need to fill it";
+        document.getElementById("errorUsername").innerText = "Thông tin không được bỏ trống";
 
     }
     if (password == "" || password == null) {
-        document.getElementById("errorPassword").innerText = "You need to fill it";
+        document.getElementById("errorPassword").innerText = "Thông tin không được bỏ trống";
 
     }
     if (fullname == "" || fullname == null) {
-        document.getElementById("errorFullname").innerText = "You need to fill it";
+        document.getElementById("errorFullname").innerText = "Thông tin không được bỏ trống";
 
     }
     if (phone == "" || phone == null) {
-        document.getElementById("errorPhone").innerText = "You need to fill it";
+        document.getElementById("errorPhone").innerText = "Thông tin không được bỏ trống";
 
     }
     if (email == "" || email == null) {
-        document.getElementById("errorEmail").innerText = "You need to fill it";
+        document.getElementById("errorEmail").innerText = "Thông tin không được bỏ trống";
 
     }
     if (address == "" || address == null) {
-        document.getElementById("errorAddress").innerText = "You need to fill it";
+        document.getElementById("errorAddress").innerText = "Thông tin không được bỏ trống";
 
     }
     if (identifycode == "" || identifycode == null) {
-        document.getElementById("errorIdentifyCode").innerText = "You need to fill it";
+        document.getElementById("errorIdentifyCode").innerText = "Thông tin không được bỏ trống";
 
     }
     if (dob == "" || dob == null) {
-        document.getElementById("errorDOB").innerText = "You need to fill it";
+        document.getElementById("errorDOB").innerText = "Thông tin không được bỏ trống";
 
     }
     var error = document.getElementsByClassName("errorRegistrationAccount");
@@ -141,7 +141,7 @@ $(document).ready(function () {
             $('#all-role').append(data);
         },
         error: function (data) {
-            showMessage('Error load ajax get role', false);
+            showMessage('Lỗi lấy dữ liệu vai trò', false);
         }
     });
 });

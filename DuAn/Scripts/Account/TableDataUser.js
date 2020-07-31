@@ -5,7 +5,21 @@ var loadDataTableAccount = function () {
         "responsive": true,
         "processing": true,
         "language": {
-            "processing": "Loading Database ....."
+            "processing": "Cập nhật thông tin .....",
+            "search": "Tìm kiếm",
+            "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
+            "zeroRecords": "Không tìm thấy bản ghi",
+            "info": "Trang _PAGE_ / _PAGES_",
+            "infoEmpty": "Không tìm thấy bản ghi",
+            //"infoFiltered": "(filtered from _MAX_ total records)",
+            "decimal": ",",
+            "thousands": ".",
+            //"loadingRecords": "&nbsp;",
+            //"processing": "Loading...",
+            /*"paginate": {
+                "first": "Đầu",
+                "last": "Cuối"
+            }*/
         },
         "serverSide": true,
         "order": [0, "asc"],
@@ -23,7 +37,7 @@ var loadDataTableAccount = function () {
                 },
                 "name": "Username",
                 render: function (data, type, full) {
-                    return '<img class="" src="' + "images/avatarAccount/" + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
+                    return '<img class="" src="' + "../images/avatarAccount/" + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
                 }
             },
             { "data": "Fullname", "name": "Fullname" },
@@ -56,9 +70,10 @@ var loadDataTableAccount = function () {
                     ID: "ID"
                 },
                 "name": "Actions",
+                "className": 'dt-center',
                 "orderable": false,
                 "render": function (data, type, full) {
-                    return '\
+                    return '\<!--\
 						<div class="dropdown dropdown-inline">\
 	                            <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown" title="Other options">\
 									<span class="svg-icon svg-icon-md">\
@@ -108,7 +123,7 @@ var loadDataTableAccount = function () {
 	                                    </li>\
 	                                </ul>\
 	                            </div>\
-	                        </div>\
+	                        </div>\-->\
 	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 bt-open-edit-account-form" data-id="'+ data.ID + '" title="Edit details">\
 	                            <span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
@@ -160,7 +175,7 @@ $('#my_datatable_account').on('click', '.bt-open-edit-account-form', function ()
             if (jqXHR.status == 401) {
                 showMessage('Bạn không có quyền này', false);
             } else {
-                showMessage('Error load ajax edit account: ' + jqXHR.responseText, false);
+                showMessage('Đã xảy ra lỗi trong quá trình tải form chỉnh sửa tài khoản ' + jqXHR.responseText, false);
             }
         }
     });
@@ -173,7 +188,7 @@ var reloadAccountDatatable = function () {
 /*@* $('.modal-edit-account').on('hidden.bs.hidden.bs.modal', reloadAccountDatatable);*@*/
 
 $('#my_datatable_account').on('click', '.bt-delete-account', function () {
-    //add xac thuc trc khi xoa
+    //add xac thuc trc quá trình xoa
     var id = $(this).attr("data-id");
     $('#btnDelteYes').attr("data-id", id);
     $('#confirmDelete').modal('show');
@@ -194,7 +209,7 @@ $('#btnDelteYes').on('click', function (e) {
         },
         success: function (data) {
             if (!data) {
-                showMessage('Error delete Account', false);
+                showMessage('Xóa tài khoản không thành công !!!', false);
             } else {
                 showMessage("Xóa thành công !!!", true);
                 reloadAccountDatatable();

@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "CauHinhCongThuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row ml-1 col-12" style="justify-content: center;">
+    @Html.Action("InsertFormula", "Admin")
+</div>
+<script>
+    var listDirect = ["Cấu Hình", "Cập nhật Công thức tính"];
+    $(document).ready(function () {
+        capNhatPageDirectory('Cập nhật Công thức tính',listDirect);
+    });
+
+    function addBtnClick() {
+        var text = document.getElementById('phepTinh').value;
+        if (text.length != 0) {
+            if (text[text.length - 2] == '+' || text[text.length - 2] == '-') {
+                var diemDo = document.getElementById("diemDo");
+                var kenh = document.getElementById("kenh");
+                var diemDoText = diemDo.options[diemDo.selectedIndex].text;
+                if (diemDoText == document.getElementById("diemDo").options[0].text) {
+                    showMessage("Chọn điểm đo và kênh", false);
+                    return;
+                }
+                var kenhText = kenh.options[kenh.selectedIndex].text;
+                if (kenhText == document.getElementById("kenh").options[0].text) {
+                    showMessage("Chọn điểm đo và kênh", false);
+                    return;
+                }
+                var result = diemDoText + '~' + kenhText + ' ';
+                document.getElementById('phepTinh').value = text + result;
+            }
+        }
+        else {
+            var diemDo = document.getElementById("diemDo");
+            var kenh = document.getElementById("kenh");
+            var diemDoText = diemDo.options[diemDo.selectedIndex].text;
+            if (diemDoText == document.getElementById("diemDo").options[0].text) {
+                showMessage("Chọn điểm đo và kênh", false);
+                return;
+            }
+            var kenhText = kenh.options[kenh.selectedIndex].text;
+            if (kenhText == document.getElementById("kenh").options[0].text) {
+                showMessage("Chọn điểm đo và kênh", false);
+                return;
+            }
+            var result = diemDoText + '~' + kenhText + ' ';
+            document.getElementById('phepTinh').value = text + result;
+        }
+    }
+
+    function delBtnClick() {
+        var text = document.getElementById('phepTinh').value;
+        if (text.length == 0) {
+            showMessage("Không còn gì để xóa", false);
+            return;
+        }
+        text = text.substring(0, text.length - 1);
+        document.getElementById('phepTinh').value = text.substring(0, text.lastIndexOf(' '));
+    }
+
+    function operatorBtnClick(operator) {
+        var text = document.getElementById('phepTinh').value;
+        if (text.length > 0 && text[text.length - 2] != '+' && text[text.length - 2] != '-') {
+            if (operator == '+') {
+                text += '+ ';
+            }
+            else {
+                text += '- ';
+            }
+            document.getElementById('phepTinh').value = text;
+        }
+        else {
+            showMessage("Lỗi phép tính", false);
+        }
+    }
+
+    function submitCongThuc() {
+        var text = document.getElementById('phepTinh').value;
+        var nameStr = document.getElementById('tenCongThuc').value;
+        var thoiGianHieuLuc = document.getElementById('thoiGianHieuLuc').value;
+        var errorMsg = "";
+        if (nameStr.length == 0) {
+            showMessage("Tên không được để trống", false);
+            errorMsg += ".";
+        }
+        if (thoiGianHieuLuc.length == 0) {
+            showMessage("Thời gian hiệu lực không được để trống", false);
+            errorMsg += ".";
+        }
+        if (text.length == 0) {
+            showMessage("Công thức không được để trống", false);
+            errorMsg += ".";
+        }
+        else if (text[text.length - 2] == '+' || text[text.length - 2] == '-') {
+            showMessage("Công thức không đúng định dạng", false);
+            errorMsg += ".";
+        }
+        if (errorMsg.length != 0) {
+            return;
+        }
+        if (text.length != 0 && (text.includes('+') || text.includes('-')) && text[text.length - 2] != '+' && text[text.length - 2] != '-' && nameStr.length != 0 && thoiGianHieuLuc.length != 0) {
+            $.ajax({
+                method:'POST',
+                cache: false,
+                url: "@Url.Action("UpdateFormula","Admin")",
+                data: { formula: text, name: nameStr, thoiGian: thoiGianHieuLuc },
+                dataType:'json',
+                success: function (message) {
+                    showMessage("Cập nhật công thức thành công", true);
+                    $('.datepicker').datepicker('destroy');
+                    var dateParts = thoiGianHieuLuc.split("/");
+                    updateCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]));
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    showMessage("Cập nhật công thức thất bại", false);
+                }
+            });
+        }
+    }
+</script>

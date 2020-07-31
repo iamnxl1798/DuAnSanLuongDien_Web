@@ -5,7 +5,21 @@ var loadDatatableRole = function () {
         "serverSide": true,
         "processing": true,
         "language": {
-            "processing": "Loading Database ....."
+            "processing": "Loading Database .....",
+            "search": "Tìm kiếm",
+            "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
+            "zeroRecords": "Không tìm thấy bản ghi",
+            "info": "Trang _PAGE_ / _PAGES_",
+            "infoEmpty": "Không tìm thấy bản ghi",
+            //"infoFiltered": "(filtered from _MAX_ total records)",
+            "decimal": ",",
+            "thousands": ".",
+            //"loadingRecords": "&nbsp;",
+            //"processing": "Loading...",
+            /*"paginate": {
+                "first": "Đầu",
+                "last": "Cuối"
+            }*/
         },
         "searching": true,
         /*@* "ordering": false,*@*/
@@ -55,9 +69,10 @@ var loadDatatableRole = function () {
                     Role: "Role"
                 },
                 "name": "Actions",
+                "className": 'dt-center',
                 "orderable": false,
                 "render": function (data, type, full) {
-                    return '\
+                    return '\<!--\
 	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 bt-filter-account" data-role="'+ data.Role + '" title = "Show Account">\
 								<span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-icon">\
@@ -68,7 +83,7 @@ var loadDatatableRole = function () {
 										</g>\
 									</svg>\
 								</span>\
-	                        </a>\
+	                        </a>\-->\
 	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 bt-open-edit-role-form" data-id="'+ data.ID + '" title="Edit details">\
 	                            <span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
@@ -120,7 +135,7 @@ $('#my_datatable_role').on('click', '.bt-open-edit-role-form', function () {
             if (xhr.status == 401) {
                 showMessage('Bạn không có quyền này', false);
             } else {
-                showMessage('Error load ajax edit role: ' + xhr.responseText, false);
+                showMessage('Đã xảy ra lỗi trong quá trình tải form chỉnh sửa vai trò: ' + xhr.responseText, false);
             }
         }
     });
@@ -151,7 +166,7 @@ $('#btnDelteYesRole').on('click', function (e) {
         },
         success: function (data) {
             if (!data) {
-                showMessage("Error delete role", false);
+                showMessage("Xóa vai trò không thành công !!!", false);
             } else {
                 showMessage('Xóa thành công !!!', true);
                 reloadRoleDatatable();
@@ -161,7 +176,7 @@ $('#btnDelteYesRole').on('click', function (e) {
             if (jqXHR.status == 401) {
                 showMessage('Bạn không có quyền này', false);
             } else {
-                showMessage('Error load ajax delete role : ' + jqXHR.responseText, false);
+                showMessage('Đã xảy ra lỗi trong quá trình xóa vai trò : ' + jqXHR.responseText, false);
             }
         }
     });

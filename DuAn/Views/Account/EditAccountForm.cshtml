@@ -13,11 +13,11 @@
         <div class="modal-header">
             @if (Model.ID == 0)
             {
-                <h5 class="modal-title">Create new account :</h5>
+                <h5 class="modal-title">Tạo mới tài khoản :</h5>
             }
             else
             {
-                <h5 class="modal-title">Edit account :</h5>
+                <h5 class="modal-title">Chỉnh sửa tài khoản :</h5>
             }
         </div>
         <!--begin::Form-->
@@ -27,13 +27,13 @@
                     <label class="col-xl-3 col-lg-3 col-form-label text-left">Avatar:</label>
                     <div class="col-lg-9 col-xl-9">
                         <div class="image-input image-input-outline" id="kt_user_add_avatar">
-                            <div class="image-input-wrapper" style="background-image: url(images/avatarAccount/@Model.Avatar)"></div>
-                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                            <div class="image-input-wrapper" style="background-image: url(../images/avatarAccount/@Model.Avatar)"></div>
+                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Thay đổi">
                                 <i class="fa fa-pen icon-sm text-muted"></i>
                                 <input type="file" id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
                                 <input type="hidden" name="profile_avatar_remove" />
                             </label>
-                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Hủy bỏ">
                                 <i class="ki ki-bold-close icon-xs text-muted"></i>
                             </span>
                         </div>
@@ -64,13 +64,13 @@
                                 url: '@Url.Action("CheckUsername", "Account")',
                                 success: function (response) {
                                     if (response == "Fail") {
-                                        document.getElementById("errorUsername").innerText = "Username has been existed !!!";
+                                        document.getElementById("errorUsername").innerText = "Tên đăng nhập không tồn tại !!!";
                                     } else {
                                         document.getElementById("errorUsername").innerText = "";
                                     }
                                 },
                                 error: function (response) {
-                                    alert("Can't get result !!!");
+                                    alert("Không thể lấy dữ liệu !!!");
                                 }
                             });
                         };
@@ -145,7 +145,7 @@
                         var re = new RegExp("[0-9]{10}");
                         var phone = document.getElementById("phone").value;
                         if (!re.test(phone)) {
-                            document.getElementById("errorPhone").innerText = "Phone Number is invalid !!!";
+                            document.getElementById("errorPhone").innerText = "Số điện thoại không phù hợp !!!";
                         }
                     }
                 </script>
