@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using OfficeOpenXml;
 using DuAn.Models.DbModel;
 using System.Globalization;
+using iTextSharp.text.pdf.qrcode;
 
 namespace DuAn
 {
@@ -88,10 +89,10 @@ namespace DuAn
         }
         public static Account ChangeInfo(HttpPostedFileBase avatar, string fullname, string email, string address, string phone, string dob, string id)
         {
-            using(var db=new Model1())
+            using (var db = new Model1())
             {
                 int inInt = int.Parse(id);
-                var acc = db.Accounts.Include(x=>x.RoleAccount).FirstOrDefault(x=>x.ID==inInt);
+                var acc = db.Accounts.Include(x => x.RoleAccount).FirstOrDefault(x => x.ID == inInt);
                 try
                 {
                     if (avatar != null)
@@ -106,7 +107,7 @@ namespace DuAn
                     acc.Email = email;
                     acc.Address = address;
                     acc.Phone = phone;
-                    acc.DOB= DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    acc.DOB = DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     db.SaveChanges();
                 }
                 catch (Exception ex)
@@ -229,8 +230,8 @@ namespace DuAn
             }
         }
         static List<MissingDataStatus> data = new List<MissingDataStatus>();
-        static DateTime startDay=DateTime.MinValue;
-        static DateTime endDay=DateTime.MaxValue;
+        static DateTime startDay = DateTime.MinValue;
+        static DateTime endDay = DateTime.MaxValue;
         public static List<MissingDataStatus> getMissingData(string name = "")
         {
             using (var db = new Model1())
@@ -660,14 +661,14 @@ namespace DuAn
             }
         }
 
-        public static string ChangePassword(Account acc,string pass,string newPass)
+        public static string ChangePassword(Account acc, string pass, string newPass)
         {
             using (Model1 db = new Model1())
             {
                 var currentAcc = db.Accounts.SingleOrDefault(x => x.Username == acc.Username);
                 if (currentAcc != null && currentAcc.Password == MaHoaMatKhau(currentAcc.SaltPassword + pass))
                 {
-                    string newHash= RandomSaltHash();
+                    string newHash = RandomSaltHash();
                     currentAcc.Password = MaHoaMatKhau(newHash + newPass);
                     currentAcc.SaltPassword = newHash;
                     db.SaveChanges();
@@ -707,7 +708,7 @@ namespace DuAn
                             result.Avatar = acc.Avatar;
                         }
                         //check password current
-                        if(acc.Password != result.Password)
+                        if (acc.Password != result.Password)
                         {
                             result.SaltPassword = RandomSaltHash();
                             result.Password = MaHoaMatKhau(result.SaltPassword + acc.Password);
@@ -804,4 +805,30 @@ namespace DuAn
             }
         }
     }
+
+    public static class DiemDoDAO
+    {
+        public static List<DiemDo> getAllDiemDo()
+        {
+            var list = new List<DiemDo>();
+            using (var db = new Model1())
+            {
+                list = db.DiemDoes.ToList();
+            }
+            return list;
+        }
+    }
+
+    /*public static class SanLuongDAO 
+    {
+        public static List<SanLuong> GetAll() 
+        {
+            var list = new List<SanLuong>();
+            using (var db = new Model1())
+            {
+                list = db.SanLuongs.ToList();
+            }
+            return list;
+        }
+    }*/
 }

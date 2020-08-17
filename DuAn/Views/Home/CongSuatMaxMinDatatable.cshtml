@@ -1,0 +1,34 @@
+﻿@model IList<DuAn.Models.CustomModel.CongSuatMaxMinModelView>
+
+<div class="m--space-20"></div>
+<div class="dropdown-divider"></div>
+<table id="custom_ccmm_datatable" class="table table-bordered m-table m-table--border-brand m-table--head-bg-brand">
+    <thead>
+        <tr>Điểm đo</tr>
+        <tr>Kênh</tr>
+        <tr>Công suất MAX</tr>
+        <tr>Chu ky công suất MAX</tr>
+        <tr>Công suất MIN</tr>
+        <tr>Chu ky công suất MIN</tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            @{
+                string tendiemdo = "";
+                if (item.TenDiemDo != tendiemdo)
+                {
+                    tendiemdo = item.TenDiemDo;
+                    <td rowspan="4">@item.TenDiemDo</td>
+                }
+            }
+            <td>@item.Kenh</td>
+            <td>@item.GiaTriMax</td>
+            <td>@item.ChuKyMax</td>
+            <td>@item.GiaTriMin</td>
+            <td>@item.ChuKyMin</td>
+        </tr>
+    }
+</table>
+<div class="m--space-20"></div>
+<div class="dropdown-divider"></div>    
