@@ -293,6 +293,7 @@
     <Compile Include="Models\CustomModel\StateTree.cs" />
     <Compile Include="Models\CustomModel\ThongSoAndTenDiemDo.cs" />
     <Compile Include="Models\CustomModel\ThongSoPatialModel.cs" />
+    <Compile Include="Models\CustomModel\TongSanLuongTheoThoiGian.cs" />
     <Compile Include="Models\CustomModel\TreeViewNode.cs" />
     <Compile Include="Models\DbModel\Account.cs" />
     <Compile Include="Models\DbModel\ChiSoChot.cs" />
@@ -2432,6 +2433,8 @@
     <Content Include="Views\Admin\QuanTriVaiTro.cshtml" />
     <Content Include="Views\Admin\QuanTriNguoiDung.cshtml" />
     <Content Include="Views\Admin\QuanTriCauHinh.cshtml" />
+    <Content Include="Views\Home\getChiTietThangModal.cshtml" />
+    <Content Include="Views\Home\getChiTietNamModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

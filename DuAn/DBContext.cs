@@ -88,10 +88,10 @@ namespace DuAn
         }
         public static Account ChangeInfo(HttpPostedFileBase avatar, string fullname, string email, string address, string phone, string dob, string id)
         {
-            using(var db=new Model1())
+            using (var db = new Model1())
             {
                 int inInt = int.Parse(id);
-                var acc = db.Accounts.Include(x=>x.RoleAccount).FirstOrDefault(x=>x.ID==inInt);
+                var acc = db.Accounts.Include(x => x.RoleAccount).FirstOrDefault(x => x.ID == inInt);
                 try
                 {
                     if (avatar != null)
@@ -106,7 +106,7 @@ namespace DuAn
                     acc.Email = email;
                     acc.Address = address;
                     acc.Phone = phone;
-                    acc.DOB= DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    acc.DOB = DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     db.SaveChanges();
                 }
                 catch (Exception ex)
@@ -134,6 +134,58 @@ namespace DuAn
                         kvarhNhan = result.Where(x => x.KenhID == CommonContext.KVARH_NHAN).Select(x => x.GiaTri).ToList()
                     };
                     return obj;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public static List<TongSanLuongTheoThoiGian> getChiTietThang(DateTime date)
+        {
+            using (var db = new Model1())
+            {
+                try
+                {
+                    DateTime dateStart = new DateTime(date.Year, date.Month, 1);
+                    DateTime dateEnd = new DateTime(date.Year, date.Month + 1, 1);
+                    var result = db.TongSanLuong_Ngay.Where(x => x.Ngay >= dateStart && x.Ngay < dateEnd).GroupBy(l => l.Ngay).Select(cl => new TongSanLuongTheoThoiGian
+                    {
+                        date = cl.Key,
+                        value = cl.Sum(c => c.GiaTri),
+                    }).OrderBy(x => x.date).ToList();
+                    return result;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static List<TongSanLuongTheoThoiGian> getChiTietNam(DateTime date)
+        {
+            using (var db = new Model1())
+            {
+                try
+                {
+                    DateTime dateStart = new DateTime(date.Year, 1, 1);
+                    DateTime dateEnd = new DateTime(date.Year + 1, 1, 1);
+                    var result = new List<TongSanLuongTheoThoiGian>();
+                    for (DateTime month = dateStart; month < dateEnd; month = month.AddMonths(1))
+                    {
+                        var addOneMonth = month.AddMonths(1);
+                        result.Add(
+                            db.TongSanLuong_ThangNam.Where(x => x.Ngay >= month && x.Ngay < addOneMonth).OrderByDescending(x => x.Ngay).Select(
+                                x => new TongSanLuongTheoThoiGian
+                                {
+                                    date = month,
+                                    value = x.GiaTriThang
+                                }
+                                ).Take(1).FirstOrDefault());
+                    }
+                    result.RemoveAll(x => x == null);
+                    return result;
                 }
                 catch
                 {
@@ -229,8 +281,8 @@ namespace DuAn
             }
         }
         static List<MissingDataStatus> data = new List<MissingDataStatus>();
-        static DateTime startDay=DateTime.MinValue;
-        static DateTime endDay=DateTime.MaxValue;
+        static DateTime startDay = DateTime.MinValue;
+        static DateTime endDay = DateTime.MaxValue;
         public static List<MissingDataStatus> getMissingData(string name = "")
         {
             using (var db = new Model1())
@@ -660,14 +712,14 @@ namespace DuAn
             }
         }
 
-        public static string ChangePassword(Account acc,string pass,string newPass)
+        public static string ChangePassword(Account acc, string pass, string newPass)
         {
             using (Model1 db = new Model1())
             {
                 var currentAcc = db.Accounts.SingleOrDefault(x => x.Username == acc.Username);
                 if (currentAcc != null && currentAcc.Password == MaHoaMatKhau(currentAcc.SaltPassword + pass))
                 {
-                    string newHash= RandomSaltHash();
+                    string newHash = RandomSaltHash();
                     currentAcc.Password = MaHoaMatKhau(newHash + newPass);
                     currentAcc.SaltPassword = newHash;
                     db.SaveChanges();
@@ -707,7 +759,7 @@ namespace DuAn
                             result.Avatar = acc.Avatar;
                         }
                         //check password current
-                        if(acc.Password != result.Password)
+                        if (acc.Password != result.Password)
                         {
                             result.SaltPassword = RandomSaltHash();
                             result.Password = MaHoaMatKhau(result.SaltPassword + acc.Password);
