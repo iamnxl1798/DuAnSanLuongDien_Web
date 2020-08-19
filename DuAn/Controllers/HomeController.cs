@@ -20,6 +20,36 @@ namespace DuAn.Controllers
             var result = DBContext.getChiTietDiemDo(id,dateObject);
             return PartialView(result);
         }
+        public ActionResult getDoanhThuNgay(string date)
+        {
+            DateTime dateObject = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var result = DBContext.getDoanhThuNgayDetail(dateObject);
+            if (result == null || result.sanLuongTrongNgay.Count == 0)
+            {
+                return null;
+            }
+            return PartialView(result);
+        }
+        public ActionResult getDoanhThuThang(string date)
+        {
+            DateTime dateObject = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var result = DBContext.getDoanhThuThang(dateObject);
+            if (result == null || result.Count == 0)
+            {
+                return null;
+            }
+            return PartialView(result);
+        }
+        public ActionResult getDoanhThuNam(string date)
+        {
+            DateTime dateObject = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var result = DBContext.getDoanhThuNam(dateObject);
+            if (result == null || result.Count == 0)
+            {
+                return null;
+            }
+            return PartialView(result);
+        }
         public ActionResult getChiTietThangModal(string date)
         {
             DateTime dateObject = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);

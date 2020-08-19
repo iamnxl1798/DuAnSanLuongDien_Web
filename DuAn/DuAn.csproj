@@ -302,6 +302,7 @@
     <Compile Include="Models\DbModel\CongTy.cs" />
     <Compile Include="Models\DbModel\DiemDo.cs" />
     <Compile Include="Models\DbModel\DiemDo_CongTo.cs" />
+    <Compile Include="Models\DbModel\GiaDien.cs" />
     <Compile Include="Models\DbModel\Kenh.cs" />
     <Compile Include="Models\DbModel\LoaiSanLuong.cs" />
     <Compile Include="Models\DbModel\LogCongTy.cs" />
@@ -2435,6 +2436,9 @@
     <Content Include="Views\Admin\QuanTriCauHinh.cshtml" />
     <Content Include="Views\Home\getChiTietThangModal.cshtml" />
     <Content Include="Views\Home\getChiTietNamModal.cshtml" />
+    <Content Include="Views\Home\getDoanhThuNgay.cshtml" />
+    <Content Include="Views\Home\getDoanhThuThang.cshtml" />
+    <Content Include="Views\Home\getDoanhThuNam.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

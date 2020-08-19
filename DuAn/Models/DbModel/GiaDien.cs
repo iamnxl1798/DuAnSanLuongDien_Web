@@ -6,12 +6,17 @@ namespace DuAn.Models.DbModel
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class TongSanLuong_Nam
+    [Table("GiaDien")]
+    public partial class GiaDien
     {
         public int ID { get; set; }
 
-        public int Nam { get; set; }
+        public double Gia { get; set; }
 
-        public double? GiaTri { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime NgayBatDau { get; set; }
+
+        [Column(TypeName = "date")]
+        public DateTime NgayKetThuc { get; set; }
     }
 }

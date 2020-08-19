@@ -21,10 +21,12 @@ namespace DuAn.Models.CustomModel
                 return countMissingData.Select(x => x.notYet).Sum();
             }
         }
+        public double doanhThuThang { get; set; }
+        public double doanhThuNam { get; set; }
         public double? duKienThang { get; set; }
         public double? duKienNam { get; set; }
-        public double? thucTeThang { get; set; }
-        public double? thucTeNam { get; set; }
+        public double thucTeThang { get; set; }
+        public double thucTeNam { get; set; }
         public string numberFormatDuKienThang { get { return duKienThang == null ? "0" : String.Format("{0:### ### ### ###.##}", duKienThang); } }
         public string numberFormatDuKienNam { get { return duKienNam == null ? "0" : String.Format("{0:### ### ### ###.##}", duKienNam); } }
         public string numberFormatThang { get { return String.Format("{0:### ### ### ###.##}", thucTeThang) == "   " ? "0" : String.Format("{0:### ### ### ###.##}", thucTeThang); } }
@@ -38,5 +40,6 @@ namespace DuAn.Models.CustomModel
             var result = String.Format("{0:### ### ### ###.##}", num);
             return result == "   " ? "0" : result;
         }
+        public double giaDien { get; set; }
     }
 }

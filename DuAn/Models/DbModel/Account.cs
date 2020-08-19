@@ -1,11 +1,10 @@
-﻿namespace DuAn.Models.DbModel
+namespace DuAn.Models.DbModel
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using System.Security.Cryptography;
 
     [Table("Account")]
     public partial class Account
@@ -49,6 +48,6 @@
 
         public string Avatar { get; set; }
 
-        public virtual RoleAccount RoleAccount { get; set; }    
+        public virtual RoleAccount RoleAccount { get; set; }
     }
 }

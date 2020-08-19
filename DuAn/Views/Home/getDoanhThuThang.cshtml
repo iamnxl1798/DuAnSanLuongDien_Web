@@ -1,0 +1,52 @@
+﻿@model List<DuAn.Models.CustomModel.TongSanLuongTheoThoiGian>
+
+<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Chi tiết doanh thu tháng @Model[0].date.ToString("MM/yyyy")</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i aria-hidden="true" class="ki ki-close"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-vertical-center">
+                    <thead>
+                        <tr class="text-center bg-secondary text-uppercase">
+                            <th style="">Ngày</th>
+                            <th style="">Sản lượng (MWh)</th>
+                            <th style="">Doanh thu (tỷ)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="" style="border-top:1px solid black">
+                                <td class="pl-0 py-8">
+                                    <span class="text-dark-75  d-block font-size-lg text-center">@item.date.ToString("dd/MM/yyyy")</span>
+                                </td>
+                                <td>
+                                    <span class="text-dark-75  d-block font-size-lg text-right">@item.formatNumber(item.value)</span>
+                                </td>
+                                <td>
+                                    <span class="text-dark-75  d-block font-size-lg text-right">@item.formatNumber(item.giaTien * item.value * 0.000001)</span>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="pl-0 py-8" colspan="2">
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-center font-weight-bold">Tổng</span>
+                            </td>
+                            <td class="pl-0 py-8">
+                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right font-weight-bold">@Model[0].formatNumber(Model[0].giaTien * Model.Sum(x => x.value) * 0.000001)</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        </div>
+    </div>
+</div>
