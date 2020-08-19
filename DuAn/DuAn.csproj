@@ -125,6 +125,11 @@
     </Reference>
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
@@ -281,6 +286,7 @@
     <Compile Include="Models\CustomModel\AccountPaging.cs" />
     <Compile Include="Models\CustomModel\AdminModel.cs" />
     <Compile Include="Models\CustomModel\AllRole.cs" />
+    <Compile Include="Models\CustomModel\CongSuatMaxMinModelView.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
     <Compile Include="Models\CustomModel\ExportExcelModel.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />
@@ -288,6 +294,8 @@
     <Compile Include="Models\CustomModel\MissingDataStatus.cs" />
     <Compile Include="Authorization\WebPermissions.cs" />
     <Compile Include="Models\CustomModel\NumberOfMissingData.cs" />
+    <Compile Include="Models\CustomModel\PagingModel.cs" />
+    <Compile Include="Models\CustomModel\RequestPagingModel.cs" />
     <Compile Include="Models\CustomModel\RoleChecking.cs" />
     <Compile Include="Models\CustomModel\RolePaging.cs" />
     <Compile Include="Models\CustomModel\StateTree.cs" />
@@ -2388,6 +2396,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\LayoutJS\Layout.js" />
+    <Content Include="Scripts\loader.css" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Role\TableDateRole.js" />
     <Content Include="Scripts\Role\EditRoleForm.js" />
@@ -2434,6 +2443,8 @@
     <Content Include="Views\Admin\QuanTriVaiTro.cshtml" />
     <Content Include="Views\Admin\QuanTriNguoiDung.cshtml" />
     <Content Include="Views\Admin\QuanTriCauHinh.cshtml" />
+    <Content Include="Views\Home\CongSuatMaxMinPartialView.cshtml" />
+    <Content Include="Views\Home\CongSuatMaxMinDatatable.cshtml" />
     <Content Include="Views\Home\getChiTietThangModal.cshtml" />
     <Content Include="Views\Home\getChiTietNamModal.cshtml" />
     <Content Include="Views\Home\getDoanhThuNgay.cshtml" />

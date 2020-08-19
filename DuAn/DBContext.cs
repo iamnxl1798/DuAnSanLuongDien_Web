@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using OfficeOpenXml;
 using DuAn.Models.DbModel;
 using System.Globalization;
+using iTextSharp.text.pdf.qrcode;
 
 namespace DuAn
 {
@@ -946,4 +947,18 @@ namespace DuAn
             }
         }
     }
+
+    public static class DiemDoDAO
+    {
+        public static List<DiemDo> getAllDiemDo()
+        {
+            var list = new List<DiemDo>();
+            using (var db = new Model1())
+            {
+                list = db.DiemDoes.ToList();
+            }
+            return list;
+        }
+    }
+
 }

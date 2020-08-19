@@ -1,7 +1,6 @@
 ﻿@using DuAn.Models.CustomModel;
 @model HomeModel
-<style>
-</style>
+
 <div class="row ml-1 col-12 d-flex justify-content-end">
     <div class="form-group mb-4 mr-4">
         <div class="datepicker date input-group p-0 shadow-sm">
@@ -16,6 +15,7 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a href="javascript:void(0)" class="dropdown-item" onclick="exportExcel()">Trích xuất dữ liệu</a>
             <a href="javascript:void(0)" class="dropdown-item" onclick="clickThongSo()">Thông số vận hành</a>
+            <a href="javascript:;" class="dropdown-item" onclick="showMaxMinCongSuat()">Công suất MAX - MIN</a>
         </div>
     </div>
 </div>
@@ -23,6 +23,8 @@
 </div>
 
 <div class="modal fade" id="modalThongSo" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+</div>
+<div class="modal fade" id="modalCongSuatMaxMin" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
 </div>
 
 <script src="~/Scripts/jquery-3.4.1.js"></script>
@@ -35,7 +37,7 @@
     $(document).ready(function () {
         capNhatPageDirectory("Thống kê sản lượng", ['Trang chủ']);
     });
-    
+
     function clickThongSo() {
         var url = "@Url.Action("getModalThongSo", "Home")";
         $.ajax({
@@ -50,6 +52,22 @@
             }
         });
     }
+
+    function showMaxMinCongSuat() {
+        $.ajax({
+            cache: false,
+            url: '/Home/CongSuatMaxMinPartialView',
+            type:'get',
+            success: function (data) {
+                $('#modalCongSuatMaxMin').html(data);
+                $('#modalCongSuatMaxMin').modal('show');
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                debugger;
+            }
+        });
+    }
+
     function sendReloadPage(strDate) {
         reloadPage(strDate,"@Url.Action("homePagePartialView", "Home")");
     }
