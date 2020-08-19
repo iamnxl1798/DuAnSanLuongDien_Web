@@ -1,7 +1,6 @@
 ﻿@using DuAn.Models.CustomModel;
 @model HomeModel
-<style>
-</style>
+
 <div class="row ml-1 col-12 d-flex justify-content-end">
     <div class="form-group mb-4 mr-4">
         <div class="datepicker date input-group p-0 shadow-sm">
@@ -16,7 +15,7 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a href="javascript:void(0)" class="dropdown-item" onclick="exportExcel()">Trích xuất dữ liệu</a>
             <a href="javascript:void(0)" class="dropdown-item" onclick="clickThongSo()">Thông số vận hành</a>
-            <a href="javascript:void(0)" class="dropdown-item" onclick="showMaxMinCongSuat()">Công suất MAX - MIN</a>
+            <a href="javascript:;" class="dropdown-item" onclick="showMaxMinCongSuat()">Công suất MAX - MIN</a>
         </div>
     </div>
 </div>
@@ -55,16 +54,16 @@
     }
 
     function showMaxMinCongSuat() {
-        var url = "@Url.Action("CongSuatMaxMinPartialView", "Home")";
         $.ajax({
             cache: false,
-            url: url,
-            data: {},
+            url: '/Home/CongSuatMaxMinPartialView',
+            type:'get',
             success: function (data) {
                 $('#modalCongSuatMaxMin').html(data);
                 $('#modalCongSuatMaxMin').modal('show');
             },
             error: function (xhr, ajaxOptions, thrownError) {
+                debugger;
             }
         });
     }

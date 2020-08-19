@@ -21,6 +21,7 @@ namespace DuAn.Controllers
         {
             return View();
         }
+        [HttpGet]
         public ActionResult CongSuatMaxMinPartialView()
         {
             var listDiemDo = DiemDoDAO.getAllDiemDo();
@@ -37,19 +38,25 @@ namespace DuAn.Controllers
                     List<CongSuatMaxMinModelView> apg = new List<CongSuatMaxMinModelView>();
                     apg = new List<CongSuatMaxMinModelView>();
 
-                    DateTime dt = DateTime.Parse(date);
+                    DateTime dt = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
                     var list = db.DiemDoes.Where(x => (idDiemDo == -1 || x.ID == idDiemDo) );
 
                     foreach (var item_dd in list)
                     {
                         foreach (var item_k in db.Kenhs)
-                        {
-                            int ckmax = 0;
-                            int ckmin = 0;
-                            double slmax = 0;
-                            double slmin = 0;
-                            var list_sanluong = db.SanLuongs.Where(x => x.DiemDoID == item_dd.ID && x.Ngay == dt && x.KenhID == item_k.ID);
+                        {                           
+                            var list_sanluong = db.SanLuongs.Where(x => x.DiemDoID == item_dd.ID && x.Ngay == dt && x.KenhID == item_k.ID).ToList();
+                            if(list_sanluong == null || list_sanluong.Count == 0)
+                            {
+                                continue;
+                            }
+
+                            int ckmax = 1;
+                            int ckmin = 1;
+                            double slmax = list_sanluong.Where(x => x.ChuKy == 1).Select(x => x.GiaTri).FirstOrDefault();
+                            double slmin = list_sanluong.Where(x => x.ChuKy == 1).Select(x => x.GiaTri).FirstOrDefault();
+
                             foreach (var item_2 in list_sanluong)
                             {
                                 if (item_2.GiaTri > slmax)
@@ -75,12 +82,16 @@ namespace DuAn.Controllers
                             apg.Add(csmm);
                         }
                     }
+                    if(apg.Count == 0)
+                    {
+                        return PartialView(null);
+                    }
                     return PartialView(apg);
                 }
             }
             catch (Exception ex)
             {
-                return null;
+                return PartialView(null);
             }
         }
         public ActionResult getModelDetail(int id, string date)

@@ -819,16 +819,4 @@ namespace DuAn
         }
     }
 
-    /*public static class SanLuongDAO 
-    {
-        public static List<SanLuong> GetAll() 
-        {
-            var list = new List<SanLuong>();
-            using (var db = new Model1())
-            {
-                list = db.SanLuongs.ToList();
-            }
-            return list;
-        }
-    }*/
 }

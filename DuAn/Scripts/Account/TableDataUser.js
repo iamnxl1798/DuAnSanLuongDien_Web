@@ -3,6 +3,7 @@
 var loadDataTableAccount = function () {
     $('#my_datatable_account').DataTable({
         "responsive": true,
+        "colReorder": true,
         "processing": true,
         "language": {
             "processing": "Cập nhật thông tin .....",
@@ -216,7 +217,6 @@ $('#btnDelteYes').on('click', function (e) {
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            debugger;
             if (xhr.status == 401) {
                 showMessage('Bạn không có quyền này', false);
             } else {

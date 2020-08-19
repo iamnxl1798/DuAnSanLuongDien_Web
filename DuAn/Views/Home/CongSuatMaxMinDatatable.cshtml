@@ -1,34 +1,50 @@
 ﻿@model IList<DuAn.Models.CustomModel.CongSuatMaxMinModelView>
-
-<div class="m--space-20"></div>
-<div class="dropdown-divider"></div>
-<table id="custom_ccmm_datatable" class="table table-bordered m-table m-table--border-brand m-table--head-bg-brand">
+<style>
+    #custom_ccmm_datatable, #custom_ccmm_datatable th, #custom_ccmm_datatable td {
+        border: 1px solid #BDBDBD !important;
+        border-collapse: collapse;
+    }
+</style>
+<table id="custom_ccmm_datatable" class="table table-bordered table-hover table-checkable table-striped display">
     <thead>
-        <tr>Điểm đo</tr>
-        <tr>Kênh</tr>
-        <tr>Công suất MAX</tr>
-        <tr>Chu ky công suất MAX</tr>
-        <tr>Công suất MIN</tr>
-        <tr>Chu ky công suất MIN</tr>
-    </thead>
-    @foreach (var item in Model)
-    {
         <tr>
-            @{
-                string tendiemdo = "";
-                if (item.TenDiemDo != tendiemdo)
-                {
-                    tendiemdo = item.TenDiemDo;
-                    <td rowspan="4">@item.TenDiemDo</td>
-                }
-            }
-            <td>@item.Kenh</td>
-            <td>@item.GiaTriMax</td>
-            <td>@item.ChuKyMax</td>
-            <td>@item.GiaTriMin</td>
-            <td>@item.ChuKyMin</td>
+            <th class="text-center align-middle">Điểm đo</th>
+            <th class="text-center align-middle">Kênh</th>
+            <th class="text-center align-middle">Công suất MAX</th>
+            <th class="text-center align-middle">Chu ky công suất MAX</th>
+            <th class="text-center align-middle">Công suất MIN</th>
+            <th class="text-center align-middle">Chu ky công suất MIN</th>
         </tr>
+    </thead>
+    @if (Model != null)
+    {
+        <tbody>
+            @{string tendiemdo = ""; }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @{
+                        if (item.TenDiemDo != tendiemdo)
+                        {
+                            tendiemdo = item.TenDiemDo;
+                            <td rowspan="4" class="text-center align-middle">@item.TenDiemDo</td>
+                        }
+                    }
+                    <td>@item.Kenh</td>
+                    <td>@item.GiaTriMax</td>
+                    <td>@item.ChuKyMax</td>
+                    <td>@item.GiaTriMin</td>
+                    <td>@item.ChuKyMin</td>
+                </tr>
+            }
+        </tbody>
+    }
+    else
+    {
+        <tbody>
+            <tr>
+                <td class="text-center  align-middle" colspan="6">Không có dữ liệu</td>
+            </tr>
+        </tbody>
     }
 </table>
-<div class="m--space-20"></div>
-<div class="dropdown-divider"></div>    

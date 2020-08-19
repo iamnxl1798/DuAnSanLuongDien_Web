@@ -29,7 +29,7 @@
                         Thời gian
                     </label>
                     <div class="ml-2 datepicker date input-group p-0 shadow-sm">
-                        <input type="text" placeholder="Thời gian hiệu lực" onchange="" class="form-control" value="@{DateTime.Now.AddDays(-1).ToString("dd/mm/yyyy")}" id="thoiGianHieuLuc" readonly>
+                        <input type="text" placeholder="Thời gian hiệu lực" onchange="" class="form-control" id="time_csmaxmin" readonly>
                         <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
                     </div>
                 </div>
@@ -44,39 +44,99 @@
                     </a>
                 </div>
             </form>
-
         </div>
 
-        <div id="data"> </div>
+        <div id="data" class="ml-2 mr-2"></div>
+
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
+<!--modal loader-->
+<div class="modal fade" id="modalLoader" tabindex="-2" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm" style="justify-content:center; height:50px !important" role="document">
+        <div class="quan_loader"></div>
+    </div>
+</div>
+<style>
+    .quan_loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        animation: spin 2s linear infinite;
+        border-bottom: 16px solid #3498db;
+        -webkit-animation: spin 2s linear infinite;
+        background: rgba(0,0,0,0);
+    }
 
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 <script>
     jQuery(document).ready(function () {
-        $('.datepicker').datepicker({
+        var showModalLoading = function () {
+            $('#modalLoader').modal('show');
+        }
+        var hideModalLoading = function () {
+            $('#modalLoader').modal('hide');
+        }
+
+
+        $('#time_csmaxmin').datepicker({
+            autoclose: true,
+            //todayBtn: true,
             clearBtn: true,
-            format: "dd/mm/yyyy"
+            format: "dd/mm/yyyy",
+            'setDate': new Date()
         });
+
+        var date = new Date();
+        date.setDate(date.getDate() - 1);
+        $('#time_csmaxmin').datepicker('setDate', date);
+
         $('.m-select2').select2();
+
         $('#btn-search').on('click', function () {
+            showModalLoading();
             $.ajax({
                 url: '/Home/CongSuatMaxMinDatatable',
                 type: 'POST',
                 data: {
                     idDiemDo: $('#select_diemdo').val(),
-                    date: $('#thoiGianHieuLuc').val()
+                    date: $('#time_csmaxmin').val()
                 },
                 success: function (data) {
+                    hideModalLoading();
                     $('#data').html(data);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-
+                    hideModalLoading();
+                    showMessage('Lỗi lấy dữ liệu', false);
+                    $('.quan_loader').hide();
                 }
             })
-        })
+        });
+        $('#btn-search').trigger('click');
     })
 
 </script>
