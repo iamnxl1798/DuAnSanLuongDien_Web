@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewBag.Title = "CapNhatGiaDien";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="row ml-1 col-12" style="justify-content: center;">
+        <div class="col-lg-12">
+            <div class="card card-custom gutter-b" style="height:95%">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label"><i class="icon-xl fas fa-dollar-sign text-primary mr-2"></i> Cập nhật giá điện</h3>
+                    </div>
+                </div>
+                <!--begin::Form-->
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="thoiGianBatDau" class="col-form-label ml-1 mr-10">Thời gian bắt đầu</label>
+                                <div class="form-group mb-4">
+                                    <div class="datepickerDiv date input-group p-0 shadow-sm" width="100% !important">
+                                        <input type="text" placeholder="Thời gian hiệu lực" class="form-control" id="thoiGianBatDau" readonly="">
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="thoiGianKetThuc" class="col-form-label ml-1 mr-10">Thời gian kết thúc</label>
+                                <div class="form-group mb-4">
+                                    <div class="datepickerDiv date input-group p-0 shadow-sm" width="100% !important">
+                                        <input type="text" placeholder="Thời gian hiệu lực" class="form-control" id="thoiGianKetThuc" readonly="">
+                                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-6 mb-3">
+                                        <select class="form-control bg-primary text-white" id="diemDo">
+                                            <option value="" hidden="" selected="">Điểm đo</option>
+                                            <option value="1" class="bg-white text-dark">PL_MF2</option>
+                                            <option value="2" class="bg-white text-dark">PL_2      </option>
+                                            <option value="3" class="bg-white text-dark">PL_MF3</option>
+                                            <option value="5" class="bg-white text-dark">PL_100A   </option>
+                                            <option value="6" class="bg-white text-dark">PL_172    </option>
+                                            <option value="7" class="bg-white text-dark">PL_173    </option>
+                                            <option value="8" class="bg-white text-dark">PL_130    </option>
+                                            <option value="9" class="bg-white text-dark">PL_178    </option>
+                                            <option value="10" class="bg-white text-dark">PL_132</option>
+                                            <option value="11" class="bg-white text-dark">PL_132</option>
+                                            <option value="12" class="bg-white text-dark">PL_100B</option>
+                                            <option value="13" class="bg-white text-dark">PL_171</option>
+                                            <option value="14" class="bg-white text-dark">PL_174</option>
+                                            <option value="16" class="bg-white text-dark">PL_175</option>
+                                            <option value="17" class="bg-white text-dark">PL_176</option>
+                                            <option value="18" class="bg-white text-dark">PL_177</option>
+                                            <option value="19" class="bg-white text-dark">PL_271    </option>
+                                            <option value="20" class="bg-white text-dark">PL_272    </option>
+                                            <option value="21" class="bg-white text-dark">PL_273    </option>
+                                            <option value="22" class="bg-white text-dark">PL_274    </option>
+                                            <option value="23" class="bg-white text-dark">PL_275    </option>
+                                            <option value="24" class="bg-white text-dark">PL_276    </option>
+                                            <option value="25" class="bg-white text-dark">PL_178</option>
+                                            <option value="26" class="bg-white text-dark">PL_180</option>
+                                            <option value="27" class="bg-white text-dark">PL_181</option>
+                                            <option value="28" class="bg-white text-dark">PL_232    </option>
+                                            <option value="29" class="bg-white text-dark">PL_233    </option>
+                                            <option value="30" class="bg-white text-dark">PL_234    </option>
+                                            <option value="32" class="bg-white text-dark">PL_200A</option>
+                                            <option value="33" class="bg-white text-dark">PL_200B</option>
+                                            <option value="34" class="bg-white text-dark">PL_MF1</option>
+                                            <option value="35" class="bg-white text-dark">PL_MF4</option>
+                                            <option value="36" class="bg-white text-dark">PL_630A   </option>
+                                            <option value="37" class="bg-white text-dark">PL_630B   </option>
+                                            <option value="38" class="bg-white text-dark">PL_631A   </option>
+                                            <option value="39" class="bg-white text-dark">PL_631B   </option>
+                                            <option value="40" class="bg-white text-dark">PL_632A   </option>
+                                            <option value="41" class="bg-white text-dark">PL_632B   </option>
+                                            <option value="42" class="bg-white text-dark">PL_633A   </option>
+                                            <option value="43" class="bg-white text-dark">PL_633B   </option>
+                                            <option value="44" class="bg-white text-dark">PL_634A   </option>
+                                            <option value="45" class="bg-white text-dark">PL_634B   </option>
+                                            <option value="46" class="bg-white text-dark">PL2_285   </option>
+                                            <option value="47" class="bg-white text-dark">PL2_286   </option>
+                                            <option value="48" class="bg-white text-dark">PL2_287   </option>
+                                            <option value="49" class="bg-white text-dark">PL2_C24</option>
+                                            <option value="50" class="bg-white text-dark">PL2_C25</option>
+                                            <option value="51" class="bg-white text-dark">PL2_TD256</option>
+                                            <option value="52" class="bg-white text-dark">PL2_235</option>
+                                            <option value="53" class="bg-white text-dark">PL2_236</option>
+                                            <option value="54" class="bg-white text-dark">PL2_MF5</option>
+                                            <option value="55" class="bg-white text-dark">PL2_MF6</option>
+                                            <option value="56" class="bg-white text-dark">PL2_TD5BA</option>
+                                            <option value="57" class="bg-white text-dark">PL2_TD5BB</option>
+                                            <option value="58" class="bg-white text-dark">PL2_TD6BA</option>
+                                            <option value="59" class="bg-white text-dark">PL2_TD6BB</option>
+                                            <option value="60" class="bg-white text-dark">PL2_TDOBA</option>
+                                            <option value="61" class="bg-white text-dark">PL2_TDOBB</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-6 mb-3">
+                                        <select class="form-control bg-primary text-white" id="kenh">
+                                            <option value="" hidden="" selected="">Kênh</option>
+                                            <option value="1" class="bg-white text-dark">KwhGiao</option>
+                                            <option value="2" class="bg-white text-dark">KwhNhan</option>
+                                            <option value="3" class="bg-white text-dark">KvarhGiao</option>
+                                            <option value="4" class="bg-white text-dark">KvarhNhan</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2 col-6">
+                                        <p class="btn btn-success form-control" value="+" onclick="operatorBtnClick('+')">+</p>
+                                    </div>
+                                    <div class="col-lg-2 col-6">
+                                        <p class="btn btn-success form-control" value="-" onclick="operatorBtnClick('-')">-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-4"></div>
+                                    <div class="col-lg-4">
+                                        <p class="btn btn-danger form-control" value="del" onclick="delBtnClick()"><span>Xóa</span></p>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p class="btn btn-danger form-control" value="add" onclick="addBtnClick()"><span>Thêm</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <textarea id="phepTinh" class="form-control col-12" style="font-size:22px" readonly=""></textarea>
+                        <p class="btn btn-success btn-block mt-4 col-12" onclick="submitCongThuc()">Cập nhật</p>
+                        <label class="text-success mt-4 ml-3" id="capNhatCongThucLabelSuccess"></label><label class="text-danger mt-4" id="capNhatCongThucLabelError"></label>
+                    </div>
+                </form>
+                <!--end::Form-->
+            </div>
+        </div>
+    </div>

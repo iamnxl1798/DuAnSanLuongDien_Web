@@ -11,9 +11,16 @@
 <script>
     var listDirect = ["Cấu Hình", "Cập nhật Công thức tính"];
     $(document).ready(function () {
-        capNhatPageDirectory('Cập nhật Công thức tính',listDirect);
+        capNhatPageDirectory('Cập nhật Công thức tính', listDirect);
+        updateCalendar(new Date());
     });
-
+    function updateCalendar(date) {
+        $('.datepickerDiv').datepicker({
+            startDate: date,
+            clearBtn: true,
+            format: "dd/mm/yyyy"
+        });
+    }
     function addBtnClick() {
         var text = document.getElementById('phepTinh').value;
         if (text.length != 0) {
