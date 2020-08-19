@@ -10,7 +10,7 @@
 <head>
     <base href="../../../../">
     <meta charset="utf-8" />
-    <title>Metronic | Login Page 1</title>
+    <title>ES-METERING | Trang đăng nhập</title>
     <meta name="description" content="Login page example" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!--begin::Fonts-->
@@ -53,17 +53,17 @@
                     <!--end: Aside header-->
                     <!--begin: Aside content-->
                     <div class="flex-column-fluid d-flex flex-column justify-content-center">
-                        <h3 class="font-size-h1 mb-30 text-white" style="text-align:center">Welcome to ES-METERING!</h3>
+                        <h3 class="font-size-h1 mb-30 text-white" style="text-align:center">Chào mừng tới ES-METERING!</h3>
                         @*<p class="font-weight-lighter text-white opacity-80">The ultimate Bootstrap, Angular 8, React &amp; VueJS admin theme framework for next generation web apps.</p>*@
                     </div>
                     <!--end: Aside content-->
                     <!--begin: Aside footer for desktop-->
                     <div class="d-none flex-column-auto d-lg-flex justify-content-between mt-10">
-                        <div class="opacity-70 font-weight-bold text-white">© 2020 Esolutions</div>
+                        <div class="opacity-70 font-weight-bold text-white">© @DateTime.Now.Year Esolutions</div>
                         <div class="d-flex">
-                            <a href="#" class="text-white">Privacy</a>
-                            <a href="#" class="text-white ml-10">Legal</a>
-                            <a href="#" class="text-white ml-10">Contact</a>
+                            <a href="#" class="text-white">Giới thiệu</a>
+                            <a href="#" class="text-white ml-10">Điều khoản</a>
+                            <a href="#" class="text-white ml-10">Liên hệ</a>
                         </div>
                     </div>
                     <!--end: Aside footer for desktop-->
@@ -75,8 +75,8 @@
             <div class="flex-row-fluid d-flex flex-column position-relative p-7 overflow-hidden">
                 <!--begin::Content header-->
                 <div class="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
-                    <span class="font-weight-bold text-dark-50">Dont have an account yet?</span>
-                    <a href="javascript:;" class="font-weight-bold ml-2" id="kt_login_signup">Sign Up!</a>
+                    <span class="font-weight-bold text-dark-50">Chưa có tài khoản?</span>
+                    <a href="javascript:;" class="font-weight-bold ml-2" id="kt_login_signup">Đăng ký!</a>
                 </div>
                 <!--end::Content header-->
                 <!--begin::Content body-->
@@ -84,17 +84,17 @@
                     <!--begin::Signin-->
                     <div class="login-form login-signin">
                         <div class="text-center mb-10 mb-lg-20">
-                            <h3 class="font-size-h1">Sign In</h3>
-                            <p class="text-muted font-weight-bold">Enter your username and password</p>
+                            <h3 class="font-size-h1">Đăng nhập</h3>
+                            <p class="text-muted font-weight-bold">Nhập tài khoản và mật khẩu</p>
                         </div>
                         <!--begin::Form-->
                         <form class="form" novalidate="novalidate" id="kt_login_signin_form">
                             <div class="form-group">
-                                <input id="username" class="form-control form-control-solid h-auto py-5 px-6" type="text" placeholder="Username" name="username" autocomplete="off"
+                                <input id="username" class="form-control form-control-solid h-auto py-5 px-6" type="text" placeholder="Tài khoản" name="username" autocomplete="off"
                                        onchange="hideError()" />
                             </div>
                             <div class="form-group">
-                                <input id="password" class="form-control form-control-solid h-auto py-5 px-6" type="password" placeholder="Password" name="password" autocomplete="off"
+                                <input id="password" class="form-control form-control-solid h-auto py-5 px-6" type="password" placeholder="Mật khẩu" name="password" autocomplete="off"
                                        onchange="hideError()" />
                             </div>
                             <div id="errorLogin" style="color:red"></div>
@@ -143,8 +143,8 @@
                     <!--begin::Signup-->
                     <div class="login-form login-signup">
                         <div class="text-center mb-10 mb-lg-20">
-                            <h3 class="font-size-h1">Sign Up</h3>
-                            <p class="text-muted font-weight-bold">Enter your details to create your account</p>
+                            <h3 class="font-size-h1">Đăng ký</h3>
+                            <p class="text-muted font-weight-bold">Điền thông tin đăng nhập</p>
                         </div>
                         <!--begin::Form-->
                         <form class="form" novalidate="novalidate" id="kt_login_signup_form">
@@ -162,14 +162,14 @@
                             </div>
                             <div class="form-group">
                                 <label class="checkbox mb-0">
-                                    <input type="checkbox" name="agree" />I Agree the
-                                    <a href="#">terms and conditions</a>.
+                                    <input type="checkbox" name="agree" />Tôi đồng ý với
+                                    <a href="#">các điều khoản và điều kiện</a>.
                                     <span></span>
                                 </label>
                             </div>
                             <div class="form-group d-flex flex-wrap flex-center">
-                                <button type="button" id="kt_login_signup_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Submit</button>
-                                <button type="button" id="kt_login_signup_cancel" class="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4">Cancel</button>
+                                <button type="button" id="kt_login_signup_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Đăng ký</button>
+                                <button type="button" id="kt_login_signup_cancel" class="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4">Hủy</button>
                             </div>
                         </form>
                         <!--end::Form-->
@@ -178,8 +178,8 @@
                     <!--begin::Forgot-->
                     <div class="login-form login-forgot">
                         <div class="text-center mb-10 mb-lg-20">
-                            <h3 class="font-size-h1">Forgotten Password ?</h3>
-                            <p class="text-muted font-weight-bold">Enter your email to reset your password</p>
+                            <h3 class="font-size-h1">Quên mật khẩu?</h3>
+                            <p class="text-muted font-weight-bold">Nhập email để lấy lại mật khẩu</p>
                         </div>
                         <!--begin::Form-->
                         <form class="form" novalidate="novalidate" id="kt_login_forgot_form">
@@ -187,8 +187,8 @@
                                 <input class="form-control form-control-solid h-auto py-5 px-6" type="email" placeholder="Email" name="email" autocomplete="off" />
                             </div>
                             <div class="form-group d-flex flex-wrap flex-center">
-                                <button type="button" id="kt_login_forgot_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Submit</button>
-                                <button type="button" id="kt_login_forgot_cancel" class="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4">Cancel</button>
+                                <button type="button" id="kt_login_forgot_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3 mx-4">Tiếp tục</button>
+                                <button type="button" id="kt_login_forgot_cancel" class="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-4">Hủy</button>
                             </div>
                         </form>
                         <!--end::Form-->
@@ -198,11 +198,11 @@
                 <!--end::Content body-->
                 <!--begin::Content footer for mobile-->
                 <div class="d-flex d-lg-none flex-column-auto flex-column flex-sm-row justify-content-between align-items-center mt-5 p-5">
-                    <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© 2020 Esolutions</div>
+                    <div class="text-dark-50 font-weight-bold order-2 order-sm-1 my-2">© @DateTime.Now.Year Esolutions</div>
                     <div class="d-flex order-1 order-sm-2 my-2">
-                        <a href="#" class="text-dark-75 text-hover-primary">Privacy</a>
-                        <a href="#" class="text-dark-75 text-hover-primary ml-4">Legal</a>
-                        <a href="#" class="text-dark-75 text-hover-primary ml-4">Contact</a>
+                        <a href="#" class="text-dark-75 text-hover-primary">Giới thiệu</a>
+                        <a href="#" class="text-dark-75 text-hover-primary ml-4">Tài khoản</a>
+                        <a href="#" class="text-dark-75 text-hover-primary ml-4">Liên hệ</a>
                     </div>
                 </div>
                 <!--end::Content footer for mobile-->

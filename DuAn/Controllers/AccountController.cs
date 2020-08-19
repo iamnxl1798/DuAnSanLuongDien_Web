@@ -24,7 +24,7 @@ namespace DuAn.Controllers
         // GET: Account
         public ActionResult Login()
         {
-            return View();
+            return View();  
         }
         [AllowAnonymous]
         public JsonResult CheckLogin(string username, string password)

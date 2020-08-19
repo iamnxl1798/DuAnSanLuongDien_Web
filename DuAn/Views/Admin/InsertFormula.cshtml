@@ -33,8 +33,8 @@
                 <div class="form-group row">
                     <div class="col-lg-6">
                         <div class="row">
-                            <div class="col-lg-4 col-sm-6 mb-3">
-                                <select class="form-control bg-primary text-white" id="diemDo">
+                            <div class="col-lg-3 col-sm-6 mb-3">
+                                <select class="form-control bg-primary text-white" id="diemDo" onchange="insertDiemDo()">
                                     <option value="" hidden selected>Điểm đo</option>
                                     @foreach (DiemDo item in Model.listDiemDo)
                                     {
@@ -42,8 +42,8 @@
                                     }
                                 </select>
                             </div>
-                            <div class="col-lg-4 col-sm-6 mb-3">
-                                <select class="form-control bg-primary text-white" id="kenh">
+                            <div class="col-lg-3 col-sm-6 mb-3">
+                                <select class="form-control bg-primary text-white" id="kenh" onchange="insertDiemDo()">
                                     <option value="" hidden selected>Kênh</option>
                                     @foreach (Kenh item in Model.listKenh)
                                     {
@@ -51,33 +51,118 @@
                                     }
                                 </select>
                             </div>
-                            <div class="col-lg-2 col-6">
-                                <p class="btn btn-success form-control" value="+" onclick="operatorBtnClick('+')">+</p>
-                            </div>
-                            <div class="col-lg-2 col-6">
-                                <p class="btn btn-success form-control" value="-" onclick="operatorBtnClick('-')">-</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <div class="col-lg-4"></div>
-                            <div class="col-lg-4">
-                                <p class="btn btn-danger form-control" value="del" onclick="delBtnClick()"><span>Xóa</span></p>
-                            </div>
-                            <div class="col-lg-4">
-                                <p class="btn btn-danger form-control" value="add" onclick="addBtnClick()"><span>Thêm</span></p>
-                            </div>
                         </div>
                     </div>
                 </div>
 
 
-                <textarea id="phepTinh" class="form-control col-12" style="font-size:22px" readonly></textarea>
-                <p class="btn btn-success btn-block mt-4 col-12" onclick="submitCongThuc()">Cập nhật</p>
+                <textarea id="phepTinh" class="form-control col-12" style="font-size:22px" onkeypress="return operatorBtnClick(event)"></textarea>
+                <p class="btn btn-success btn-block mt-7 col-12" onclick="submitCongThuc()">Cập nhật</p>
                 <label class="text-success mt-4 ml-3" id="capNhatCongThucLabelSuccess"></label><label class="text-danger mt-4" id="capNhatCongThucLabelError"></label>
             </div>
         </form>
         <!--end::Form-->
     </div>
 </div>
+<script>
+    var listDirect = ["Cấu Hình", "Cập nhật Công thức tính"];
+    $(document).ready(function () {
+        capNhatPageDirectory('Cập nhật Công thức tính', listDirect);
+        var start = new Date(@Model.getLastDate.Year,@Model.getLastDate.Month-1,@Model.getLastDate.Day);
+        updateCalendar(start);
+    });
+    function updateCalendar(date) {
+        $('.datepickerDiv').datepicker({
+            startDate: date,
+            clearBtn: true,
+            format: "dd/mm/yyyy"
+        });
+    }
+    function insertDiemDo() {
+        if ($('#diemDo').val() != '' && $('#kenh').val() != '') {
+            var text = $("#diemDo option:selected").text().trim() + '~' + $("#kenh option:selected").text();
+            $('#phepTinh').val($('#phepTinh').val() + text);
+            $('#diemDo').val("").change();
+            $('#kenh').val("").change();
+        }
+    }
+    function operatorBtnClick(event) {
+        var operator = event.key;
+        var text = document.getElementById('phepTinh').value;
+        var regex = /^[0-9]+$/;
+        if (operator == '(') {
+            return true;
+        }
+        else if (operator == ')') {
+            if (text.split('(').length > text.split(')').length) {
+                return true;
+            }
+            return false;
+        }
+        else if (text.length > 0 && text[text.length - 1] != '+' && text[text.length - 1] != '-' && text[text.length - 1] != '*' && text[text.length - 1] != '/' && (operator == '+' || operator == '-' || operator == '/' || operator == '*')) {
+            if (operator == '+') {
+                return true;
+            }
+            else if (operator == '-') {
+                return true;
+            }
+            else if (operator == '*') {
+                return true;
+            }
+            else if (operator == '/') {
+                return true;
+            }
+        }
+        else if (operator.match(regex) || operator == '.' || operator == ',') {
+            return true;
+        }
+        else {
+            return false;
+        }
+        return false;
+    }
+
+    function submitCongThuc() {
+        var text = document.getElementById('phepTinh').value;
+        var nameStr = document.getElementById('tenCongThuc').value;
+        var thoiGianHieuLuc = document.getElementById('thoiGianHieuLuc').value;
+        var errorMsg = "";
+        if (nameStr.length == 0) {
+            showMessage("Tên không được để trống", false);
+            errorMsg += ".";
+        }
+        if (thoiGianHieuLuc.length == 0) {
+            showMessage("Thời gian hiệu lực không được để trống", false);
+            errorMsg += ".";
+        }
+        if (text.length == 0) {
+            showMessage("Công thức không được để trống", false);
+            errorMsg += ".";
+        }
+        else if (text[text.length - 2] == '+' || text[text.length - 2] == '-') {
+            showMessage("Công thức không đúng định dạng", false);
+            errorMsg += ".";
+        }
+        if (errorMsg.length != 0) {
+            return;
+        }
+        if (text.length != 0 && (text.includes('+') || text.includes('-')) && text[text.length - 2] != '+' && text[text.length - 2] != '-' && nameStr.length != 0 && thoiGianHieuLuc.length != 0) {
+            $.ajax({
+                method:'POST',
+                cache: false,
+                url: "@Url.Action("UpdateFormula","Admin")",
+                data: { formula: text, name: nameStr, thoiGian: thoiGianHieuLuc },
+                dataType:'json',
+                success: function (message) {
+                    showMessage("Cập nhật công thức thành công", true);
+                    $('.datepicker').datepicker('destroy');
+                    var dateParts = thoiGianHieuLuc.split("/");
+                    updateCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]));
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    showMessage("Cập nhật công thức thất bại", false);
+                }
+            });
+        }
+    }
+</script>

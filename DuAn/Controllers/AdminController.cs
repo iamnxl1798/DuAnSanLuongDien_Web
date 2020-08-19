@@ -21,7 +21,6 @@ namespace DuAn.Controllers
             AdminModel item = DBContext.getDataAdminModel();
             return View(item);
         }*/
-        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
         public ActionResult CapNhatGiaDien()
         {
             return View();
@@ -136,6 +135,11 @@ namespace DuAn.Controllers
         {
             DBContext.updateFormula(formula, name, thoiGian);
             return Json(new { Message = "Cập nhật thành công" });
+        }
+        public ActionResult InsertGiaDien(string thoiGianBatDau,string thoiGianKetThuc,int giaDien)
+        {
+            var message=DBContext.InsertGiaDien(thoiGianBatDau,thoiGianKetThuc,giaDien);
+            return Json(new { Message = message });
         }
 
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]

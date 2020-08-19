@@ -371,6 +371,28 @@ namespace DuAn
                 db.SaveChanges();
             }
         }
+        public static string InsertGiaDien(string thoiGianBatDau, string thoiGianKetThuc, int giaDien)
+        {
+            using (var db = new Model1())
+            {
+                try
+                {
+                    var item = new GiaDien()
+                    {
+                        NgayBatDau = DateTime.ParseExact(thoiGianBatDau, "dd/MM/yyyy", null),
+                        NgayKetThuc = DateTime.ParseExact(thoiGianKetThuc, "dd/MM/yyyy", null),
+                        Gia = giaDien
+                    };
+                    db.GiaDiens.Add(item);
+                    db.SaveChanges();
+                    return "";
+                }
+                catch(Exception e)
+                {
+                    return "Error";
+                }
+            }
+        }
         static List<MissingDataStatus> data = new List<MissingDataStatus>();
         static DateTime startDay = DateTime.MinValue;
         static DateTime endDay = DateTime.MaxValue;
