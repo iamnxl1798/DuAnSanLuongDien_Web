@@ -54,7 +54,7 @@
     </div>
 </div>
 <!--modal loader-->
-<div class="modal fade" id="modalLoader" tabindex="-2" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true" data-backdrop="false">
+<div class="modal fade" id="modalLoader_CSMM" tabindex="-2" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-dialog-centered modal-sm" style="justify-content:center; height:50px !important" role="document">
         <div class="quan_loader"></div>
     </div>
@@ -95,12 +95,12 @@
 <script>
     jQuery(document).ready(function () {
         var showModalLoading = function () {
-            $('#modalLoader').modal('show');
+            $('#modalLoader_CSMM').modal('show');
         }
         var hideModalLoading = function () {
-            $('#modalLoader').modal('hide');
+            debugger;
+            $('#modalLoader_CSMM').modal('hide');
         }
-
 
         $('#time_csmaxmin').datepicker({
             autoclose: true,

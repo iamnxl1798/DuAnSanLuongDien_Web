@@ -1,0 +1,177 @@
+ES Meter Reading,,
+From unit,54652735,6/22/2020 16:48
+Historical Data,,
+Historical Data set:,1,
+,,
+Cumulative totals,,
+,,
+,Value,Unit
+,7.59707E+11,Import Wh
+,0,Export Wh
+,0,Q1 varh
+,0,Q2 varh
+,0,Q3 varh
+,0,Q4 varh
+,0,VAh
+,63456882300,CD1
+,2913200900,CD2
+,0,CD3
+Rates,,
+,,
+Register,Value,Unit
+1,4.36658E+11,Import Wh
+2,1.52268E+11,Import Wh
+3,1.70782E+11,Import Wh
+4,0,Export Wh
+5,0,Export Wh
+6,0,Export Wh
+7,0,no Source
+8,0,no Source
+9,0,no Source
+10,0,no Source
+11,0,no Source
+12,0,no Source
+13,0,no Source
+14,0,no Source
+15,0,no Source
+16,0,no Source
+Multi-utility registers,,
+,,
+,Value,Unit
+,0,MU 1
+,0,MU 2
+,0,MU 3
+,0,MU 4
+Cummulative Maximum demands,,
+,,
+Register,Value,Unit
+1,0,Import W
+2,0,Import W
+3,0,Import W
+4,0,Import W
+5,0,Export W
+6,0,Export W
+7,0,Export W
+8,0,Export W
+Billing event details,,
+,,
+Billing reset number:,3,
+Time of billing reset:,6/1/2020 0:00,
+Billing period start date,5/1/2020 0:00,
+Billing period end date,6/1/2020 0:00,
+Historical Data set:,2,
+,,
+Cumulative totals,,
+,,
+,Value,Unit
+,4.22E+11,Import Wh
+,0,Export Wh
+,0,Q1 varh
+,0,Q2 varh
+,0,Q3 varh
+,0,Q4 varh
+,0,VAh
+,30692993700,CD1
+,2408850800,CD2
+,0,CD3
+Rates,,
+,,
+Register,Value,Unit
+1,2.42E+11,Import Wh
+2,87150227700,Import Wh
+3,92527072700,Import Wh
+4,0,Export Wh
+5,0,Export Wh
+6,0,Export Wh
+7,0,no Source
+8,0,no Source
+9,0,no Source
+10,0,no Source
+11,0,no Source
+12,0,no Source
+13,0,no Source
+14,0,no Source
+15,0,no Source
+16,0,no Source
+Multi-utility registers,,
+,,
+,Value,Unit
+,0,MU 1
+,0,MU 2
+,0,MU 3
+,0,MU 4
+Cummulative Maximum demands,,
+,,
+Register,Value,Unit
+1,0,Import W
+2,0,Import W
+3,0,Import W
+4,0,Import W
+5,0,Export W
+6,0,Export W
+7,0,Export W
+8,0,Export W
+Billing event details,,
+,,
+Billing reset number:,2,
+Time of billing reset:,5/1/2020 0:00,
+Billing period start date,4/1/2020 0:00,
+Billing period end date,5/1/2020 0:00,
+Historical Data set:,3,
+,,
+Cumulative totals,,
+,,
+,Value,Unit
+,69302195700,Import Wh
+,0,Export Wh
+,0,Q1 varh
+,0,Q2 varh
+,0,Q3 varh
+,0,Q4 varh
+,0,VAh
+,4513917000,CD1
+,423811500,CD2
+,0,CD3
+Rates,,
+,,
+Register,Value,Unit
+1,38746435900,Import Wh
+2,14298640000,Import Wh
+3,16257119700,Import Wh
+4,0,Export Wh
+5,0,Export Wh
+6,0,Export Wh
+7,0,no Source
+8,0,no Source
+9,0,no Source
+10,0,no Source
+11,0,no Source
+12,0,no Source
+13,0,no Source
+14,0,no Source
+15,0,no Source
+16,0,no Source
+Multi-utility registers,,
+,,
+,Value,Unit
+,0,MU 1
+,0,MU 2
+,0,MU 3
+,0,MU 4
+Cummulative Maximum demands,,
+,,
+Register,Value,Unit
+1,0,Import W
+2,0,Import W
+3,0,Import W
+4,0,Import W
+5,0,Export W
+6,0,Export W
+7,0,Export W
+8,0,Export W
+Billing event details,,
+,,
+Billing reset number:,1,
+Time of billing reset:,4/1/2020 0:00,
+Billing period start date,3/1/2020 0:00,
+Billing period end date,4/1/2020 0:00,
