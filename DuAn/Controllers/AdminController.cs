@@ -21,7 +21,11 @@ namespace DuAn.Controllers
             AdminModel item = DBContext.getDataAdminModel();
             return View(item);
         }*/
-
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
+        public ActionResult CapNhatGiaDien()
+        {
+            return View();
+        }
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
         public ActionResult CauHinhSanLuong()
         {

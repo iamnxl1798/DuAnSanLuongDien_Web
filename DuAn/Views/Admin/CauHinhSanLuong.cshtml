@@ -14,9 +14,6 @@
     $(document).ready(function () {
         capNhatPageDirectory('Cập nhật sản lượng ngày', listDirect);
 
-        var start = new Date(@Model.getLastDate.Year,@Model.getLastDate.Month-1,@Model.getLastDate.Day);
-
-        updateCalendar(start);
 
         $('#kt_dropzone_3').dropzone({
             addRemoveLinks: true,
