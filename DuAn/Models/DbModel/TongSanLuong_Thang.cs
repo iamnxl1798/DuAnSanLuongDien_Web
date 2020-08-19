@@ -14,6 +14,6 @@ namespace DuAn.Models.DbModel
 
         public int Nam { get; set; }
 
-        public double GiaTri { get; set; }
+        public double? GiaTri { get; set; }
     }
 }

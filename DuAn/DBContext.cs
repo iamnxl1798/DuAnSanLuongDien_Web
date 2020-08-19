@@ -53,8 +53,8 @@ namespace DuAn
                     }
                     db.Configuration.LazyLoadingEnabled = false;
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
-                    var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay == date).Select(x => x.GiaTriThang).FirstOrDefault();
-                    var thucTeNam = db.TongSanLuong_ThangNam.Where(x => x.Ngay == date).Select(x => x.GiaTriNam).FirstOrDefault();
+                    var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay <= date).OrderByDescending(x=>x.Ngay).Take(1).Select(x => x.GiaTriThang).FirstOrDefault();
+                    var thucTeNam = db.TongSanLuong_ThangNam.Where(x => x.Ngay <= date).OrderByDescending(x => x.Ngay).Take(1).Select(x => x.GiaTriNam).FirstOrDefault();
                     var missingData = getMissingCount(date);
                     var missingDataCount = new List<NumberOfMissingData>();
                     var distincMissingType = missingData.Select(x => x.type).Distinct();
@@ -68,6 +68,7 @@ namespace DuAn
                             done = tempData.Where(x => x.status == 1).Count()
                         });
                     }
+                    var giaTien = db.GiaDiens.Where(x => x.NgayBatDau <= date && x.NgayKetThuc >= date).Select(x => x.Gia).FirstOrDefault();
                     var result = new HomeModel
                     {
                         duKienThang = db.SanLuongDuKiens.Where(x => x.LoaiID == CommonContext.LOAI_SAN_LUONG_THANG && x.ThoiGian == thang).Select(x => x.SanLuong).FirstOrDefault(),
@@ -77,7 +78,11 @@ namespace DuAn
                         data = list,
                         sanLuongTrongNgay = dataTrongNgay,
                         date = date,
-                        countMissingData = missingDataCount
+                        countMissingData = missingDataCount,
+                        giaDien = giaTien,
+                        doanhThuThang=getDoanhThuThang(date).Sum(x=>x.doanhThu),
+                        doanhThuNam=getDoanhThuNam(date).Sum(x=>x.doanhThu)
+
                     };
                     return await Task.FromResult(result);
                 }
@@ -85,6 +90,19 @@ namespace DuAn
                 {
                     return null;
                 }
+            }
+        }
+        public static HomeModel getDoanhThuNgayDetail(DateTime date)
+        {
+            using (var db = new Model1())
+            {
+                var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
+                var giaTien = db.GiaDiens.Where(x => x.NgayBatDau <= date && x.NgayKetThuc >= date).Select(x => x.Gia).FirstOrDefault();
+                return new HomeModel
+                {
+                    sanLuongTrongNgay = dataTrongNgay,
+                    giaDien = giaTien
+                };
             }
         }
         public static Account ChangeInfo(HttpPostedFileBase avatar, string fullname, string email, string address, string phone, string dob, string id)
@@ -135,6 +153,130 @@ namespace DuAn
                         kvarhNhan = result.Where(x => x.KenhID == CommonContext.KVARH_NHAN).Select(x => x.GiaTri).ToList()
                     };
                     return obj;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public static List<TongSanLuongTheoThoiGian> getDoanhThuThang(DateTime date)
+        {
+            using (var db = new Model1())
+            {
+                try
+                {
+                    DateTime dateStart = new DateTime(date.Year, date.Month, 1);
+                    DateTime dateEnd = new DateTime(date.Year, date.Month + 1, 1);
+                    var result = new List<TongSanLuongTheoThoiGian>();
+                    for (DateTime dateFor = dateStart; dateFor < dateEnd; dateFor = dateFor.AddDays(1))
+                    {
+                        var gia = db.GiaDiens.Where(x => x.NgayBatDau <= dateFor && x.NgayKetThuc >= dateFor).Select(x => x.Gia).FirstOrDefault();
+                        var value = db.TongSanLuong_Ngay.Where(x => x.Ngay == dateFor).ToList().Count == 0 ? 0 : db.TongSanLuong_Ngay.Where(x => x.Ngay == dateFor).Sum(x => x.GiaTri);
+                        result.Add(new TongSanLuongTheoThoiGian
+                        {
+                            date = dateFor,
+                            giaTien = gia,
+                            value = value,
+                            doanhThu = gia * value
+                        });
+                    }
+                    result.RemoveAll(x => x.value == 0 || x.value == 0 || x.giaTien == 0);
+                    return result;
+                }
+                catch(Exception e)
+                {
+                    return null;
+                }
+            }
+        }
+        public static List<TongSanLuongTheoThoiGian> getChiTietThang(DateTime date)
+        {
+            using (var db = new Model1())
+            {
+                try
+                {
+                    DateTime dateStart = new DateTime(date.Year, date.Month, 1);
+                    DateTime dateEnd = new DateTime(date.Year, date.Month + 1, 1);
+                    var result = db.TongSanLuong_Ngay.Where(x => x.Ngay >= dateStart && x.Ngay < dateEnd).GroupBy(l => l.Ngay).Select(cl => new TongSanLuongTheoThoiGian
+                    {
+                        date = cl.Key,
+                        value = cl.Sum(c => c.GiaTri),
+                    }).OrderBy(x => x.date).ToList();
+                    return result;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public static List<TongSanLuongTheoThoiGian> getChiTietNam(DateTime date)
+        {
+            using (var db = new Model1())
+            {
+                try
+                {
+                    DateTime dateStart = new DateTime(date.Year, 1, 1);
+                    DateTime dateEnd = new DateTime(date.Year + 1, 1, 1);
+                    var result = new List<TongSanLuongTheoThoiGian>();
+                    for (DateTime month = dateStart; month < dateEnd; month = month.AddMonths(1))
+                    {
+                        var addOneMonth = month.AddMonths(1);
+                        result.Add(
+                            db.TongSanLuong_ThangNam.Where(x => x.Ngay >= month && x.Ngay < addOneMonth).OrderByDescending(x => x.Ngay).Select(
+                                x => new TongSanLuongTheoThoiGian
+                                {
+                                    date = month,
+                                    value = x.GiaTriThang
+                                }
+                                ).Take(1).FirstOrDefault());
+                    }
+                    result.RemoveAll(x => x == null);
+                    return result;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+        public static List<TongSanLuongTheoThoiGian> getDoanhThuNam(DateTime date)
+        {
+            using (var db = new Model1())
+            {
+                try
+                {
+                    DateTime dateStart = new DateTime(date.Year, 1, 1);
+                    DateTime dateEnd = new DateTime(date.Year + 1, 1, 1);
+                    var result = new List<TongSanLuongTheoThoiGian>();
+                    for (DateTime month = dateStart; month < dateEnd; month = month.AddMonths(1))
+                    {
+                        var addOneMonth = month.AddMonths(1);
+                        var list = new List<TongSanLuongTheoThoiGian>();
+                        for (DateTime dateFor = month; dateFor < addOneMonth; dateFor = dateFor.AddDays(1))
+                        {
+                            var gia = db.GiaDiens.Where(x => x.NgayBatDau <= dateFor && x.NgayKetThuc >= dateFor).Select(x => x.Gia).FirstOrDefault();
+                            var value = db.TongSanLuong_Ngay.Where(x => x.Ngay == dateFor).ToList().Count == 0 ? 0 : db.TongSanLuong_Ngay.Where(x => x.Ngay == dateFor).Sum(x => x.GiaTri);
+                            list.Add(new TongSanLuongTheoThoiGian
+                            {
+                                date = dateFor,
+                                giaTien = gia,
+                                value = value,
+                                doanhThu=gia*value
+                            });
+                        }
+                        result.Add(new TongSanLuongTheoThoiGian
+                        {
+                            date = month,
+                            giaTien=list.Where(x=>x.giaTien!=0&&x.date>=dateStart&&x.date<dateEnd).Select(x=>x.giaTien).FirstOrDefault(),
+                            value = list.Sum(x => x.value),
+                            doanhThu=list.Sum(x=>x.doanhThu)
+                        });
+                    }
+                    result.RemoveAll(x => x.doanhThu == 0);
+                    return result;
                 }
                 catch
                 {

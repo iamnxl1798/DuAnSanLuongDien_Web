@@ -8,7 +8,7 @@ namespace DuAn.Models.DbModel
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=Model1")
+            : base("name=Model11")
         {
         }
 
@@ -19,6 +19,7 @@ namespace DuAn.Models.DbModel
         public virtual DbSet<CongTy> CongTies { get; set; }
         public virtual DbSet<DiemDo> DiemDoes { get; set; }
         public virtual DbSet<DiemDo_CongTo> DiemDo_CongTo { get; set; }
+        public virtual DbSet<GiaDien> GiaDiens { get; set; }
         public virtual DbSet<Kenh> Kenhs { get; set; }
         public virtual DbSet<LoaiSanLuong> LoaiSanLuongs { get; set; }
         public virtual DbSet<LogCongTy> LogCongTies { get; set; }

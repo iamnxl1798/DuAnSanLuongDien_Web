@@ -3,8 +3,70 @@
 @{ int index = 0;}
 @{ Layout = null;}
 
-
-<div class="col-lg-3 col-12 col-md-6">
+<div class="col-md-4">
+    <div class="card card-custom gutter-b bg-diagonal bg-diagonal-light-primary">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between p-4 flex-lg-wrap flex-xl-nowrap">
+                <div class="d-flex flex-column mr-5">
+                    <span class="h4 text-dark text-hover-primary mb-5">
+                        @Model.formatNumber(Model.giaDien * Model.sanLuongTrongNgay.Sum(x => x.GiaTri) * 0.000001) tỷ
+                    </span>
+                    <p class="text-dark-50">
+                        Doanh thu ngày @Model.date.Day
+                    </p>
+                </div>
+                <div class="ml-6 ml-lg-0 ml-xxl-6 flex-shrink-0">
+                    <a href="javascript:void(0)" id="chiTietNgayBtn" class="btn font-weight-bolder text-uppercase btn-primary py-4 px-6">
+                        Chi tiết
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="card card-custom gutter-b bg-diagonal bg-diagonal-light-success">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between p-4 flex-lg-wrap flex-xl-nowrap">
+                <div class="d-flex flex-column mr-5">
+                    <span class="h4 text-dark text-hover-primary mb-5">
+                        @Model.formatNumber(Model.doanhThuThang * 0.000001) tỷ
+                    </span>
+                    <p class="text-dark-50">
+                        Doanh thu tháng @Model.date.Month
+                    </p>
+                </div>
+                <div class="ml-6 ml-lg-0 ml-xxl-6 flex-shrink-0">
+                    <a href="javascript:void(0)" id="doanhThuThangBtn" class="btn font-weight-bolder text-uppercase btn-success py-4 px-6">
+                        Chi tiết
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="card card-custom gutter-b bg-diagonal bg-diagonal-light-warning">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between p-4 flex-lg-wrap flex-xl-nowrap">
+                <div class="d-flex flex-column mr-5">
+                    <span class="h4 text-dark text-hover-primary mb-5">
+                        @Model.formatNumber(Model.doanhThuNam * 0.000001) tỷ
+                    </span>
+                    <p class="text-dark-50">
+                        Doanh thu năm @Model.date.Year
+                    </p>
+                </div>
+                <div class="ml-6 ml-lg-0 ml-xxl-6 flex-shrink-0">
+                    <a href="javascript:void(0)" id="doanhThuNamBtn" class="btn font-weight-bolder text-uppercase btn-success py-4 px-6">
+                        Chi tiết
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xl-3 col-12 col-md-6">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
@@ -13,6 +75,11 @@
                 <div class="card-label">
                     <i class="icon-xl fab fa-buffer text-primary"></i> Lũy kế tháng @Model.date.Month
                 </div>
+            </div>
+            <div class="card-toolbar">
+                <a href="javascript:void(0)" id="chiTietThangBtn" class="btn btn-sm btn-success font-weight-bold">
+                    <i class="fas fa-list"></i>Chi tiết
+                </a>
             </div>
         </div>
         <!--end::Header-->
@@ -44,7 +111,7 @@
                     <!--end::Symbol-->
                     <!--begin::Title-->
                     <div>
-                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.numberFormatDuKienThang MW</p>
+                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.numberFormatDuKienThang MWh</p>
                         <div class="font-size-sm text-muted font-weight-bold mt-1">Sản lượng kế hoạch</div>
                     </div>
                     <!--end::Title-->
@@ -58,7 +125,7 @@
     <!--end::Mixed Widget 18-->
 </div>
 
-<div class="col-lg-3 col-12 col-md-6">
+<div class="col-xl-3 col-12 col-md-6">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
@@ -67,6 +134,11 @@
                 <div class="card-label">
                     <i class="icon-xl fab fa-buffer text-primary"></i> Lũy kế năm @Model.date.Year
                 </div>
+            </div>
+            <div class="card-toolbar">
+                <a href="javascript:void(0)" id="chiTietNamBtn" class="btn btn-sm btn-success font-weight-bold">
+                    <i class="fas fa-list"></i>Chi tiết
+                </a>
             </div>
         </div>
         <!--end::Header-->
@@ -98,7 +170,7 @@
                     <!--end::Symbol-->
                     <!--begin::Title-->
                     <div>
-                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.numberFormatDuKienNam MW</p>
+                        <p class="font-size-h6 text-dark-75 font-weight-bolder">@Model.numberFormatDuKienNam MWh</p>
                         <div class="font-size-sm text-muted font-weight-bold mt-1">Sản lượng kế hoạch</div>
                     </div>
                     <!--end::Title-->
@@ -112,7 +184,7 @@
     <!--end::Mixed Widget 18-->
 </div>
 
-<div class="col-lg-6">
+<div class="col-xl-6">
     <!--begin::Mixed Widget 18-->
     <div class="card card-custom gutter-b card-stretch">
         <!--begin::Header-->
@@ -161,6 +233,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
     <div class="card card-custom gutter-b card-stretch">
@@ -284,6 +357,10 @@
 </div>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
 </div>
+<div class="modal fade" id="chiTietThangModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+</div>
+<div class="modal fade" id="chiTietNamModal" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+</div>
 
 <script>
     $('.click-chitiet').click(function () {
@@ -302,7 +379,106 @@
             }
         });
     });
-
+    $('#chiTietNgayBtn').click(function () {
+        var url = "@Url.Action("getDoanhThuNgay", "Home")";
+        var date = "@Model.date.ToString("dd/MM/yyyy")";
+        $.ajax({
+            cache: false,
+            url: url,
+            data: {date:date },
+            success: function (data) {
+                if (data == null || data == "") {
+                    showMessage("Không có dữ liệu", false);
+                }
+                else {
+                    $('#exampleModalCenter').html(data);
+                    $('#exampleModalCenter').modal('show');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
+    $('#chiTietThangBtn').click(function () {
+        var url = "@Url.Action("getChiTietThangModal", "Home")";
+        var date = "@Model.date.ToString("dd/MM/yyyy")";
+        $.ajax({
+            cache: false,
+            url: url,
+            data: {date:date },
+            success: function (data) {
+                if (data == null||data=="") {
+                    showMessage("Không có dữ liệu", false);
+                }
+                else {
+                    $('#chiTietThangModal').html(data);
+                    $('#chiTietThangModal').modal('show');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
+    $('#doanhThuThangBtn').click(function () {
+        var url = "@Url.Action("getDoanhThuThang", "Home")";
+        var date = "@Model.date.ToString("dd/MM/yyyy")";
+        $.ajax({
+            cache: false,
+            url: url,
+            data: {date:date },
+            success: function (data) {
+                if (data == null||data=="") {
+                    showMessage("Không có dữ liệu", false);
+                }
+                else {
+                    $('#exampleModalCenter').html(data);
+                    $('#exampleModalCenter').modal('show');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
+    $('#chiTietNamBtn').click(function () {
+        var url = "@Url.Action("getChiTietNamModal", "Home")";
+        var date = "@Model.date.ToString("dd/MM/yyyy")";
+        $.ajax({
+            cache: false,
+            url: url,
+            data: {date:date },
+            success: function (data) {
+                if (data == null||data=="") {
+                    showMessage("Không có dữ liệu", false);
+                }
+                else {
+                    $('#chiTietNamModal').html(data);
+                    $('#chiTietNamModal').modal('show');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
+    $('#doanhThuNamBtn').click(function () {
+        var url = "@Url.Action("getDoanhThuNam", "Home")";
+        var date = "@Model.date.ToString("dd/MM/yyyy")";
+        $.ajax({
+            cache: false,
+            url: url,
+            data: {date:date },
+            success: function (data) {
+                if (data == null||data=="") {
+                    showMessage("Không có dữ liệu", false);
+                }
+                else {
+                    $('#exampleModalCenter').html(data);
+                    $('#exampleModalCenter').modal('show');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            }
+        });
+    });
     $(document).ready(function () {
     var duKienThang = @Html.Raw(Json.Encode(Model.duKienThang));
     var duKienNam = @Html.Raw(Json.Encode(Model.duKienNam));

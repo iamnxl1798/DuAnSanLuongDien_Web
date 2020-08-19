@@ -13,7 +13,7 @@ namespace DuAn.Models.DbModel
         [Column(TypeName = "date")]
         public DateTime Ngay { get; set; }
 
-        public int ChuKy { get; set; }
+        public int? ChuKy { get; set; }
 
         public double GiaTri { get; set; }
 

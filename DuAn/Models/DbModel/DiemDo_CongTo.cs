@@ -21,7 +21,7 @@ namespace DuAn.Models.DbModel
 
         public DateTime ThoiGianBatDau { get; set; }
 
-        public DateTime ThoiGianKetThuc { get; set; }
+        public DateTime? ThoiGianKetThuc { get; set; }
 
         public virtual CongTo CongTo { get; set; }
 
