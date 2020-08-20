@@ -345,7 +345,7 @@ namespace DuAn
                 {
                     listDiemDo = db.DiemDoes.ToList(),
                     listKenh = db.Kenhs.ToList(),
-                    getLastDate = db.CongThucTongSanLuongs.Count() != 0 ? db.CongThucTongSanLuongs.OrderByDescending(x => x.ThoiGianKetThuc).Select(x => x.ThoiGianKetThuc).First().AddDays(1) : DateTime.MinValue.AddMonths(1),
+                    getLastDate = DateTime.Now
                 };
                 return result;
             }
@@ -358,13 +358,23 @@ namespace DuAn
                 DateTime batDau = DateTime.MinValue;
                 if (db.CongThucTongSanLuongs.Count() != 0)
                 {
-                    batDau = db.CongThucTongSanLuongs.OrderByDescending(x => x.ThoiGianKetThuc).Select(x => x.ThoiGianKetThuc).First().AddDays(1);
+                    var dateNow = DateTime.Now;
+                    var startTimeExceed = db.CongThucTongSanLuongs.Where(x => x.ThoiGianBatDau>= dateNow).ToList();
+                    var endTimeExceed = db.CongThucTongSanLuongs.Where(x => x.ThoiGianKetThuc >= dateNow).ToList();
+                    foreach(CongThucTongSanLuong date in startTimeExceed)
+                    {
+                        date.ThoiGianBatDau = DateTime.Now.AddDays(-1);
+                    }
+                    foreach (CongThucTongSanLuong date in endTimeExceed)
+                    {
+                        date.ThoiGianKetThuc = DateTime.Now;
+                    }
                 }
                 var item = new CongThucTongSanLuong()
                 {
                     Ten = name,
                     CongThuc = formular,
-                    ThoiGianBatDau = batDau,
+                    ThoiGianBatDau = DateTime.Now,
                     ThoiGianKetThuc = DateTime.ParseExact(thoiGian, "dd/MM/yyyy", null)
                 };
                 db.CongThucTongSanLuongs.Add(item);

@@ -81,10 +81,11 @@
     }
     function insertDiemDo() {
         if ($('#diemDo').val() != '' && $('#kenh').val() != '') {
-            var text = $("#diemDo option:selected").text().trim() + '~' + $("#kenh option:selected").text();
+            var text = $("#diemDo option:selected").text().trim() + '~' + $("#kenh option:selected").text()+' ';
             $('#phepTinh').val($('#phepTinh').val() + text);
             $('#diemDo').val("").change();
             $('#kenh').val("").change();
+            $('#phepTinh').focus();
         }
     }
     function operatorBtnClick(event) {
@@ -92,26 +93,68 @@
         var text = document.getElementById('phepTinh').value;
         var regex = /^[0-9]+$/;
         if (operator == '(') {
-            return true;
+            if ($('#phepTinh').val().length > 1 && $('#phepTinh').val()[$('#phepTinh').val().length - 2] != ' ') {
+                $('#phepTinh').val($('#phepTinh').val() + ' ( ');
+                return false;
+            }
+            else {
+                $('#phepTinh').val($('#phepTinh').val() + '( ');
+                return false;
+            }
         }
         else if (operator == ')') {
             if (text.split('(').length > text.split(')').length) {
-                return true;
+                if ($('#phepTinh').val().length > 1 && $('#phepTinh').val()[$('#phepTinh').val().length - 2] != ' ') {
+                    $('#phepTinh').val($('#phepTinh').val() + ' ) ');
+                    return false;
+                }
+                else {
+                    $('#phepTinh').val($('#phepTinh').val() + ') ');
+                    return false;
+                }
             }
             return false;
         }
-        else if (text.length > 0 && text[text.length - 1] != '+' && text[text.length - 1] != '-' && text[text.length - 1] != '*' && text[text.length - 1] != '/' && (operator == '+' || operator == '-' || operator == '/' || operator == '*')) {
+        else if (text.length > 0 && text[text.length - 1] != '+' && text[text.length - 1] != '-' && text[text.length - 1] != '*' && text[text.length - 1] != '/' && text[text.length - 2] != '+' && text[text.length - 2] != '-' && text[text.length - 2] != '*' && text[text.length - 2] != '/' && (operator == '+' || operator == '-' || operator == '/' || operator == '*')) {
             if (operator == '+') {
-                return true;
+                if ($('#phepTinh').val().length > 1 && $('#phepTinh').val()[$('#phepTinh').val().length - 2] != ' ') {
+                    $('#phepTinh').val($('#phepTinh').val() + ' + ');
+                    return false;
+                }
+                else {
+                    $('#phepTinh').val($('#phepTinh').val() + '+ ');
+                    return false;
+                }
             }
             else if (operator == '-') {
-                return true;
+                if ($('#phepTinh').val().length > 1 && $('#phepTinh').val()[$('#phepTinh').val().length - 2] != ' ') {
+                    $('#phepTinh').val($('#phepTinh').val() + ' - ');
+                    return false;
+                }
+                else {
+                    $('#phepTinh').val($('#phepTinh').val() + '- ');
+                    return false;
+                }
             }
             else if (operator == '*') {
-                return true;
+                if ($('#phepTinh').val().length > 1 && $('#phepTinh').val()[$('#phepTinh').val().length - 2] != ' ') {
+                    $('#phepTinh').val($('#phepTinh').val() + ' * ');
+                    return false;
+                }
+                else {
+                    $('#phepTinh').val($('#phepTinh').val() + '* ');
+                    return false;
+                }
             }
             else if (operator == '/') {
-                return true;
+                if ($('#phepTinh').val().length > 1 && $('#phepTinh').val()[$('#phepTinh').val().length - 2] != ' ') {
+                    $('#phepTinh').val($('#phepTinh').val() + ' / ');
+                    return false;
+                }
+                else {
+                    $('#phepTinh').val($('#phepTinh').val() + '/ ');
+                    return false;
+                }
             }
         }
         else if (operator.match(regex) || operator == '.' || operator == ',') {
@@ -147,7 +190,7 @@
         if (errorMsg.length != 0) {
             return;
         }
-        if (text.length != 0 && (text.includes('+') || text.includes('-')) && text[text.length - 2] != '+' && text[text.length - 2] != '-' && nameStr.length != 0 && thoiGianHieuLuc.length != 0) {
+        if (text.length != 0 && (text.includes('+') || text.includes('-') || text.includes('*') || text.includes('/')) && text[text.length - 2] != '+' && text[text.length - 2] != '-' && nameStr.length != 0 && thoiGianHieuLuc.length != 0) {
             $.ajax({
                 method:'POST',
                 cache: false,
