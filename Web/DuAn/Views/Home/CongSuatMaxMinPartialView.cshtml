@@ -51,14 +51,15 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
         </div>
+        <div class="modal fade" id="modalLoader_CSMM" tabindex="-2" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true" data-backdrop="false">
+            <div class="modal-dialog modal-dialog-centered modal-sm" style="justify-content:center; height:50px !important" role="document">
+                <div class="quan_loader"></div>
+            </div>
+        </div>
     </div>
 </div>
 <!--modal loader-->
-<div class="modal fade" id="modalLoader_CSMM" tabindex="-2" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true" data-backdrop="false">
-    <div class="modal-dialog modal-dialog-centered modal-sm" style="justify-content:center; height:50px !important" role="document">
-        <div class="quan_loader"></div>
-    </div>
-</div>
+
 <style>
     .quan_loader {
         border: 16px solid #f3f3f3; /* Light grey */
@@ -94,13 +95,23 @@
 </style>
 <script>
     jQuery(document).ready(function () {
+
         var showModalLoading = function () {
             $('#modalLoader_CSMM').modal('show');
         }
         var hideModalLoading = function () {
-            debugger;
-            $('#modalLoader_CSMM').modal('hide');
+            $('#modalLoader_CSMM').modal("hide");
         }
+
+        @*$('#modalLoader_CSMM').on('hidden.bs.modal', function (e) {
+            // do something...
+            alert("model hidden");
+        });
+
+        $('#modalLoader_CSMM').on('hide.bs.modal', function (e) {
+            // do something...
+            alert("model hide");
+        });*@
 
         $('#time_csmaxmin').datepicker({
             autoclose: true,
@@ -117,6 +128,7 @@
         $('.m-select2').select2();
 
         $('#btn-search').on('click', function () {
+            //toggleModalLoading();
             showModalLoading();
             $.ajax({
                 url: '/Home/CongSuatMaxMinDatatable',
@@ -126,13 +138,19 @@
                     date: $('#time_csmaxmin').val()
                 },
                 success: function (data) {
-                    hideModalLoading();
+                    //toggleModalLoading();
+                    //hideModalLoading();
                     $('#data').html(data);
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    hideModalLoading();
+                    //toggleModalLoading();
+                    //hideModalLoading();
                     showMessage('Lỗi lấy dữ liệu', false);
-                    $('.quan_loader').hide();
+                },
+                complete: function () {
+                    setTimeout(hideModalLoading, 500);
+                    // Handle the complete event
+                    //hideModalLoading();
                 }
             })
         });
