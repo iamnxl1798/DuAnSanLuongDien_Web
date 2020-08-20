@@ -48,8 +48,8 @@ namespace ConsoleApp1
                         }
                     }
                 }
-                var sanLuongNgay = new List<TongSanLuong_Ngay>();
-                DateTime ngayTinh = new DateTime(2020, 6, 25);
+                var tongSanLuongNgay = new List<TongSanLuong_Ngay>();
+                DateTime ngayTinh = new DateTime(2020, 7, 1);
                 for (int i = 1; i <= 48; i++)
                 {
                     var listTemp = db.SanLuongs.Where(x => x.ChuKy == i && x.Ngay == ngayTinh).ToList();
@@ -80,7 +80,7 @@ namespace ConsoleApp1
                     }
                     string rpn = toRPN(formula.Trim()).Trim();
                     var value = CalculateRPN(rpn);
-                    sanLuongNgay.Add(new TongSanLuong_Ngay()
+                    tongSanLuongNgay.Add(new TongSanLuong_Ngay()
                     {
                         ChuKy = i,
                         CongThucID = congThucID,
@@ -88,8 +88,8 @@ namespace ConsoleApp1
                         GiaTri = (double)value
                     });
                 }
-                foreach (TongSanLuong_Ngay item in sanLuongNgay)
-                {
+                foreach (TongSanLuong_Ngay item in tongSanLuongNgay)
+                {   
                     db.TongSanLuong_Ngay.Add(item);
                 }
                 db.SaveChanges();
@@ -165,7 +165,7 @@ namespace ConsoleApp1
                             break;
                     }
                 }
-                PrintState(stack);
+                //PrintState(stack);
             }
 
             return stack.Pop();
