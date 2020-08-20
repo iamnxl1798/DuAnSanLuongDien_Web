@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuAn", "DuAn\DuAn.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTool", "..\ServiceTool\ServiceTool.csproj", "{C9499CBD-9930-43A6-A101-A4AA10A82A15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{F4AA9F46-5EB4-40B4-ADBB-C3860FBBE58E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C9499CBD-9930-43A6-A101-A4AA10A82A15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9499CBD-9930-43A6-A101-A4AA10A82A15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9499CBD-9930-43A6-A101-A4AA10A82A15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4AA9F46-5EB4-40B4-ADBB-C3860FBBE58E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4AA9F46-5EB4-40B4-ADBB-C3860FBBE58E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4AA9F46-5EB4-40B4-ADBB-C3860FBBE58E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4AA9F46-5EB4-40B4-ADBB-C3860FBBE58E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
