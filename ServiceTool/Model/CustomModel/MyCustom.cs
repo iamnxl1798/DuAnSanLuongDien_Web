@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1
+namespace ServiceTool.Model.CustomModel
 {
-    class MyCustom
+    public class MyCustom
     {
         public int DiemDoID { get; set; }
         public int KenhID { get; set; }
