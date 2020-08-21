@@ -9,9 +9,34 @@
         <!--begin::Form-->
         <form>
             <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="thoiGianBatDau" class="col-form-label ml-1">Thời gian bắt đầu</label>
+                        <div class="form-group mb-4">
+                            <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianBatDauDiv">
+                                <input type="text" placeholder="Thời gian bắt đầu" class="form-control" id="thoiGianBatDau" readonly="">
+                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="thoiGianKetThuc" class="col-form-label ml-1">Thời gian kết thúc</label>
+                        <div class="form-group mb-4">
+                            <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianKetThucDiv" onmousedown="setStartDate()">
+                                <input type="text" placeholder="Thời gian kết thúc" class="form-control" id="thoiGianKetThuc" readonly="">
+                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-auto mb-4">
+                        <a href="javascript:void(0)" id="btnSubmit" class="btn btn-primary">Tìm dữ liệu thiếu</a>
+                    </div>
+                </div>
                 <div class="form-group row">
-                    <div class="col-lg-7 mb-4">
-                        <div class="dropzone" style="border:1px dashed green;border-radius: 25px;" id="kt_dropzone_3">
+                    <div class="col-lg-7 mb-lg-0 mb-4">
+                        <div class="dropzone" style="border:1px dashed green;border-radius: 25px; height:100%" id="kt_dropzone_3">
                             <div class="dropzone-msg dz-message needsclick my-auto text-center">
                                 <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
                                 <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
@@ -19,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-5" id="listMissing">
+                    <div class="col-lg-5" style="max-height:27.16em" id="listMissing">
                         @Html.Partial("viewMissingDataList", Model)
                     </div>
                 </div>
@@ -29,3 +54,47 @@
         <!--end::Form-->
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        setupCalendar(null, 'thoiGianBatDau');
+        setupCalendar(null, 'thoiGianKetThuc');
+    });
+    function setupCalendar(date, id) {
+        $('#' + id).datepicker({
+            startDate: date,
+            clearBtn: true,
+            format: "dd/mm/yyyy",
+            endDate: 'd'
+        });
+    }
+    function setStartDate() {
+        $('#thoiGianKetThuc').datepicker('destroy');
+        var dateParts = $('#thoiGianBatDau').val().split("/");
+        if (dateParts.length == 1) {
+            setupCalendar(null, 'thoiGianKetThuc');
+        }
+        else {
+            setupCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]), 'thoiGianKetThuc');
+        }
+    }
+    $('#btnSubmit').click(function () {
+        if ($('#thoiGianBatDau').val() != "") {
+            $.ajax({
+                cache: false,
+                url: "@Url.Action("viewMissingDataList", "Admin")",
+                data: { startDate: $('#thoiGianBatDau').val(), endDate: $('#thoiGianKetThuc').val() },
+                dataType: 'html',
+                success: function (data) {
+                    $('#listMissing').html(data);
+                    showMessage("Tìm kiếm thành công", true);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    showMessage("Xảy ra lỗi khi cập nhật dữ liệu", false);
+                }
+            });
+        }
+        else {
+            showMessage("Thời gian bắt đầu không được để trống", false);
+        }
+    });
+</script>

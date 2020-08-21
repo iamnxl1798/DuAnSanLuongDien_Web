@@ -407,14 +407,60 @@ namespace DuAn
         static List<MissingDataStatus> data = new List<MissingDataStatus>();
         static DateTime startDay = DateTime.MinValue;
         static DateTime endDay = DateTime.MaxValue;
-        public static List<MissingDataStatus> getMissingData(string name = "")
+        public static List<MissingDataStatus> getMissingData(string start, string end, string name = "")
         {
             using (var db = new Model1())
             {
                 if (data.Count() == 0 && name.Length == 0)
                 {
-                    startDay = db.SanLuongs.Min(x => x.Ngay);
+                    startDay = DateTime.Now.AddDays(-2);
                     endDay = DateTime.Now.AddDays(-1);
+                    IEnumerable<DiemDo> listDiemDo = db.DiemDoes;
+                    for (DateTime date = startDay; date <= endDay; date = date.AddDays(1))
+                    {
+                        foreach (DiemDo item in listDiemDo)
+                        {
+                            if (db.SanLuongs.Where(x => x.Ngay == date).Where(x => x.DiemDoID == item.ID).Count() == 0)
+                            {
+                                string fileName = date.Day.ToString("00") + date.Month.ToString("00") + (date.Year % 10).ToString() + item.MaDiemDo.ToString() + ".CSV";
+                                var pathString = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory.ToString()).Parent.Parent.FullName + "\\DocDuLieuCongTo\\TestTheoDoi\\" + fileName;
+                                if (File.Exists(pathString))
+                                {
+                                    data.Add(new MissingDataStatus()
+                                    {
+                                        date = date.ToString("dd/MM/yyyy"),
+                                        name = item.TenDiemDo,
+                                        status = 0,
+                                        type = item.TinhChatDiemDo.TenTinhChat
+                                    });
+                                }
+                                else
+                                {
+                                    data.Add(new MissingDataStatus()
+                                    {
+                                        date = date.ToString("dd/MM/yyyy"),
+                                        name = item.TenDiemDo,
+                                        status = -1,
+                                        type = item.TinhChatDiemDo.TenTinhChat
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    return data;
+                }
+                else if (!String.IsNullOrEmpty(start) || !string.IsNullOrEmpty(end))
+                {
+                    data.Clear();
+                    if (string.IsNullOrEmpty(end))
+                    {
+                        endDay = DateTime.Now.AddDays(-1);
+                    }
+                    else
+                    {
+                        endDay = DateTime.ParseExact(end, "dd/MM/yyyy", null);
+                    }
+                    startDay = DateTime.ParseExact(start, "dd/MM/yyyy", null);
                     IEnumerable<DiemDo> listDiemDo = db.DiemDoes;
                     for (DateTime date = startDay; date <= endDay; date = date.AddDays(1))
                     {
@@ -462,7 +508,7 @@ namespace DuAn
                     if (date < startDay || date > endDay)
                     {
                         data.Clear();
-                        return getMissingData();
+                        return getMissingData(date.ToString("dd/MM/yyyy"),"");
                     }
                     var diemDo = db.DiemDoes.Where(x => x.MaDiemDo == MaDiemDo).FirstOrDefault();
                     int id = diemDo.ID;
