@@ -101,7 +101,8 @@ namespace DuAn
                 return new HomeModel
                 {
                     sanLuongTrongNgay = dataTrongNgay,
-                    giaDien = giaTien
+                    giaDien = giaTien,
+                    date=date
                 };
             }
         }

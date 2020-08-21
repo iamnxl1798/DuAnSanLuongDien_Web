@@ -43,3 +43,15 @@ function showMessage(text, status) {
         toastr.error(text);
     }
 }
+
+function hideLoading() {
+    $("#loadingModal").removeClass("in");
+    $(".modal-backdrop").remove();
+    $('body').removeClass('modal-open');
+    $('body').css('padding-right', '');
+    $("#loadingModal").hide();
+}
+
+function showLoading() {
+    $('#loadingModal').modal('show');
+}

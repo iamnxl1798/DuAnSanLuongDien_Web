@@ -12,52 +12,68 @@
                 <table class="table table-bordered table-striped table-vertical-center">
                     <thead>
                         <tr class="text-center bg-secondary text-uppercase">
-                            <th style="">Chu kỳ</th>
-                            <th style="">Kwh giao</th>
-                            <th style="">Kwh nhận</th>
-                            <th style="">Kvarh giao</th>
-                            <th style="">Kvarh nhận</th>
+                            <th rowspan="2">Chu kỳ</th>
+                            <th colspan="2">
+                                Kênh giao
+                            </th>
+                            <th colspan="2">
+                                Kênh nhận
+                            </th>
+                        </tr>
+                        <tr class="text-center bg-secondary text-uppercase">
+                            <th>
+                                Hữu công
+                            </th>
+                            <th>
+                                Vô công
+                            </th>
+                            <th>
+                                Hữu công
+                            </th>
+                            <th>
+                                Vô công
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         @for (int i = 0; i < 48; i++)
                         {
                             var chuky = i + 1;
-                            <tr class="text-center">
-                                <td class="pl-0 py-8">
-                                    @chuky
-                                </td>
-                                <td class="pl-0 py-8 text-right">
-                                    <span class="">@Model.formatNumber(Model.kwhGiao[i])</span>
-                                </td>
-                                <td class="pl-0 py-8 text-right">
-                                    <span class="">@Model.formatNumber(Model.kwhNhan[i])</span>
-                                </td>
-                                <td class="pl-0 py-8 text-right">
-                                    <span class="">@Model.formatNumber(Model.kvarhGiao[i])</span>
-                                </td>
-                                <td class="pl-0 py-8 text-right">
-                                    <span class="">@Model.formatNumber(Model.kvarhNhan[i])</span>
-                                </td>
-                            </tr>
-                        }
-                        <tr class="" style="border-top:1px solid black">
-                            <td class="pl-0 py-8">
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-center">Tổng</span>
+                        <tr class="text-right">
+                            <td class="">
+                                @chuky
                             </td>
-                            <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhGiao)</span>
+                            <td class="">
+                                <span class="">@Model.formatNumber(Model.kwhGiao[i])</span>
                             </td>
-                            <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhNhan)</span>
+                            <td class="">
+                                <span class="">@Model.formatNumber(Model.kvarhGiao[i])</span>
                             </td>
-                            <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhGiao)</span>
+                            <td class="">
+                                <span class="">@Model.formatNumber(Model.kwhNhan[i])</span>
                             </td>
-                            <td>
-                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhNhan)</span>
+                            <td class="">
+                                <span class="">@Model.formatNumber(Model.kvarhNhan[i])</span>
                             </td>
                         </tr>
+                        }
+                    <tr class="" style="border-top:1px solid black">
+                        <td class="">
+                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-center">Tổng</span>
+                        </td>
+                        <td>
+                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhGiao)</span>
+                        </td>
+                        <td>
+                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhGiao)</span>
+                        </td>
+                        <td>
+                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhNhan)</span>
+                        </td>
+                        <td>
+                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhNhan)</span>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

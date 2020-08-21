@@ -5,7 +5,11 @@ function reloadPage(date, urlInput) {
         url: urlInput,
         data: { dateStr: date },
         dataType: 'html',
+        beforeSend: function () {
+            showLoading();
+        },
         success: function (data) {
+            hideLoading();
             $('#bodyHomePage').html('');
             $('#bodyHomePage').html(data);
 
