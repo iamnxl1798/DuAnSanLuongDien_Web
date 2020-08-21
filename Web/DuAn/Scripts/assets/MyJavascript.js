@@ -45,13 +45,11 @@ function showMessage(text, status) {
 }
 
 function hideLoading() {
-    $("#loadingModal").removeClass("in");
-    $(".modal-backdrop").remove();
-    $('body').removeClass('modal-open');
-    $('body').css('padding-right', '');
+    $(".modal-backdrop").remove();  
     $("#loadingModal").hide();
 }
 
 function showLoading() {
+    $('<div class="modal-backdrop" style="background-color: #CCCCCC;opacity: 0.7;"><div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document"><div class="spinner-border" role="status"></div></div></div>').appendTo(document.body);
     $('#loadingModal').modal('show');
 }
