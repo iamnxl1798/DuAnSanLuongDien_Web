@@ -27,14 +27,14 @@
                         if (item.TenDiemDo != tendiemdo)
                         {
                             tendiemdo = item.TenDiemDo;
-                            <td rowspan="4" class="text-center align-middle">@item.TenDiemDo</td>
+                            <td rowspan="4" class="text-left align-middle">@item.TenDiemDo</td>
                         }
                     }
-                    <td>@item.Kenh</td>
-                    <td>@item.GiaTriMax</td>
-                    <td>@item.ChuKyMax</td>
-                    <td>@item.GiaTriMin</td>
-                    <td>@item.ChuKyMin</td>
+                    <td class="text-left">@item.Kenh</td>
+                    <td class="text-right">@item.GiaTriMax</td>
+                    <td class="text-right">@item.ChuKyMax</td>
+                    <td class="text-right">@item.GiaTriMin</td>
+                    <td class="text-right">@item.ChuKyMin</td>
                 </tr>
             }
         </tbody>
