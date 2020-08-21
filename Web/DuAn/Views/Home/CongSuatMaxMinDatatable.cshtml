@@ -11,9 +11,9 @@
             <th class="text-center align-middle">Điểm đo</th>
             <th class="text-center align-middle">Kênh</th>
             <th class="text-center align-middle">Công suất MAX</th>
-            <th class="text-center align-middle">Chu ky công suất MAX</th>
+            <th class="text-center align-middle">Chu kỳ công suất MAX</th>
             <th class="text-center align-middle">Công suất MIN</th>
-            <th class="text-center align-middle">Chu ky công suất MIN</th>
+            <th class="text-center align-middle">Chu kỳ công suất MIN</th>
         </tr>
     </thead>
     @if (Model != null)
@@ -27,14 +27,14 @@
                         if (item.TenDiemDo != tendiemdo)
                         {
                             tendiemdo = item.TenDiemDo;
-                            <td rowspan="4" class="text-left align-middle">@item.TenDiemDo</td>
+                            <td rowspan="4" class="align-middle">@item.TenDiemDo</td>
                         }
                     }
-                    <td class="text-left">@item.Kenh</td>
-                    <td class="text-right">@item.GiaTriMax</td>
-                    <td class="text-right">@item.ChuKyMax</td>
-                    <td class="text-right">@item.GiaTriMin</td>
-                    <td class="text-right">@item.ChuKyMin</td>
+                    <td>@item.Kenh</td>
+                    <td class="text-right">@item.GiaTriMax.ToString("### ### ### ##0.000")</td>
+                    <td class="text-right">@item.ChuKyMax.ToString("### ### ### ##0.###")</td>
+                    <td class="text-right">@item.GiaTriMin.ToString("### ### ### ##0.000")</td>
+                    <td class="text-right">@item.ChuKyMin.ToString("### ### ### ##0.###")</td>
                 </tr>
             }
         </tbody>
