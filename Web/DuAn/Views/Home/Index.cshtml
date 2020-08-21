@@ -44,7 +44,11 @@
             cache: false,
             url: url,
             data: {},
+            beforeSend: function () {
+                showLoading();
+            },
             success: function (data) {
+                hideLoading();
                 $('#modalThongSo').html(data);
                 $('#modalThongSo').modal('show');
             },
@@ -57,8 +61,12 @@
         $.ajax({
             cache: false,
             url: '/Home/CongSuatMaxMinPartialView',
-            type:'get',
+            type: 'get',
+            beforeSend: function () {
+                showLoading();
+            },
             success: function (data) {
+                hideLoading();
                 $('#modalCongSuatMaxMin').html(data);
                 $('#modalCongSuatMaxMin').modal('show');
             },

@@ -500,22 +500,22 @@
     $('#doanhThuNamBtn').click(function () {
         var url = "@Url.Action("getDoanhThuNam", "Home")";
         var date = "@Model.date.ToString("dd/MM/yyyy")";
+        showLoading();
         $.ajax({
             cache: false,
             url: url,
             data: { date: date },
-            beforeSend: function () {
-                showLoading();
-            },
             success: function (data) {
-                hideLoading();
-                if (data == null||data=="") {
+                if (data == null || data == "") {
+                    hideLoading();
                     showMessage("Không có dữ liệu", false);
                 }
                 else {
+                    hideLoading();
                     $('#exampleModalCenter').html(data);
                     $('#exampleModalCenter').modal('show');
                 }
+
             },
             error: function (xhr, ajaxOptions, thrownError) {
             }
