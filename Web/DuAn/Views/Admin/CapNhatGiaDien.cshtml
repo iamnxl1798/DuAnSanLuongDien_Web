@@ -56,7 +56,8 @@
         updateCalendar(null, 'thoiGianKetThuc');
     });
     function updateCalendar(date, id) {
-        $('#'+id).datepicker({
+        $('#' + id).datepicker({
+            autoclose: true,
             startDate: date,
             clearBtn: true,
             format: "dd/mm/yyyy"
