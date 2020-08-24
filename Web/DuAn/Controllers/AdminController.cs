@@ -56,9 +56,9 @@ namespace DuAn.Controllers
         }
 
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
-        public ActionResult viewMissingDataList(string fileName = "")
+        public ActionResult viewMissingDataList(string fileName = "",string startDate="",string endDate="")
         {
-            var data = DBContext.getMissingData(fileName);
+            var data = DBContext.getMissingData(startDate, endDate,fileName);
             return PartialView(data.ToList());
         }
 
@@ -146,7 +146,7 @@ namespace DuAn.Controllers
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
         public ActionResult MissingDataPartial()
         {
-            var result = DBContext.getMissingData();
+            var result = DBContext.getMissingData("","");
             return PartialView(result);
         }
 
