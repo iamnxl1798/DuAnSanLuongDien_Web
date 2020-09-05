@@ -56,7 +56,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <div id="kt_header_mobile" class="header-mobile">
         <!--begin::Logo-->
         <a href="@Url.Action("Index", "Home")">
-            <img alt="Logo" src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/510/3428313510_05741c19-d2a9-4744-b15a-7c8f38d4d35b.png?cb=1596096156" class="logo-default max-h-30px" />
+            <img alt="Logo" src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/510/3428313510_05741c19-d2a9-4744-b15a-7c8f38d4d35b.png?cb=1596096156" class="logo-default logo_congty_layout max-h-30px" />
         </a>
         <!--end::Logo-->
         <!--begin::Toolbar-->
@@ -95,7 +95,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             <!--begin::Header Logo-->
                             <div class="header-logo">
                                 <a href="@Url.Action("Index", "Home")">
-                                    <img alt="Logo" src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/510/3428313510_05741c19-d2a9-4744-b15a-7c8f38d4d35b.png?cb=1596096156" class="logo-default max-h-60px" />
+                                    <img alt="Logo" src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/510/3428313510_05741c19-d2a9-4744-b15a-7c8f38d4d35b.png?cb=1596096156" class="logo-default logo_congty_layout max-h-60px" />
                                     @*<img alt="Logo" src="/Scripts/assets/media/logos/logo-letter-1.png" class="logo-sticky max-h-40px" />*@
                                 </a>
                             </div>
@@ -351,7 +351,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <!--begin::Demo Panel-->
     <!--end::Demo Panel-->
     <div class="modal fade" id="loadingModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        
+
     </div>
     <script>var HOST_URL = "https://keenthemes.com/metronic/tools/preview";</script>
     <!--begin::Global Config(global config for global JS scripts)-->
@@ -421,10 +421,24 @@ License: You must have a valid license purchased only from themeforest(the above
                 error: function (jqXHR, textStatus, errorThrown) {
                     showMessage("Lỗi thay đổi mật khẩu", false)
                 }
+        });
+
+        $.ajax({
+                url: "@Url.Action("getLogoCongTy", "Admin")",
+                type: 'GET',
+                success: function (data) {
+                    var x = document.getElementsByClassName("logo_congty_layout");
+                    for (var i = 0; i < x.length; i++) {
+                        x[i].src = '../images/avatarAccount/'+data;
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    showMessage("Lỗi lấy thông tin logo công ty", false)
+                }
             });
     </script>
 
-
+    @RenderSection("scripts", false)
     <!--end::Page Scripts-->
 </body>
 <!--end::Body-->

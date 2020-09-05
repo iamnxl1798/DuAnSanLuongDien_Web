@@ -53,7 +53,7 @@ namespace DuAn
                     }
                     db.Configuration.LazyLoadingEnabled = false;
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
-                    var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay <= date).OrderByDescending(x=>x.Ngay).Take(1).Select(x => x.GiaTriThang).FirstOrDefault();
+                    var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay <= date).OrderByDescending(x => x.Ngay).Take(1).Select(x => x.GiaTriThang).FirstOrDefault();
                     var thucTeNam = db.TongSanLuong_ThangNam.Where(x => x.Ngay <= date).OrderByDescending(x => x.Ngay).Take(1).Select(x => x.GiaTriNam).FirstOrDefault();
                     var missingData = getMissingCount(date);
                     var missingDataCount = new List<NumberOfMissingData>();
@@ -80,8 +80,8 @@ namespace DuAn
                         date = date,
                         countMissingData = missingDataCount,
                         giaDien = giaTien,
-                        doanhThuThang=getDoanhThuThang(date).Sum(x=>x.doanhThu),
-                        doanhThuNam=getDoanhThuNam(date).Sum(x=>x.doanhThu)
+                        doanhThuThang = getDoanhThuThang(date).Sum(x => x.doanhThu),
+                        doanhThuNam = getDoanhThuNam(date).Sum(x => x.doanhThu)
 
                     };
                     return await Task.FromResult(result);
@@ -102,7 +102,7 @@ namespace DuAn
                 {
                     sanLuongTrongNgay = dataTrongNgay,
                     giaDien = giaTien,
-                    date=date
+                    date = date
                 };
             }
         }
@@ -185,7 +185,7 @@ namespace DuAn
                     result.RemoveAll(x => x.value == 0 || x.value == 0 || x.giaTien == 0);
                     return result;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return null;
                 }
@@ -265,15 +265,15 @@ namespace DuAn
                                 date = dateFor,
                                 giaTien = gia,
                                 value = value,
-                                doanhThu=gia*value
+                                doanhThu = gia * value
                             });
                         }
                         result.Add(new TongSanLuongTheoThoiGian
                         {
                             date = month,
-                            giaTien=list.Where(x=>x.giaTien!=0&&x.date>=dateStart&&x.date<dateEnd).Select(x=>x.giaTien).FirstOrDefault(),
+                            giaTien = list.Where(x => x.giaTien != 0 && x.date >= dateStart && x.date < dateEnd).Select(x => x.giaTien).FirstOrDefault(),
                             value = list.Sum(x => x.value),
-                            doanhThu=list.Sum(x=>x.doanhThu)
+                            doanhThu = list.Sum(x => x.doanhThu)
                         });
                     }
                     result.RemoveAll(x => x.doanhThu == 0);
@@ -360,9 +360,9 @@ namespace DuAn
                 if (db.CongThucTongSanLuongs.Count() != 0)
                 {
                     var dateNow = DateTime.Now;
-                    var startTimeExceed = db.CongThucTongSanLuongs.Where(x => x.ThoiGianBatDau>= dateNow).ToList();
+                    var startTimeExceed = db.CongThucTongSanLuongs.Where(x => x.ThoiGianBatDau >= dateNow).ToList();
                     var endTimeExceed = db.CongThucTongSanLuongs.Where(x => x.ThoiGianKetThuc >= dateNow).ToList();
-                    foreach(CongThucTongSanLuong date in startTimeExceed)
+                    foreach (CongThucTongSanLuong date in startTimeExceed)
                     {
                         date.ThoiGianBatDau = DateTime.Now.AddDays(-1);
                     }
@@ -398,7 +398,7 @@ namespace DuAn
                     db.SaveChanges();
                     return "";
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return "Error";
                 }
@@ -424,7 +424,7 @@ namespace DuAn
                             {
                                 string fileName = date.Day.ToString("00") + date.Month.ToString("00") + (date.Year % 10).ToString() + item.MaDiemDo.ToString() + ".CSV";
                                 //var pathString = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory.ToString()).Parent.Parent.FullName + "\\DocDuLieuCongTo\\TestTheoDoi\\" + fileName;
-                                var pathString = @"C:\SLCTO\ESMR\"+fileName;
+                                var pathString = @"C:\SLCTO\ESMR\" + fileName;
                                 if (File.Exists(pathString))
                                 {
                                     data.Add(new MissingDataStatus()
@@ -509,7 +509,7 @@ namespace DuAn
                     if (date < startDay || date > endDay)
                     {
                         data.Clear();
-                        return getMissingData(date.ToString("dd/MM/yyyy"),"");
+                        return getMissingData(date.ToString("dd/MM/yyyy"), "");
                     }
                     var diemDo = db.DiemDoes.Where(x => x.MaDiemDo == MaDiemDo).FirstOrDefault();
                     int id = diemDo.ID;
@@ -1038,6 +1038,39 @@ namespace DuAn
                 list = db.DiemDoes.ToList();
             }
             return list;
+        }
+    }
+
+    public static class CongTyDAO
+    {
+        public static CongTy getCongTyById(int id)
+        {
+            CongTy ct = new CongTy();
+            using (var db = new Model1())
+            {
+                ct = db.CongTies.SingleOrDefault(x => x.ID == id);
+                if (ct == null)
+                {
+                    return null;
+                }
+                return ct;
+            }
+        }
+        public static string updateCongTyInformation(CongTy ct)
+        {
+            using (var db = new Model1())
+            {
+                var rs = db.CongTies.SingleOrDefault(x => x.ID == ct.ID);
+                if (rs == null)
+                {
+                    return "Không tìm thấy thông tin công ty";
+                }
+                rs.Logo = ct.Logo;
+                rs.TenVietTat = ct.TenVietTat;
+                rs.TenCongTy = ct.TenCongTy;
+                db.SaveChanges();
+                return "success";
+            }
         }
     }
 

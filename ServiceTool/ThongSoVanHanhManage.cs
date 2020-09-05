@@ -34,7 +34,7 @@ namespace ServiceTool
         public void OnChangedTSVH(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            ShowNotificationMessage(500, "Changed", $"{e.Name}", ToolTipIcon.None);
+            //ShowNotificationMessage(500, "Changed", $"{e.Name}", ToolTipIcon.None);
 
         }
 
@@ -42,13 +42,13 @@ namespace ServiceTool
         {
             // Specify what is done when a file is renamed.
             //Console.WriteLine($"File: {e.OldFullPath} renamed to {e.FullPath}");
-            ShowNotificationMessage(50, "Renamed", $"{ e.OldName} renamed to { e.Name}", ToolTipIcon.None);
+            //ShowNotificationMessage(50, "Renamed", $"{ e.OldName} renamed to { e.Name}", ToolTipIcon.None);
         }
 
         public void OnDeletedTSVH(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            ShowNotificationMessage(500, "Delete", $"{e.Name}", ToolTipIcon.None);
+            //ShowNotificationMessage(500, "Delete", $"{e.Name}", ToolTipIcon.None);
         }
 
         public void OnCreatedTSVH(object source, FileSystemEventArgs e)
@@ -68,7 +68,7 @@ namespace ServiceTool
                     // check Serial Cong To
                     if (!CongToDAO.CheckSerialCongTo(serial))
                     {
-                        ShowNotificationMessage(50, "Error", "Công to serial không tồn tại", ToolTipIcon.Error);
+                        //ShowNotificationMessage(50, "Error", "Công to serial không tồn tại", ToolTipIcon.Error);
                         reader.Close();
                         return;
                     }
@@ -84,7 +84,7 @@ namespace ServiceTool
                     var rs_Dt = DateTime.TryParseExact(dt_Str, "M/dd/yyyy HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt );
                     if (!rs_Dt)
                     {
-                        ShowNotificationMessage(50, "Error", "Định dạng thời gian không đúng", ToolTipIcon.Error);
+                        //ShowNotificationMessage(50, "Error", "Định dạng thời gian không đúng", ToolTipIcon.Error);
                         reader.Close();
                         return;
                     }
@@ -133,26 +133,26 @@ namespace ServiceTool
 
                         if (!rs.Equals("success"))
                         {
-                            ShowNotificationMessage(50, "Error", rs, ToolTipIcon.Error);
+                            //ShowNotificationMessage(50, "Error", rs, ToolTipIcon.Error);
                             reader.Close();
                             return;
                         }
                     }
 
-                    ShowNotificationMessage(50, "Success", "Reading file 'Thông số vận hành' finished!!!!", ToolTipIcon.Info);
+                    //ShowNotificationMessage(50, "Success", "Reading file 'Thông số vận hành' finished!!!!", ToolTipIcon.Info);
                     reader.Close();
                     break;
                 }
                 catch (IOException)
                 {
                     //Console.WriteLine("Wait to access file !!!");
-                    ShowNotificationMessage(50, "Error", "Wait to access file !!!", ToolTipIcon.Error);
+                    //ShowNotificationMessage(50, "Error", "Wait to access file !!!", ToolTipIcon.Error);
                     Thread.Sleep(100);
                 }
                 catch (Exception ex)
                 {
                     //Console.WriteLine(ex.Message);
-                    ShowNotificationMessage(50, "Error", ex.Message, ToolTipIcon.Error);
+                    //ShowNotificationMessage(50, "Error", ex.Message, ToolTipIcon.Error);
                     break;
                 }
                 finally
@@ -167,11 +167,11 @@ namespace ServiceTool
                         string destFile = System.IO.Path.Combine(targetPath, fileName);
                         //Copy file từ file nguồn đến file đích
                         System.IO.File.Copy(sourceFile, destFile, true);
-                        ShowNotificationMessage(50, "Di chuyển file !!!", "Thành công", ToolTipIcon.None);
+                        //ShowNotificationMessage(50, "Di chuyển file !!!", "Thành công", ToolTipIcon.None);
                     }
                     catch (Exception ex)
                     {
-                        ShowNotificationMessage(50, "Error !!!", ex.Message, ToolTipIcon.Error);
+                        //ShowNotificationMessage(50, "Error !!!", ex.Message, ToolTipIcon.Error);
                     }
                 }
 

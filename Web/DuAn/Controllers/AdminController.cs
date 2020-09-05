@@ -1,6 +1,7 @@
 ﻿using DuAn.Attribute;
 using DuAn.COMMON;
 using DuAn.Models.CustomModel;
+using DuAn.Models.DbModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,6 +17,11 @@ namespace DuAn.Controllers
     [CheckTotalRole(RoleID = new int[2] { RoleContext.Expertise, RoleContext.Administration })]
     public class AdminController : Controller
     {
+        public ActionResult getLogoCongTy()
+        {
+            string logo = CongTyDAO.getCongTyById(1).Logo;
+            return Json(logo);
+        }
         // GET: Admin
         /*public ActionResult Index()
         {
@@ -50,9 +56,12 @@ namespace DuAn.Controllers
         {
             return View();
         }
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_ChangeConfig })]
         public ActionResult QuanTriCauHinh()
         {
-            return View();
+            //id cong ty default
+            CongTy ct = CongTyDAO.getCongTyById(1);
+            return View(ct);
         }
 
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
@@ -155,6 +164,42 @@ namespace DuAn.Controllers
         {
             var result = DBContext.getDataAdminModel();
             return PartialView(result);
+        }
+
+        [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_ChangeConfig })]
+        [HttpPost]
+        public ActionResult ChangeCauHinhWeb(HttpPostedFileBase cauhinh_logo, string ten_congty, int id, string ten_viet_tat)
+        {
+            try
+            {
+                if (cauhinh_logo != null)
+                {
+                    string fileName = System.IO.Path.GetFileName(cauhinh_logo.FileName);
+                    string path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/logoFactory"), fileName);
+                    // file is uploaded
+                    cauhinh_logo.SaveAs(path_avatar);
+                }
+
+                CongTy ct = CongTyDAO.getCongTyById(id);
+                if(ct == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy thông tin công ty"});
+                }
+                ct.Logo = cauhinh_logo.FileName;
+                ct.TenCongTy = ten_congty;
+                ct.TenVietTat = ten_viet_tat;
+
+                var rs = CongTyDAO.updateCongTyInformation(ct);
+                if(rs != "success")
+                {
+                    return Json(new { success = false, message = rs });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Không thể truy cập cơ sở dữ liệu" });
+            }
+            return Json(new { success = true, message = string.Empty }); ;
         }
     }
 }

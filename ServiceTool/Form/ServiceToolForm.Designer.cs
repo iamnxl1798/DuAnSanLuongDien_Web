@@ -73,7 +73,7 @@
             this.btConfig.Name = "btConfig";
             this.btConfig.Size = new System.Drawing.Size(153, 62);
             this.btConfig.TabIndex = 2;
-            this.btConfig.Text = "Cấu Hình";
+            this.btConfig.Text = "Cấu hình";
             this.btConfig.UseVisualStyleBackColor = true;
             this.btConfig.Click += new System.EventHandler(this.BtCauHinh_Click);
             // 
@@ -148,6 +148,7 @@
             this.Name = "ServiceToolForm";
             this.Text = "Giám Sát Dữ Liệu";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServiceToolForm_FormClosing);
+            this.Load += new System.EventHandler(this.ServiceToolForm_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 

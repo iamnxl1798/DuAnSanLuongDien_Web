@@ -33,7 +33,7 @@ namespace ServiceTool
         public void OnChangedCSC(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            ShowNotificationMessage(500, "Changed", $"{e.Name}", ToolTipIcon.None);
+            //ShowNotificationMessage(500, "Changed", $"{e.Name}", ToolTipIcon.None);
 
         }
 
@@ -41,13 +41,13 @@ namespace ServiceTool
         {
             // Specify what is done when a file is renamed.
             //Console.WriteLine($"File: {e.OldFullPath} renamed to {e.FullPath}");
-            ShowNotificationMessage(50, "Renamed", $"{ e.OldName} renamed to { e.Name}", ToolTipIcon.None);
+            //ShowNotificationMessage(50, "Renamed", $"{ e.OldName} renamed to { e.Name}", ToolTipIcon.None);
         }
 
         public void OnDeleteCSC(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            ShowNotificationMessage(500, "Delete", $"{e.Name}", ToolTipIcon.None);
+            //ShowNotificationMessage(500, "Delete", $"{e.Name}", ToolTipIcon.None);
         }
 
         public void OnCreatedCSC(object source, FileSystemEventArgs e)
@@ -67,7 +67,7 @@ namespace ServiceTool
                     // check Serial Cong To
                     if (!CongToDAO.CheckSerialCongTo(serial))
                     {
-                        ShowNotificationMessage(50, "Error", "Công to serial không tồn tại", ToolTipIcon.Error);
+                        //ShowNotificationMessage(50, "Error", "Công to serial không tồn tại", ToolTipIcon.Error);
                         reader.Close();
                         return;
                     }
@@ -109,27 +109,27 @@ namespace ServiceTool
                             var rs = ChiSoChotDAO.Create(csc);
                             if ( !rs.Equals("success"))
                             {
-                                ShowNotificationMessage(50, "Error", rs, ToolTipIcon.Info);
+                                //ShowNotificationMessage(50, "Error", rs, ToolTipIcon.Info);
                                 reader.Close();
                                 return;
                             }
                         }
                     }
 
-                    ShowNotificationMessage(50, "Success", "Reading file 'Chỉ Số Chốt' finished!!!!", ToolTipIcon.Info);
+                    //ShowNotificationMessage(50, "Success", "Reading file 'Chỉ Số Chốt' finished!!!!", ToolTipIcon.Info);
                     reader.Close();
                     break;
                 }
                 catch (IOException)
                 {
                     //Console.WriteLine("Wait to access file !!!");
-                    ShowNotificationMessage(50, "Error", "Wait to access file !!!", ToolTipIcon.Error);
+                    //ShowNotificationMessage(50, "Error", "Wait to access file !!!", ToolTipIcon.Error);
                     Thread.Sleep(100);
                 }
                 catch (Exception ex)
                 {
                     //Console.WriteLine(ex.Message);
-                    ShowNotificationMessage(50, "Error", ex.Message, ToolTipIcon.Error);
+                    //ShowNotificationMessage(50, "Error", ex.Message, ToolTipIcon.Error);
                     break;
                 }
                 finally
@@ -144,11 +144,11 @@ namespace ServiceTool
                         string destFile = System.IO.Path.Combine(targetPath, fileName);
                         //Copy file từ file nguồn đến file đích
                         System.IO.File.Copy(sourceFile, destFile, true);
-                        ShowNotificationMessage(50, "Di chuyển file !!!", "Thành công", ToolTipIcon.None);
+                        //ShowNotificationMessage(50, "Di chuyển file !!!", "Thành công", ToolTipIcon.None);
                     }
                     catch (Exception ex)
                     {
-                        ShowNotificationMessage(50, "Error !!!", ex.Message, ToolTipIcon.Error);
+                        //ShowNotificationMessage(50, "Error !!!", ex.Message, ToolTipIcon.Error);
                     }
                 }
 

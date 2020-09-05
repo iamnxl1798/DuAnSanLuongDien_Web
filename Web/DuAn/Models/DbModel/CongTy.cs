@@ -22,6 +22,8 @@ namespace DuAn.Models.DbModel
         [StringLength(50)]
         public string TenCongTy { get; set; }
 
+        public string Logo { get; set; }
+
         [Required]
         [StringLength(10)]
         public string TenVietTat { get; set; }

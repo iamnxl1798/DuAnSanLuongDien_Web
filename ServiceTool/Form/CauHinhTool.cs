@@ -16,26 +16,41 @@ namespace ServiceTool
         ConfigClass conf;
         public CauHinhTool(ConfigClass cf) : base()
         {
-            this.conf = cf;
+            if (cf == null)
+            {
+                this.conf = new ConfigClass();
+            }
+            else
+            {
+                this.conf = cf;
+            }
             InitializeComponent();
-            txtQuet.Text = conf.ThuMucQuet;
-            txtChuyen.Text = conf.ThuMucChuyen;
-            ckAuto.Checked = conf.AutoRun;
-        }
 
+        }
+        public ConfigClass updateConfigClass()
+        {
+            return conf;
+        }
         private void BtRun_Click(object sender, EventArgs e)
         {
-            conf.AutoRun = ckAuto.Checked;
-            conf.ThuMucChuyen = txtChuyen.Text;
-            conf.ThuMucQuet = txtQuet.Text;
-            ConfigClass.SetConfig(conf);
-            this.Close();
+            try
+            {
+                conf.AutoRun = ckAuto.Checked;
+                conf.ThuMucChuyen = txtChuyen.Text;
+                conf.ThuMucQuet = txtQuet.Text;
+                ConfigClass.SetConfig(conf);
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btBrowserQuet_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog op = new FolderBrowserDialog();
-            op.Description = "Chọn thư mục để quét !!!";
+            op.Description = "Chọn thư mục theo dõi !!!";
 
             // Do not allow the user to create new files via the FolderBrowserDialog.
             op.ShowNewFolderButton = false;
@@ -52,7 +67,7 @@ namespace ServiceTool
         private void btBrowserChuyen_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog op = new FolderBrowserDialog();
-            op.Description = "Chọn thư mục để chuyển !!!";
+            op.Description = "Chọn thư mục chuyển đến!!!";
 
             // Do not allow the user to create new files via the FolderBrowserDialog.
             op.ShowNewFolderButton = false;
@@ -63,6 +78,20 @@ namespace ServiceTool
                 //Get the path of specified file
                 txtChuyen.Text = op.SelectedPath;
 
+            }
+        }
+
+        private void CauHinhTool_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                txtQuet.Text = conf.ThuMucQuet;
+                txtChuyen.Text = conf.ThuMucChuyen;
+                ckAuto.Checked = conf.AutoRun;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

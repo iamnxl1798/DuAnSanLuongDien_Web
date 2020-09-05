@@ -24,18 +24,15 @@ namespace ServiceTool
         static FileSystemWatcher fileWatcher;
         public ServiceToolForm()
         {
-            conf = ConfigClass.GetConfig();
             InitializeComponent();
-            if (conf.AutoRun)
-            {
-                ServiceRun();
-            }
         }
 
         private void BtCauHinh_Click(object sender, EventArgs e)
         {
             CauHinhTool cht = new CauHinhTool(conf);
             cht.ShowDialog();
+
+            conf = cht.updateConfigClass();
         }
         bool CheckExit = false;
         private void BtCancel_Click(object sender, EventArgs e)
@@ -83,11 +80,6 @@ namespace ServiceTool
         {
             try
             {
-                btRun.Enabled = false;
-                btStop.Enabled = true;
-                contextMenuStrip1.Items[1].Visible = true;
-                contextMenuStrip1.Items[2].Visible = false;
-
                 // Declares the FileSystemWatcher object San Luong
                 fileWatcher = new FileSystemWatcher
                 {
@@ -112,6 +104,13 @@ namespace ServiceTool
                 slm = new SanLuongManage(notifyIcon, conf);
                 cscm = new ChiSoChotManage(notifyIcon, conf);
                 tsvhm = new ThongSoVanHanhManage(notifyIcon, conf);
+
+                btRun.Enabled = false;
+                btStop.Enabled = true;
+                contextMenuStrip1.Items[1].Visible = true;
+                contextMenuStrip1.Items[2].Visible = false;
+                btConfig.Enabled = false;
+                btCancel.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -242,6 +241,8 @@ namespace ServiceTool
             contextMenuStrip1.Items[1].Visible = false;
             contextMenuStrip1.Items[2].Visible = true;
             notifyIcon.ShowBalloonTip(100, "Giam Sat Thu Muc", "Is Stopped !!!! ", ToolTipIcon.Warning);
+            btConfig.Enabled = true;
+            btCancel.Enabled = true;
         }
 
         private void btStop_Click(object sender, EventArgs e)
@@ -292,6 +293,22 @@ namespace ServiceTool
                 }
             }*/
             return "File không đúng định dạng";
+        }
+
+        private void ServiceToolForm_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                conf = ConfigClass.GetConfig();
+                if (conf.AutoRun)
+                {
+                    ServiceRun();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

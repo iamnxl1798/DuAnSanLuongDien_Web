@@ -24,7 +24,8 @@ namespace DuAn.Controllers
         // GET: Account
         public ActionResult Login()
         {
-            return View();  
+            CongTy ct = CongTyDAO.getCongTyById(1);
+            return View(ct);  
         }
         [AllowAnonymous]
         public JsonResult CheckLogin(string username, string password)

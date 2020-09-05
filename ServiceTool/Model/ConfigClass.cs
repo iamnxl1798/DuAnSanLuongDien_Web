@@ -27,12 +27,12 @@ namespace ServiceTool.Model
         static public ConfigClass GetConfig()
         {
             ConfigClass conf;
-            StreamReader reader = new StreamReader(@"..\..\Config.json");
+            StreamReader reader = new StreamReader(Environment.CurrentDirectory + "\\Config.json");
             String str = reader.ReadToEnd();
             reader.Close();
             if (str == "" || str == null)
             {
-                conf = new ConfigClass(@"D:\E-Solution\WebGiamSatSanLuongDien\DocDuLieuCongTo\TestTheoDoi", @"D:\E-Solution\WebGiamSatSanLuongDien\DocDuLieuCongTo\TestChuyen", true);
+                conf = new ConfigClass(@"C:\SLCTO\ESMETERING", @"C:\SLCTO\ESMR", true);
                 SetConfig(conf);
             }
             else
@@ -45,7 +45,7 @@ namespace ServiceTool.Model
 
         static public void SetConfig(ConfigClass conf)
         {
-            StreamWriter writer = new StreamWriter(@"..\..\Config.json");
+            StreamWriter writer = new StreamWriter(Environment.CurrentDirectory + "\\Config.json");
             writer.WriteLine(JsonConvert.SerializeObject(conf));
             writer.Close();
         }

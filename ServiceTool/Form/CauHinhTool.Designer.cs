@@ -42,7 +42,6 @@
             // 
             this.txtQuet.Location = new System.Drawing.Point(14, 64);
             this.txtQuet.Name = "txtQuet";
-            this.txtQuet.ReadOnly = true;
             this.txtQuet.Size = new System.Drawing.Size(431, 22);
             this.txtQuet.TabIndex = 5;
             // 
@@ -50,7 +49,6 @@
             // 
             this.txtChuyen.Location = new System.Drawing.Point(14, 132);
             this.txtChuyen.Name = "txtChuyen";
-            this.txtChuyen.ReadOnly = true;
             this.txtChuyen.Size = new System.Drawing.Size(431, 22);
             this.txtChuyen.TabIndex = 5;
             // 
@@ -70,7 +68,7 @@
             this.btSubmit.Name = "btSubmit";
             this.btSubmit.Size = new System.Drawing.Size(87, 25);
             this.btSubmit.TabIndex = 4;
-            this.btSubmit.Text = "Submit";
+            this.btSubmit.Text = "Lưu";
             this.btSubmit.UseVisualStyleBackColor = true;
             this.btSubmit.Click += new System.EventHandler(this.BtRun_Click);
             // 
@@ -80,7 +78,7 @@
             this.btBrowserChuyen.Name = "btBrowserChuyen";
             this.btBrowserChuyen.Size = new System.Drawing.Size(87, 25);
             this.btBrowserChuyen.TabIndex = 2;
-            this.btBrowserChuyen.Text = "Browser";
+            this.btBrowserChuyen.Text = "Chọn";
             this.btBrowserChuyen.UseVisualStyleBackColor = true;
             this.btBrowserChuyen.Click += new System.EventHandler(this.btBrowserChuyen_Click);
             // 
@@ -90,7 +88,7 @@
             this.btBrowserQuet.Name = "btBrowserQuet";
             this.btBrowserQuet.Size = new System.Drawing.Size(87, 25);
             this.btBrowserQuet.TabIndex = 1;
-            this.btBrowserQuet.Text = "Browser";
+            this.btBrowserQuet.Text = "Chọn";
             this.btBrowserQuet.UseVisualStyleBackColor = true;
             this.btBrowserQuet.Click += new System.EventHandler(this.btBrowserQuet_Click);
             // 
@@ -130,6 +128,7 @@
             this.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "CauHinhTool";
             this.Text = "Cấu Hình";
+            this.Load += new System.EventHandler(this.CauHinhTool_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

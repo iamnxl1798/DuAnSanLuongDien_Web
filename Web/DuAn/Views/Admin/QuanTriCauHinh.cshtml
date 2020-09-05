@@ -1,4 +1,5 @@
-﻿
+﻿@model DuAn.Models.DbModel.CongTy
+
 @{
     ViewBag.Title = "QuanTriCauHinh";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,3 +10,105 @@
         capNhatPageDirectory('Quản trị Cấu hình', listDirect);
     });
 </script>
+<div class="row ml-1 col-12" style="justify-content: center;">
+    <div class="col-lg-6">
+        <div class="card card-custom">
+            <!--begin::Header-->
+            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        Quản trị cấu hình
+                        <span class="d-block text-muted pt-2 font-size-sm">Sửa đổi tên, logo công ty</span>
+                    </h3>
+                </div>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <form class="form">
+                <div class="card-body">
+                    <input type="hidden" name="id" value="@Model.ID" />
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label text-left">Logo:</label>
+                        <div class="col-lg-9 col-xl-9">
+                            <div class="image-input image-input-outline" id="kt_user_cauhinh_logo">
+                                <div class="image-input-wrapper" style="background-color:#464E5F;background-image: url(../images/logoFactory/@Model.Logo)"></div>
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Thay đổi">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input type="file" id="cauhinh_logo" name="cauhinh_logo" accept=".png, .jpg, .jpeg" />
+                                    <input type="hidden" name="logo_remove" />
+                                </label>
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Hủy bỏ">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                            <span class="form-text text-muted">Định dạng phù hợp: png, jpg, jpeg.</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Tên công ty :</label>
+                        <div class="col-lg-9 col-xl-9">
+                            <input type="text" class="form-control form-control-solid" placeholder="Nhập tên công ty" name="ten_viet_tat" id="ten_congty" value="@Model.TenCongTy" />
+                            <span class="form-text text-muted">Tên đầy đủ</span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-xl-3 col-lg-3 col-form-label">Tên viết tắt :</label>
+                        <div class="col-lg-9 col-xl-9">
+                            <input type="text" class="form-control form-control-solid" placeholder="Nhập tên ngắn gọn" name="ten_viet_tat" id="ten_viet_tat" value="@Model.TenVietTat" />
+                            <span class="form-text text-muted">Tên ngắn gọn</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary font-weight-bold" id="submit_cauhinh">Lưu thay đổi</button>
+            </form>
+            <!--end::Body-->
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var _avatar = new KTImageInput('kt_user_cauhinh_logo');
+        document.ready(function () {
+            $('#submit_cauhinh').on('click', function () {
+
+                var cauhinh_logo = document.getElementById('cauhinh_logo');
+                var formData = new FormData();
+
+                formData.append('cauhinh_logo', cauhinh_logo.files[0]);
+
+                var id = document.getElementById('id').value;
+                formData.append('id', id);
+
+                var ten_congty = document.getElementById('ten_congty').value;
+                formData.append('ten_congty', ten_congty);
+
+                var ten_viet_tat = document.getElementById('ten_viet_tat').value;
+                formData.append('ten_viet_tat', ten_viet_tat);
+               
+                $.ajax({
+                    url: '/Admin/ChangeCauHinhWeb',
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (data) {
+                        if (data != "success") {
+                            showMessage(data, false);
+                        } else {
+                            reloadAccountDatatable();
+                            showMessage('Thành công !!!', true);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        if (jqXHR.status == 401) {
+                            showMessage('Bạn không có quyền này', false);
+                        } else {
+                            showMessage(jqXHR.responseText, false);
+                        }
+                    }
+                });
+            });
+        })
+    </script>
+}
