@@ -198,7 +198,7 @@ namespace DocDuLieuCongTo.Model
                     {
                         if (divided[i].Length > 1) // divice la phan tu 
                         {
-                            string[] temp = divided[i].Split('~');
+                            string[] temp = divided[i].Split('@');
                             if (temp.Length > 1)
                             {
                                 var tenDiemDo = temp[0];
@@ -252,7 +252,7 @@ namespace DocDuLieuCongTo.Model
                         {
                             if (divided[i].Length > 1)
                             {
-                                string[] temp = divided[i].Split('~');
+                                string[] temp = divided[i].Split('@');
                                 if (temp.Length > 1)
                                 {
                                     var temDiemDo = temp[0];
@@ -277,7 +277,7 @@ namespace DocDuLieuCongTo.Model
                             }
                         }
                         var tongSanLuongNgay = new List<TongSanLuong_Ngay>();
-                        DateTime ngayTinh = new DateTime(2020, 7, 1);
+                        DateTime ngayTinh = dt;
                         for (int i = 1; i <= 48; i++)
                         {
                             var listTemp = db.SanLuongs.Where(x => x.ChuKy == i && x.Ngay == ngayTinh).ToList();
@@ -366,7 +366,7 @@ namespace DocDuLieuCongTo.Model
                                     stack.Push((decimal)Math.Sqrt((double)stack.Pop()));
                                     break;
                                 }
-                            case "*":
+                            case "x":
                                 {
                                     stack.Push(stack.Pop() * stack.Pop());
                                     break;
@@ -409,59 +409,70 @@ namespace DocDuLieuCongTo.Model
             }
             static String toRPN(String input)
             {
-                Stack<string> stack = new Stack<string>();
-                StringBuilder formula = new StringBuilder();
-                String[] arr = input.Split(' ');
-                for (int i = 0; i < arr.Length; i++)
+                try
                 {
-                    string x = arr[i];
-                    double num = 0;
-                    if (x == "(")
-                        stack.Push(x);
-                    else if (x == ")")
+
+
+                    Stack<string> stack = new Stack<string>();
+                    StringBuilder formula = new StringBuilder();
+                    String[] arr = input.Split(' ');
+                    for (int i = 0; i < arr.Length; i++)
                     {
-                        while (stack.Count > 0 && stack.Peek() != "(")
+                        string x = arr[i];
+                        double num = 0;
+                        if (x == "(")
+                            stack.Push(x);
+                        else if (x == ")")
                         {
-                            formula.Append(stack.Pop());
+                            while (stack.Count > 0 && stack.Peek() != "(")
+                            {
+                                formula.Append(stack.Pop());
+                                formula.Append(' ');
+                            }
+                            stack.Pop();
+                        }
+                        else if (double.TryParse(x, out num))
+                        {
+                            formula.Append(x);
                             formula.Append(' ');
                         }
-                        stack.Pop();
+                        else if (IsOperator(x))
+                        {
+                            while (stack.Count > 0 && stack.Peek() != "(" && Prior(x) <= Prior(stack.Peek()))
+                            {
+                                formula.Append(stack.Pop());
+                                formula.Append(' ');
+                            }
+                            stack.Push(x);
+                        }
+                        else
+                        {
+                            string y = stack.Pop();
+                            if (y != "(")
+                            {
+                                formula.Append(y);
+                                formula.Append(' ');
+                            }
+                        }
                     }
-                    else if (double.TryParse(x, out num))
+                    while (stack.Count > 0)
                     {
-                        formula.Append(x);
+                        formula.Append(stack.Pop());
                         formula.Append(' ');
                     }
-                    else if (IsOperator(x))
-                    {
-                        while (stack.Count > 0 && stack.Peek() != "(" && Prior(x) <= Prior(stack.Peek()))
-                        {
-                            formula.Append(stack.Pop());
-                            formula.Append(' ');
-                        }
-                        stack.Push(x);
-                    }
-                    else
-                    {
-                        string y = stack.Pop();
-                        if (y != "(")
-                        {
-                            formula.Append(y);
-                            formula.Append(' ');
-                        }
-                    }
+                    return formula.ToString();
                 }
-                while (stack.Count > 0)
+                catch (Exception ex)
                 {
-                    formula.Append(stack.Pop());
-                    formula.Append(' ');
+                    return "false";
                 }
-                return formula.ToString();
             }
+
             static bool IsOperator(string c)
             {
-                return (c == "-" || c == "+" || c == "*" || c == "/");
+                return (c == "-" || c == "+" || c == "x" || c == "/");
             }
+
             static int Prior(string c)
             {
                 switch (c)
