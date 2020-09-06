@@ -17,11 +17,11 @@ namespace DuAn.Controllers
     [CheckTotalRole(RoleID = new int[2] { RoleContext.Expertise, RoleContext.Administration })]
     public class AdminController : Controller
     {
-        public ActionResult getLogoCongTy()
+        /*public ActionResult getLogoCongTy()
         {
-            string logo = CongTyDAO.getCongTyById(1).Logo;
-            return Json(logo);
-        }
+            string logo = CongTyDAO.getCongTyById(5).Logo;
+            return Json(logo, JsonRequestBehavior.AllowGet);
+        }*/
         // GET: Admin
         /*public ActionResult Index()
         {
@@ -60,14 +60,14 @@ namespace DuAn.Controllers
         public ActionResult QuanTriCauHinh()
         {
             //id cong ty default
-            CongTy ct = CongTyDAO.getCongTyById(1);
+            CongTy ct = (CongTy)Session["CongTy"];
             return View(ct);
         }
 
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
-        public ActionResult viewMissingDataList(string fileName = "",string startDate="",string endDate="")
+        public ActionResult viewMissingDataList(string fileName = "", string startDate = "", string endDate = "")
         {
-            var data = DBContext.getMissingData(startDate, endDate,fileName);
+            var data = DBContext.getMissingData(startDate, endDate, fileName);
             return PartialView(data.ToList());
         }
 
@@ -146,16 +146,16 @@ namespace DuAn.Controllers
             DBContext.updateFormula(formula, name, thoiGian);
             return Json(new { Message = "Cập nhật thành công" });
         }
-        public ActionResult InsertGiaDien(string thoiGianBatDau,string thoiGianKetThuc,int giaDien)
+        public ActionResult InsertGiaDien(string thoiGianBatDau, string thoiGianKetThuc, int giaDien)
         {
-            var message=DBContext.InsertGiaDien(thoiGianBatDau,thoiGianKetThuc,giaDien);
+            var message = DBContext.InsertGiaDien(thoiGianBatDau, thoiGianKetThuc, giaDien);
             return Json(new { Message = message });
         }
 
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
         public ActionResult MissingDataPartial()
         {
-            var result = DBContext.getMissingData("","");
+            var result = DBContext.getMissingData("", "");
             return PartialView(result);
         }
 
@@ -170,36 +170,44 @@ namespace DuAn.Controllers
         [HttpPost]
         public ActionResult ChangeCauHinhWeb(HttpPostedFileBase cauhinh_logo, string ten_congty, int id, string ten_viet_tat)
         {
+            string fileName = "default_logo.png";
             try
             {
                 if (cauhinh_logo != null)
                 {
-                    string fileName = System.IO.Path.GetFileName(cauhinh_logo.FileName);
+                    //fileName = System.IO.Path.GetFileName(cauhinh_logo.FileName)+"/"+ id;
+                    fileName = "logoFactory_" + id + ".png";
                     string path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/logoFactory"), fileName);
                     // file is uploaded
                     cauhinh_logo.SaveAs(path_avatar);
                 }
 
                 CongTy ct = CongTyDAO.getCongTyById(id);
-                if(ct == null)
+                if (ct == null)
                 {
-                    return Json(new { success = false, message = "Không tìm thấy thông tin công ty"});
+                    return Json(new { success = false, message = "Không tìm thấy thông tin công ty" });
                 }
-                ct.Logo = cauhinh_logo.FileName;
+                ct.Logo = fileName;
                 ct.TenCongTy = ten_congty;
                 ct.TenVietTat = ten_viet_tat;
 
                 var rs = CongTyDAO.updateCongTyInformation(ct);
-                if(rs != "success")
+
+
+                if (rs != "success")
                 {
                     return Json(new { success = false, message = rs });
                 }
+
+                Session["CongTy"] = ct;
+                return Json(new { success = true, message = string.Empty });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "Không thể truy cập cơ sở dữ liệu" });
             }
-            return Json(new { success = true, message = string.Empty }); ;
+
+
         }
     }
 }

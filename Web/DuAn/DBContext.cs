@@ -112,11 +112,13 @@ namespace DuAn
             {
                 int inInt = int.Parse(id);
                 var acc = db.Accounts.Include(x => x.RoleAccount).FirstOrDefault(x => x.ID == inInt);
+                string fileName = "default_avatar.png";
                 try
                 {
                     if (avatar != null)
                     {
-                        string fileName = System.IO.Path.GetFileName(avatar.FileName);
+                        //fileName = System.IO.Path.GetFileName(avatar.FileName) + "/" + id;
+                        fileName = "avatar_" + id + ".png";
                         string path_avatar = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory.ToString()) + "\\images\\avatarAccount\\" + fileName;
                         // file is uploaded
                         avatar.SaveAs(path_avatar);
@@ -864,7 +866,7 @@ namespace DuAn
                 return null;
             }
         }
-        public static void AddAccount(Account acc)
+        public static int AddAccount(Account acc)
         {
             using (Model1 db = new Model1())
             {
@@ -875,10 +877,11 @@ namespace DuAn
                     acc.Password = MaHoaMatKhau(acc.SaltPassword + acc.Password);
                     db.Accounts.Add(acc);
                     db.SaveChanges();
+                    return acc.ID;
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    return -1;
                 }
             }
         }

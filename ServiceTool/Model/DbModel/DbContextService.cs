@@ -18,6 +18,12 @@ namespace ServiceTool.Model.DbModel
         public virtual DbSet<CongThucTongSanLuong> CongThucTongSanLuongs { get; set; }
         public virtual DbSet<CongTo> CongToes { get; set; }
         public virtual DbSet<CongTy> CongTies { get; set; }
+
+        /*internal void SaveChanges()
+        {
+            throw new NotImplementedException();
+        }*/
+
         public virtual DbSet<DiemDo> DiemDoes { get; set; }
         public virtual DbSet<DiemDo_CongTo> DiemDo_CongTo { get; set; }
         public virtual DbSet<GiaDien> GiaDiens { get; set; }

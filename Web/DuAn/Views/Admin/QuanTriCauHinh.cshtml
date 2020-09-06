@@ -14,19 +14,21 @@
     <div class="col-lg-6">
         <div class="card card-custom">
             <!--begin::Header-->
-            <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                <div class="card-title">
-                    <h3 class="card-label">
-                        Quản trị cấu hình
-                        <span class="d-block text-muted pt-2 font-size-sm">Sửa đổi tên, logo công ty</span>
-                    </h3>
+            <div class="card-header flex-wrap pt-6 pb-0">
+                <div class="card-title align-items-start flex-column">
+                    <h3 class="card-label font-weight-bolder text-dark">Quản trị cấu hình</h3>
+                    <span class="text-muted font-weight-bold font-size-sm mt-1">Sửa đổi tên, logo công ty</span>
+                </div>
+                <div class="card-toolbar d-none d-md-block">
+                    <button type="button" class="btn btn-primary font-weight-bold" id="submit_cauhinh">Lưu thay đổi</button>
                 </div>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
-            <form class="form">
-                <div class="card-body">
-                    <input type="hidden" name="id" value="@Model.ID" />
+
+            <div class="card-body">
+                <form class="form">
+                    <input type="hidden" name="id" id="id" value="@Model.ID" />
                     <div class="form-group row">
                         <label class="col-xl-3 col-lg-3 col-form-label text-left">Logo:</label>
                         <div class="col-lg-9 col-xl-9">
@@ -47,7 +49,7 @@
                     <div class="form-group row">
                         <label class="col-xl-3 col-lg-3 col-form-label">Tên công ty :</label>
                         <div class="col-lg-9 col-xl-9">
-                            <input type="text" class="form-control form-control-solid" placeholder="Nhập tên công ty" name="ten_viet_tat" id="ten_congty" value="@Model.TenCongTy" />
+                            <input type="text" class="form-control form-control-solid" placeholder="Nhập tên công ty" name="ten_congty" id="ten_congty" value="@Model.TenCongTy" />
                             <span class="form-text text-muted">Tên đầy đủ</span>
                         </div>
                     </div>
@@ -58,10 +60,16 @@
                             <span class="form-text text-muted">Tên ngắn gọn</span>
                         </div>
                     </div>
-                </div>
-                <button type="button" class="btn btn-primary font-weight-bold" id="submit_cauhinh">Lưu thay đổi</button>
-            </form>
+                </form>
+            </div>
+
+
             <!--end::Body-->
+            <div class="card-footer">
+                <div class="card-toolbar" style="display:flex; justify-content: flex-end !important">
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -69,7 +77,7 @@
 @section scripts{
     <script>
         var _avatar = new KTImageInput('kt_user_cauhinh_logo');
-        document.ready(function () {
+        $(document).ready(function () {
             $('#submit_cauhinh').on('click', function () {
 
                 var cauhinh_logo = document.getElementById('cauhinh_logo');
@@ -85,7 +93,7 @@
 
                 var ten_viet_tat = document.getElementById('ten_viet_tat').value;
                 formData.append('ten_viet_tat', ten_viet_tat);
-               
+
                 $.ajax({
                     url: '/Admin/ChangeCauHinhWeb',
                     type: 'POST',
@@ -93,11 +101,16 @@
                     contentType: false,
                     data: formData,
                     success: function (data) {
-                        if (data != "success") {
+                        if (data.success != true) {
                             showMessage(data, false);
                         } else {
-                            reloadAccountDatatable();
                             showMessage('Thành công !!!', true);
+                            // change logo layout
+                            var logo_div = document.getElementsByClassName("logo_congty_layout");
+                            for (var i = 0; i < logo_div.length; i++) {
+                                var content = logo_div[i].innerHTML;
+                                logo_div[i].innerHTML = content;
+                            }
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {

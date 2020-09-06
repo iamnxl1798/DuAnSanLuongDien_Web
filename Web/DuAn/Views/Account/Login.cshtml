@@ -1,4 +1,4 @@
-﻿@model DuAn.Models.DbModel.CongTy
+﻿
 
 @{
     ViewBag.Title = "Login";
@@ -81,7 +81,18 @@
                 <div class="d-flex flex-row-fluid flex-column justify-content-between">
                     <!--begin: Aside header-->
                     <a href="javascript:;" class="flex-column-auto mt-5">
-                        <img src="@Model.Logo" class="max-h-100px" alt="" />
+                        @{
+                            var ct_ss = Session["CongTy"];
+                            if (ct_ss != null)
+                            {
+                                DuAn.Models.DbModel.CongTy ct = (DuAn.Models.DbModel.CongTy)ct_ss;
+                                <img src="../images/logoFactory/@ct.Logo" class="max-h-100px" alt="" />
+                            }
+                            else
+                            {
+                                <img src="../images/logoFactory/default_logo.png" class="max-h-100px" alt="" />
+                            }
+                        }
                     </a>
                     <!--end: Aside header-->
                     <!--begin: Aside content-->
@@ -107,10 +118,10 @@
             <!--begin::Content-->
             <div class="flex-row-fluid d-flex flex-column position-relative p-7 overflow-hidden">
                 <!--begin::Content header-->
-                <div class="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
+                @*<div class="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
                     <span class="font-weight-bold text-dark-50">Chưa có tài khoản?</span>
                     <a href="javascript:;" class="font-weight-bold ml-2" id="kt_login_signup">Đăng ký!</a>
-                </div>
+                </div>*@
                 <!--end::Content header-->
                 <!--begin::Content body-->
                 <div class="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
@@ -272,6 +283,7 @@
                 }
             });
         }
+
     </script>
     <!--end::Page Scripts-->
 </body>

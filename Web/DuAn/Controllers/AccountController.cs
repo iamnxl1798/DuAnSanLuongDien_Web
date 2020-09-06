@@ -24,8 +24,9 @@ namespace DuAn.Controllers
         // GET: Account
         public ActionResult Login()
         {
-            CongTy ct = CongTyDAO.getCongTyById(1);
-            return View(ct);  
+            CongTy ct = CongTyDAO.getCongTyById(5);
+            Session["CongTy"] = ct;
+            return View();
         }
         [AllowAnonymous]
         public JsonResult CheckLogin(string username, string password)
@@ -78,7 +79,7 @@ namespace DuAn.Controllers
             Account acc = (Account)db.Accounts.Find(accID);
             if (acc == null)
             {
-                return null ;
+                return null;
             }
             AccountDetail acs = new AccountDetail
             {
@@ -173,11 +174,13 @@ namespace DuAn.Controllers
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Edit })]
         public string UpdateAccount(int id, HttpPostedFileBase avatar, string password, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
+            string fileName = "default_avatar.png";
             try
             {
                 if (avatar != null)
                 {
-                    string fileName = System.IO.Path.GetFileName(avatar.FileName);
+                    //fileName = System.IO.Path.GetFileName(avatar.FileName) + "/" + id;
+                    fileName = "avatar_" + id + ".png";
                     string path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/avatarAccount"), fileName);
                     // file is uploaded
                     avatar.SaveAs(path_avatar);
@@ -187,7 +190,7 @@ namespace DuAn.Controllers
                 {
                     ID = id,
                     Password = password,
-                    Avatar = (avatar != null ? avatar.FileName : ""),
+                    Avatar = fileName,
                     Fullname = fullname,
                     Email = email,
                     Address = address,
@@ -215,22 +218,16 @@ namespace DuAn.Controllers
         }
         [HttpPost]
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Create })]
-        public string InsertAccount(int id, HttpPostedFileBase avatar, string password, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
+        public string InsertAccount(HttpPostedFileBase avatar, string password, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
+            string fileName = "default_avatar.png";
             try
             {
-                if (avatar != null)
-                {
-                    string fileName = System.IO.Path.GetFileName(avatar.FileName);
-                    string path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/avatarAccount"), fileName);
-                    // file is uploaded
-                    avatar.SaveAs(path_avatar);
-                }
                 Account acc = new Account()
                 {
                     Username = username,
                     Password = password,
-                    Avatar = (avatar != null ? avatar.FileName : "default.png"),
+                    Avatar = fileName,
                     Fullname = fullname,
                     Email = email,
                     Address = address,
@@ -239,7 +236,22 @@ namespace DuAn.Controllers
                     DOB = DateTime.ParseExact(dob, "dd - MMMM - yyyy", null),
                     RoleID = roleID
                 };
-                AccountDAO.AddAccount(acc);
+
+                var id_inserted = AccountDAO.AddAccount(acc);
+                acc.ID = id_inserted;
+
+                if (avatar != null)
+                {
+                    //fileName = System.IO.Path.GetFileName(avatar.FileName) + "/" + id_inserted;
+                    fileName = "avatar_" + id_inserted + ".png";
+                    string path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/avatarAccount"), fileName);
+                    // file is uploaded
+                    avatar.SaveAs(path_avatar);
+                }
+
+                acc.Avatar = fileName;
+
+                AccountDAO.UpdateAccout(acc);
             }
             catch (Exception ex)
             {

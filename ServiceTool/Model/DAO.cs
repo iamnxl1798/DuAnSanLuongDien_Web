@@ -1,4 +1,5 @@
 ﻿
+using DuAn;
 using ServiceTool.Model.CustomModel;
 using ServiceTool.Model.DbModel;
 using System;
@@ -10,10 +11,8 @@ using System.Windows.Forms;
 
 namespace DocDuLieuCongTo.Model
 {
-    public class DAO : DbContext
+    public class DAO : DBContext
     {
-
-
         public static class CongToDAO
         {
             static readonly DbContextService db = new DbContextService();
@@ -45,15 +44,12 @@ namespace DocDuLieuCongTo.Model
             static readonly DbContextService db = new DbContextService();
             public static bool checkExistSL(SanLuong sl)
             {
-                using (var db = new DbContextService())
+                var rs = db.SanLuongs.Where(x => x.DiemDoID == sl.DiemDoID && x.KenhID == sl.KenhID && x.Ngay == sl.Ngay && x.ChuKy == sl.ChuKy).FirstOrDefault();
+                if (rs != null)
                 {
-                    var rs = db.SanLuongs.Where(x => x.DiemDoID == sl.DiemDoID && x.KenhID == sl.KenhID && x.Ngay == sl.Ngay && x.ChuKy == sl.ChuKy).FirstOrDefault();
-                    if (rs != null)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return true;
                 }
+                return false;
             }
             public static string InsertSanLuong(SanLuong sl)
             {
@@ -190,51 +186,48 @@ namespace DocDuLieuCongTo.Model
             {
                 try
                 {
-                    using (var db = new DbContextService())
+                    string congThuc = CongThucDAO.getCongThuc(dt);
+                    if (congThuc == "failed")
                     {
-                        string congThuc = CongThucDAO.getCongThuc(dt);
-                        if (congThuc == "failed")
+                        return "failed";
+                    }
+                    string[] divided = congThuc.Split(' ');// tach cac phan tu trong cong thuc
+
+                    List<PhanTu> listPhanTu = new List<PhanTu>();
+                    for (int i = 0; i < divided.Length; i++)
+                    {
+                        if (divided[i].Length > 1) // divice la phan tu 
+                        {
+                            string[] temp = divided[i].Split('~');
+                            if (temp.Length > 1)
+                            {
+                                var tenDiemDo = temp[0];
+                                var tenKenh = temp[1];
+                                PhanTu pt = new PhanTu();
+                                pt.DiemDoID = db.DiemDoes.Where(x => x.TenDiemDo == tenDiemDo).Select(x => x.ID).FirstOrDefault();
+                                if (pt.DiemDoID == 0)
+                                {
+                                    return "Điểm đo trong Công thức không tồn tại !!!";
+                                }
+                                pt.KenhID = db.Kenhs.Where(x => x.Ten == tenKenh).Select(x => x.ID).FirstOrDefault();
+                                if (pt.KenhID == 0)
+                                {
+                                    return "Kênh trong Công thức không tồn tại !!!";
+                                }
+                                pt.index = i;
+                                listPhanTu.Add(pt);
+                            }
+                        }
+                    }
+                    foreach (var item in listPhanTu)
+                    {
+                        var rs = db.SanLuongs.Where(x => x.ChuKy == chuki && x.DiemDoID == item.DiemDoID && x.KenhID == item.KenhID && x.Ngay == dt).FirstOrDefault();
+                        if (rs == null)
                         {
                             return "failed";
                         }
-                        string[] divided = congThuc.Split(' ');// tach cac phan tu trong cong thuc
-
-                        List<PhanTu> listPhanTu = new List<PhanTu>();
-                        for (int i = 0; i < divided.Length; i++)
-                        {
-                            if (divided[i].Length > 1) // divice la phan tu 
-                            {
-                                string[] temp = divided[i].Split('~');
-                                if (temp.Length > 1)
-                                {
-                                    var tenDiemDo = temp[0];
-                                    var tenKenh = temp[1];
-                                    PhanTu pt = new PhanTu();
-                                    pt.DiemDoID = db.DiemDoes.Where(x => x.TenDiemDo == tenDiemDo).Select(x => x.ID).FirstOrDefault();
-                                    if (pt.DiemDoID == 0)
-                                    {
-                                        return "Điểm đo trong Công thức không tồn tại !!!";
-                                    }
-                                    pt.KenhID = db.Kenhs.Where(x => x.Ten == tenKenh).Select(x => x.ID).FirstOrDefault();
-                                    if (pt.KenhID == 0)
-                                    {
-                                        return "Kênh trong Công thức không tồn tại !!!";
-                                    }
-                                    pt.index = i;
-                                    listPhanTu.Add(pt);
-                                }
-                            }
-                        }
-                        foreach (var item in listPhanTu)
-                        {
-                            var rs = db.SanLuongs.Where(x => x.ChuKy == chuki && x.DiemDoID == item.DiemDoID && x.KenhID == item.KenhID && x.Ngay == dt).FirstOrDefault();
-                            if (rs == null)
-                            {
-                                return "failed";
-                            }
-                        }
-                        return "success";
                     }
+                    return "success";
                 }
                 catch (Exception ex)
                 {
@@ -245,97 +238,95 @@ namespace DocDuLieuCongTo.Model
             {
                 try
                 {
-                    using (var db = new DbContextService())
+                    var enoughData = TongSanLuong_NgayDAO.checkEnoughData(chuki, dt);
+                    if (enoughData == "success")
                     {
-                        var enoughData = TongSanLuong_NgayDAO.checkEnoughData(chuki, dt);
-                        if (enoughData == "success")
+                        string congThuc = CongThucDAO.getCongThuc(dt);
+                        int congThucID = db.CongThucTongSanLuongs.Where(x => x.ThoiGianBatDau < dt && x.ThoiGianKetThuc > dt).Select(x => x.ID).First();
+                        string[] divided = congThuc.Split(' ');
+                        List<MyCustom> list = new List<MyCustom>();
+                        List<string> charList = new List<string>();
+                        var diemDo = db.DiemDoes.ToList();
+                        var kenh = db.Kenhs.ToList();
+                        for (int i = 0; i < divided.Length; i++)
                         {
-                            string congThuc = CongThucDAO.getCongThuc(dt);
-                            int congThucID = db.CongThucTongSanLuongs.Where(x => x.ThoiGianBatDau < dt && x.ThoiGianKetThuc > dt).Select(x => x.ID).First();
-                            string[] divided = congThuc.Split(' ');
-                            List<MyCustom> list = new List<MyCustom>();
-                            List<string> charList = new List<string>();
-                            var diemDo = db.DiemDoes.ToList();
-                            var kenh = db.Kenhs.ToList();
-                            for (int i = 0; i < divided.Length; i++)
+                            if (divided[i].Length > 1)
                             {
-                                if (divided[i].Length > 1)
+                                string[] temp = divided[i].Split('~');
+                                if (temp.Length > 1)
                                 {
-                                    string[] temp = divided[i].Split('~');
-                                    if (temp.Length > 1)
+                                    var temDiemDo = temp[0];
+                                    var tenKenh = temp[1];
+                                    var tempDD = diemDo.Where(x => x.TenDiemDo == temDiemDo).Select(x => x.ID).First();
+                                    var tempKenh = kenh.Where(x => x.Ten == tenKenh).Select(x => x.ID).First();
+                                    list.Add(new MyCustom()
                                     {
-                                        var temDiemDo = temp[0];
-                                        var tenKenh = temp[1];
-                                        var tempDD = diemDo.Where(x => x.TenDiemDo == temDiemDo).Select(x => x.ID).First();
-                                        var tempKenh = kenh.Where(x => x.Ten == tenKenh).Select(x => x.ID).First();
-                                        list.Add(new MyCustom()
-                                        {
-                                            DiemDoID = tempDD,
-                                            KenhID = tempKenh,
-                                            index = i
-                                        });
-                                    }
-                                    else
+                                        DiemDoID = tempDD,
+                                        KenhID = tempKenh,
+                                        index = i
+                                    });
+                                }
+                                else
+                                {
+                                    list.Add(new MyCustom()
                                     {
-                                        list.Add(new MyCustom()
-                                        {
-                                            index = i,
-                                            value = Convert.ToDouble(temp[0])
-                                        });
-                                    }
+                                        index = i,
+                                        value = Convert.ToDouble(temp[0])
+                                    });
                                 }
                             }
-                            var tongSanLuongNgay = new List<TongSanLuong_Ngay>();
-                            DateTime ngayTinh = new DateTime(2020, 7, 1);
-                            for (int i = 1; i <= 48; i++)
+                        }
+                        var tongSanLuongNgay = new List<TongSanLuong_Ngay>();
+                        DateTime ngayTinh = new DateTime(2020, 7, 1);
+                        for (int i = 1; i <= 48; i++)
+                        {
+                            var listTemp = db.SanLuongs.Where(x => x.ChuKy == i && x.Ngay == ngayTinh).ToList();
+                            string formula = "";
+                            for (int j = 0; j < list.Count; j++)
                             {
-                                var listTemp = db.SanLuongs.Where(x => x.ChuKy == i && x.Ngay == ngayTinh).ToList();
-                                string formula = "";
-                                for (int j = 0; j < list.Count; j++)
+                                var diemDoTemp = list[j].DiemDoID;
+                                var kenhTemp = list[j].KenhID;
+                                if (diemDoTemp != 0)
                                 {
-                                    var diemDoTemp = list[j].DiemDoID;
-                                    var kenhTemp = list[j].KenhID;
-                                    if (diemDoTemp != 0)
-                                    {
-                                        divided[list[j].index] = listTemp.Where(x => x.DiemDoID == diemDoTemp && x.KenhID == kenhTemp).Select(x => x.GiaTri).FirstOrDefault().ToString();
-                                    }
-                                    else
-                                    {
-                                        divided[list[j].index] = list[j].value.ToString();
-                                    }
+                                    divided[list[j].index] = listTemp.Where(x => x.DiemDoID == diemDoTemp && x.KenhID == kenhTemp).Select(x => x.GiaTri).FirstOrDefault().ToString();
                                 }
-                                for (int stringBlank = 0; stringBlank < divided.Length; stringBlank++)
+                                else
                                 {
-                                    if (divided[stringBlank] == "" && stringBlank != divided.Length - 1)
-                                    {
-                                        formula += "0 ";
-                                    }
-                                    else
-                                    {
-                                        formula += divided[stringBlank] + ' ';
-                                    }
+                                    divided[list[j].index] = list[j].value.ToString();
                                 }
-                                string rpn = toRPN(formula.Trim()).Trim();
-                                var value = CalculateRPN(rpn);
-                                TongSanLuong_Ngay tslng = new TongSanLuong_Ngay();
-                                tslng.ChuKy = i;
-                                tslng.CongThucID = congThucID;
-                                tslng.Ngay = dt;
-                                tslng.GiaTri = (double)value;
+                            }
+                            for (int stringBlank = 0; stringBlank < divided.Length; stringBlank++)
+                            {
+                                if (divided[stringBlank] == "" && stringBlank != divided.Length - 1)
+                                {
+                                    formula += "0 ";
+                                }
+                                else
+                                {
+                                    formula += divided[stringBlank] + ' ';
+                                }
+                            }
+                            string rpn = toRPN(formula.Trim()).Trim();
+                            var value = CalculateRPN(rpn);
+                            TongSanLuong_Ngay tslng = new TongSanLuong_Ngay();
+                            tslng.ChuKy = i;
+                            tslng.CongThucID = congThucID;
+                            tslng.Ngay = dt;
+                            tslng.GiaTri = (double)value;
 
-                                var rs = Insert(tslng);
-                                if (rs != "success")
-                                {
-                                    return rs;
-                                }
+                            var rs = Insert(tslng);
+                            if (rs != "success")
+                            {
+                                return rs;
                             }
                         }
-                        else
-                        {
-                            return enoughData;
-                        }
-                        return "success";
                     }
+                    else
+                    {
+                        return enoughData;
+                    }
+                    return "success";
+
                 }
                 catch (Exception ex)
                 {
@@ -551,41 +542,39 @@ namespace DocDuLieuCongTo.Model
             {
                 try
                 {
-                    using (var db = new DbContextService())
+                    var thang = dt.Month;
+                    var nam = dt.Year;
+
+                    var list_sl_ngay = db.TongSanLuong_Ngay.Where(x => x.Ngay.Month == thang && x.Ngay.Year == nam).Select(x => x.GiaTri);
+                    if (list_sl_ngay != null && list_sl_ngay.Count() != 0)
                     {
-                        var thang = dt.Month;
-                        var nam = dt.Year;
-
-                        var list_sl_ngay = db.TongSanLuong_Ngay.Where(x => x.Ngay.Month == thang && x.Ngay.Year == nam).Select(x => x.GiaTri);
-                        if (list_sl_ngay != null && list_sl_ngay.Count() != 0)
+                        var sum = 0.0;
+                        foreach (var item in list_sl_ngay)
                         {
-                            var sum = 0.0;
-                            foreach (var item in list_sl_ngay)
-                            {
-                                sum += item.Value;
-                            }
+                            sum += item.Value;
+                        }
 
-                            var rs = db.TongSanLuong_Thang.Where(x => x.Thang == thang && x.Nam == nam).FirstOrDefault();
-                            if (rs == null)
-                            {
-                                TongSanLuong_Thang tsnl = new TongSanLuong_Thang();
-                                tsnl.Thang = dt.Month;
-                                tsnl.Nam = dt.Year;
-                                tsnl.GiaTri = sum;
-                                db.TongSanLuong_Thang.Add(tsnl);
-                            }
-                            else
-                            {
-                                rs.GiaTri = sum;
-                            }
-                            db.SaveChanges();
-                            return "success";
+                        var rs = db.TongSanLuong_Thang.Where(x => x.Thang == thang && x.Nam == nam).FirstOrDefault();
+                        if (rs == null)
+                        {
+                            TongSanLuong_Thang tsnl = new TongSanLuong_Thang();
+                            tsnl.Thang = dt.Month;
+                            tsnl.Nam = dt.Year;
+                            tsnl.GiaTri = sum;
+                            db.TongSanLuong_Thang.Add(tsnl);
                         }
                         else
                         {
-                            return "failed";
+                            rs.GiaTri = sum;
                         }
+                        db.SaveChanges();
+                        return "success";
                     }
+                    else
+                    {
+                        return "failed";
+                    }
+
                 }
                 catch (Exception ex)
                 {
