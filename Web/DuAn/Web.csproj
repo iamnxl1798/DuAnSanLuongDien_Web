@@ -355,6 +355,9 @@
     <Content Include="images\avatarAccount\upload-arrow_318-26670.jpg" />
     <Content Include="images\dateIcon.png" />
     <Content Include="images\frame_apngframe1.png" />
+    <Content Include="images\logoFactory\default_logo.png" />
+    <Content Include="images\logoFactory\logo.png" />
+    <Content Include="images\logoFactory\logoFactory_5.png" />
     <Content Include="images\spritemap%402x.png" />
     <Content Include="images\spritemap.png" />
     <Content Include="images\upload-arrow_318-26670.jpg" />
