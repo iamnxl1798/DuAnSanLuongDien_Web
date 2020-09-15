@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CauHinhTool));
             this.txtQuet = new System.Windows.Forms.TextBox();
             this.txtChuyen = new System.Windows.Forms.TextBox();
             this.ckAuto = new System.Windows.Forms.CheckBox();
@@ -126,6 +127,7 @@
             this.Controls.Add(this.txtChuyen);
             this.Controls.Add(this.txtQuet);
             this.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CauHinhTool";
             this.Text = "Cấu Hình";
             this.Load += new System.EventHandler(this.CauHinhTool_Load);
