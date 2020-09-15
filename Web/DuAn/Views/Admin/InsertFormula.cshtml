@@ -79,7 +79,7 @@
     }
     function insertDiemDo() {
         if ($('#diemDo').val() != '' && $('#kenh').val() != '') {
-            var text = $("#diemDo option:selected").text().trim() + '~' + $("#kenh option:selected").text()+' ';
+            var text = $("#diemDo option:selected").text().trim() + '@@' + $("#kenh option:selected").text()+' ';
             $('#phepTinh').val($('#phepTinh').val() + text);
             $('#diemDo').val("").change();
             $('#kenh').val("").change();
@@ -136,11 +136,11 @@
             }
             else if (operator == '*') {
                 if ($('#phepTinh').val().length > 1 && $('#phepTinh').val()[$('#phepTinh').val().length - 2] != ' ') {
-                    $('#phepTinh').val($('#phepTinh').val() + ' * ');
+                    $('#phepTinh').val($('#phepTinh').val() + ' x ');
                     return false;
                 }
                 else {
-                    $('#phepTinh').val($('#phepTinh').val() + '* ');
+                    $('#phepTinh').val($('#phepTinh').val() + 'x ');
                     return false;
                 }
             }
@@ -188,7 +188,7 @@
         if (errorMsg.length != 0) {
             return;
         }
-        if (text.length != 0 && (text.includes('+') || text.includes('-') || text.includes('*') || text.includes('/')) && text[text.length - 2] != '+' && text[text.length - 2] != '-' && nameStr.length != 0 && thoiGianHieuLuc.length != 0) {
+        if (text.length != 0 && (text.includes('+') || text.includes('-') || text.includes('x') || text.includes('/')) && text[text.length - 2] != '+' && text[text.length - 2] != '-' && nameStr.length != 0 && thoiGianHieuLuc.length != 0) {
             $.ajax({
                 method:'POST',
                 cache: false,

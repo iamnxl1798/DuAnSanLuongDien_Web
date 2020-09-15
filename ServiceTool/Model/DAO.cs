@@ -198,7 +198,7 @@ namespace DocDuLieuCongTo.Model
                     {
                         if (divided[i].Length > 1) // divice la phan tu 
                         {
-                            string[] temp = divided[i].Split('~');
+                            string[] temp = divided[i].Split('@');
                             if (temp.Length > 1)
                             {
                                 var tenDiemDo = temp[0];
@@ -252,7 +252,7 @@ namespace DocDuLieuCongTo.Model
                         {
                             if (divided[i].Length > 1)
                             {
-                                string[] temp = divided[i].Split('~');
+                                string[] temp = divided[i].Split('@');
                                 if (temp.Length > 1)
                                 {
                                     var temDiemDo = temp[0];
@@ -277,48 +277,47 @@ namespace DocDuLieuCongTo.Model
                             }
                         }
                         var tongSanLuongNgay = new List<TongSanLuong_Ngay>();
-                        DateTime ngayTinh = new DateTime(2020, 7, 1);
-                        for (int i = 1; i <= 48; i++)
-                        {
-                            var listTemp = db.SanLuongs.Where(x => x.ChuKy == i && x.Ngay == ngayTinh).ToList();
-                            string formula = "";
-                            for (int j = 0; j < list.Count; j++)
-                            {
-                                var diemDoTemp = list[j].DiemDoID;
-                                var kenhTemp = list[j].KenhID;
-                                if (diemDoTemp != 0)
-                                {
-                                    divided[list[j].index] = listTemp.Where(x => x.DiemDoID == diemDoTemp && x.KenhID == kenhTemp).Select(x => x.GiaTri).FirstOrDefault().ToString();
-                                }
-                                else
-                                {
-                                    divided[list[j].index] = list[j].value.ToString();
-                                }
-                            }
-                            for (int stringBlank = 0; stringBlank < divided.Length; stringBlank++)
-                            {
-                                if (divided[stringBlank] == "" && stringBlank != divided.Length - 1)
-                                {
-                                    formula += "0 ";
-                                }
-                                else
-                                {
-                                    formula += divided[stringBlank] + ' ';
-                                }
-                            }
-                            string rpn = toRPN(formula.Trim()).Trim();
-                            var value = CalculateRPN(rpn);
-                            TongSanLuong_Ngay tslng = new TongSanLuong_Ngay();
-                            tslng.ChuKy = i;
-                            tslng.CongThucID = congThucID;
-                            tslng.Ngay = dt;
-                            tslng.GiaTri = (double)value;
+                        DateTime ngayTinh = dt;
 
-                            var rs = Insert(tslng);
-                            if (rs != "success")
+                        var listTemp = db.SanLuongs.Where(x => x.ChuKy == chuki && x.Ngay == ngayTinh).ToList();
+
+                        string formula = "";
+                        for (int j = 0; j < list.Count; j++)
+                        {
+                            var diemDoTemp = list[j].DiemDoID;
+                            var kenhTemp = list[j].KenhID;
+                            if (diemDoTemp != 0)
                             {
-                                return rs;
+                                divided[list[j].index] = listTemp.Where(x => x.DiemDoID == diemDoTemp && x.KenhID == kenhTemp).Select(x => x.GiaTri).FirstOrDefault().ToString();
                             }
+                            else
+                            {
+                                divided[list[j].index] = list[j].value.ToString();
+                            }
+                        }
+                        for (int stringBlank = 0; stringBlank < divided.Length; stringBlank++)
+                        {
+                            if (divided[stringBlank] == "" && stringBlank != divided.Length - 1)
+                            {
+                                formula += "0 ";
+                            }
+                            else
+                            {
+                                formula += divided[stringBlank] + ' ';
+                            }
+                        }
+                        string rpn = toRPN(formula.Trim()).Trim();
+                        var value = CalculateRPN(rpn);
+                        TongSanLuong_Ngay tslng = new TongSanLuong_Ngay();
+                        tslng.ChuKy = chuki;
+                        tslng.CongThucID = congThucID;
+                        tslng.Ngay = dt;
+                        tslng.GiaTri = (double)value;
+
+                        var rs = Insert(tslng);
+                        if (rs != "success")
+                        {
+                            return rs;
                         }
                     }
                     else
@@ -366,7 +365,7 @@ namespace DocDuLieuCongTo.Model
                                     stack.Push((decimal)Math.Sqrt((double)stack.Pop()));
                                     break;
                                 }
-                            case "*":
+                            case "x":
                                 {
                                     stack.Push(stack.Pop() * stack.Pop());
                                     break;
@@ -460,7 +459,7 @@ namespace DocDuLieuCongTo.Model
             }
             static bool IsOperator(string c)
             {
-                return (c == "-" || c == "+" || c == "*" || c == "/");
+                return (c == "-" || c == "+" || c == "x" || c == "/");
             }
             static int Prior(string c)
             {
@@ -472,7 +471,7 @@ namespace DocDuLieuCongTo.Model
                         return 2;
                     case "-":
                         return 2;
-                    case "*":
+                    case "x":
                         return 3;
                     case "/":
                         return 3;
@@ -551,7 +550,10 @@ namespace DocDuLieuCongTo.Model
                         var sum = 0.0;
                         foreach (var item in list_sl_ngay)
                         {
-                            sum += item.Value;
+                            if (item.HasValue)
+                            {
+                                sum += item.Value;
+                            }
                         }
 
                         var rs = db.TongSanLuong_Thang.Where(x => x.Thang == thang && x.Nam == nam).FirstOrDefault();
@@ -652,7 +654,11 @@ namespace DocDuLieuCongTo.Model
                             var sum = 0.0;
                             foreach (var item in list_sl_thang)
                             {
-                                sum += item.Value;
+                                if (item.HasValue)
+                                {
+                                    sum += item.Value;
+                                }
+
                             }
 
                             var rs = db.TongSanLuong_Nam.Where(x => x.Nam == nam).FirstOrDefault();
