@@ -232,10 +232,10 @@ namespace DuAn
                 try
                 {
                     DateTime dateStart = new DateTime(date.Year, 1, 1);
-                    DateTime dateEnd = new DateTime(date.Year + 1, 1, 1);
+                    DateTime dateEnd = dateStart.AddYears(1);
                     var result = new List<TongSanLuongTheoThoiGian>();
-                    var list = db.TongSanLuong_Thang.Where(x => x.Nam == date.Year);
-                    if (list != null)
+                    var list = db.TongSanLuong_Thang.Where(x => x.Nam == date.Year).ToList();
+                    if (list != null && list.Count > 0)
                     {
                         result = list.Select(x => new TongSanLuongTheoThoiGian()
                         {

@@ -35,7 +35,7 @@ var chart2;
 var chart3;
 var chart4;
 
-var setValue = function (duKienT, duKienN, thucTeT, thucTeN, sanLuong, percentT, percentN, formatT, formatN,done,notyet) {
+var setValue = function (duKienT, duKienN, thucTeT, thucTeN, sanLuong, percentT, percentN, formatT, formatN, done, notyet) {
     duKienThang = duKienT;
     duKienNam = duKienN;
     thucTeThang = thucTeT;
@@ -211,13 +211,14 @@ function runMain() {
     else {
         document.getElementById("chart2Label").innerHTML = "Không có dữ liệu để hiển thị";
     }
+
     if (sanLuongTrongNgay != null) {
         if (chart3 != null) {
             chart3 = null;
         }
-        $("chart3Label").val('');
+        $("#chart3Label").val('');
         am4core.ready(function () {
-
+            debugger
             // Themes begin
             am4core.useTheme(am4themes_animated);
             // Themes end
@@ -244,7 +245,7 @@ function runMain() {
             dateAxis.min = 0;
             dateAxis.max = 49;
             dateAxis.renderer.labels.template.adapter.add("text", function (text, target) {
-                return text.match('49|50') ? "" : text;
+                return text == '49' ? "" : text;
             });
             dateAxis.cursorTooltipEnabled = false;
 
@@ -308,6 +309,7 @@ function runMain() {
     else {
         document.getElementById("chart3Label").innerHTML = "Không có dữ liệu để hiển thị";
     }
+
     if (daThuThap!=null && chuaThuThap!=null) {
         if (chart4 != null) {
             chart4 = null;

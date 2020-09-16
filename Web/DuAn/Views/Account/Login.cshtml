@@ -119,9 +119,9 @@
             <div class="flex-row-fluid d-flex flex-column position-relative p-7 overflow-hidden">
                 <!--begin::Content header-->
                 @*<div class="position-absolute top-0 right-0 text-right mt-5 mb-15 mb-lg-0 flex-column-auto justify-content-center py-5 px-10">
-                    <span class="font-weight-bold text-dark-50">Chưa có tài khoản?</span>
-                    <a href="javascript:;" class="font-weight-bold ml-2" id="kt_login_signup">Đăng ký!</a>
-                </div>*@
+                        <span class="font-weight-bold text-dark-50">Chưa có tài khoản?</span>
+                        <a href="javascript:;" class="font-weight-bold ml-2" id="kt_login_signup">Đăng ký!</a>
+                    </div>*@
                 <!--end::Content header-->
                 <!--begin::Content body-->
                 <div class="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
@@ -145,7 +145,7 @@
                             <!--begin::Action-->
                             <div class="text-center mb-10 mb-lg-20">
                                 @* <a href="javascript:;" class="text-dark-50 text-hover-primary my-3 mr-2" id="kt_login_forgot">Forgot Password ?</a>*@
-                                <input type="button" class="btn btn-primary font-weight-bold py-2 w-auto my-1"
+                                <input type="button" class="btn btn-primary font-weight-bold py-2 w-auto my-1" id="submit_login_form"
                                        onclick="CheckLogin()" value="Đăng nhập" />
                             </div>
                             <div class="modal fade" id="modalLoader_Login" tabindex="-2" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true" data-backdrop="false">
@@ -255,6 +255,21 @@
         var hideModalLoading = function () {
             $('#modalLoader_Login').modal("hide");
         }
+
+        jQuery(document).ready(function () {
+            var form_login = document.getElementById("kt_login_signin_form");
+            // Execute a function when the user releases a key on the keyboard
+            form_login.addEventListener("keyup", function (event) {
+                // Number 13 is the "Enter" key on the keyboard
+                if (event.keyCode === 13) {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    // Trigger the button element with a click
+                    document.getElementById("submit_login_form").click();
+                }
+            });
+        })
+
         function CheckLogin() {
             showModalLoading();
             var username = document.getElementById("username").value;
