@@ -218,7 +218,6 @@ function runMain() {
         }
         $("#chart3Label").val('');
         am4core.ready(function () {
-            debugger
             // Themes begin
             am4core.useTheme(am4themes_animated);
             // Themes end
