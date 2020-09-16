@@ -53,8 +53,8 @@ namespace DuAn
                     }
                     db.Configuration.LazyLoadingEnabled = false;
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
-                    var thucteThangg = db.TongSanLuong_ThangNam.Where(x => x.Ngay <= date).OrderByDescending(x => x.Ngay).Take(1).Select(x => x.GiaTriThang).FirstOrDefault();
-                    var thucTeNam = db.TongSanLuong_ThangNam.Where(x => x.Ngay <= date).OrderByDescending(x => x.Ngay).Take(1).Select(x => x.GiaTriNam).FirstOrDefault();
+                    var thucteThangg = db.TongSanLuong_Thang.Where(x => x.Thang == date.Month && x.Nam == date.Year ).Select(x => x.GiaTri).FirstOrDefault();
+                    var thucTeNam = db.TongSanLuong_Nam.Where(x => x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault();
                     var missingData = getMissingCount(date);
                     var missingDataCount = new List<NumberOfMissingData>();
                     var distincMissingType = missingData.Select(x => x.type).Distinct();
@@ -68,22 +68,23 @@ namespace DuAn
                             done = tempData.Where(x => x.status == 1).Count()
                         });
                     }
-                    var giaTien = db.GiaDiens.Where(x => x.NgayBatDau <= date && x.NgayKetThuc >= date).Select(x => x.Gia).FirstOrDefault();
-                    var result = new HomeModel
-                    {
-                        duKienThang = db.SanLuongDuKiens.Where(x => x.LoaiID == CommonContext.LOAI_SAN_LUONG_THANG && x.ThoiGian == thang).Select(x => x.SanLuong).FirstOrDefault(),
-                        duKienNam = db.SanLuongDuKiens.Where(x => x.LoaiID == CommonContext.LOAI_SAN_LUONG_NAM && x.ThoiGian == nam).Select(x => x.SanLuong).FirstOrDefault(),
-                        thucTeThang = thucteThangg,
-                        thucTeNam = thucTeNam,
-                        data = list,
-                        sanLuongTrongNgay = dataTrongNgay,
-                        date = date,
-                        countMissingData = missingDataCount,
-                        giaDien = giaTien,
-                        doanhThuThang = getDoanhThuThang(date).Sum(x => x.doanhThu),
-                        doanhThuNam = getDoanhThuNam(date).Sum(x => x.doanhThu)
+                    var giaDien = db.GiaDiens.Where(x => x.NgayBatDau <= date && x.NgayKetThuc >= date).Select(x => x.Gia).FirstOrDefault();
+                    var result = new HomeModel();
 
-                    };
+                    var dukienThang_temp = db.SanLuongDuKiens.Where(x => x.LoaiID == 1 && x.ThoiGian == thang).Select(x => x.SanLuong).FirstOrDefault();
+                    result.duKienThang = db.SanLuongDuKiens.Where(x => x.LoaiID == CommonContext.LOAI_SAN_LUONG_THANG && x.ThoiGian == thang).Select(x => x.SanLuong).FirstOrDefault();
+                    result.duKienNam = db.SanLuongDuKiens.Where(x => x.LoaiID == CommonContext.LOAI_SAN_LUONG_NAM && x.ThoiGian == nam).Select(x => x.SanLuong).FirstOrDefault();
+                    result.thucTeThang = thucteThangg.HasValue ? thucteThangg.Value : 0;
+                    result.thucTeNam = thucTeNam.HasValue ? thucteThangg.Value : 0;
+                    result.data = list;
+                    result.sanLuongTrongNgay = dataTrongNgay;
+                    result.date = date;
+                    result.countMissingData = missingDataCount;
+                    result.giaDien = giaDien;
+                    result.doanhThuThang = getDoanhThuThang(date).Sum(x => x.doanhThu);
+                    result.doanhThuNam = getDoanhThuNam(date).Sum(x => x.doanhThu);
+
+
                     return await Task.FromResult(result);
                 }
                 catch (Exception ex)
