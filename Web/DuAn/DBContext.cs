@@ -1,18 +1,17 @@
-﻿using System.Data.Entity;
+﻿using DuAn.COMMON;
 using DuAn.Models.CustomModel;
+using DuAn.Models.DbModel;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using DuAn.COMMON;
+using System.Data.Entity;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using OfficeOpenXml;
-using DuAn.Models.DbModel;
-using System.Globalization;
-using iTextSharp.text.pdf.qrcode;
+using System.Web;
+using System.Web.Mvc;
 
 namespace DuAn
 {
@@ -53,7 +52,7 @@ namespace DuAn
                     }
                     db.Configuration.LazyLoadingEnabled = false;
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
-                    var thucteThangg = db.TongSanLuong_Thang.Where(x => x.Thang == date.Month && x.Nam == date.Year ).Select(x => x.GiaTri).FirstOrDefault();
+                    var thucteThangg = db.TongSanLuong_Thang.Where(x => x.Thang == date.Month && x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault();
                     var thucTeNam = db.TongSanLuong_Nam.Where(x => x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault();
                     var missingData = getMissingCount(date);
                     var missingDataCount = new List<NumberOfMissingData>();
@@ -83,7 +82,6 @@ namespace DuAn
                     result.giaDien = giaDien;
                     result.doanhThuThang = getDoanhThuThang(date).Sum(x => x.doanhThu);
                     result.doanhThuNam = getDoanhThuNam(date).Sum(x => x.doanhThu);
-
 
                     return await Task.FromResult(result);
                 }
@@ -171,21 +169,18 @@ namespace DuAn
                 try
                 {
                     DateTime dateStart = new DateTime(date.Year, date.Month, 1);
-                    DateTime dateEnd = new DateTime(date.Year, date.Month + 1, 1);
+                    DateTime dateEnd = dateStart.AddMonths(1);
                     var result = new List<TongSanLuongTheoThoiGian>();
                     for (DateTime dateFor = dateStart; dateFor < dateEnd; dateFor = dateFor.AddDays(1))
                     {
-                        var gia = db.GiaDiens.Where(x => x.NgayBatDau <= dateFor && x.NgayKetThuc >= dateFor).Select(x => x.Gia).FirstOrDefault();
-                        var value = db.TongSanLuong_Ngay.Where(x => x.Ngay == dateFor).ToList().Count == 0 ? 0 : db.TongSanLuong_Ngay.Where(x => x.Ngay == dateFor).Sum(x => x.GiaTri);
-                        result.Add(new TongSanLuongTheoThoiGian
-                        {
-                            date = dateFor,
-                            giaTien = gia,
-                            value = value,
-                            doanhThu = gia * value
-                        });
+                        TongSanLuongTheoThoiGian tslttg = new TongSanLuongTheoThoiGian();
+                        tslttg.date = dateFor;
+                        tslttg.giaTien = GetGiaDienTheoNgay(dateFor);
+                        tslttg.value = GetTongSanLuongNgay(dateFor);
+                        tslttg.doanhThu = tslttg.value * tslttg.giaTien;
+                        result.Add(tslttg);
                     }
-                    result.RemoveAll(x => x.value == 0 || x.value == 0 || x.giaTien == 0);
+                    result.RemoveAll(x => x.value == 0 || x.giaTien == 0);
                     return result;
                 }
                 catch (Exception e)
@@ -201,12 +196,26 @@ namespace DuAn
                 try
                 {
                     DateTime dateStart = new DateTime(date.Year, date.Month, 1);
-                    DateTime dateEnd = new DateTime(date.Year, date.Month + 1, 1);
-                    var result = db.TongSanLuong_Ngay.Where(x => x.Ngay >= dateStart && x.Ngay < dateEnd).GroupBy(l => l.Ngay).Select(cl => new TongSanLuongTheoThoiGian
+                    DateTime dateEnd = dateStart.AddMonths(1);
+                    var result = new List<TongSanLuongTheoThoiGian>();
+                    var list = db.TongSanLuong_Ngay.Where(x => x.Ngay >= dateStart && x.Ngay < dateEnd);
+                    if (list != null)
+                    {
+                        result = list
+                            .GroupBy(x => x.Ngay)
+                            .Select(x => new TongSanLuongTheoThoiGian()
+                            {
+                                date = x.Key,
+                                value = x.Sum(c => c.GiaTri),
+                            })
+                            .OrderBy(x => x.date)
+                            .ToList();
+                    }
+                    /*var result = db.TongSanLuong_Ngay.Where(x => x.Ngay >= dateStart && x.Ngay < dateEnd)..Select(cl => new TongSanLuongTheoThoiGian
                     {
                         date = cl.Key,
                         value = cl.Sum(c => c.GiaTri),
-                    }).OrderBy(x => x.date).ToList();
+                    }).OrderBy(x => x.date).ToList();*/
                     return result;
                 }
                 catch
@@ -225,18 +234,29 @@ namespace DuAn
                     DateTime dateStart = new DateTime(date.Year, 1, 1);
                     DateTime dateEnd = new DateTime(date.Year + 1, 1, 1);
                     var result = new List<TongSanLuongTheoThoiGian>();
-                    for (DateTime month = dateStart; month < dateEnd; month = month.AddMonths(1))
+                    var list = db.TongSanLuong_Thang.Where(x => x.Nam == date.Year);
+                    if (list != null)
+                    {
+                        result = list.Select(x => new TongSanLuongTheoThoiGian()
+                        {
+                            date = new DateTime(x.Nam, x.Thang, 1),
+                            value = x.GiaTri.HasValue ? x.GiaTri.Value : 0
+                        }).ToList();
+                    }
+                    /*for (DateTime month = dateStart; month < dateEnd; month = month.AddMonths(1))
                     {
                         var addOneMonth = month.AddMonths(1);
                         result.Add(
-                            db.TongSanLuong_ThangNam.Where(x => x.Ngay >= month && x.Ngay < addOneMonth).OrderByDescending(x => x.Ngay).Select(
-                                x => new TongSanLuongTheoThoiGian
-                                {
-                                    date = month,
-                                    value = x.GiaTriThang
-                                }
-                                ).Take(1).FirstOrDefault());
-                    }
+                            db.TongSanLuong_Thang.Where(x => x.Thang == month.Month && x.Nam == month.Year)
+                                                 .Select(
+                                                        x => new TongSanLuongTheoThoiGian
+                                                        {
+                                                            date = month,
+                                                            value = x.GiaTri.HasValue ? x.GiaTri.Value : 0
+                                                        })
+                                                 .FirstOrDefault()
+                                  );
+                    }*/
                     result.RemoveAll(x => x == null);
                     return result;
                 }
@@ -255,7 +275,7 @@ namespace DuAn
                     DateTime dateStart = new DateTime(date.Year, 1, 1);
                     DateTime dateEnd = new DateTime(date.Year + 1, 1, 1);
                     var result = new List<TongSanLuongTheoThoiGian>();
-                    for (DateTime month = dateStart; month < dateEnd; month = month.AddMonths(1))
+                    /*for (DateTime month = dateStart; month < dateEnd; month = month.AddMonths(1))
                     {
                         var addOneMonth = month.AddMonths(1);
                         var list = new List<TongSanLuongTheoThoiGian>();
@@ -278,14 +298,78 @@ namespace DuAn
                             value = list.Sum(x => x.value),
                             doanhThu = list.Sum(x => x.doanhThu)
                         });
+                    }*/
+                    for (DateTime month = dateStart; month < dateEnd; month = month.AddMonths(1))
+                    {
+                        //var addOneMonth = month.AddMonths(1);
+                        var list_ngay = getDoanhThuThang(month);
+                        /*var list_ngay = new List<TongSanLuongTheoThoiGian>();
+                        for (DateTime dateFor = month; dateFor < addOneMonth; dateFor = dateFor.AddDays(1))
+                        {
+                            TongSanLuongTheoThoiGian tslttg = new TongSanLuongTheoThoiGian();
+                            tslttg.date = dateFor;
+                            tslttg.giaTien = GetGiaDienTheoNgayNgay(dateFor);
+                            tslttg.value = GetTongSanLuongNgay(dateFor);
+                            tslttg.doanhThu = tslttg.value * tslttg.giaTien;
+                            list_ngay.Add(tslttg);
+                        }
+                        list_ngay.RemoveAll(x => x.giaTien == -1 || x.value == -1 || x.giaTien == 0);*/
+                        if (list_ngay.Count > 0)
+                        {
+                            result.Add(new TongSanLuongTheoThoiGian
+                            {
+                                date = month,
+                                giaTien = -1,
+                                value = list_ngay.Sum(x => x.value),
+                                doanhThu = list_ngay.Sum(x => x.doanhThu)
+                            });
+                        }
                     }
-                    result.RemoveAll(x => x.doanhThu == 0);
+                    //result.RemoveAll(x => x.doanhThu == 0);
                     return result;
                 }
                 catch
                 {
                     return null;
                 }
+            }
+        }
+        private static double GetTongSanLuongNgay(DateTime dt)
+        {
+            try
+            {
+                using (var db = new Model1())
+                {
+                    var sum = 0.0;
+                    var list = db.TongSanLuong_Ngay.Where(x => x.Ngay == dt).ToList();
+                    if (list != null && list.Count() > 0)
+                    {
+                        sum = list.Sum(x => x.GiaTri);
+                    }
+                    return sum;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        private static double GetGiaDienTheoNgay(DateTime dt)
+        {
+            try
+            {
+                using (var db = new Model1())
+                {
+                    var value = db.GiaDiens.Where(x => x.NgayBatDau <= dt && x.NgayKetThuc >= dt).Select(x => x.Gia).FirstOrDefault();
+                    return value;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return -1;
             }
         }
 

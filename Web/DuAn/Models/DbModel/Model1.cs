@@ -38,7 +38,7 @@ namespace DuAn.Models.DbModel
         public virtual DbSet<TongSanLuong_Nam> TongSanLuong_Nam { get; set; }
         public virtual DbSet<TongSanLuong_Ngay> TongSanLuong_Ngay { get; set; }
         public virtual DbSet<TongSanLuong_Thang> TongSanLuong_Thang { get; set; }
-        public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
+        //public virtual DbSet<TongSanLuong_ThangNam> TongSanLuong_ThangNam { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

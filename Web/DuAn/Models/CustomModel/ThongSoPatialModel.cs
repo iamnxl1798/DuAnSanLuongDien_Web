@@ -24,7 +24,7 @@ namespace DuAn.Models.CustomModel
         }
         public string formatNumber(double num)
         {
-            var result = String.Format("{0:### ### ### ###.##}", num);
+            var result = String.Format("{0:### ### ### ##0.##}", num);
             return result== "   "? "0":result;
         }
     }

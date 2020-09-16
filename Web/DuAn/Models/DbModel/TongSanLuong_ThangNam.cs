@@ -6,7 +6,7 @@ namespace DuAn.Models.DbModel
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class TongSanLuong_ThangNam
+    /*public partial class TongSanLuong_ThangNam
     {
         public int ID { get; set; }
 
@@ -16,5 +16,5 @@ namespace DuAn.Models.DbModel
         public double GiaTriThang { get; set; }
 
         public double GiaTriNam { get; set; }
-    }
+    }*/
 }

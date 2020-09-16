@@ -12,10 +12,10 @@ namespace DuAn.Models.CustomModel
         public DateTime date { get; set; }
         public double giaTien { get; set; }
         public double doanhThu { get; set; }
-        public string numberFormatValue { get { return String.Format("{0:### ### ### ###.##}", value); } }
+        public string numberFormatValue { get { return String.Format("{0:### ### ### ##0.##}", value); } }
         public string formatNumber(double num)
         {
-            var result = String.Format("{0:### ### ### ###.##}", num);
+            var result = String.Format("{0:### ### ### ##0.##}", num);
             return result == "   " ? "0" : result;
         }
     }
