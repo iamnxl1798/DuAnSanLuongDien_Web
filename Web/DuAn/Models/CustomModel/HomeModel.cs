@@ -10,10 +10,13 @@ namespace DuAn.Models.CustomModel
     {
         public DateTime date { get; set; }
         public List<NumberOfMissingData> countMissingData { get; set; }
-        public int daThuThap { get
+        public int daThuThap
+        {
+            get
             {
                 return countMissingData.Select(x => x.done).Sum();
-            } }
+            }
+        }
         public int chuaThuThap
         {
             get
@@ -45,5 +48,11 @@ namespace DuAn.Models.CustomModel
             return result == "   " ? "0" : result;
         }
         public double giaDien { get; set; }
+        public HomeModel()
+        {
+            data = new List<DiemDoData>();
+            sanLuongTrongNgay = new List<TongSanLuong_Ngay>();
+            countMissingData = new List<NumberOfMissingData>();
+        }
     }
 }

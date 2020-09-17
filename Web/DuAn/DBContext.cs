@@ -52,7 +52,7 @@ namespace DuAn
                     }
                     db.Configuration.LazyLoadingEnabled = false;
                     var dataTrongNgay = db.TongSanLuong_Ngay.Where(x => x.Ngay == date).ToList();
-                    var thucteThangg = db.TongSanLuong_Thang.Where(x => x.Thang == date.Month && x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault();
+                    var thucteThang = db.TongSanLuong_Thang.Where(x => x.Thang == date.Month && x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault();
                     var thucTeNam = db.TongSanLuong_Nam.Where(x => x.Nam == date.Year).Select(x => x.GiaTri).FirstOrDefault();
                     var missingData = getMissingCount(date);
                     var missingDataCount = new List<NumberOfMissingData>();
@@ -70,11 +70,11 @@ namespace DuAn
                     var giaDien = db.GiaDiens.Where(x => x.NgayBatDau <= date && x.NgayKetThuc >= date).Select(x => x.Gia).FirstOrDefault();
                     var result = new HomeModel();
 
-                    var dukienThang_temp = db.SanLuongDuKiens.Where(x => x.LoaiID == 1 && x.ThoiGian == thang).Select(x => x.SanLuong).FirstOrDefault();
+                    //var dukienThang_temp = db.SanLuongDuKiens.Where(x => x.LoaiID == 1 && x.ThoiGian == thang).Select(x => x.SanLuong).FirstOrDefault();
                     result.duKienThang = db.SanLuongDuKiens.Where(x => x.LoaiID == CommonContext.LOAI_SAN_LUONG_THANG && x.ThoiGian == thang).Select(x => x.SanLuong).FirstOrDefault();
                     result.duKienNam = db.SanLuongDuKiens.Where(x => x.LoaiID == CommonContext.LOAI_SAN_LUONG_NAM && x.ThoiGian == nam).Select(x => x.SanLuong).FirstOrDefault();
-                    result.thucTeThang = thucteThangg.HasValue ? thucteThangg.Value : 0;
-                    result.thucTeNam = thucTeNam.HasValue ? thucteThangg.Value : 0;
+                    result.thucTeThang = thucteThang.HasValue ? thucteThang.Value : 0;
+                    result.thucTeNam = thucTeNam.HasValue ? thucTeNam.Value : 0;
                     result.data = list;
                     result.sanLuongTrongNgay = dataTrongNgay;
                     result.date = date;

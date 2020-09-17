@@ -1,15 +1,13 @@
-﻿using System;
+﻿using DuAn.Attribute;
+using DuAn.Models.CustomModel;
+using DuAn.Models.DbModel;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
-using Castle.Windsor.Installer;
-using DuAn.Attribute;
-using DuAn.Models.CustomModel;
-using DuAn.Models.DbModel;
-using iTextSharp.text.pdf.parser.clipper;
 
 namespace DuAn.Controllers
 {
