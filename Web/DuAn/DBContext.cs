@@ -663,43 +663,51 @@ namespace DuAn
 
         public static FileResult exportExcel(DateTime date)
         {
-            using (var db = new Model1())
+            try
             {
-                DateTime thang = new DateTime(date.Year, date.Month, 1);
-                var rawData = db.ChiSoChots.Where(x => x.thang == thang).ToList();
-                List<ExportExcelModel> data = new List<ExportExcelModel>();
-                foreach (ChiSoChot item in rawData)
+
+                using (var db = new Model1())
                 {
-                    int congToID = db.CongToes.Where(x => x.Serial == item.CongToSerial).Select(x => x.ID).FirstOrDefault();
-                    int diemDoID = db.DiemDo_CongTo.Where(x => x.CongToID == congToID).Select(x => x.DiemDoID).FirstOrDefault();
-                    var diemDo = db.DiemDoes.Where(x => x.ID == diemDoID).FirstOrDefault();
-                    KenhCustom giao = new KenhCustom()
+                    DateTime thang = new DateTime(date.Year, date.Month, 1);
+                    var rawData = db.ChiSoChots.Where(x => x.thang == thang).ToList();
+                    List<ExportExcelModel> data = new List<ExportExcelModel>();
+                    foreach (ChiSoChot item in rawData)
                     {
-                        bieuTong = item.TongGiao,
-                        phanKhang = item.PhanKhangGiao,
-                        bieu1 = item.BinhThuongGiao,
-                        bieu2 = item.CaoDiemGiao,
-                        bieu3 = item.ThapDiemGiao
-                    };
-                    KenhCustom nhan = new KenhCustom()
-                    {
-                        bieuTong = item.TongNhan,
-                        phanKhang = item.PhangKhangNhan,
-                        bieu1 = item.BinhThuongNhan,
-                        bieu2 = item.CaoDiemNhan,
-                        bieu3 = item.ThapDiemNhan
-                    };
-                    ExportExcelModel result = new ExportExcelModel()
-                    {
-                        maDiemDo = diemDo.MaDiemDo,
-                        type = diemDo.TinhChatDiemDo.TenTinhChat,
-                        dienNangGiao = giao,
-                        dienNangNhan = nhan
-                    };
-                    data.Add(result);
+                        int congToID = db.CongToes.Where(x => x.Serial == item.CongToSerial).Select(x => x.ID).FirstOrDefault();
+                        int diemDoID = db.DiemDo_CongTo.Where(x => x.CongToID == congToID).Select(x => x.DiemDoID).FirstOrDefault();
+                        var diemDo = db.DiemDoes.Where(x => x.ID == diemDoID).FirstOrDefault();
+                        KenhCustom giao = new KenhCustom()
+                        {
+                            bieuTong = item.TongGiao,
+                            phanKhang = item.PhanKhangGiao,
+                            bieu1 = item.BinhThuongGiao,
+                            bieu2 = item.CaoDiemGiao,
+                            bieu3 = item.ThapDiemGiao
+                        };
+                        KenhCustom nhan = new KenhCustom()
+                        {
+                            bieuTong = item.TongNhan,
+                            phanKhang = item.PhangKhangNhan,
+                            bieu1 = item.BinhThuongNhan,
+                            bieu2 = item.CaoDiemNhan,
+                            bieu3 = item.ThapDiemNhan
+                        };
+                        ExportExcelModel result = new ExportExcelModel()
+                        {
+                            maDiemDo = diemDo.MaDiemDo,
+                            type = diemDo.TinhChatDiemDo.TenTinhChat,
+                            dienNangGiao = giao,
+                            dienNangNhan = nhan
+                        };
+                        data.Add(result);
+                    }
+                    data.OrderBy(x => x.type);
+                    return GenerateExcel(data, "rpt_PhieuTongHop_GNDN_NMD_ChiTiet.xlsx", date);
                 }
-                data.OrderBy(x => x.type);
-                return GenerateExcel(data, "rpt_PhieuTongHop_GNDN_NMD_ChiTiet.xlsx", date);
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
         public static FileResult GenerateExcel(List<ExportExcelModel> data, string fileDir, DateTime date)
@@ -712,9 +720,10 @@ namespace DuAn
                     return null;
                 }
 
+
                 using (ExcelPackage package = new ExcelPackage(newFile))
                 {
-                    ExcelWorksheet wookSheet = package.Workbook.Worksheets[1];
+                    ExcelWorksheet wookSheet = package.Workbook.Worksheets[1]/*.Add("Sheet 1")*/;
                     int rowIndex = 12;
                     wookSheet.Row(4).Style.Font.Bold = true;
                     wookSheet.Cells[4, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
@@ -843,42 +852,49 @@ namespace DuAn
 
         public static string GetContenTypeFile(string path)
         {
-            var contentType = string.Empty;
-            var extension = Path.GetExtension(path);
-            switch (extension)
+            try
             {
-                case ".xlsx":
-                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    break;
-                case ".docx":
-                    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-                    break;
-                case ".xls":
-                    contentType = "application/vnd.ms-excel";
-                    break;
-                case ".doc":
-                    contentType = "application/msword";
-                    break;
-                case ".pdf":
-                    contentType = "application/pdf";
-                    break;
-                case ".xml":
-                    contentType = "application/xml";
-                    break;
-                case ".zip":
-                    contentType = "application/zip";
-                    break;
-                case ".rar":
-                    contentType = "application/octet-stream";
-                    break;
-                case ".csv":
-                    contentType = "text/csv";
-                    break;
-                default:
-                    contentType = "text/plain";
-                    break;
+                var contentType = string.Empty;
+                var extension = Path.GetExtension(path);
+                switch (extension)
+                {
+                    case ".xlsx":
+                        contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        break;
+                    case ".docx":
+                        contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                        break;
+                    case ".xls":
+                        contentType = "application/vnd.ms-excel";
+                        break;
+                    case ".doc":
+                        contentType = "application/msword";
+                        break;
+                    case ".pdf":
+                        contentType = "application/pdf";
+                        break;
+                    case ".xml":
+                        contentType = "application/xml";
+                        break;
+                    case ".zip":
+                        contentType = "application/zip";
+                        break;
+                    case ".rar":
+                        contentType = "application/octet-stream";
+                        break;
+                    case ".csv":
+                        contentType = "text/csv";
+                        break;
+                    default:
+                        contentType = "text/plain";
+                        break;
+                }
+                return contentType;
             }
-            return contentType;
+            catch (Exception ex)
+            {
+                return "get content type :" + ex.Message;
+            }
         }
 
         public static string ToRoman(int number)

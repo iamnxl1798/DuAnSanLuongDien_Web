@@ -162,6 +162,10 @@ namespace DuAn.Controllers
         {
             DateTime dateObject = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
             var result = DBContext.exportExcel(dateObject);
+            if(result == null)
+            {
+                return Json("Thiếu file báo cáo mẫu !!!", JsonRequestBehavior.AllowGet);
+            }
             return result;
         }
 

@@ -2390,6 +2390,9 @@
     <Content Include="fonts\OpenSans-Regular.ttf" />
     <Content Include="fonts\OpenSans-SemiBold.ttf" />
     <Content Include="fonts\OpenSans-SemiBoldItalic.ttf" />
+    <Content Include="rpt_PhieuTongHop_GNDN_NMD_ChiTiet.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\dropzone.min.js" />

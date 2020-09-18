@@ -64,6 +64,19 @@
                 transform: rotate(360deg);
             }
         }
+        .bs-example {
+            margin: 20px;
+        }
+        /* Some custom styles to beautify this example */
+        .hide-modal {
+            width: 250px;
+            position: absolute;
+            margin: 0 auto;
+            right: 0;
+            left: 0;
+            bottom: 20px;
+            z-index: 9999;
+        }
     </style>
 </head>
 <!--end::Head-->
@@ -145,14 +158,9 @@
                             <!--begin::Action-->
                             <div class="text-center mb-10 mb-lg-20">
                                 @* <a href="javascript:;" class="text-dark-50 text-hover-primary my-3 mr-2" id="kt_login_forgot">Forgot Password ?</a>*@
-                                <input type="button" class="btn btn-primary font-weight-bold py-2 w-auto my-1" id="submit_login_form"
-                                       onclick="CheckLogin()" value="Đăng nhập" />
+                                <input type="button" class="btn btn-primary font-weight-bold py-2 w-auto my-1" id="submit_login_form" value="Đăng nhập" />
                             </div>
-                            <div class="modal fade" id="modalLoader_Login" tabindex="-2" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true" data-backdrop="false">
-                                <div class="modal-dialog modal-dialog-centered modal-sm" style="justify-content:center; height:50px !important" role="document">
-                                    <div class="quan_loader"></div>
-                                </div>
-                            </div>
+                            <button type="button" id="hide-modal" class="btn btn-lg btn-primary hide-modal" data-toggle="modal">Hide Demo Modal</button>
                             <!--end::Action-->
                         </form>
                         <!--end::Form-->
@@ -230,6 +238,11 @@
         <!--end::Login-->
     </div>
     <!--end::Main-->
+    <div class="modal fade" id="modalLoader_Login" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-dialog-centered modal-sm" style="justify-content:center; height:50px !important" role="document">
+            <div class="quan_loader"></div>
+        </div>
+    </div>
     <script>var HOST_URL = "https://keenthemes.com/metronic/tools/preview";</script>
     <!--begin::Global Config(global config for global JS scripts)-->
     <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1200 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#6993FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#F3F6F9", "dark": "#212121" }, "light": { "white": "#ffffff", "primary": "#E1E9FF", "secondary": "#ECF0F3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#212121", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#ECF0F3", "gray-300": "#E5EAEE", "gray-400": "#D6D6E0", "gray-500": "#B5B5C3", "gray-600": "#80808F", "gray-700": "#464E5F", "gray-800": "#1B283F", "gray-900": "#212121" } }, "font-family": "Poppins" };</script>
@@ -249,14 +262,8 @@
         function hideError() {
             document.getElementById("errorLogin").innerText = "";
         }
-        var showModalLoading = function () {
-            $('#modalLoader_Login').modal('show');
-        }
-        var hideModalLoading = function () {
-            $('#modalLoader_Login').modal("hide");
-        }
-
         jQuery(document).ready(function () {
+
             var form_login = document.getElementById("kt_login_signin_form");
             // Execute a function when the user releases a key on the keyboard
             form_login.addEventListener("keyup", function (event) {
@@ -268,37 +275,50 @@
                     document.getElementById("submit_login_form").click();
                 }
             });
-        })
 
-        function CheckLogin() {
-            showModalLoading();
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            $.ajax({
-                type: "POST",
-                dataType: 'json',
-                data: {
-                    username: username,
-                    password: password
-                },
-                url: '@Url.Action("CheckLogin", "Account")',
-                success: function (response) {
-                    if (response == "Success") {
-                        window.location.href = "@Url.Action("Index", "Home")";
-                    } else if (response == "Fail") {
-                        document.getElementById("errorLogin").innerText = "Username or password is wrong !!!"
-                    } else {
-                        alert(response);
-                    }
-                    hideModalLoading();
-                },
-                error: function (response) {
-                    alert(response);
-                    hideModalLoading();
-                }
+            $("#hide-modal").click(function () {
+                $("#modalLoader_Login").modal('hide');
+
             });
-        }
 
+            var showModalLoading = function () {
+                $('#modalLoader_Login').modal('show');
+            }
+            var hideModalLoading = function () {
+                $('#modalLoader_Login').modal('hide');
+            }
+
+            $('#submit_login_form').on('click', function () {
+
+                showModalLoading();
+                var username = document.getElementById("username").value;
+                var password = document.getElementById("password").value;
+                $.ajax({
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    url: '@Url.Action("CheckLogin", "Account")',
+                    success: function (response) {
+                        $('#modalLoader_Login').modal('hide');
+                        if (response == "Success") {  
+                            window.location.href = "@Url.Action("Index", "Home")";
+                        } else if (response == "Fail") {
+                            document.getElementById("errorLogin").innerText = "Username or password is wrong !!!"
+                        } else {
+                            alert(response);
+                        }
+                        //hideModalLoading();
+                    },
+                    error: function (response) {
+                        alert(response);
+                        hideModalLoading();
+                    }
+                });
+            })
+        })
     </script>
     <!--end::Page Scripts-->
 </body>
