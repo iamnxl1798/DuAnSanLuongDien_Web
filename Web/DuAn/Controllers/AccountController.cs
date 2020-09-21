@@ -174,13 +174,13 @@ namespace DuAn.Controllers
         [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Edit })]
         public string UpdateAccount(int id, HttpPostedFileBase avatar, string password, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
         {
-            string fileName = "default_avatar.png";
+            string fileName = "avatar_" + id + ".png";
             try
             {
                 if (avatar != null)
                 {
                     //fileName = System.IO.Path.GetFileName(avatar.FileName) + "/" + id;
-                    fileName = "avatar_" + id + ".png";
+                    //fileName = "avatar_" + id + ".png";
                     string path_avatar = System.IO.Path.Combine(Server.MapPath("~/images/avatarAccount"), fileName);
                     // file is uploaded
                     avatar.SaveAs(path_avatar);
@@ -196,7 +196,7 @@ namespace DuAn.Controllers
                     Address = address,
                     Phone = phone,
                     IdentifyCode = icode,
-                    DOB = DateTime.ParseExact(dob, "dd - MMMM - yyyy", null),
+                    DOB = DateTime.ParseExact(dob, "dd - MM - yyyy", null),
                     RoleID = roleID
                 };
                 AccountDAO.UpdateAccout(acc);
@@ -233,7 +233,7 @@ namespace DuAn.Controllers
                     Address = address,
                     Phone = phone,
                     IdentifyCode = icode,
-                    DOB = DateTime.ParseExact(dob, "dd - MMMM - yyyy", null),
+                    DOB = DateTime.ParseExact(dob, "dd - MM - yyyy", null),
                     RoleID = roleID
                 };
 

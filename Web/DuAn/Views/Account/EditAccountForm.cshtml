@@ -8,52 +8,53 @@
 
 
 <div class="modal-dialog modal-dialog-centered modal-xl" style="width:600px !important" role="document">
-    <div class="modal-content card card-custom gutter-b example example-compact">
-        <!--Card header-->
-        <div class="modal-header">
-            @if (Model.ID == 0)
-            {
-                <h5 class="modal-title">Tạo mới tài khoản :</h5>
-            }
-            else
-            {
-                <h5 class="modal-title">Chỉnh sửa tài khoản :</h5>
-            }
-        </div>
-        <!--begin::Form-->
-        <form class="form"@* action="/Account/UpdateAccount" method="POST"*@>
-            <div class="card-body">
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label text-left">Avatar:</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <div class="image-input image-input-outline" id="kt_user_add_avatar">
-                            <div class="image-input-wrapper" style="background-image: url(../images/avatarAccount/@Model.Avatar)"></div>
-                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Thay đổi">
-                                <i class="fa fa-pen icon-sm text-muted"></i>
-                                <input type="file" id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
-                                <input type="hidden" name="profile_avatar_remove" />
-                            </label>
-                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Hủy bỏ">
-                                <i class="ki ki-bold-close icon-xs text-muted"></i>
-                            </span>
-                        </div>
-                        <span class="form-text text-muted">Định dạng phù hợp: png, jpg, jpeg.</span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">ID:</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <input type="number" class="form-control form-control-solid" placeholder="ID" name="id" id="id" value="@Model.ID" disabled />
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Tên đăng nhập :</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <input type="text" class="form-control form-control-solid" placeholder="Nhập username" id="username" value="@Model.Username"
-                               onblur='CheckUsername()' onchange='hideError("errorUsername")' onkeypress='hideError("errorUsername")' />
-                        <div class="errorRegistrationAccount" id="errorUsername" style="color:red"></div>
-                    </div>
-                    <script type="text/javascript">
+   <div class="modal-content card card-custom gutter-b example example-compact">
+      <!--Card header-->
+      <div class="modal-header">
+         @if (Model.ID == 0)
+         {
+            <h5 class="modal-title">Tạo mới tài khoản :</h5>
+         }
+         else
+         {
+            <h5 class="modal-title">Chỉnh sửa tài khoản :</h5>
+         }
+      </div>
+      <!--begin::Form-->
+      <form class="form" @* action="/Account/UpdateAccount" method="POST"*@>
+         <div class="card-body">
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label text-left">Avatar:</label>
+               <div class="col-lg-9 col-xl-9">
+                  <div class="image-input image-input-outline" id="kt_user_add_avatar">
+                     <div class="image-input-wrapper" style="background-image: url(../images/avatarAccount/@Model.Avatar)"></div>
+                     <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Thay đổi">
+                        <i class="fa fa-pen icon-sm text-muted"></i>
+                        <input type="file" id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
+                        <input type="hidden" name="profile_avatar_remove" />
+                     </label>
+                     <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Hủy bỏ">
+                        <i class="ki ki-bold-close icon-xs text-muted"></i>
+                     </span>
+                  </div>
+                  <span class="form-text text-muted">Định dạng phù hợp: png, jpg, jpeg.</span>
+               </div>
+            </div>
+            <div class="form-group row d-none">
+                   <label class="col-xl-3 col-lg-3 col-form-label">ID:</label>
+                   <div class="col-lg-9 col-xl-9">
+                       <input type="number" class="form-control form-control-solid" placeholder="ID" name="id" id="id" value="@Model.ID" disabled />
+                   </div>
+               </div>
+            @*<input type="hidden" class="form-control form-control-solid" placeholder="ID" name="id" id="id" value="@Model.ID" />*@
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Tên đăng nhập :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <input type="text" class="form-control form-control-solid" placeholder="Nhập tên đăng nhập" id="username" value="@Model.Username"
+                         onblur='CheckUsername()' onchange='hideError("errorUsername")' onkeypress='hideError("errorUsername")' />
+                  <div class="errorRegistrationAccount" id="errorUsername" style="color:red"></div>
+               </div>
+               <script type="text/javascript">
                         function CheckUsername() {
                             var username = document.getElementById("username").value;
                             $.ajax({
@@ -75,126 +76,126 @@
                                 }
                             });
                         };
-                    </script>
-                </div>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Password:</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <div class="input-group">
-                            <input style="float:left" type="password" class="form-control form-control-solid" placeholder="Password" name="password" id="password" value="@Model.Password" />
-                            <div class="input-group-append"><span class="input-group-text px-4" style="border:none"><i id="pass-status" class="fa fa-eye" aria-hidden="true" onClick="viewPassword()"></i></span></div>
-                        </div>            
-                        <div class="errorRegistrationAccount" id="errorPassword" style="color:red"></div>
-                    </div>
-                </div>
-                <script>
-                    function viewPassword() {
-                        var passwordInput = document.getElementById('password');
-                        var passStatus = document.getElementById('pass-status');
+               </script>
+            </div>
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Mật khẩu:</label>
+               <div class="col-lg-9 col-xl-9">
+                  <div class="input-group">
+                     <input style="float:left" type="password" class="form-control form-control-solid" placeholder="Nhập mật khẩu" name="password" id="password" value="@Model.Password" />
+                     <div class="input-group-append"><span class="input-group-text px-4" style="border:none"><i id="pass-status" class="fa fa-eye" aria-hidden="true" onClick="viewPassword()"></i></span></div>
+                  </div>
+                  <div class="errorRegistrationAccount" id="errorPassword" style="color:red"></div>
+               </div>
+            </div>
+            <script>
+               function viewPassword() {
+                  var passwordInput = document.getElementById('password');
+                  var passStatus = document.getElementById('pass-status');
 
-                        if (passwordInput.type == 'password') {
-                            passwordInput.type = 'text';
-                            passStatus.className = 'fa fa-eye-slash';
+                  if (passwordInput.type == 'password') {
+                     passwordInput.type = 'text';
+                     passStatus.className = 'fa fa-eye-slash';
 
-                        }
-                        else {
-                            passwordInput.type = 'password';
-                            passStatus.className = 'fa fa-eye';
-                        }
-                    }
-                </script>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Họ và tên :</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <input type="text" class="form-control form-control-solid" placeholder="Nhập họ và tên đây đủ" id="fullname" value="@Model.Fullname"
-                               onkeypress='hideError("errorFullname")' onchange='hideError("errorFullname")' />
-                        <div class="errorRegistrationAccount" id="errorFullname" style="color:red"></div>
-                    </div>
-                    @*<span class="form-text text-muted">Nhập họ và tên đây đủ</span>*@
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Sinh ngày :</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <div class="datepicker date input-group p-0" data-dob="@Model.DOB">
-                            <input type="text" placeholder="Date of birth" class="form-control" id="dob" readonly>
-                            <div class="input-group-append"><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
-                        </div>
-                        <script type="text/javascript">
-                            var dob = new Date($('.datepicker').attr('data-dob'));
-                            $('.datepicker').datepicker({
-                                clearBtn: true,
-                                format: "dd - MM - yyyy"
-                            });
-                            $('.datepicker').datepicker('setDate', dob);
-                        </script>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Số điện thoại :</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <input type="text" class="form-control form-control-solid" placeholder="Nhập số điện thoại liên hệ" id="phone" value="@Model.Phone"
-                               onkeypress='hideError("errorPhone")' onblur="checkPhone()" onchange='hideError("errorPhone")' />
-                        @*<span class="form-text text-muted">Nhập số điện thoại liên hệ</span>*@<span class="form-text text-muted"></span><span class="form-text text-muted"></span>
-                        <div class="errorRegistrationAccount" id="errorPhone" style="color:red"></div>
-                    </div>
-                </div>
-
-                <script>
-                    function checkPhone() {
-                        // phone number has 10 numbers
-                        var re = new RegExp("[0-9]{10}");
-                        var phone = document.getElementById("phone").value;
-                        if (!re.test(phone)) {
-                            document.getElementById("errorPhone").innerText = "Số điện thoại không phù hợp !!!";
-                        }
-                    }
-                </script>
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Email :</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <input type="email" class="form-control form-control-solid" placeholder="Nhập địa chỉ Email liên hệ" id="email" value="@Model.Email"
-                               onkeypress='hideError("errorEmail")' onchange='hideError("errorEmail")' />
-                        <div class="errorRegistrationAccount" id="errorEmail" style="color:red"></div>
-                        @* <span class="form-text text-muted">Nhập địa chỉ Email liên hệ</span>*@
-                        <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Địa chỉ :</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <input type="text" class="form-control form-control-solid" placeholder="Nhập địa chỉ nơi ở hiện tại" id="address" value="@Model.Address"
-                               onkeypress='hideError("errorAddress")' onchange='hideError("errorAddress")' />
-                        <div class="errorRegistrationAccount" id="errorAddress" style="color:red"></div>
-                        @*<span class="form-text text-muted">Nhập địa chỉ nơi ở hiện tại</span>*@
-                        <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">CMND / CCCD :</label>
-                    <div class="col-lg-9 col-xl-9">
-                        <input type="text" class="form-control form-control-solid" placeholder="Nhập chứng minh nhân dân / căn cước công dân" id="icode" value="@Model.IdentifyCode"
-                               onkeypress='hideError("errorIdentifyCode")' onchange='hideError("errorIdentifyCode")' />
-                        <div class="errorRegistrationAccount" id="errorIdentifyCode" style="color:red"></div>
-                        @*<span class="form-text text-muted">Nhập chứng minh nhân dân / căn cước công dân</span>*@
-                        <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
-                    </div>
-                </div>
-                <div class="form-group row" style="margin-right: 20px" id="all-role" data-role="@Model.Role">
-                    <label class="col-xl-3 col-lg-3 col-form-label">Vai trò :</label>
-                </div>
+                  }
+                  else {
+                     passwordInput.type = 'password';
+                     passStatus.className = 'fa fa-eye';
+                  }
+               }
+            </script>
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Họ và tên :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <input type="text" class="form-control form-control-solid" placeholder="Nhập họ và tên đây đủ" id="fullname" value="@Model.Fullname"
+                         onkeypress='hideError("errorFullname")' onchange='hideError("errorFullname")' />
+                  <div class="errorRegistrationAccount" id="errorFullname" style="color:red"></div>
+               </div>
+               @*<span class="form-text text-muted">Nhập họ và tên đây đủ</span>*@
             </div>
 
-            <!--end::Form-->
-            <div class="modal-footer">
-                @*<label id="resultAccount" class="label label-lg font-weight-bold label-light-info label-inline"></label>*@
-                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
-                <button type="button" class="btn btn-primary font-weight-bold" @*onclick="return CheckTotalAccount()"*@ id="submitAccount">Lưu thay đổi</button>
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Sinh ngày :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <div class="datepicker date input-group p-0" data-dob="@Model.DOB">
+                     <input type="text" placeholder="Date of birth" class="form-control" id="dob" readonly>
+                     <div class="input-group-append"><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
+                  </div>
+                  <script type="text/javascript">
+                     var dob = new Date($('.datepicker').attr('data-dob'));
+                     $('.datepicker').datepicker({
+                        clearBtn: true,
+                        format: "dd - mm - yyyy",
+                     });
+                     $('.datepicker').datepicker('setDate', dob);
+                  </script>
+               </div>
             </div>
-        </form>
-    </div>
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Số điện thoại :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <input type="text" class="form-control form-control-solid" placeholder="Nhập số điện thoại liên hệ" id="phone" value="@Model.Phone"
+                         onkeypress='hideError("errorPhone")' onblur="checkPhone()" onchange='hideError("errorPhone")' />
+                  @*<span class="form-text text-muted">Nhập số điện thoại liên hệ</span>*@<span class="form-text text-muted"></span><span class="form-text text-muted"></span>
+                  <div class="errorRegistrationAccount" id="errorPhone" style="color:red"></div>
+               </div>
+            </div>
+
+            <script>
+               function checkPhone() {
+                  // phone number has 10 numbers
+                  var re = new RegExp("[0-9]{10}");
+                  var phone = document.getElementById("phone").value;
+                  if (!re.test(phone)) {
+                     document.getElementById("errorPhone").innerText = "Số điện thoại không phù hợp !!!";
+                  }
+               }
+            </script>
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Email :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <input type="email" class="form-control form-control-solid" placeholder="Nhập địa chỉ Email liên hệ" id="email" value="@Model.Email"
+                         onkeypress='hideError("errorEmail")' onchange='hideError("errorEmail")' />
+                  <div class="errorRegistrationAccount" id="errorEmail" style="color:red"></div>
+                  @* <span class="form-text text-muted">Nhập địa chỉ Email liên hệ</span>*@
+                  <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Địa chỉ :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <input type="text" class="form-control form-control-solid" placeholder="Nhập địa chỉ nơi ở hiện tại" id="address" value="@Model.Address"
+                         onkeypress='hideError("errorAddress")' onchange='hideError("errorAddress")' />
+                  <div class="errorRegistrationAccount" id="errorAddress" style="color:red"></div>
+                  @*<span class="form-text text-muted">Nhập địa chỉ nơi ở hiện tại</span>*@
+                  <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
+               </div>
+            </div>
+
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">CMND / CCCD :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <input type="text" class="form-control form-control-solid" placeholder="Nhập chứng minh nhân dân / căn cước công dân" id="icode" value="@Model.IdentifyCode"
+                         onkeypress='hideError("errorIdentifyCode")' onchange='hideError("errorIdentifyCode")' />
+                  <div class="errorRegistrationAccount" id="errorIdentifyCode" style="color:red"></div>
+                  @*<span class="form-text text-muted">Nhập chứng minh nhân dân / căn cước công dân</span>*@
+                  <span class="form-text text-muted"></span><span class="form-text text-muted"></span>
+               </div>
+            </div>
+            <div class="form-group row" style="margin-right: 20px" id="all-role" data-role="@Model.Role">
+               <label class="col-xl-3 col-lg-3 col-form-label">Vai trò :</label>
+            </div>
+         </div>
+
+         <!--end::Form-->
+         <div class="modal-footer">
+            @*<label id="resultAccount" class="label label-lg font-weight-bold label-light-info label-inline"></label>*@
+            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-primary font-weight-bold" @*onclick="return CheckTotalAccount()"*@ id="submitAccount">Lưu thay đổi</button>
+         </div>
+      </form>
+   </div>
 </div>
 <!--end::Card-->
 <!--begin::Global Theme Bundle(used by all pages)-->
