@@ -152,7 +152,7 @@ namespace DuAn.Controllers
                {
                   id = i.ID.ToString(),
                   parent = i.Parent,
-                  text = i.Text,
+                  text = i.Description,
                   state = new Dictionary<string, bool>()
                };
 

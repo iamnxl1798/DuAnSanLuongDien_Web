@@ -2463,6 +2463,7 @@
     <Content Include="Views\Home\getDoanhThuThang.cshtml" />
     <Content Include="Views\Home\getDoanhThuNam.cshtml" />
     <Content Include="Views\Admin\CapNhatGiaDien.cshtml" />
+    <Content Include="Views\Shared\_ConfirmDeleteModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

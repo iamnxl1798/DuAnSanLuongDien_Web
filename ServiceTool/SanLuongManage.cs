@@ -110,7 +110,7 @@ namespace ServiceTool
                         };
                         sl.ChuKy = short.Parse((i - 1).ToString());
                         /*sl.GiaTri = Convert.ToDouble(string.Format("{0:0.##}", word[i]) );*/
-                        sl.GiaTri = Convert.ToDouble(word[i]);
+                        sl.GiaTri = Convert.ToDouble(word[i]) * 1000; // from kWh to Wh
                         if (!SanLuongDAO.checkExistSL(sl))
                         {
                            var rs = SanLuongDAO.InsertSanLuong(sl);

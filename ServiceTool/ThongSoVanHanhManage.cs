@@ -99,20 +99,21 @@ namespace ServiceTool
                   tsvh.ThoiGianCongTo = dt;
 
                   var bool_rs = true;
+                  var he_so_nhan = 0.001;//from W to kW
 
-                  tsvh.P_Nhan = Common.ParseDouble(data[6 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.P_Nhan = Common.ParseDouble(data[6 - 1].Split(',')[1], ref bool_rs) ;
                   tsvh.P_Giao = Common.ParseDouble(data[7 - 1].Split(',')[1], ref bool_rs);
 
-                  tsvh.Q_Nhan = Common.ParseDouble(data[13 - 1].Split(',')[1], ref bool_rs);
-                  tsvh.Q_Giao = Common.ParseDouble(data[14 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.Q_Nhan = Common.ParseDouble(data[13 - 1].Split(',')[1], ref bool_rs) ;
+                  tsvh.Q_Giao = Common.ParseDouble(data[14 - 1].Split(',')[1], ref bool_rs) ;
 
-                  tsvh.P_Nhan_BT = Common.ParseDouble(data[19 - 1].Split(',')[1], ref bool_rs);
-                  tsvh.P_Nhan_CD = Common.ParseDouble(data[20 - 1].Split(',')[1], ref bool_rs);
-                  tsvh.P_Nhan_TD = Common.ParseDouble(data[21 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.P_Nhan_BT = Common.ParseDouble(data[19 - 1].Split(',')[1], ref bool_rs) ;
+                  tsvh.P_Nhan_CD = Common.ParseDouble(data[20 - 1].Split(',')[1], ref bool_rs) ;
+                  tsvh.P_Nhan_TD = Common.ParseDouble(data[21 - 1].Split(',')[1], ref bool_rs) ;
 
-                  tsvh.P_Giao_BT = Common.ParseDouble(data[22 - 1].Split(',')[1], ref bool_rs);
-                  tsvh.P_Giao_CD = Common.ParseDouble(data[23 - 1].Split(',')[1], ref bool_rs);
-                  tsvh.P_Giao_TD = Common.ParseDouble(data[24 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.P_Giao_BT = Common.ParseDouble(data[22 - 1].Split(',')[1], ref bool_rs) ;
+                  tsvh.P_Giao_CD = Common.ParseDouble(data[23 - 1].Split(',')[1], ref bool_rs) ;
+                  tsvh.P_Giao_TD = Common.ParseDouble(data[24 - 1].Split(',')[1], ref bool_rs) ;
 
                   tsvh.PhaseA_Amps = Common.ParseDouble(data[72 - 1].Split(',')[1], ref bool_rs);
                   tsvh.PhaseA_Volts = Common.ParseDouble(data[73 - 1].Split(',')[1], ref bool_rs);

@@ -1,80 +1,80 @@
 ﻿//TableDataUser
 
 var loadDataTableAccount = function () {
-    $('#my_datatable_account').DataTable({
-        "responsive": true,
-        "colReorder": true,
-        "processing": true,
-        "language": {
-            "processing": "Cập nhật thông tin .....",
-            "search": "Tìm kiếm",
-            "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
-            "zeroRecords": "Không tìm thấy bản ghi",
-            "info": "Trang _PAGE_ / _PAGES_",
-            "infoEmpty": "Không tìm thấy bản ghi",
-            //"infoFiltered": "(filtered from _MAX_ total records)",
-            "decimal": ",",
-            "thousands": ".",
-            //"loadingRecords": "&nbsp;",
-            //"processing": "Loading...",
-            /*"paginate": {
-                "first": "Đầu",
-                "last": "Cuối"
-            }*/
-        },
-        "serverSide": true,
-        "order": [0, "asc"],
-        "ajax": {
-            url: '/Account/GetListAccountShort',
-            type: "POST",
-            dataType: 'json'
-        },
-        "columns": [
-            { "data": "ID", "name": "ID" },
-            {
-                "data": {
-                    Username: "Username",
-                    Avatar: "Avatar"
-                },
-                "name": "Username",
-                render: function (data, type, full) {
-                    return '<img class="" src="' + "../images/avatarAccount/" + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
-                }
+   $('#my_datatable_account').DataTable({
+      "responsive": true,
+      "colReorder": true,
+      "processing": true,
+      "language": {
+         "processing": "Cập nhật thông tin .....",
+         "search": "Tìm kiếm",
+         "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
+         "zeroRecords": "Không tìm thấy bản ghi",
+         "info": "Trang _PAGE_ / _PAGES_",
+         "infoEmpty": "Không tìm thấy bản ghi",
+         //"infoFiltered": "(filtered from _MAX_ total records)",
+         "decimal": ",",
+         "thousands": ".",
+         //"loadingRecords": "&nbsp;",
+         //"processing": "Loading...",
+         /*"paginate": {
+             "first": "Đầu",
+             "last": "Cuối"
+         }*/
+      },
+      "serverSide": true,
+      "order": [0, "asc"],
+      "ajax": {
+         url: '/Account/GetListAccountShort',
+         type: "POST",
+         dataType: 'json'
+      },
+      "columns": [
+         { "data": "ID", "name": "ID" },
+         {
+            "data": {
+               Username: "Username",
+               Avatar: "Avatar"
             },
-            { "data": "Fullname", "name": "Fullname" },
-            { "data": "Phone", "name": "Phone" },
-            { "data": "Email", "name": "Email" },
-            {
-                "data": {
-                    Role: "Role",
-                    RoleColorClass: "RoleColorClass"
-                },
-                "name": "Role",
-                render: function (data) {
-                    /*var status = {
-                        'Lãnh Đạo': 'label-light-danger',
-                        'Quản Trị': 'label-light-info',
-                        'Chuyên Viên': 'label-light-primary'
-                        //label-light-danger //label-light-warning
-                    };
-                    if (Role in status) {*/
-                    return '<span class="label label-lg font-weight-bold ' + data.RoleColorClass + ' label-inline">' + data.Role + '</span>';
-                    /*} else {
-                        return '<span class="label label-lg font-weight-bold  label-light-success label-inline">' + Role + '</span>';
-                    }*/
+            "name": "Username",
+            render: function (data, type, full) {
+               return '<img class="" src="' + "../images/avatarAccount/" + data.Avatar + '" style="float:left; width:20px; height:20px" /><span style="margin-left:10px">' + data.Username + '</span>';
+            }
+         },
+         { "data": "Fullname", "name": "Fullname" },
+         { "data": "Phone", "name": "Phone" },
+         { "data": "Email", "name": "Email" },
+         {
+            "data": {
+               Role: "Role",
+               RoleColorClass: "RoleColorClass"
+            },
+            "name": "Role",
+            render: function (data) {
+               /*var status = {
+                   'Lãnh Đạo': 'label-light-danger',
+                   'Quản Trị': 'label-light-info',
+                   'Chuyên Viên': 'label-light-primary'
+                   //label-light-danger //label-light-warning
+               };
+               if (Role in status) {*/
+               return '<span class="label label-lg font-weight-bold ' + data.RoleColorClass + ' label-inline">' + data.Role + '</span>';
+               /*} else {
+                   return '<span class="label label-lg font-weight-bold  label-light-success label-inline">' + Role + '</span>';
+               }*/
 
-                }
+            }
+         },
+         {
+            "data": {
+               Actions: "Actions",
+               ID: "ID"
             },
-            {
-                "data": {
-                    Actions: "Actions",
-                    ID: "ID"
-                },
-                "name": "Actions",
-                "className": 'dt-center',
-                "orderable": false,
-                "render": function (data, type, full) {
-                    return '\<!--\
+            "name": "Actions",
+            "className": 'dt-center',
+            "orderable": false,
+            "render": function (data, type, full) {
+               return '\<!--\
 						<div class="dropdown dropdown-inline">\
 	                            <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown" title="Other options">\
 									<span class="svg-icon svg-icon-md">\
@@ -149,79 +149,79 @@ var loadDataTableAccount = function () {
 								</span>\
 	                        </a>\
 	                    ';
-                }
             }
-        ]
-    });
+         }
+      ]
+   });
 }
 $(document).ready(loadDataTableAccount);
 
 $('#my_datatable_account').on('click', '.bt-open-edit-account-form', function () {
-    var url = "/Account/EditAccountForm";
-    var id = $(this).attr("data-id");
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: {
-            accID: id
-        },
-        success: function (data) {
-            $('#formEditAccount').html(data);
-            $('#formEditAccount').modal('show');
-            $('#formEditAccount').modal({
-                backdrop: false
-            });
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status == 401) {
-                showMessage('Bạn không có quyền này', false);
-            } else {
-                showMessage('Đã xảy ra lỗi trong quá trình tải form chỉnh sửa tài khoản ' + jqXHR.responseText, false);
-            }
-        }
-    });
+   var url = "/Account/EditAccountForm";
+   var id = $(this).attr("data-id");
+   $.ajax({
+      url: url,
+      type: 'POST',
+      data: {
+         accID: id
+      },
+      success: function (data) {
+         $('#formEditAccount').html(data);
+         $('#formEditAccount').modal('show');
+         $('#formEditAccount').modal({
+            backdrop: false
+         });
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+         if (jqXHR.status == 401) {
+            showMessage('Bạn không có quyền này', false);
+         } else {
+            showMessage('Đã xảy ra lỗi trong quá trình tải form chỉnh sửa tài khoản ' + jqXHR.responseText, false);
+         }
+      }
+   });
 });
 
 
 var reloadAccountDatatable = function () {
-    $('#my_datatable_account').DataTable().ajax.reload(null, false);
+   $('#my_datatable_account').DataTable().ajax.reload(null, false);
 };
-/*@* $('.modal-edit-account').on('hidden.bs.hidden.bs.modal', reloadAccountDatatable);*@*/
+
 
 $('#my_datatable_account').on('click', '.bt-delete-account', function () {
-    //add xac thuc trc quá trình xoa
-    var id = $(this).attr("data-id");
-    $('#btnDelteYes').attr("data-id", id);
-    $('#confirmDelete').modal('show');
-    $('#confirmDelete').modal({
-        backdrop: true
-    });
+   //add xac thuc trc quá trình xoa
+   var id = $(this).attr("data-id");
+   $('#btnDeleteYes').attr("data-id", id);
+   $('#confirmDelete').modal('show');
+   $('#confirmDelete').modal({
+      backdrop: true
+   });
 });
 
-$('#btnDelteYes').on('click', function (e) {
-    e.preventDefault();
-    var url = "/Account/DeleteAccount";
-    var id = $(this).attr("data-id");
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: {
-            AccID: id
-        },
-        success: function (data) {
-            if (!data) {
-                showMessage('Xóa tài khoản không thành công !!!', false);
-            } else {
-                showMessage("Xóa thành công !!!", true);
-                reloadAccountDatatable();
-            }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            if (xhr.status == 401) {
-                showMessage('Bạn không có quyền này', false);
-            } else {
-                showMessage(xhr.responseText, false);
-            }
-        }
-    });
+$('#btnDeleteYes').on('click', function (e) {
+   e.preventDefault();
+   var url = "/Account/DeleteAccount";
+   var id = $(this).attr("data-id");
+   $.ajax({
+      url: url,
+      type: 'POST',
+      data: {
+         AccID: id
+      },
+      success: function (data) {
+         if (!data) {
+            showMessage('Xóa tài khoản không thành công !!!', false);
+         } else {
+            showMessage("Xóa thành công !!!", true);
+            reloadAccountDatatable();
+         }
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+         if (xhr.status == 401) {
+            showMessage('Bạn không có quyền này', false);
+         } else {
+            showMessage(xhr.responseText, false);
+         }
+      }
+   });
 });

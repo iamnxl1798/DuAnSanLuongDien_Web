@@ -10,7 +10,7 @@ namespace DuAn.Models.CustomModel
     {
         public List<ThongSoAndTenDiemDo> thongSo { get; set; }
         public List<DiemDo> allDiemDo { get; set; }
-        public string getTime(DateTime date) { return date.ToString("dd/MM/yyyy hh:mm"); }
+        public string getTime(DateTime date) { return date.ToString("dd/MM/yyyy HH:mm"); }
         public List<DateTime> dateDistinc { get; set; }
         public int diemDoIndex{get;set;}
         public int thoiGianIndex { get; set; }

@@ -1,79 +1,79 @@
 ﻿
 var loadDatatableRole = function () {
-    $('#my_datatable_role').DataTable({
-        "colReorder": true,
-        "responsive": true,
-        "serverSide": true,
-        "processing": true,
-        "language": {
-            "processing": "Loading Database .....",
-            "search": "Tìm kiếm",
-            "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
-            "zeroRecords": "Không tìm thấy bản ghi",
-            "info": "Trang _PAGE_ / _PAGES_",
-            "infoEmpty": "Không tìm thấy bản ghi",
-            //"infoFiltered": "(filtered from _MAX_ total records)",
-            "decimal": ",",
-            "thousands": ".",
-            //"loadingRecords": "&nbsp;",
-            //"processing": "Loading...",
-            /*"paginate": {
-                "first": "Đầu",
-                "last": "Cuối"
-            }*/
-        },
-        "searching": true,
-        /*@* "ordering": false,*@*/
-        "order": [0, "asc"],
-        "ajax": {
-            url: '/RoleAccount/GetAllRole',
-            type: "POST",
-            dataType: 'json'/*@*,
+   $('#my_datatable_role').DataTable({
+      "colReorder": true,
+      "responsive": true,
+      "serverSide": true,
+      "processing": true,
+      "language": {
+         "processing": "Loading Database .....",
+         "search": "Tìm kiếm",
+         "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
+         "zeroRecords": "Không tìm thấy bản ghi",
+         "info": "Trang _PAGE_ / _PAGES_",
+         "infoEmpty": "Không tìm thấy bản ghi",
+         //"infoFiltered": "(filtered from _MAX_ total records)",
+         "decimal": ",",
+         "thousands": ".",
+         //"loadingRecords": "&nbsp;",
+         //"processing": "Loading...",
+         /*"paginate": {
+             "first": "Đầu",
+             "last": "Cuối"
+         }*/
+      },
+      "searching": true,
+      /*@* "ordering": false,*@*/
+      "order": [0, "asc"],
+      "ajax": {
+         url: '/RoleAccount/GetAllRole',
+         type: "POST",
+         dataType: 'json'/*@*,
 							success: function () {
 								alert("Success get all role");
 							},
 				error: function () {
 					alert("Fail get all role");
 				}*@*/
-        },
-        "columns": [
-            {
-                "data": "ID",
-                "name": "ID",
-                orderable: true
+      },
+      "columns": [
+         {
+            "data": "ID",
+            "name": "ID",
+            orderable: true
+         },
+         {
+            "data": {
+               Role: "Role",
+               RoleColorClass: "RoleColorClass"
             },
-            {
-                "data": {
-                    Role: "Role",
-                    RoleColorClass: "RoleColorClass"
-                },
-                "name": "Role",
-                render: function (data) {
-                    /*var status = {
-                        'Lãnh Đạo': 'label-light-danger',
-                        'Quản Trị': 'label-light-info',
-                        'Chuyên Viên': 'label-light-primary'
-                        //label-light-danger //label-light-warning
-                    };
-                    if (Role in status) {*/
-                    return '<span class="label label-lg font-weight-bold ' + data.RoleColorClass + ' label-inline">' + data.Role + '</span>';
-                    /*} else {
-                        return '<span class="label label-lg font-weight-bold  label-light-success label-inline">' + Role + '</span>';
-                    }*/
+            "name": "Role",
+            render: function (data) {
+               /*var status = {
+                   'Lãnh Đạo': 'label-light-danger',
+                   'Quản Trị': 'label-light-info',
+                   'Chuyên Viên': 'label-light-primary'
+                   //label-light-danger //label-light-warning
+               };
+               if (Role in status) {*/
+               return '<span class="label label-lg font-weight-bold ' + data.RoleColorClass + ' label-inline">' + data.Role + '</span>';
+               /*} else {
+                   return '<span class="label label-lg font-weight-bold  label-light-success label-inline">' + Role + '</span>';
+               }*/
 
-                }
+            }
+         },
+         {
+            "data": {
+               Actions: "Actions",
+               ID: "ID",
+               Role: "Role"
             },
-            {
-                "data": {
-                    Actions: "Actions",
-                    ID: "ID",
-                    Role: "Role"
-                },
-                "name": "Actions",
-                "className": 'dt-center',
-                "orderable": false,
-                "render": function (data, type, full) {
-                    return '\<!--\
+            "name": "Actions",
+            "className": 'dt-center',
+            "orderable": false,
+            "render": function (data, type, full) {
+               return '\<!--\
 	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 bt-filter-account" data-role="'+ data.Role + '" title = "Show Account">\
 								<span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-icon">\
@@ -109,85 +109,85 @@ var loadDatatableRole = function () {
 								</span>\
 	                        </a>\
 	                    ';
-                }
             }
-        ]
-    });
+         }
+      ]
+   });
 }
 $(document).ready(loadDatatableRole);
 
 $('#my_datatable_role').on('click', '.bt-open-edit-role-form', function () {
-    var url = "/RoleAccount/EditRoleForm";
-    var id = $(this).attr("data-id");
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: {
-            RoleID: id
-        },
-        success: function (data) {
-            $('#formInsertEditRole').html(data);
-            $('#formInsertEditRole').modal('show');
-            $('#formInsertEditRole').modal({
-                backdrop: false
-            });
-        },
-        error: function (xhr, textStatus, errorThrown) {
-            if (xhr.status == 401) {
-                showMessage('Bạn không có quyền này', false);
-            } else {
-                showMessage('Đã xảy ra lỗi trong quá trình tải form chỉnh sửa vai trò: ' + xhr.responseText, false);
-            }
-        }
-    });
+   var url = "/RoleAccount/EditRoleForm";
+   var id = $(this).attr("data-id");
+   $.ajax({
+      url: url,
+      type: 'POST',
+      data: {
+         RoleID: id
+      },
+      success: function (data) {
+         $('#formInsertEditRole').html(data);
+         $('#formInsertEditRole').modal('show');
+         $('#formInsertEditRole').modal({
+            backdrop: false
+         });
+      },
+      error: function (xhr, textStatus, errorThrown) {
+         if (xhr.status == 401) {
+            showMessage('Bạn không có quyền này', false);
+         } else {
+            showMessage('Đã xảy ra lỗi trong quá trình tải form chỉnh sửa vai trò: ' + xhr.responseText, false);
+         }
+      }
+   });
 });
 var reloadRoleDatatable = function () {
-    $('#my_datatable_role').DataTable().ajax.reload(null, false);
+   $('#my_datatable_role').DataTable().ajax.reload(null, false);
 };
-/*@* $('.modal-edit-role').on('hidden.bs.hidden.bs.modal', reloadRoleDatatable);*@*/
+
 $('#my_datatable_role').on('click', '.bt-delete-role', function () {
-    //add xac thuc trc khi xoa
-    var id = $(this).attr("data-id");
-    $('#btnDelteYesRole').attr("data-id", id);
-    $('#confirmDeleteRole').modal('show');
-    $('#confirmDeleteRole').modal({
-        backdrop: true
-    });
+   //add xac thuc trc khi xoa
+   var id = $(this).attr("data-id");
+   $('#btnDeleteYes').attr("data-id", id);
+   $('#confirmDelete').modal('show');
+   $('#confirmDelete').modal({
+      backdrop: true
+   });
 });
 
-$('#btnDelteYesRole').on('click', function (e) {
-    e.preventDefault();
-    var url = "/RoleAccount/DeleteRole";
-    var id = $(this).attr("data-id");
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: {
-            roleID: id
-        },
-        success: function (data) {
-            if (!data) {
-                showMessage("Xóa vai trò không thành công !!!", false);
-            } else {
-                showMessage('Xóa thành công !!!', true);
-                reloadRoleDatatable();
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            if (jqXHR.status == 401) {
-                showMessage('Bạn không có quyền này', false);
-            } else {
-                showMessage('Đã xảy ra lỗi trong quá trình xóa vai trò : ' + jqXHR.responseText, false);
-            }
-        }
-    });
+$('#btnDeleteYes').on('click', function (e) {
+   e.preventDefault();
+   var url = "/RoleAccount/DeleteRole";
+   var id = $(this).attr("data-id");
+   $.ajax({
+      url: url,
+      type: 'POST',
+      data: {
+         roleID: id
+      },
+      success: function (data) {
+         if (!data) {
+            showMessage("Xóa vai trò không thành công !!!", false);
+         } else {
+            showMessage('Xóa thành công !!!', true);
+            reloadRoleDatatable();
+         }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+         if (jqXHR.status == 401) {
+            showMessage('Bạn không có quyền này', false);
+         } else {
+            showMessage('Đã xảy ra lỗi trong quá trình xóa vai trò : ' + jqXHR.responseText, false);
+         }
+      }
+   });
 });
 
 var searchAccountFollowRole = function (role) {
-    $('#my_datatable_account').DataTable().column('Role:name').search(role).draw();
+   $('#my_datatable_account').DataTable().column('Role:name').search(role).draw();
 }
 
 $('#my_datatable_role').on('click', '.bt-filter-account', function () {
-    var search_str = $(this).attr("data-role");
-    searchAccountFollowRole(search_str);
+   var search_str = $(this).attr("data-role");
+   searchAccountFollowRole(search_str);
 });

@@ -98,17 +98,17 @@ namespace ServiceTool
 
                      var bool_check = true;
 
-                     csc.TongGiao = Common.ParseDouble(data[i * 74 + 7 - 1].Split(',')[1], ref bool_check);
-                     csc.PhanKhangGiao = Common.ParseDouble(data[i * 74 + 14 - 1].Split(',')[1], ref bool_check);
-                     csc.BinhThuongGiao = Common.ParseDouble(data[i * 74 + 22 - 1].Split(',')[1], ref bool_check);
-                     csc.CaoDiemGiao = Common.ParseDouble(data[i * 74 + 23 - 1].Split(',')[1], ref bool_check);
-                     csc.ThapDiemGiao = Common.ParseDouble(data[i * 74 + 24 - 1].Split(',')[1], ref bool_check);
+                     csc.TongGiao = Common.ParseDouble(data[i * 74 + 7 - 1].Split(',')[1], ref bool_check) ;
+                     csc.PhanKhangGiao = Common.ParseDouble(data[i * 74 + 14 - 1].Split(',')[1], ref bool_check) ;
+                     csc.BinhThuongGiao = Common.ParseDouble(data[i * 74 + 22 - 1].Split(',')[1], ref bool_check) ;
+                     csc.CaoDiemGiao = Common.ParseDouble(data[i * 74 + 23 - 1].Split(',')[1], ref bool_check) ;
+                     csc.ThapDiemGiao = Common.ParseDouble(data[i * 74 + 24 - 1].Split(',')[1], ref bool_check) ;
 
-                     csc.TongNhan = Common.ParseDouble(data[i * 74 + 6 - 1].Split(',')[1], ref bool_check);
-                     csc.PhangKhangNhan = Common.ParseDouble(data[i * 74 + 13 - 1].Split(',')[1], ref bool_check);
-                     csc.BinhThuongNhan = Common.ParseDouble(data[i * 74 + 19 - 1].Split(',')[1], ref bool_check);
-                     csc.CaoDiemNhan = Common.ParseDouble(data[i * 74 + 20 - 1].Split(',')[1], ref bool_check);
-                     csc.ThapDiemNhan = Common.ParseDouble(data[i * 74 + 21 - 1].Split(',')[1], ref bool_check);
+                     csc.TongNhan = Common.ParseDouble(data[i * 74 + 6 - 1].Split(',')[1], ref bool_check) ;
+                     csc.PhangKhangNhan = Common.ParseDouble(data[i * 74 + 13 - 1].Split(',')[1], ref bool_check) ;
+                     csc.BinhThuongNhan = Common.ParseDouble(data[i * 74 + 19 - 1].Split(',')[1], ref bool_check) ;
+                     csc.CaoDiemNhan = Common.ParseDouble(data[i * 74 + 20 - 1].Split(',')[1], ref bool_check) ;
+                     csc.ThapDiemNhan = Common.ParseDouble(data[i * 74 + 21 - 1].Split(',')[1], ref bool_check) ;
 
                      var rs = ChiSoChotDAO.Create(csc);
                      if (!rs.Equals("success"))

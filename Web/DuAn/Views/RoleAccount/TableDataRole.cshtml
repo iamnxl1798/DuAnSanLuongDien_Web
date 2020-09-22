@@ -1,55 +1,28 @@
 ﻿
 <div class="card-body">
-    <!--begin: Datatable-->
-    <table id="my_datatable_role" style="width:auto;" class="table table-bordered table-hover table-striped table-checkable display">
-        <thead style="border-bottom:none">
-            <tr style=" align-content: center !important;">
-                <th style="width: 20px"><b>ID</b></th>
-                <th style="width: auto"><b>Vai trò</b></th>
-                <th style="width: 120px"><b>Tác vụ</b></th>
+   <!--begin: Datatable-->
+   <table id="my_datatable_role" style="width:auto;" class="table table-bordered table-hover table-striped table-checkable display">
+      <thead style="border-bottom:none">
+         <tr style=" align-content: center !important;">
+            <th style="width: 20px"><b>ID</b></th>
+            <th style="width: auto"><b>Vai trò</b></th>
+            <th style="width: 120px"><b>Tác vụ</b></th>
 
-            </tr>
-        </thead>
-       @* <tfoot>
-            <tr>
-                <th><b>ID</b></th>
-                <th><b>Role</b></th>
-                <th><b>Actions</b></th>
-            </tr>
-        </tfoot>*@
-    </table>
-    <!--end: Datatable-->
+         </tr>
+      </thead>
+      @* <tfoot>
+             <tr>
+                 <th><b>ID</b></th>
+                 <th><b>Role</b></th>
+                 <th><b>Actions</b></th>
+             </tr>
+         </tfoot>*@
+   </table>
+   <!--end: Datatable-->
 </div>
 <!--begin::Example-->
 <!-- Modal-->
-<div class="modal fade modal-edit-role" id="formInsertEditRole" tabindex="-1" role="dialog" aria-labelledby="formInsertEditRole" aria-hidden="true"></div>
-<!-- start: Delete Coupon Modal -->
-<div class="modal fade" id="confirmDeleteRole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">
-                    &times;
-                </button>
-                <h3 class="modal-title" id="myModalLabel">Warning!</h3>
 
-            </div>
-            <div class="modal-body">
-                <h4>Are you sure you want to DELETE?</h4>
-
-            </div>
-            <!--/modal-body-collapse -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-danger" id="btnDelteYesRole" href="#" data-dismiss="modal">Yes</button>
-            </div>
-            <!--/modal-footer-collapse -->
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
+@RenderPage("~/Views/Shared/_ConfirmDeleteModal.cshtml")
 
 <script src="~/Scripts/Role/TableDateRole.js"></script>
