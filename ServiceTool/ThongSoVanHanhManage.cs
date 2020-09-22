@@ -1,11 +1,13 @@
 ﻿using DocDuLieuCongTo.Model;
 using ServiceTool.Model;
+using ServiceTool.Model.CustomModel;
 using ServiceTool.Model.DbModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
@@ -50,18 +52,19 @@ namespace ServiceTool
          // Specify what is done when a file is changed, created, or deleted.
          //ShowNotificationMessage(500, "Delete", $"{e.Name}", ToolTipIcon.None);
       }
-
+      StreamReader reader;
       public void OnCreatedTSVH(object source, FileSystemEventArgs e)
       {
+         Common.MoveFile(e, conf);
          /*ShowNotificationMessage(500, "Create", $"{e.Name}", ToolTipIcon.None);*/
-         while (true)
+         for (int count = 0; count <= 2000; count++)
          {
             try
             {
                DbContextService db = new DbContextService();
 
                //Console.WriteLine("Try to access file !!!");
-               StreamReader reader = new StreamReader(e.FullPath);
+               reader = new StreamReader(e.FullPath);
                //Console.WriteLine("Access file successfully !!!");
                string fileName = e.Name.Split('.')[0];
                string serial = fileName.Split('_')[0];
@@ -95,41 +98,48 @@ namespace ServiceTool
                   tsvh.Serial = serial;
                   tsvh.ThoiGianCongTo = dt;
 
-                  tsvh.P_Nhan = double.Parse(data[6 - 1].Split(',')[1]);
-                  var bool_rs = double.TryParse(data[6 - 1].Split(',')[1], NumberStyles.Any, NumberFormatInfo.InvariantInfo, out tsvh.P_Nhan);
+                  var bool_rs = true;
 
-                  tsvh.P_Giao = double.Parse(data[7 - 1].Split(',')[1]);
+                  tsvh.P_Nhan = Common.ParseDouble(data[6 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.P_Giao = Common.ParseDouble(data[7 - 1].Split(',')[1], ref bool_rs);
 
-                  tsvh.Q_Nhan = double.Parse(data[13 - 1].Split(',')[1]);
-                  tsvh.Q_Giao = double.Parse(data[14 - 1].Split(',')[1]);
+                  tsvh.Q_Nhan = Common.ParseDouble(data[13 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.Q_Giao = Common.ParseDouble(data[14 - 1].Split(',')[1], ref bool_rs);
 
-                  tsvh.P_Nhan_BT = double.Parse(data[19 - 1].Split(',')[1]);
-                  tsvh.P_Nhan_CD = double.Parse(data[20 - 1].Split(',')[1]);
-                  tsvh.P_Nhan_TD = double.Parse(data[21 - 1].Split(',')[1]);
+                  tsvh.P_Nhan_BT = Common.ParseDouble(data[19 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.P_Nhan_CD = Common.ParseDouble(data[20 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.P_Nhan_TD = Common.ParseDouble(data[21 - 1].Split(',')[1], ref bool_rs);
 
-                  tsvh.P_Giao_BT = double.Parse(data[22 - 1].Split(',')[1]);
-                  tsvh.P_Giao_CD = double.Parse(data[23 - 1].Split(',')[1]);
-                  tsvh.P_Giao_TD = double.Parse(data[24 - 1].Split(',')[1]);
+                  tsvh.P_Giao_BT = Common.ParseDouble(data[22 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.P_Giao_CD = Common.ParseDouble(data[23 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.P_Giao_TD = Common.ParseDouble(data[24 - 1].Split(',')[1], ref bool_rs);
 
-                  tsvh.PhaseA_Amps = double.Parse(data[56 - 1].Split(',')[1]);
-                  tsvh.PhaseA_Volts = double.Parse(data[57 - 1].Split(',')[1]);
-                  tsvh.PhaseA_PowerFactor = double.Parse(data[61 - 1].Split(',')[1]);
-                  tsvh.PhaseA_Frequency = double.Parse(data[62 - 1].Split(',')[1]);
-                  tsvh.PhaseA_Angle = double.Parse(data[63 - 1].Split(',')[1]);
+                  tsvh.PhaseA_Amps = Common.ParseDouble(data[72 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.PhaseA_Volts = Common.ParseDouble(data[73 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.PhaseA_PowerFactor = Common.ParseDouble(data[77 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.PhaseA_Frequency = Common.ParseDouble(data[78 - 1].Split(',')[1], ref bool_rs);
+                  tsvh.PhaseA_Angle = Common.ParseDouble(data[79 - 1].Split(',')[1], ref bool_rs);
 
-                  tsvh.PhaseB_Amps = double.Parse(data[56 - 1].Split(',')[2]);
-                  tsvh.PhaseB_Volts = double.Parse(data[57 - 1].Split(',')[2]);
-                  tsvh.PhaseB_PowerFactor = double.Parse(data[61 - 1].Split(',')[2]);
-                  tsvh.PhaseB_Frequency = double.Parse(data[62 - 1].Split(',')[2]);
-                  tsvh.PhaseB_Angle = double.Parse(data[63 - 1].Split(',')[2]);
+                  tsvh.PhaseB_Amps = Common.ParseDouble(data[72 - 1].Split(',')[2], ref bool_rs);
+                  tsvh.PhaseB_Volts = Common.ParseDouble(data[73 - 1].Split(',')[2], ref bool_rs);
+                  tsvh.PhaseB_PowerFactor = Common.ParseDouble(data[77 - 1].Split(',')[2], ref bool_rs);
+                  tsvh.PhaseB_Frequency = Common.ParseDouble(data[78 - 1].Split(',')[2], ref bool_rs);
+                  tsvh.PhaseB_Angle = Common.ParseDouble(data[79 - 1].Split(',')[2], ref bool_rs);
 
-                  tsvh.PhaseC_Amps = double.Parse(data[56 - 1].Split(',')[3]);
-                  tsvh.PhaseC_Volts = double.Parse(data[57 - 1].Split(',')[3]);
-                  tsvh.PhaseC_PowerFactor = double.Parse(data[61 - 1].Split(',')[3]);
-                  tsvh.PhaseC_Frequency = double.Parse(data[62 - 1].Split(',')[3]);
-                  tsvh.PhaseC_Angle = double.Parse(data[63 - 1].Split(',')[3]);
+                  tsvh.PhaseC_Amps = Common.ParseDouble(data[72 - 1].Split(',')[3], ref bool_rs);
+                  tsvh.PhaseC_Volts = Common.ParseDouble(data[73 - 1].Split(',')[3], ref bool_rs);
+                  tsvh.PhaseC_PowerFactor = Common.ParseDouble(data[77 - 1].Split(',')[3], ref bool_rs);
+                  tsvh.PhaseC_Frequency = Common.ParseDouble(data[78 - 1].Split(',')[3], ref bool_rs);
+                  tsvh.PhaseC_Angle = Common.ParseDouble(data[79 - 1].Split(',')[3], ref bool_rs);
 
-                  tsvh.Phase_Rotation = data[64 - 1].Split(',')[4];
+                  tsvh.Phase_Rotation = data[80 - 1].Split(',')[4];
+
+                  if (!bool_rs)
+                  {
+                     //ShowNotificationMessage(50, "Error", "Lỗi format number in file", ToolTipIcon.Error);
+                     reader.Close();
+                     return;
+                  }
 
                   var rs = ThongSoVanHanhDAO.Create(tsvh);
 
@@ -142,7 +152,7 @@ namespace ServiceTool
                }
 
                //ShowNotificationMessage(50, "Success", "Reading file 'Thông số vận hành' finished!!!!", ToolTipIcon.Info);
-               reader.Close();
+               //reader.Close();
                break;
             }
             catch (IOException)
@@ -161,20 +171,12 @@ namespace ServiceTool
             {
                try
                {
-                  string fileName = e.Name;
-                  string sourcePath = conf.ThuMucQuet;
-                  string targetPath = conf.ThuMucChuyen;
-                  //Combine file và đường dẫn
-                  string sourceFile = System.IO.Path.Combine(sourcePath, fileName);
-                  string destFile = System.IO.Path.Combine(targetPath, fileName);
-                  //Copy file từ file nguồn đến file đích
-                  System.IO.File.Copy(sourceFile, destFile, true);
-                  //ShowNotificationMessage(50, "Di chuyển file !!!", "Thành công", ToolTipIcon.None);
+                  reader.Close();
                }
                catch (Exception ex)
                {
-                  //ShowNotificationMessage(50, "Error !!!", ex.Message, ToolTipIcon.Error);
                }
+
             }
 
          }

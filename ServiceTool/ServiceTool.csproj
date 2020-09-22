@@ -107,6 +107,7 @@
       <DependentUpon>CauHinhTool.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\ConfigClass.cs" />
+    <Compile Include="Model\CustomModel\Common.cs" />
     <Compile Include="Model\CustomModel\MyCustom.cs" />
     <Compile Include="Model\CustomModel\PhanTu.cs" />
     <Compile Include="Model\DAO.cs" />
