@@ -121,6 +121,8 @@ namespace DuAn
                   string path_avatar = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory.ToString()) + "\\images\\avatarAccount\\" + fileName;
                   // file is uploaded
                   avatar.SaveAs(path_avatar);
+                  // file is uploaded
+                  avatar.SaveAs(path_avatar);
                   acc.Avatar = fileName;
                }
                acc.Fullname = fullname;

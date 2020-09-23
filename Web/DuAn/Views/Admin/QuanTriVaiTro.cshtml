@@ -1,15 +1,17 @@
 ﻿
 @{
-    ViewBag.Title = "QuanTriVaiTro";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+   ViewBag.Title = "QuanTriVaiTro";
+   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row ml-1 col-12" style="justify-content: center;">
-    @Html.Action("ListRole", "RoleAccount")
+   @Html.Action("ListRole", "RoleAccount")
 </div>
-<script>
-    var listDirect = ["Quản trị", "Quản trị Vai trò"];
-    $(document).ready(function () {
-        capNhatPageDirectory('Quản trị Vai trò',listDirect);
-    });
-</script>
+@section scripts{
+   <script>
+      var listDirect = ["Quản trị", "Quản trị Vai trò"];
+      $(document).ready(function () {
+         capNhatPageDirectory('Quản trị Vai trò', listDirect);
+      });
+   </script>
+}

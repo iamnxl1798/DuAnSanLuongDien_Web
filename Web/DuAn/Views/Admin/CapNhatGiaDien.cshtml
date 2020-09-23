@@ -1,56 +1,57 @@
 ﻿
 @{
-    ViewBag.Title = "CapNhatGiaDien";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+   ViewBag.Title = "CapNhatGiaDien";
+   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row ml-1 col-12" style="justify-content: center;">
-    <div class="col-lg-12">
-        <div class="card card-custom gutter-b" style="height:95%">
-            <div class="card-header">
-                <div class="card-title">
-                    <h3 class="card-label"><i class="icon-xl fas fa-dollar-sign text-primary mr-2"></i> Cập nhật giá điện</h3>
-                </div>
+   <div class="col-lg-12">
+      <div class="card card-custom gutter-b" style="height:95%">
+         <div class="card-header">
+            <div class="card-title">
+               <h3 class="card-label"><i class="icon-xl fas fa-dollar-sign text-primary mr-2"></i> Cập nhật giá điện</h3>
             </div>
-            <!--begin::Form-->
-            <form>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="thoiGianBatDau" class="col-form-label ml-1 mr-10">Thời gian bắt đầu</label>
-                            <div class="form-group mb-4">
-                                <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianBatDauDiv">
-                                    <input type="text" placeholder="Thời gian bắt đầu" class="form-control" id="thoiGianBatDau" readonly="">
-                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
-                                </div>
-                            </div>
+         </div>
+         <!--begin::Form-->
+         <form>
+            <div class="card-body">
+               <div class="row">
+                  <div class="col-md-6">
+                     <label for="thoiGianBatDau" class="col-form-label ml-1 mr-10">Thời gian bắt đầu</label>
+                     <div class="form-group mb-4">
+                        <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianBatDauDiv">
+                           <input type="text" placeholder="Thời gian bắt đầu" class="form-control" id="thoiGianBatDau" readonly="">
+                           <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="thoiGianKetThuc" class="col-form-label ml-1 mr-10">Thời gian kết thúc</label>
-                            <div class="form-group mb-4">
-                                <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianKetThucDiv" onmousedown="setStartDate()">
-                                    <input type="text" placeholder="Thời gian kết thúc" class="form-control" id="thoiGianKetThuc" readonly="">
-                                    <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
-                                </div>
-                            </div>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <label for="thoiGianKetThuc" class="col-form-label ml-1 mr-10">Thời gian kết thúc</label>
+                     <div class="form-group mb-4">
+                        <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianKetThucDiv" onmousedown="setStartDate()">
+                           <input type="text" placeholder="Thời gian kết thúc" class="form-control" id="thoiGianKetThuc" readonly="">
+                           <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <label for="giaDien" class="col-form-label ml-1 mr-10">Giá điện</label>
-                            <div class="form-group mb-4">
-                                <input type="number" placeholder="Việt Nam đồng" class="form-control" id="giaDien">
-                            </div>
-                        </div>
-                    </div>
-                    <p class="btn btn-success btn-block mt-4 col-12" onclick="submitCongThuc()">Cập nhật</p>
-                </div>
-            </form>
-            <!--end::Form-->
-        </div>
-    </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <div class="col-12">
+                     <label for="giaDien" class="col-form-label ml-1 mr-10">Giá điện</label>
+                     <div class="form-group mb-4">
+                        <input type="number" placeholder="Việt Nam đồng" class="form-control" id="giaDien">
+                     </div>
+                  </div>
+               </div>
+               <p class="btn btn-success btn-block mt-4 col-12" onclick="submitCongThuc()">Cập nhật</p>
+            </div>
+         </form>
+         <!--end::Form-->
+      </div>
+   </div>
 </div>
-<script>
+@section scripts{
+   <script>
     $(document).ready(function () {
         updateCalendar(null, 'thoiGianBatDau');
         updateCalendar(null, 'thoiGianKetThuc');
@@ -114,4 +115,5 @@
         });
     }
 
-</script>
+   </script>
+}

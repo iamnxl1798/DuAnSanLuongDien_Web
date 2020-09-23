@@ -1,53 +1,52 @@
 ﻿@model DuAn.Models.DbModel.Account
 @{
-    ViewBag.Title = "Profile";
+   ViewBag.Title = "Profile";
+   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-    .ui-datepicker.ui-datepicker-inline {
-        width: 100% !important;
-    }
+   .ui-datepicker.ui-datepicker-inline {
+      width: 100% !important;
+   }
 </style>
 
 <div class=" container">
-    <div class="row">
-        <!--begin::Aside-->
-        <div class="col-12 col-md-4 mb-4" id="kt_profile_aside">
-            <!--begin::Profile Card-->
-            
-            <!--end::Profile Card-->
-        </div>
-        <!--end::Aside-->
-        <!--begin::Content-->
-        <div class="col-12 col-md-8 mb-4" id="partial">
-            <!--begin::Card-->
-            
-        </div>
-        <!--end::Content-->
-    </div>
+   <div class="row">
+      <!--begin::Aside-->
+      <div class="col-12 col-md-4 mb-4" id="kt_profile_aside">
+         <!--begin::Profile Card-->
+         <!--end::Profile Card-->
+      </div>
+      <!--end::Aside-->
+      <!--begin::Content-->
+      <div class="col-12 col-md-8 mb-4" id="partial">
+         <!--begin::Card-->
+
+      </div>
+      <!--end::Content-->
+   </div>
 </div>
-<script src="~/Scripts/LayoutJS/Layout.js"></script>
-<script src="~/Scripts/assets/js/scripts.bundle.js"></script>
-<script>
-        capNhatPageDirectory('Thông tin người dùng',['Hồ sơ'])
+@section scripts{
+   <script>
+        capNhatPageDirectory('Thông tin người dùng', ['Hồ sơ']);
         renderProfileSide();
         $(document).ready(function () {
             changePartial('infoButton');
         });
 
-    function renderProfileSide() {
-        $.ajax({
-            url: "@Url.Action("ProfilePartial","Home")",
-            type: 'POST',
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                $('#kt_profile_aside').html(data);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                showMessage("Lấy thông tin người dùng thất bại", false)
-            }
-        });
-    }
+         function renderProfileSide() {
+            $.ajax({
+               url: "@Url.Action("ProfilePartial","Home")",
+               type: 'POST',
+               processData: false,
+               contentType: false,
+               success: function (data) {
+                     $('#kt_profile_aside').html(data);
+               },
+               error: function (jqXHR, textStatus, errorThrown) {
+                     showMessage("Lấy thông tin người dùng thất bại", false)
+               }
+            });
+         }
         function submitForm(){
             var avatar = document.getElementById('avatar');
             var formData = new FormData();
@@ -84,16 +83,8 @@
                     } else {
                         showMessage("Cập nhật tài khoản thành công", true);
                         renderProfileSide();
-                        $.ajax({
-                        url: "@Url.Action("layoutUser","Home")",
-                        type: 'GET',
-                            success: function (data) {
-                                $("#layoutUser").html(data);
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    showMessage("Lỗi thay đổi mật khẩu", false)
-                                }
-                            });
+                       // change avatar at layoutUser
+                        reloadAvatarUser();
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -134,4 +125,5 @@
             }
         });
     }
-</script>
+   </script>
+}

@@ -1,17 +1,19 @@
 ﻿
 @{
-    ViewBag.Title = "QuanTriNguoiDung";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+   ViewBag.Title = "QuanTriNguoiDung";
+   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row ml-1 col-12" style="justify-content: center;">
 
-    @{Html.RenderAction("ListUser", "Account");}
+   @{Html.RenderAction("ListUser", "Account");}
 
 </div>
-<script>
-    var listDirect = ["Quản trị", "Quản trị Người dùng"];
-    $(document).ready(function () {
-        capNhatPageDirectory('Quản trị Người dùng',listDirect);
-    });
-</script>
+@section scripts{
+   <script>
+      var listDirect = ["Quản trị", "Quản trị Người dùng"];
+      $(document).ready(function () {
+         capNhatPageDirectory('Quản trị Người dùng', listDirect);
+      });
+   </script>
+}

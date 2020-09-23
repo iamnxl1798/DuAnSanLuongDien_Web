@@ -2,14 +2,15 @@
 @using DuAn.Models.DbModel
 @model AdminModel
 @{
-    ViewBag.Title = "CauHinhSanLuong";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+   ViewBag.Title = "CauHinhSanLuong";
+   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row ml-1 col-12" style="justify-content: center;">
-    @Html.Action("MissingDataPartial", "Admin")
+   @Html.Action("MissingDataPartial", "Admin")
 </div>
-<script>
+@section scripts{
+   <script>
     var listDirect = ["Cấu Hình", "Cập nhật sản lượng ngày"];
     $(document).ready(function () {
         capNhatPageDirectory('Cập nhật sản lượng ngày', listDirect);
@@ -112,4 +113,5 @@
             format: "dd/mm/yyyy"
         });
     }
-</script>
+   </script>
+}

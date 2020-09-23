@@ -1,85 +1,85 @@
 ﻿@model DuAn.Models.CustomModel.DiemDoData
 <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">@Model.tenDiemDo - @Model.maDiemDo</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i aria-hidden="true" class="ki ki-close"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-vertical-center">
-                    <thead>
-                        <tr class="text-center bg-secondary text-uppercase">
-                            <th rowspan="2">Chu kỳ</th>
-                            <th colspan="2">
-                                Kênh giao
-                            </th>
-                            <th colspan="2">
-                                Kênh nhận
-                            </th>
-                        </tr>
-                        <tr class="text-center bg-secondary text-uppercase">
-                            <th>
-                                Hữu công
-                            </th>
-                            <th>
-                                Vô công
-                            </th>
-                            <th>
-                                Hữu công
-                            </th>
-                            <th>
-                                Vô công
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < 48; i++)
-                        {
-                            var chuky = i + 1;
-                        <tr class="text-right">
-                            <td class="">
-                                @chuky
-                            </td>
-                            <td class="">
-                                <span class="">@Model.formatNumber(Model.kwhGiao[i])</span>
-                            </td>
-                            <td class="">
-                                <span class="">@Model.formatNumber(Model.kvarhGiao[i])</span>
-                            </td>
-                            <td class="">
-                                <span class="">@Model.formatNumber(Model.kwhNhan[i])</span>
-                            </td>
-                            <td class="">
-                                <span class="">@Model.formatNumber(Model.kvarhNhan[i])</span>
-                            </td>
-                        </tr>
-                        }
-                    <tr class="" style="border-top:1px solid black">
+   <div class="modal-content">
+      <div class="modal-header">
+         <h5 class="modal-title">@Model.tenDiemDo - @Model.maDiemDo</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i aria-hidden="true" class="ki ki-close"></i>
+         </button>
+      </div>
+      <div class="modal-body">
+         <div class="table-responsive">
+            <table class="table table-bordered table-striped table-vertical-center">
+               <thead>
+                  <tr class="text-center bg-secondary text-uppercase">
+                     <th rowspan="2">Chu kỳ</th>
+                     <th colspan="2">
+                        Kênh giao
+                     </th>
+                     <th colspan="2">
+                        Kênh nhận
+                     </th>
+                  </tr>
+                  <tr class="text-center bg-secondary text-uppercase">
+                     <th>
+                        Hữu công (P)
+                     </th>
+                     <th>
+                        Vô công (Q)
+                     </th>
+                     <th>
+                        Hữu công (P)
+                     </th>
+                     <th>
+                        Vô công (Q)
+                     </th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @for (int i = 0; i < 48; i++)
+                  {
+                     var chuky = i + 1;
+                     <tr class="text-right">
                         <td class="">
-                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-center">Tổng</span>
+                           @chuky
                         </td>
-                        <td>
-                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhGiao)</span>
+                        <td class="">
+                           <span class="">@Model.formatNumber(Model.kwhGiao[i])</span>
                         </td>
-                        <td>
-                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhGiao)</span>
+                        <td class="">
+                           <span class="">@Model.formatNumber(Model.kvarhGiao[i])</span>
                         </td>
-                        <td>
-                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhNhan)</span>
+                        <td class="">
+                           <span class="">@Model.formatNumber(Model.kwhNhan[i])</span>
                         </td>
-                        <td>
-                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhNhan)</span>
+                        <td class="">
+                           <span class="">@Model.formatNumber(Model.kvarhNhan[i])</span>
                         </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        </div>
-    </div>
+                     </tr>
+                  }
+                  <tr class="" style="border-top:1px solid black">
+                     <td class="">
+                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-center">Tổng</span>
+                     </td>
+                     <td>
+                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhGiao)</span>
+                     </td>
+                     <td>
+                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhGiao)</span>
+                     </td>
+                     <td>
+                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKwhNhan)</span>
+                     </td>
+                     <td>
+                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg text-right">@Model.formatNumber(Model.sumKvarhNhan)</span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+      </div>
+   </div>
 </div>

@@ -203,6 +203,7 @@ $('#btnDeleteYes').on('click', function (e) {
    var url = "/Account/DeleteAccount";
    var id = $(this).attr("data-id");
    $.ajax({
+      cache: false,
       url: url,
       type: 'POST',
       data: {

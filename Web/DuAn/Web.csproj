@@ -342,17 +342,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="images\30.gif" />
     <Content Include="images\9151163621500882431.jpg" />
-    <Content Include="images\avatarAccount\avatar_1.png" />
-    <Content Include="images\avatarAccount\avatar_2.png" />
-    <Content Include="images\avatarAccount\dateIcon.png" />
-    <Content Include="images\avatarAccount\default.png" />
-    <Content Include="images\avatarAccount\email.png" />
-    <Content Include="images\avatarAccount\FB_IMG_1548855919321.jpg" />
-    <Content Include="images\avatarAccount\phone.png" />
-    <Content Include="images\avatarAccount\spritemap.png" />
-    <Content Include="images\avatarAccount\Thuc Don.jpg" />
-    <Content Include="images\avatarAccount\Untitled1.png" />
-    <Content Include="images\avatarAccount\upload-arrow_318-26670.jpg" />
+    <Content Include="images\avatarAccount\avatar_159.png" />
     <Content Include="images\dateIcon.png" />
     <Content Include="images\frame_apngframe1.png" />
     <Content Include="images\logoFactory\default_logo.png" />
@@ -2449,7 +2439,7 @@
     <Content Include="Views\Admin\MissingDataPartial.cshtml" />
     <Content Include="Views\Admin\InsertFormula.cshtml" />
     <Content Include="Views\Home\ProfilePartial.cshtml" />
-    <Content Include="Views\Home\layoutUser.cshtml" />
+    <Content Include="Views\Shared\_LayoutUser.cshtml" />
     <Content Include="Views\Admin\CauHinhSanLuong.cshtml" />
     <Content Include="Views\Admin\CauHinhCongThuc.cshtml" />
     <Content Include="Views\Admin\QuanTriVaiTro.cshtml" />
@@ -2464,6 +2454,10 @@
     <Content Include="Views\Home\getDoanhThuNam.cshtml" />
     <Content Include="Views\Admin\CapNhatGiaDien.cshtml" />
     <Content Include="Views\Shared\_ConfirmDeleteModal.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Shared\_Scripts.cshtml" />
+    <Content Include="Views\Shared\_Styles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

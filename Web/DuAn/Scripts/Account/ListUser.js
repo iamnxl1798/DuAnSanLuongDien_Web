@@ -24,6 +24,7 @@ jQuery('#newaccount').on('click', function () {
 
 jQuery(document).ready(function () {
    $.ajax({
+      cache: false,
       url: "/Account/TableDataUser",
       type: 'POST',
       success: function (data) {

@@ -1,0 +1,88 @@
+﻿@using DuAn.COMMON
+<!--begin::Global Theme Bundle(used by all pages)-->
+<script src="/Scripts/assets/plugins/global/plugins.bundle.js?v=7.0.3"></script>
+<script src="/Scripts/assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.3"></script>
+<script src="~/Scripts/assets/js/scripts.bundle.js"></script>
+
+<!--end::Global Theme Bundle-->
+<!--begin::Page Vendors(used by this page)-->
+<script src="~/Scripts/LayoutJS/Layout.js"></script>
+<!--use for datatable in TableDataUser-->
+<script src="~/Scripts/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+<!--use for jstree in EditRoleForm-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script src="/Scripts/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.3"></script>
+<!--select 2-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<!--end::Page Vendors-->
+<!--begin::Page Scripts(used by this page)-->
+
+<script src="/Scripts/assets/js/pages/widgets.js?v=7.0.3"></script>
+<script src="~/Scripts/assets/MyJavascript.js"></script>
+<script>
+
+        $(document).ready(function () {
+            var roid = document.getElementById("permissionRole").value;
+            var listPer = roid.split(',');
+
+            var adminCauHinh = listPer.indexOf('@RoleContext.Administration');
+            var adCH_SanLuong = listPer.indexOf('@RoleContext.Administration_UpdateFile');
+            var adCH_CongThuc = listPer.indexOf('@RoleContext.Administration_UpdateRecipe');
+            var adminQuanTri = listPer.indexOf('@RoleContext.Expertise');
+            var adQT_VaiTro = listPer.indexOf('@RoleContext.Expertise_Roles');
+            var adQT_NguoiDung = listPer.indexOf('@RoleContext.Expertise_Accounts');
+
+            if (adminCauHinh == -1 && adCH_SanLuong == -1 && adCH_CongThuc == -1) {
+                $('#adminCauHinh').css('display', 'none');
+            } else {
+                if (adCH_SanLuong == -1) {
+                    $('#adCH_SanLuong').css('display', 'none');
+                }
+                if (adCH_CongThuc == -1) {
+                    $('#adCH_CongThuc').css('display', 'none');
+                }
+            }
+            if (adminQuanTri == -1 && adQT_VaiTro == -1 && adQT_NguoiDung == -1) {
+                $('#adminQuanTri').css('display', 'none');
+            } else {
+                if (adQT_VaiTro == -1) {
+                    $('#adQT_VaiTro').css('display', 'none');
+                }
+                if (adQT_NguoiDung == -1) {
+                    $('#adQT_NguoiDung').css('display', 'none');
+                }
+           }
+
+           reloadAvatarUser = function () {
+              var container = document.getElementById("layoutUser");
+              var content = container.innerHTML;
+              container.innerHTML = content;
+           }
+        });
+
+
+        @*$.ajax({
+                url: "@Url.Action("layoutUser","Home")",
+                type: 'GET',
+            success: function (data) {
+                $("#layoutUser").html(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    showMessage("Lỗi thay đổi mật khẩu", false)
+                }
+        });*@
+
+        @*$.ajax({
+                url: "@Url.Action("getLogoCongTy", "Admin")",
+                type: 'GET',
+                success: function (data) {
+                    var x = document.getElementsByClassName("logo_congty_layout");
+                    for (var i = 0; i < x.length; i++) {
+                        x[i].src = '../images/logoFactory/'+data;
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    showMessage("Lỗi lấy thông tin logo công ty", false)
+                }
+            });*@
+</script>

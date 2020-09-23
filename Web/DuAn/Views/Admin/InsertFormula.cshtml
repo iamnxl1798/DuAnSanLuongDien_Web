@@ -2,67 +2,68 @@
 @using DuAn.Models.DbModel
 @model AdminModel
 <div class="col-lg-10">
-    <div class="card card-custom gutter-b" style="height:95%">
-        <div class="card-header">
-            <div class="card-title">
-                <h3 class="card-label"><i class="icon-xl fas fa-upload text-primary"></i> Cập nhật công thức tính sản lượng</h3>
+   <div class="card card-custom gutter-b" style="height:95%">
+      <div class="card-header">
+         <div class="card-title">
+            <h3 class="card-label"><i class="icon-xl fas fa-upload text-primary"></i> Cập nhật công thức tính sản lượng</h3>
+         </div>
+      </div>
+      <!--begin::Form-->
+      <form>
+         <div class="card-body">
+            <div class="row">
+               <div class="col-md-6">
+                  <label for="tenCongThuc" class="col-form-label ml-1 mr-10">Tên công thức</label>
+                  <div class="">
+                     <input type="text" class="form-control mr-6" id="tenCongThuc" placeholder="Tên công thức">
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <label for="thoiGianHieuLuc" class="col-form-label ml-1 mr-10">Thời gian hiệu lực</label>
+                  <div class="form-group mb-4">
+                     <div class="datepickerDiv date input-group p-0 shadow-sm" width="100% !important">
+                        <input type="text" placeholder="Thời gian hiệu lực" class="form-control" id="thoiGianHieuLuc" readonly>
+                        <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
+                     </div>
+                  </div>
+               </div>
             </div>
-        </div>
-        <!--begin::Form-->
-        <form>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="tenCongThuc" class="col-form-label ml-1 mr-10">Tên công thức</label>
-                        <div class="">
-                            <input type="text" class="form-control mr-6" id="tenCongThuc" placeholder="Tên công thức">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="thoiGianHieuLuc" class="col-form-label ml-1 mr-10">Thời gian hiệu lực</label>
-                        <div class="form-group mb-4">
-                            <div class="datepickerDiv date input-group p-0 shadow-sm" width="100% !important">
-                                <input type="text" placeholder="Thời gian hiệu lực" class="form-control" id="thoiGianHieuLuc" readonly>
-                                <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <div class="col-lg-3 col-sm-6 mb-3">
-                                <select class="form-control bg-primary text-white" id="diemDo" onchange="insertDiemDo()">
-                                    <option value="" hidden selected>Điểm đo</option>
-                                    @foreach (DiemDo item in Model.listDiemDo)
-                                    {
-                                        <option value="@item.ID" class="bg-white text-dark">@item.TenDiemDo</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-lg-3 col-sm-6 mb-3">
-                                <select class="form-control bg-primary text-white" id="kenh" onchange="insertDiemDo()">
-                                    <option value="" hidden selected>Kênh</option>
-                                    @foreach (Kenh item in Model.listKenh)
-                                    {
-                                        <option value="@item.ID" class="bg-white text-dark">@item.Ten</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group row">
+               <div class="col-lg-6">
+                  <div class="row">
+                     <div class="col-lg-3 col-sm-6 mb-3">
+                        <select class="form-control bg-primary text-white" id="diemDo" onchange="insertDiemDo()">
+                           <option value="" hidden selected>Điểm đo</option>
+                           @foreach (DiemDo item in Model.listDiemDo)
+                           {
+                              <option value="@item.ID" class="bg-white text-dark">@item.TenDiemDo</option>
+                           }
+                        </select>
+                     </div>
+                     <div class="col-lg-3 col-sm-6 mb-3">
+                        <select class="form-control bg-primary text-white" id="kenh" onchange="insertDiemDo()">
+                           <option value="" hidden selected>Kênh</option>
+                           @foreach (Kenh item in Model.listKenh)
+                           {
+                              <option value="@item.ID" class="bg-white text-dark">@item.Ten</option>
+                           }
+                        </select>
+                     </div>
+                  </div>
+               </div>
+            </div>
 
 
-                <textarea id="phepTinh" class="form-control col-12" style="font-size:22px" onkeypress="return operatorBtnClick(event)"></textarea>
-                <p class="btn btn-success btn-block mt-7 col-12" onclick="submitCongThuc()">Cập nhật</p>
-                <label class="text-success mt-4 ml-3" id="capNhatCongThucLabelSuccess"></label><label class="text-danger mt-4" id="capNhatCongThucLabelError"></label>
-            </div>
-        </form>
-        <!--end::Form-->
-    </div>
+            <textarea id="phepTinh" class="form-control col-12" style="font-size:22px" onkeypress="return operatorBtnClick(event)"></textarea>
+            <p class="btn btn-success btn-block mt-7 col-12" onclick="submitCongThuc()">Cập nhật</p>
+            <label class="text-success mt-4 ml-3" id="capNhatCongThucLabelSuccess"></label><label class="text-danger mt-4" id="capNhatCongThucLabelError"></label>
+         </div>
+      </form>
+      <!--end::Form-->
+   </div>
 </div>
-<script>
+@section scripts{
+   <script>
     var listDirect = ["Cấu Hình", "Cập nhật Công thức tính"];
     $(document).ready(function () {
         capNhatPageDirectory('Cập nhật Công thức tính', listDirect);
@@ -207,4 +208,5 @@
             });
         }
     }
-</script>
+   </script>
+}

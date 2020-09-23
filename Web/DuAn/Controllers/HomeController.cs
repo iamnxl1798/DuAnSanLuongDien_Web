@@ -216,10 +216,10 @@ namespace DuAn.Controllers
             return PartialView(acc);
         }
 
-        public ActionResult layoutUser()
+        /*public ActionResult layoutUser()
         {
             Account acc = (Account)Session["User"];
             return PartialView(acc);
-        }
+        }*/
     }
 }

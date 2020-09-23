@@ -1,0 +1,121 @@
+﻿<div class="d-flex align-items-stretch mr-3">
+   <!--begin::Header Logo-->
+   @{
+      var ct_ss = Session["CongTy"];
+   }
+   <div class="header-logo">
+      <a href="@Url.Action("Index", "Home")" class="logo_congty_layout">
+         @*<img alt="Logo" src="https://dewey.tailorbrands.com/production/brand_version_mockup_image/510/3428313510_05741c19-d2a9-4744-b15a-7c8f38d4d35b.png?cb=1596096156" class="logo-default logo_congty_layout max-h-60px" />*@
+         @{
+            if (ct_ss != null)
+            {
+               DuAn.Models.DbModel.CongTy ct = (DuAn.Models.DbModel.CongTy)ct_ss;
+               <img src="../images/logoFactory/@ct.Logo" class="logo-default max-h-60px" alt="" />
+            }
+            else
+            {
+               <img src="../images/logoFactory/default_logo.png" class="logo-default max-h-60px" alt="" />
+            }
+         }
+         @*<img alt="Logo" src="/Scripts/assets/media/logos/logo-letter-1.png" class="logo-sticky max-h-40px" />*@
+      </a>
+   </div>
+   <!--end::Header Logo-->
+   <!--begin::Header Menu Wrapper-->
+   <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+      <!--begin::Header Menu-->
+      <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
+         <!--begin::Header Nav-->
+         <ul class="menu-nav">
+            <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="click" aria-haspopup="true">
+               <a href="@Url.Action("Index", "Home")" class="menu-link ">
+                  <span class="menu-text">Trang chủ</span>
+               </a>
+            </li>
+            <li class="menu-item menu-item-submenu menu-item-rel" id="adminCauHinh" data-menu-toggle="click" aria-haspopup="true">
+               <a href="javascript:;" class="menu-link menu-toggle">
+                  <span class="menu-text">Cấu hình</span>
+                  <i class="menu-arrow"></i>
+               </a>
+               <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                  <ul class="menu-subnav">
+                     <li class="menu-item" aria-haspopup="true" id="adCH_SanLuong">
+                        <a href="@Url.Action("CauHinhSanLuong", "Admin")" class="menu-link">
+                           <i class="flaticon2-pie-chart-4 menu-icon"></i>
+                           <span class="menu-text">Cập nhật sản lượng ngày</span>
+                           <span class="menu-desc"></span>
+                        </a>
+                     </li>
+                     <li class="menu-item" aria-haspopup="true" id="adCH_CongThuc">
+                        <a href="@Url.Action("CauHinhCongThuc", "Admin")" class="menu-link">
+                           <i class="flaticon2-sheet menu-icon"></i>
+                           <span class="menu-text"> Công thức tính sản lượng</span>
+                           <span class="menu-desc"></span>
+                        </a>
+                     </li>
+                     <li class="menu-item" aria-haspopup="true" id="adCH_CongThuc">
+                        <a href="@Url.Action("CapNhatGiaDien", "Admin")" class="menu-link">
+                           @*<span><i class="fa la-pen-alt"></i></span>*@
+                           <span class="svg-icon menu-icon">
+                              <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo2\dist/../src/media/svg/icons\General\Thunder.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path d="M12.3740377,19.9389434 L18.2226499,11.1660251 C18.4524142,10.8213786 18.3592838,10.3557266 18.0146373,10.1259623 C17.8914367,10.0438285 17.7466809,10 17.5986122,10 L13,10 L13,4.47708173 C13,4.06286817 12.6642136,3.72708173 12.25,3.72708173 C11.9992351,3.72708173 11.7650616,3.85240758 11.6259623,4.06105658 L5.7773501,12.8339749 C5.54758575,13.1786214 5.64071616,13.6442734 5.98536267,13.8740377 C6.10856331,13.9561715 6.25331908,14 6.40138782,14 L11,14 L11,19.5229183 C11,19.9371318 11.3357864,20.2729183 11.75,20.2729183 C12.0007649,20.2729183 12.2349384,20.1475924 12.3740377,19.9389434 Z" fill="#000000" />
+                                 </g>
+                              </svg><!--end::Svg Icon-->
+                           </span>
+                           <span class="menu-text"> Cập nhật giá điện</span>
+                           <span class="menu-desc"></span>
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+            </li>
+
+            <li class="menu-item menu-item-submenu menu-item-rel" id="adminQuanTri" data-menu-toggle="click" aria-haspopup="true">
+               <a href="javascript:;" class="menu-link menu-toggle">
+                  <span class="menu-text">Quản trị</span>
+                  <span class="menu-desc"></span>
+                  <i class="menu-arrow"></i>
+               </a>
+               <div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                  <ul class="menu-subnav">
+                     <li class="menu-item" aria-haspopup="true" id="adQT_VaiTro">
+                        <a href="@Url.Action("QuanTriVaiTro", "Admin")" class="menu-link">
+                           <span class="svg-icon menu-icon">
+                              <!--begin::Svg Icon | path:assets/media/svg/icons/General/Shield-check.svg-->
+                              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                    <path d="M4,4 L11.6314229,2.5691082 C11.8750185,2.52343403 12.1249815,2.52343403 12.3685771,2.5691082 L20,4 L20,13.2830094 C20,16.2173861 18.4883464,18.9447835 16,20.5 L12.5299989,22.6687507 C12.2057287,22.8714196 11.7942713,22.8714196 11.4700011,22.6687507 L8,20.5 C5.51165358,18.9447835 4,16.2173861 4,13.2830094 L4,4 Z" fill="#000000" opacity="0.3"></path>
+                                    <path d="M11.1750002,14.75 C10.9354169,14.75 10.6958335,14.6541667 10.5041669,14.4625 L8.58750019,12.5458333 C8.20416686,12.1625 8.20416686,11.5875 8.58750019,11.2041667 C8.97083352,10.8208333 9.59375019,10.8208333 9.92916686,11.2041667 L11.1750002,12.45 L14.3375002,9.2875 C14.7208335,8.90416667 15.2958335,8.90416667 15.6791669,9.2875 C16.0625002,9.67083333 16.0625002,10.2458333 15.6791669,10.6291667 L11.8458335,14.4625 C11.6541669,14.6541667 11.4145835,14.75 11.1750002,14.75 Z" fill="#000000"></path>
+                                 </g>
+                              </svg>
+                              <!--end::Svg Icon-->
+                           </span>
+                           <span class="menu-text">Vai trò</span>
+                        </a>
+                     </li>
+                     <li class="menu-item" aria-haspopup="true" id="adQT_NguoiDung">
+                        <a href="@Url.Action("QuanTriNguoiDung", "Admin")" class="menu-link">
+                           <i class="flaticon2-user menu-icon"></i>
+                           <span class="menu-text">Người dùng</span>
+                        </a>
+                     </li>
+                     <li class="menu-item" aria-haspopup="true" id="adQT_CauHinh">
+                        <a href="@Url.Action("QuanTriCauHinh", "Admin")" class="menu-link">
+                           <i class="flaticon-cogwheel-1 menu-icon"></i>
+                           <span class="menu-text"> Cấu hình hệ thống</span>
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+            </li>
+         </ul>
+
+         <!--end::Header Nav-->
+      </div>
+      <!--end::Header Menu-->
+   </div>
+   <!--end::Header Menu Wrapper-->
+</div>
