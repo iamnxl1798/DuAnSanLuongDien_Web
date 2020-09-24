@@ -4,14 +4,6 @@
    ViewBag.Title = "QuanTriCauHinh";
    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section scripts{
-   <script>
-      var listDirect = ["Quản trị", "Quản trị Cấu hình"];
-      $(document).ready(function () {
-         capNhatPageDirectory('Quản trị Cấu hình', listDirect);
-      });
-   </script>
-}
 <div class="row ml-1 col-12" style="justify-content: center;">
    <div class="col-lg-6">
       <div class="card card-custom">
@@ -77,6 +69,12 @@
 </div>
 
 @section scripts{
+   <script>
+      var listDirect = ["Quản trị", "Quản trị Cấu hình"];
+      $(document).ready(function () {
+         capNhatPageDirectory('Quản trị Cấu hình', listDirect);
+      });
+   </script>
    <script>
       var _avatar = new KTImageInput('kt_user_cauhinh_logo');
       $(document).ready(function () {

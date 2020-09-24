@@ -1,0 +1,96 @@
+﻿<input type="hidden" value="@ViewBag.Thang" id="sldk_thang" />
+<input type="hidden" value="@ViewBag.Nam" id="sldk_nam" />
+<input type="hidden" value="@ViewBag.loaiDuKien" id="sldk_loai_dk" />
+
+<div class="card-body">
+   <!--begin: Datatable-->
+   <table id="my_datatable_sldk" style="width:auto;" class="table table-bordered table-hover table-checkable table-striped display">
+      <thead>
+         <tr style="align-content: center !important;">
+            <th @*style="width: 40px;"*@><b>ID</b></th>
+            <th @*style="width: 200px"*@ class="text-center"><b>Thời gian</b></th>
+            <th @*style="width: 150px"*@ class="text-center"><b>Giá trị</b></th>
+            <th style="width: 120px" class="text-center"><b>Tác vụ</b></th>
+         </tr>
+      </thead>
+   </table>
+   <!--end: Datatable-->
+</div>
+<!--begin::Example-->
+<script>
+   $(document).ready(function () {
+      $('#my_datatable_sldk').DataTable({
+         "sorting": false,
+         "processing": true,
+         "scrollX": 'none',
+         "searching": false,
+         "autoWidth": true,
+         //"ordering": false,
+         "pagingType": "first_last_numbers",
+         //"lengthChange": false,
+         "language": {
+            "processing": "Cập nhật thông tin .....",
+            "search": "Từ khóa",
+            "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
+            "zeroRecords": "Không tìm thấy bản ghi",
+            "info": "Trang _PAGE_ / _PAGES_",
+            "infoEmpty": "Không tìm thấy bản ghi",
+            //"infoFiltered": "(filtered from _MAX_ total records)",
+            "decimal": ",",
+            "thousands": ".",
+            "paginate": {
+               "first": "Đầu",
+               "last": "Cuối"
+            }
+         },
+         "serverSide": true,
+         "order": [0, "asc"],
+         "ajax": {
+            url: '/Admin/SanLuongDuKienPaging',
+            type: "POST",
+            dataType: 'json',
+            data: {
+               thang: $('#sldk_thang').val(),
+               nam: $('#sldk_nam').val(),
+               loai_sldk: $('#sldk_loai_dk').val()
+            },
+            dataSrc: function (data) {
+               if (data.success == false) {
+                  showMessage('error', data.message);
+                  //$('.loader').hide();
+                  return null;
+               } else {
+                  return data.data;
+               }
+            }
+         },
+         "columns": [
+            {
+               "data": "ID", "name": "ID",
+               "className": "d-none"
+            },
+            {
+               "data": "ThoiGian_Str", "name": "ThoiGian",
+               "className": "text-right  align-middle"
+            },
+            {
+               "data": "SanLuong", "name": "SanLuong",
+               "className": "text-right  align-middle"
+            },
+            {
+               "data": {
+                  id: "ID",
+                  thoigian: "ThoiGian_Str"
+               }, "name": "Actions",
+               "className": "text-center align-middle",
+               "orderable": false,
+               render: function (data) {
+                  return '<a href="javascript:;" title="Cập nhật" class="btn btn-brand m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill m-btn--air btn-edit" data-id="' + data.id + '">\
+                        <i class="la la-edit"></i>\
+                    </a>'
+               }
+            },
+         ]
+      })
+   })
+</script>

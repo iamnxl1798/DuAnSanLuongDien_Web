@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Linq.Dynamic;
 
 namespace DuAn
 {
@@ -1178,6 +1179,57 @@ namespace DuAn
             rs.TenCongTy = ct.TenCongTy;
             db.SaveChanges();
             return "success";
+         }
+      }
+   }
+
+   public static class SanLuongDuKienDAO
+   {
+      public static bool GetSanLuongDuKienPaging(out PagingModel<SanLuongDuKienViewModel> pm, RequestPagingModel rpm, int loai_SLDK, int? thang, int? nam)
+      {
+         try
+         {
+            pm = new PagingModel<SanLuongDuKienViewModel>();
+            using (var db = new Model1())
+            {
+               //LogHelper.QueryInfo(dbContext);
+               var list = db.SanLuongDuKiens.Select(x => x);
+
+
+
+               if (loai_SLDK == 1)
+               {
+                  list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == nam && x.ThoiGian.Month == thang);
+               }
+               else
+               {
+                  list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == thang);
+               }
+
+               pm.recordsFiltered = list.Count();
+
+               //sorting
+               if (!string.IsNullOrEmpty(rpm.sortColumnName))
+               {
+                  list = list.OrderBy(rpm.sortColumnName + " " + rpm.sortDirection);
+               }
+               pm.recordsTotal = list.Count();
+               //paging
+               list = list.Skip(rpm.start).Take(rpm.length);
+               pm.data = list.AsEnumerable().Select(x => new SanLuongDuKienViewModel()
+               {
+                  ID = x.ID,
+                  ThoiGian_Str = loai_SLDK == 1 ? x.ThoiGian.ToString("MM/yyyy") : x.ThoiGian.ToString("yyyy"),
+                  SanLuong = x.SanLuong
+               }).ToList();
+               pm.draw = int.Parse(rpm.draw);
+            }
+            return true;
+         }
+         catch (Exception ex)
+         {
+            pm = new PagingModel<SanLuongDuKienViewModel>();
+            return false;
          }
       }
    }

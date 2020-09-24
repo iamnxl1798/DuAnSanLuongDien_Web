@@ -64,9 +64,7 @@
 </div>
 @section scripts{
    <script>
-    var listDirect = ["Cấu Hình", "Cập nhật Công thức tính"];
-    $(document).ready(function () {
-        capNhatPageDirectory('Cập nhật Công thức tính', listDirect);
+    $(document).ready(function () {     
         var start = new Date(@Model.getLastDate.Year,@Model.getLastDate.Month-1,@Model.getLastDate.Day);
         updateCalendar(start);
     });

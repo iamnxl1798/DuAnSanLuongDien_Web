@@ -1,10 +1,16 @@
 ﻿
 @{
-    ViewBag.Title = "CauHinhCongThuc";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+   ViewBag.Title = "CauHinhCongThuc";
+   Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
 <div class="row ml-1 col-12" style="justify-content: center;">
-    @Html.Action("InsertFormula", "Admin")
+   @Html.Action("InsertFormula", "Admin")
 </div>
+@section scripts{
+   <script>
+      var listDirect = ["Cấu Hình", "Cập nhật Công thức tính"];
+      capNhatPageDirectory('Cập nhật Công thức tính', listDirect);
+   </script>
+}

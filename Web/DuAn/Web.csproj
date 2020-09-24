@@ -295,6 +295,7 @@
     <Compile Include="Models\CustomModel\RequestPagingModel.cs" />
     <Compile Include="Models\CustomModel\RoleChecking.cs" />
     <Compile Include="Models\CustomModel\RolePaging.cs" />
+    <Compile Include="Models\CustomModel\SanLuongDuKienViewModel.cs" />
     <Compile Include="Models\CustomModel\StateTree.cs" />
     <Compile Include="Models\CustomModel\ThongSoAndTenDiemDo.cs" />
     <Compile Include="Models\CustomModel\ThongSoPatialModel.cs" />
@@ -2458,6 +2459,9 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Scripts.cshtml" />
     <Content Include="Views\Shared\_Styles.cshtml" />
+    <Content Include="Views\Admin\CapNhatSanLuongDuKienView.cshtml" />
+    <Content Include="Views\Admin\ListSanLuongDuKienView.cshtml" />
+    <Content Include="Views\Admin\SanLuongDuKien_Datatable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
