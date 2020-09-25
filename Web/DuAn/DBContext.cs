@@ -1203,7 +1203,7 @@ namespace DuAn
                }
                else
                {
-                  list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == thang);
+                  list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == nam);
                }
 
                pm.recordsFiltered = list.Count();
@@ -1231,6 +1231,27 @@ namespace DuAn
             pm = new PagingModel<SanLuongDuKienViewModel>();
             return false;
          }
+      }
+      public static bool GetSanLuongDuKienById(int id, out SanLuongDuKien sldk)
+      {
+         sldk = new SanLuongDuKien();
+         try
+         {
+            using (Model1 db = new Model1())
+            {
+               sldk = db.SanLuongDuKiens.Where(x => x.ID == id).FirstOrDefault();
+               if (sldk == null)
+               {
+                  return false;
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            sldk = null;
+            return false;
+         }
+         return true;
       }
    }
 

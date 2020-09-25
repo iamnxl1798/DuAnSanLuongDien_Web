@@ -212,7 +212,7 @@ namespace DuAn.Controllers
       }
 
       #region Cập nhật sản lượng dự kiến
-      public ActionResult SanLuongDuKien_Datatable(int loaiDuKien, int thang, int nam)
+      public ActionResult CapNhatSLDK_Datatable(int loaiDuKien, int thang, int nam)
       {
 
          ViewBag.Nam = nam;
@@ -266,6 +266,19 @@ namespace DuAn.Controllers
          {
             return null;
          }
+      }
+      [HttpPost]
+      public ActionResult CapNhatSLDKManageModal(int id)
+      {
+         SanLuongDuKien sldk = new SanLuongDuKien();
+         if (id == 0)
+         {
+            //return Json(new { success = true, data = View() });
+            return View();
+         }
+         var rs = SanLuongDuKienDAO.GetSanLuongDuKienById(id, out sldk);
+         //return Json(new { success = rs, data = View(sldk) });
+         return View(sldk);
       }
    }
    #endregion

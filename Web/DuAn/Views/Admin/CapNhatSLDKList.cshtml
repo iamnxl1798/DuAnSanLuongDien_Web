@@ -58,7 +58,7 @@
             </div>
          </div>
          <div class="col-2 order-2 order-xl-1 m--align-right" style="bottom:15%;">
-            <a href="javascript:;" class="btn btn-primary" id="btn-search">
+            <a href="javascript:;" class="btn btn-primary" id="btn-search-sldk">
                <span>
                   <i class="fa fa-search"></i>
                   <span>
@@ -82,8 +82,43 @@
 <div class="modal fade modal-edit-sldk" id="formEditSLDK" tabindex="-1" role="dialog" aria-labelledby="formEditSLDK" aria-hidden="true"></div>
 
 <script>
+
    $(document).ready(function () {
 
+      var getModalSLDK = function (id) {
+         $.ajax({
+            url: "/Admin/CapNhatSLDKManageModal",
+            cache: false,
+            data: {
+               id: id
+            },
+            method: 'POST',
+            success: function (data) {
+               $("#formEditSLDK").html(data);
+               $("#formEditSLDK").modal('show');
+               $('#formEditSLDK').modal({
+                  backdrop: false
+               });
+               @*if (data.success != true) {
+                  showMessage('Không thể truy vấn cơ sở dữ liệu', false)
+               } else {
+                  $("#formEditSLDK").html(data.data);
+                  $("#formEditSLDK").modal('show');
+                  $('#formEditSLDK').modal({
+                     backdrop: false
+                  });
+               }*@
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+               if (jqXHR.status == 401) {
+                  showMessage('Bạn không có quyền này', false);
+               } else {
+                  showMessage('Đã xảy ra lỗi trong quá trình chỉnh sửa/ thêm mới dữ liệu ' + jqXHR.responseText, false);
+               }
+            }
+         })
+      }
 
       $('#loai_sldk').on('change', function () {
          if ($(this).val() == 1) {
@@ -95,7 +130,7 @@
 
       var load_datatable_sldk = function () {
          $.ajax({
-            url: "/Admin/SanLuongDuKien_Datatable",
+            url: "/Admin/CapNhatSLDK_Datatable",
             cache: false,
             data: {
                loaiDuKien: $('#loai_sldk').val(),
@@ -105,12 +140,27 @@
             success: function (data) {
                $("#datatable_sldk_ajax").html(data);
             },
-            error: function () {
-
+            error: function (jqXHR, textStatus, errorThrown) {
+               showMessage('Không thể truy vấn cơ sở dữ liệu ' + jqXHR.responseText, false);
             }
          })
       };
-      load_datatable_sldk();
+
+
+      $('#btn-search-sldk').on('click', function () {
+         load_datatable_sldk();
+      })
+
+      $('#btn-search-sldk').trigger('click');
+
+      $('#new_sldk').on('click', function () {
+         getModalSLDK(0);
+      })
+      $('#datatable_sldk_ajax').on('click', '.btn-edit-sldk', function () {
+         var id = $(this).attr('data-id');
+         getModalSLDK(id);
+      })
    })
+
 </script>
 <!--end::Page Scripts-->

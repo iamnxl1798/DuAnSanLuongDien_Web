@@ -2460,8 +2460,9 @@
     <Content Include="Views\Shared\_Scripts.cshtml" />
     <Content Include="Views\Shared\_Styles.cshtml" />
     <Content Include="Views\Admin\CapNhatSanLuongDuKienView.cshtml" />
-    <Content Include="Views\Admin\ListSanLuongDuKienView.cshtml" />
-    <Content Include="Views\Admin\SanLuongDuKien_Datatable.cshtml" />
+    <Content Include="Views\Admin\CapNhatSLDKList.cshtml" />
+    <Content Include="Views\Admin\CapNhatSLDK_Datatable.cshtml" />
+    <Content Include="Views\Admin\CapNhatSLDKManageModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

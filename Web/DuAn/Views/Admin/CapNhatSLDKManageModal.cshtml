@@ -1,0 +1,81 @@
+﻿@model DuAn.Models.DbModel.SanLuongDuKien
+
+<div class="modal-dialog modal-dialog-centered modal-sm" style="width:600px !important" role="document">
+   <div class="modal-content">
+      <!--Card header-->
+      <div class="modal-header">
+         @if (Model == null)
+         {
+            <h5 class="modal-title">Tạo mới Sản lượng dự kiến :</h5>
+         }
+         else
+         {
+            <h5 class="modal-title">Chỉnh sửa sản lượng dự kiến :</h5>
+         }
+      </div>
+      <!--Card body-->
+      <div class="modal-body">
+         <!--begin::Content-->
+         <input type="hidden" id="id_sldk" value="@(Model != null ? Model.ID : 0)" />
+         <form class="form">
+            <div class="form-group row">
+               <label class="col-form-label col-3">Loại:</label>
+               <div class="col-7">
+                  <select class="form-control m-select2" id="loai_sldk" name="loai_sldk">
+                     <option value="1" @(Model.LoaiID == 1 ? "selected" : "")>Tháng</option>
+                     <option value="2" @(Model.LoaiID == 2 ? "selected" : "")>Năm</option>
+                  </select>
+               </div>
+            </div>
+            <div class="form-group row">
+               <label class="col-form-label col-3">Năm:</label>
+               <div class="col-7">
+                  @{
+                     var year_max = DateTime.Now.Year + 10;
+                     var year_min = DateTime.Now.Year - 10;
+                  }
+                  <input type="number" max="@year_max" min="@year_min" id="sldk_nam" class="form-control form-control-solid" value="@DateTime.Now.Year" />
+               </div>
+            </div>
+            <div class="form-group row" id="sldk_modal_thang">
+               <label class="col-form-label col-3">Tháng:</label>
+               <div class="col-7">
+                  <input class="form-control form-control-solid" type="number" id="sldk_thang" max="12" min="1" value="@DateTime.Now.Month" />
+               </div>
+            </div>
+            <div class="form-group row">
+               <label class="col-form-label col-3 pr-1">Giá trị:</label>
+               <div class="col-8">
+                  <input class="form-control form-control-solid" type="text" id="sldk_giatri" value="@(Model != null ? Model.SanLuong.ToString() : "")" />
+               </div>
+            </div>
+         </form>
+         <!--end::Form-->
+         <!--end::Content-->
+      </div>
+      <!--end::card body-->
+      <!--begin::footer-->
+      <div class="modal-footer">
+         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
+         <button type="button" class="btn btn-primary font-weight-bold" id="submitSLDK">Lưu thay đổi</button>
+      </div>
+      <!--End::footer-->
+   </div>
+</div>
+<script>
+   $(document).ready(function () {
+
+      $('#loai_sldk').on('change', function () {
+         debugger
+         var rs = $(this).val();
+         var x = document.getElementById("sldk_modal_thang");
+         if (rs == 1) {
+            x.style.display = "inline";
+         } else {
+            x.style.display = "none";
+         }
+      })
+
+      $('#loai_sldk').trigger('change');
+   })
+</script>
