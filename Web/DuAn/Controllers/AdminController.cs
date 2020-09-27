@@ -274,11 +274,43 @@ namespace DuAn.Controllers
          if (id == 0)
          {
             //return Json(new { success = true, data = View() });
-            return View();
+            return PartialView();
          }
          var rs = SanLuongDuKienDAO.GetSanLuongDuKienById(id, out sldk);
          //return Json(new { success = rs, data = View(sldk) });
-         return View(sldk);
+         return PartialView(sldk);
+      }
+
+      [HttpPost]
+      public ActionResult CapNhatSLDK_CreateOrUpdate(int id_sldk, double giatri_sldk_modal, int? sldk_thang_modal = 1, int nam_sldk_modal = 1,  int loai_sldk_modal = 1)
+      {
+         var rs = "";
+         //nam
+         if (!sldk_thang_modal.HasValue || loai_sldk_modal == 2)
+         {
+            sldk_thang_modal = -1;
+         }
+         if (id_sldk == 0)
+         {
+            //create
+            rs = SanLuongDuKienDAO.CreateSanLuongDuKien(loai_sldk_modal, sldk_thang_modal.Value, nam_sldk_modal, giatri_sldk_modal);
+         }
+         else
+         {
+            // update
+            rs = SanLuongDuKienDAO.UpdateSanLuongDuKien(id_sldk, giatri_sldk_modal);
+         }
+
+         if (rs.Equals("success"))
+         {
+            return Json(new { success = true, message = "Thành Công!!!" });
+         }
+         else
+         {
+            return Json(new { success = false, message = rs });
+         }
+
+
       }
    }
    #endregion

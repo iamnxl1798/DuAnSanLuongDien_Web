@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
+using System.Web.Optimization;
 
 namespace DuAn
 {
@@ -1252,6 +1253,80 @@ namespace DuAn
             return false;
          }
          return true;
+      }
+      public static string CreateSanLuongDuKien(int loai_sldk, int thang, int nam, double giatri)
+      {
+         var sldk = new SanLuongDuKien();
+         try
+         {
+            using (var db = new Model1())
+            {
+               //thang
+               if (loai_sldk == 1)
+               {
+                  var rs = db.SanLuongDuKiens.Where(x => x.LoaiID == loai_sldk && x.ThoiGian.Month == thang && x.ThoiGian.Year == nam && x.ThoiGian.Day == 1).FirstOrDefault();
+                  if (rs != null)
+                  {
+                     return "Bản ghi đã tồn tại";
+                  }
+                  else
+                  {
+                     sldk.LoaiID = loai_sldk;
+                     sldk.ThoiGian = new DateTime(nam, thang, 1);
+                     sldk.SanLuong = giatri;
+                  }
+               }
+               else
+               {
+                  //nam
+                  var rs = db.SanLuongDuKiens.Where(x => x.LoaiID == loai_sldk && x.ThoiGian.Month == 1 && x.ThoiGian.Year == nam && x.ThoiGian.Day == 1).FirstOrDefault();
+                  if (rs != null)
+                  {
+                     return "Bản ghi đã tồn tại";
+                  }
+                  else
+                  {
+                     sldk.LoaiID = loai_sldk;
+                     sldk.ThoiGian = new DateTime(nam, 1, 1);
+                     sldk.SanLuong = giatri;
+                  }
+               }
+               db.SanLuongDuKiens.Add(sldk);
+               db.SaveChanges();
+               return "success";
+            }
+         }
+         catch (Exception ex)
+         {
+            return "Đã xảy ra lỗi khi thêm mới Sản lượng dự kiến";
+         }
+      }
+
+      public static string UpdateSanLuongDuKien(int id, double giatri)
+      {
+         var sldk = new SanLuongDuKien();
+         try
+         {
+            using (var db = new Model1())
+            {
+
+               var rs = db.SanLuongDuKiens.Where(x => x.ID == id).FirstOrDefault();
+               if (rs != null)
+               {
+                  rs.SanLuong = giatri;
+               }
+               else
+               {
+                  return "Bản ghi không tồn tại";
+
+               }
+               db.SaveChanges();
+               return "success";
+            }
+         }catch (Exception ex)
+         {
+            return "Đã xảy ra lỗi khi cập nhật Sản lượng dự kiến";
+         }
       }
    }
 

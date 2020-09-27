@@ -41,7 +41,7 @@
                </select>
             </div>
          </div>
-         <div class="col-3 row" id="div_nam">
+         <div class="col-3 row" id="div_nam_sldk">
             <label class="col-form-label">Năm:</label>
             <div class="col-lg-9 col-xl-9">
                @{
@@ -51,7 +51,7 @@
                <input type="number" max="@year_max" min="@year_min" id="sldk_nam" class="form-control form-control-solid" value="@DateTime.Now.Year" />
             </div>
          </div>
-         <div class="col-3 row" id="div_thang">
+         <div class="col-3 row" id="div_thang_sldk">
             <label class="col-form-label">Tháng:</label>
             <div class="col-lg-9 col-xl-9">
                <input class="form-control form-control-solid" type="number" id="sldk_thang" max="12" min="1" value="@DateTime.Now.Month" />
@@ -121,10 +121,13 @@
       }
 
       $('#loai_sldk').on('change', function () {
-         if ($(this).val() == 1) {
-            $('#div_thang').prop("disabled", "disabled");
+         debugger
+         var rs = $(this).val();
+         var x = document.getElementById('div_thang_sldk');
+         if (rs == 1) {
+            x.style.removeProperty('display');
          } else {
-            $('#div_thang').removeAttr('disabled');
+            x.style.display = "none";
          }
       });
 

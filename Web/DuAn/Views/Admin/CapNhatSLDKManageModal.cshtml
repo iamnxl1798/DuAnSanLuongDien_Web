@@ -1,6 +1,8 @@
 ﻿@model DuAn.Models.DbModel.SanLuongDuKien
-
-<div class="modal-dialog modal-dialog-centered modal-sm" style="width:600px !important" role="document">
+@{
+   Layout = null;
+}
+<div class="modal-dialog modal-dialog-centered modal-xl" style="width:600px !important" role="document">
    <div class="modal-content">
       <!--Card header-->
       <div class="modal-header">
@@ -16,14 +18,22 @@
       <!--Card body-->
       <div class="modal-body">
          <!--begin::Content-->
-         <input type="hidden" id="id_sldk" value="@(Model != null ? Model.ID : 0)" />
-         <form class="form">
+         <form class="form" id="sldk_modal_form">
+            <input type="hidden"  name="id_sldk" id="id_sldk" value="@(Model != null ? Model.ID : 0)" />
             <div class="form-group row">
                <label class="col-form-label col-3">Loại:</label>
                <div class="col-7">
-                  <select class="form-control m-select2" id="loai_sldk" name="loai_sldk">
-                     <option value="1" @(Model.LoaiID == 1 ? "selected" : "")>Tháng</option>
-                     <option value="2" @(Model.LoaiID == 2 ? "selected" : "")>Năm</option>
+                  <select class="form-control m-select2" id="loai_sldk_modal" name="loai_sldk_modal" @(Model != null ? "disabled" : "")>
+                     @if (Model == null || Model.LoaiID == 1)
+                     {
+                        <option value="1" selected>Tháng</option>
+                        <option value="2">Năm</option>
+                     }
+                     else
+                     {
+                        <option value="1">Tháng</option>
+                        <option value="2" selected>Năm</option>
+                     }
                   </select>
                </div>
             </div>
@@ -34,19 +44,19 @@
                      var year_max = DateTime.Now.Year + 10;
                      var year_min = DateTime.Now.Year - 10;
                   }
-                  <input type="number" max="@year_max" min="@year_min" id="sldk_nam" class="form-control form-control-solid" value="@DateTime.Now.Year" />
+                  <input type="number" name="nam_sldk_modal" max="@year_max" min="@year_min" id="sldk_nam" class="form-control form-control-solid" value="@DateTime.Now.Year" @(Model != null ? "disabled" : "") />
                </div>
             </div>
             <div class="form-group row" id="sldk_modal_thang">
                <label class="col-form-label col-3">Tháng:</label>
                <div class="col-7">
-                  <input class="form-control form-control-solid" type="number" id="sldk_thang" max="12" min="1" value="@DateTime.Now.Month" />
+                  <input class="form-control form-control-solid" name="sldk_thang_modal" type="number" id="sldk_thang" max="12" min="1" value="@DateTime.Now.Month" @(Model != null ? "disabled" : "") />
                </div>
             </div>
             <div class="form-group row">
                <label class="col-form-label col-3 pr-1">Giá trị:</label>
                <div class="col-8">
-                  <input class="form-control form-control-solid" type="text" id="sldk_giatri" value="@(Model != null ? Model.SanLuong.ToString() : "")" />
+                  <input class="form-control form-control-solid" name="giatri_sldk_modal" type="text" id="sldk_giatri" value="@(Model != null ? Model.SanLuong.ToString() : "")" />
                </div>
             </div>
          </form>
@@ -64,18 +74,35 @@
 </div>
 <script>
    $(document).ready(function () {
-
-      $('#loai_sldk').on('change', function () {
-         debugger
+      $('#loai_sldk_modal').on('change', function () {
          var rs = $(this).val();
-         var x = document.getElementById("sldk_modal_thang");
+         var x = document.getElementById('sldk_modal_thang');
          if (rs == 1) {
-            x.style.display = "inline";
+            x.style.removeProperty('display');
          } else {
             x.style.display = "none";
          }
+      });
+      $('#submitSLDK').on('click', function () {
+         $.ajax({
+            url: '/Admin/CapNhatSLDK_CreateOrUpdate',
+            type: 'POST',
+            data: $('#sldk_modal_form').serialize(),
+            cache: false,
+            success: function (data) {
+               if (data.success == true) {
+                  showMessage(data.message, true);
+                  $('#my_datatable_sldk').DataTable().ajax.reload();
+               } else {
+                  showMessage(data.message, false);
+               }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+               showMessage('Không thể truy vấn cơ sở dữ liệu ' + jqXHR.responseText, false);
+            }
+         })
       })
 
-      $('#loai_sldk').trigger('change');
+      $('#loai_sldk_modal').trigger('change');
    })
 </script>
