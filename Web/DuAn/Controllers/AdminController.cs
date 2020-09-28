@@ -75,26 +75,33 @@ namespace DuAn.Controllers
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
       public ActionResult SaveDropzoneJsUploadedFiles()
       {
-         foreach (string fileName in Request.Files)
+         try
          {
-            HttpPostedFileBase file = Request.Files[fileName];
-            if (file != null && file.ContentLength > 0)
+            foreach (string fileName in Request.Files)
             {
-               var parentDir = new DirectoryInfo(Server.MapPath("\\")).Parent.Parent.FullName;
-               var pathString = parentDir + "\\DocDuLieuCongTo\\TestTheoDoi";
+               HttpPostedFileBase file = Request.Files[fileName];
+               if (file != null && file.ContentLength > 0)
+               {
+                  //var parentDir = new DirectoryInfo(Server.MapPath("\\")).Parent.Parent.FullName;
+                  //var pathString = parentDir + "\\DocDuLieuCongTo\\TestTheoDoi";
+                  var pathString = @"C:\SLCTO\ESMETERING";
 
-               var fileName1 = Path.GetFileName(file.FileName);
+                  var fileName1 = Path.GetFileName(file.FileName);
 
-               bool isExists = System.IO.Directory.Exists(pathString);
+                  bool isExists = System.IO.Directory.Exists(pathString);
 
-               if (!isExists)
-                  System.IO.Directory.CreateDirectory(pathString);
+                  if (!isExists)
+                     System.IO.Directory.CreateDirectory(pathString);
 
-               var path = string.Format("{0}\\{1}", pathString, file.FileName);
-               file.SaveAs(path);
+                  var path = string.Format("{0}\\{1}", pathString, file.FileName);
+                  file.SaveAs(path);
+               }
             }
          }
-
+         catch (Exception ex)
+         {
+            return Json(new { Message = "Lỗi lưu file !!" });
+         }
          return Json(new { Message = string.Empty });
       }
 
@@ -122,8 +129,9 @@ namespace DuAn.Controllers
                   file.SaveAs(path);
                }
             }
-            var parentDir = new DirectoryInfo(Server.MapPath("\\")).Parent.Parent.FullName;
-            var folderPath = parentDir + "\\DocDuLieuCongTo\\TestTheoDoi";
+            //var parentDir = new DirectoryInfo(Server.MapPath("\\")).Parent.Parent.FullName;
+            //var folderPath = parentDir + "\\DocDuLieuCongTo\\TestTheoDoi";
+            var folderPath = @"C:\SLCTO\ESMETERING";
             DirectoryInfo dir = new DirectoryInfo(folderPath);
             FileInfo[] files = dir.GetFiles(name, SearchOption.TopDirectoryOnly);
             foreach (var item in files)
@@ -282,7 +290,7 @@ namespace DuAn.Controllers
       }
 
       [HttpPost]
-      public ActionResult CapNhatSLDK_CreateOrUpdate(int id_sldk, double giatri_sldk_modal, int? sldk_thang_modal = 1, int nam_sldk_modal = 1,  int loai_sldk_modal = 1)
+      public ActionResult CapNhatSLDK_CreateOrUpdate(int id_sldk, double giatri_sldk_modal, int? sldk_thang_modal = 1, int nam_sldk_modal = 1, int loai_sldk_modal = 1)
       {
          var rs = "";
          //nam

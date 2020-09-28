@@ -1,4 +1,11 @@
 ﻿@model List<DuAn.Models.CustomModel.MissingDataStatus>
+
+<style>
+   .datepicker.dropdown-menu {
+      z-index: 9999 !important;
+   }
+</style>
+
 <div class="col-lg-10">
    <div class="card card-custom gutter-b" style="height:95%">
       <div class="card-header">
@@ -13,7 +20,7 @@
                <div class="col-md-6">
                   <label for="thoiGianBatDau" class="col-form-label ml-1">Thời gian bắt đầu</label>
                   <div class="form-group mb-4">
-                     <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianBatDauDiv">
+                     <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianBatDauDiv" onmousedown="setStartDate('thoiGianBatDau')">
                         <input type="text" placeholder="Thời gian bắt đầu" class="form-control" id="thoiGianBatDau" readonly="">
                         <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
                      </div>
@@ -22,7 +29,7 @@
                <div class="col-md-6">
                   <label for="thoiGianKetThuc" class="col-form-label ml-1">Thời gian kết thúc</label>
                   <div class="form-group mb-4">
-                     <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianKetThucDiv" onmousedown="setStartDate()">
+                     <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianKetThucDiv" onmousedown="setStartDate('thoiGianKetThuc')">
                         <input type="text" placeholder="Thời gian kết thúc" class="form-control" id="thoiGianKetThuc" readonly="">
                         <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
                      </div>
@@ -38,8 +45,8 @@
                <div class="col-lg-7 mb-lg-0 mb-4">
                   <div class="dropzone" style="border:1px dashed green;border-radius: 25px; height:100%" id="kt_dropzone_3">
                      <div class="dropzone-msg dz-message needsclick my-auto text-center">
-                        <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                        <span class="dropzone-msg-desc">Only .xls, .xlxs files are allowed for upload</span>
+                        <h3 class="dropzone-msg-title">Kéo thả hoặc click để tải file lên</h3>
+                        <span class="dropzone-msg-desc">Định dạng phù hợp : .xls, .xlxsm, .csv </span>
                         <img src="~/images/upload-arrow_318-26670.jpg" class="rounded mx-auto d-block w-25 h-25 mt-7 mb-11" alt="Responsive image" />
                      </div>
                   </div>
@@ -54,31 +61,52 @@
       <!--end::Form-->
    </div>
 </div>
-@section scripts{
-   <script>
+<script>
     $(document).ready(function () {
         setupCalendar(null, 'thoiGianBatDau');
         setupCalendar(null, 'thoiGianKetThuc');
     });
-    function setupCalendar(date, id) {
-        $('#' + id).datepicker({
-            autoclose: true,
-            startDate: date,
-            clearBtn: true,
-            format: "dd/mm/yyyy",
-            endDate: 'd'
-        });
-    }
-    function setStartDate() {
-        $('#thoiGianKetThuc').datepicker('destroy');
-        var dateParts = $('#thoiGianBatDau').val().split("/");
-        if (dateParts.length == 1) {
-            setupCalendar(null, 'thoiGianKetThuc');
-        }
-        else {
-            setupCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]), 'thoiGianKetThuc');
-        }
-    }
+   function setupCalendar(start_date, end_date, id) {
+      @*var end_date = "d";
+
+      if (id == "thoiGianBatDau") {
+         var dateParts = $('#thoiGianKetThuc').val().split("/");
+         if (dateParts.length > 1) {
+            end_date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+         }
+      }*@
+
+      $('#' + id).datepicker({
+         autoclose: true,
+         startDate: start_date,
+         clearBtn: true,
+         format: "dd/mm/yyyy",
+         endDate: end_date
+      });
+   }
+
+   function setStartDate(id) {
+      if (id == 'thoiGianKetThuc') {
+         $('#thoiGianKetThuc').datepicker('destroy');
+         var dateParts = $('#thoiGianBatDau').val().split("/");
+         if (dateParts.length == 1) {
+            setupCalendar(null,'d', 'thoiGianKetThuc');
+         }
+         else {
+            setupCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]),'d', 'thoiGianKetThuc');
+         }
+      } else {
+         $('#thoiGianBatDau').datepicker('destroy');
+         var dateParts = $('#thoiGianKetThuc').val().split("/");
+         if (dateParts.length == 1) {
+            setupCalendar(null,'d', 'thoiGianBatDau');
+         }
+         else {
+            setupCalendar(null, new Date(dateParts[2], dateParts[1] - 1, dateParts[0]), 'thoiGianBatDau');
+         }
+      }
+   }
+
     $('#btnSubmit').click(function () {
         if ($('#thoiGianBatDau').val() != "") {
             $.ajax({
@@ -99,5 +127,4 @@
             showMessage("Thời gian bắt đầu không được để trống", false);
         }
     });
-   </script>
-}
+</script>

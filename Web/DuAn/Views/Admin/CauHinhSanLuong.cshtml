@@ -16,40 +16,42 @@
         capNhatPageDirectory('Cập nhật sản lượng ngày', listDirect);
 
 
-        $('#kt_dropzone_3').dropzone({
-            addRemoveLinks: true,
-            url: "@Url.Action("SaveDropzoneJsUploadedFiles","Admin")", // Set the url for your upload script location
-            paramName: "file", // The name that will be used to transfer the file
-            maxFiles: 10,
-            maxFilesize: 10, // MB
-            addRemoveLinks: true,
-            acceptedFiles: "text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv",
-            accept: function (file, done) {
-                var name = file.name;
-                try {
-                    var day = parseInt(name.substring(0, 2));
-                    var month = parseInt(name.substring(2, 4))-1;
-                    var year = parseInt(new Date().getFullYear().toString().substring(0, 3)+name.substring(4, 5));
-                    var ID = parseInt(name.substring(5));
-                    var myDate = new Date(year, month, day);
-                    if (myDate.getDate() != day || myDate.getMonth() != month || myDate.getFullYear() != year) {
-                        showMessage("File không hợp lệ", false);
-                        done("File không hợp lệ.");
-                    }
-                    else if (!isNaN(file.name) || file.name.split('.')[0].length > 8) {
-                        showMessage("File không hợp lệ", false);
-                        done("File không hợp lệ.");
-                    } else {
-                        done();
-                    }
+       $('#kt_dropzone_3').dropzone({
+          dictFallbackMessage: "Trình duyệt của bạn không hỗ trợ chức năng này",
+          dictDefaultMessage:"Kéo thả hoặc click để tải file lên (.xls, .xlxsm, .csv)",
+          dictRemoveFile:"Xóa File",
+          addRemoveLinks: true,
+          url: "@Url.Action("SaveDropzoneJsUploadedFiles","Admin")", // Set the url for your upload script location
+          paramName: "file", // The name that will be used to transfer the file
+          maxFiles: 10,
+          maxFilesize: 10, // MB
+          acceptedFiles: "text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.csv",
+          accept: function (file, done) {
+             var name = file.name;
+             try {
+                var day = parseInt(name.substring(0, 2));
+                var month = parseInt(name.substring(2, 4)) - 1;
+                var year = parseInt(new Date().getFullYear().toString().substring(0, 3) + name.substring(4, 5));
+                var ID = parseInt(name.substring(5));
+                var myDate = new Date(year, month, day);
+                if (myDate.getDate() != day || myDate.getMonth() != month || myDate.getFullYear() != year) {
+                   showMessage("File không hợp lệ", false);
+                   done("File không hợp lệ.");
                 }
-                catch{
-                    done("File khÔng hợp lệ.");
+                else if (!isNaN(file.name) || file.name.split('.')[0].length > 8) {
+                   showMessage("File không hợp lệ", false);
+                   done("File không hợp lệ.");
+                } else {
+                   done();
                 }
-            },
-            success: function (file, response) {
-                showMessage("Thêm file thành công, đang chờ xử lý", true);
-                $.ajax({
+             }
+             catch{
+                done("File không hợp lệ.");
+             }
+          },
+          success: function (file, response) {
+             showMessage("Thêm file thành công, đang chờ xử lý", true);
+                @*$.ajax({
                         cache: false,
                         url: "@Url.Action("viewMissingDataList", "Admin")",
                     data: { fileName: file.name },
@@ -60,8 +62,21 @@
                         error: function (xhr, ajaxOptions, thrownError) {
                             showMessage("Xảy ra lỗi khi cập nhật dữ liệu", false);
                         }
-                    });
-                sleep(10000).then(() => {
+                });*@
+             setTimeout(function () {
+                $.ajax({
+                   cache: false,
+                   url: "@Url.Action("viewMissingDataList", "Admin")",
+                   data: { fileName: file.name },
+                   success: function (data) {
+                      $('#listMissing').html(data);
+                   },
+                   error: function (xhr, ajaxOptions, thrownError) {
+                      showMessage("Xảy ra lỗi khi cập nhật dữ liệu", false);
+                   }
+                });
+             }, 10000);
+                @*sleep(10000).then(() => {
                     $.ajax({
                         cache: false,
                         url: "@Url.Action("viewMissingDataList", "Admin")",
@@ -73,38 +88,40 @@
                             showMessage("Xảy ra lỗi khi cập nhật dữ liệu", false);
                         }
                     });
-                });
+                });*@
 
-            },
-            removedfile: function (file) {
-                sleep(0).then(() => {
-                    $.ajax({
-                        method:'POST',
-                        cache: false,
-                        url: "@Url.Action("RemoveFile","Admin")",
-                        data: { name: file.name },
-                        dataType:'json',
-                        success: function (message) {
-                            if (message.Message == 'Thanhcong') {
-                                file.previewElement.remove();
-                                showMessage("Xóa thành công", true);
-                            }
-                            else if (message.Message == 'Xuly') {
-                                showMessage("Đang chờ xử lý", false)
-                            }
-                            else {
-                                showMessage("Xóa thất bại", true);
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            showMessage("Xóa thất bại", false);
-                            console.log(thrownError);
-                        }
-                    });
+          },
+          removedfile: function (file) {
+             setTimeout(function () {
+                $.ajax({
+                   method: 'POST',
+                   cache: false,
+                   url: "@Url.Action("RemoveFile","Admin")",
+                   data: { name: file.name },
+                   dataType: 'json',
+                   success: function (message) {
+                      if (message.Message == 'Thanhcong') {
+                         file.previewElement.remove();
+                         showMessage("Xóa thành công", true);
+                      }
+                      else if (message.Message == 'Xuly') {
+                         showMessage("Đang chờ xử lý", false)
+                      }
+                      else {
+                         showMessage("Xóa thất bại", true);
+                      }
+                   },
+                   error: function (xhr, ajaxOptions, thrownError) {
+                      showMessage("Xóa thất bại", false);
+                      console.log(thrownError);
+                   }
                 });
-            }
-        });
+             }, 0);
+
+          }
+       });
     });
+
 
     function updateCalendar(date) {
         $('.datepickerDiv').datepicker({
