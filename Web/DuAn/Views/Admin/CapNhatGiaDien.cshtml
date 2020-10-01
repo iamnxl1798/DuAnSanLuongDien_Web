@@ -19,7 +19,7 @@
                   <div class="col-md-6">
                      <label for="thoiGianBatDau" class="col-form-label ml-1 mr-10">Thời gian bắt đầu</label>
                      <div class="form-group mb-4">
-                        <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianBatDauDiv">
+                        <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianBatDauDiv" onmousedown="setStartDate('thoiGianBatDau')">
                            <input type="text" placeholder="Thời gian bắt đầu" class="form-control" id="thoiGianBatDau" readonly="">
                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
                         </div>
@@ -28,7 +28,7 @@
                   <div class="col-md-6">
                      <label for="thoiGianKetThuc" class="col-form-label ml-1 mr-10">Thời gian kết thúc</label>
                      <div class="form-group mb-4">
-                        <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianKetThucDiv" onmousedown="setStartDate()">
+                        <div class="date input-group p-0 shadow-sm" width="100% !important" id="thoiGianKetThucDiv" onmousedown="setStartDate('thoiGianKetThuc')">
                            <input type="text" placeholder="Thời gian kết thúc" class="form-control" id="thoiGianKetThuc" readonly="">
                            <div class="input-group-append"><span class="input-group-text"><i class="fa fa-calendar"></i></span></div>
                         </div>
@@ -55,26 +55,39 @@
    var listDirect = ["Cấu Hình", "Cập nhật Công thức tính"];
       $(document).ready(function () {
          capNhatPageDirectory('Cập nhật Công thức tính', listDirect);
-        updateCalendar(null, 'thoiGianBatDau');
-        updateCalendar(null, 'thoiGianKetThuc');
+        updateCalendar('d', 'thoiGianBatDau');
+        updateCalendar('d', 'thoiGianKetThuc');
     });
-    function updateCalendar(date, id) {
+    function updateCalendar(date_start, date_end, id) {
         $('#' + id).datepicker({
             autoclose: true,
-            startDate: date,
+           startDate: date_start,
             clearBtn: true,
-            format: "dd/mm/yyyy"
+           format: "dd/mm/yyyy",
+           endDate: date_end
         });
     }
-    function setStartDate() {
-        $('#thoiGianKetThuc').datepicker('destroy');
-        var dateParts = $('#thoiGianBatDau').val().split("/");
-        if (dateParts.length == 1) {
-            updateCalendar(null, 'thoiGianKetThuc');
-        }
-        else {
-            updateCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]), 'thoiGianKetThuc');
-        }
+    function setStartDate(id) {
+
+       if (id == 'thoiGianKetThuc') {
+          $('#thoiGianKetThuc').datepicker('destroy');
+          var dateParts = $('#thoiGianBatDau').val().split("/");
+          if (dateParts.length == 1) {
+             updateCalendar('d', null, id);
+          }
+          else {
+             updateCalendar(new Date(dateParts[2], dateParts[1] - 1, dateParts[0]), null, id);
+          }
+       } else {
+          $('#thoiGianBatDau').datepicker('destroy');
+          var dateParts = $('#thoiGianKetThuc').val().split("/");
+          if (dateParts.length == 1) {
+             updateCalendar('d', null, id);
+          }
+          else {
+             updateCalendar('d', new Date(dateParts[2], dateParts[1] - 1, dateParts[0]), id);
+          }
+       }
     }
 
     function submitCongThuc() {
@@ -103,13 +116,13 @@
             url: "@Url.Action("InsertGiaDien","Admin")",
             data: { thoiGianBatDau: thoiGianBatDau, thoiGianKetThuc: thoiGianKetThuc, giaDien: giaDien },
             dataType:'json',
-            success: function (data) {
-                if (data.Message == "") {
-                    showMessage("Cập nhật giá điện thành công", true);
-                }
-                else {
-                    showMessage("Cập nhật giá điện thất bại", false);
-                }
+           success: function (data) {
+              if (data.success) {
+                  showMessage("Cập nhật giá điện thành công", true);
+              }
+              else {
+                  showMessage(data.message, false);
+              }
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 showMessage("Cập nhật giá điện thất bại", false);

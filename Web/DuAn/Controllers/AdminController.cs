@@ -158,7 +158,11 @@ namespace DuAn.Controllers
       public ActionResult InsertGiaDien(string thoiGianBatDau, string thoiGianKetThuc, int giaDien)
       {
          var message = DBContext.InsertGiaDien(thoiGianBatDau, thoiGianKetThuc, giaDien);
-         return Json(new { Message = message });
+         if (message)
+         {
+            return Json(new { success = true, message = string.Empty });
+         }
+         return Json(new { success = false, Message = "Không thể cập nhật giá điện" });
       }
 
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]

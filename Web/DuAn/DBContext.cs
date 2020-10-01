@@ -473,25 +473,52 @@ namespace DuAn
             db.SaveChanges();
          }
       }
-      public static string InsertGiaDien(string thoiGianBatDau, string thoiGianKetThuc, int giaDien)
+
+      public static bool InsertGiaDien(string thoiGianBatDau, string thoiGianKetThuc, int giaDien)
       {
          using (var db = new Model1())
          {
             try
             {
-               var item = new GiaDien()
+               var start_date = DateTime.ParseExact(thoiGianBatDau, "dd/MM/yyyy", null);
+               var end_date = DateTime.ParseExact(thoiGianKetThuc, "dd/MM/yyyy", null);
+               var rs_1 = db.GiaDiens.Where(x => x.NgayBatDau < start_date && x.NgayKetThuc >= start_date && x.NgayKetThuc <= end_date).FirstOrDefault();
+               if (rs_1 != null)
                {
-                  NgayBatDau = DateTime.ParseExact(thoiGianBatDau, "dd/MM/yyyy", null),
-                  NgayKetThuc = DateTime.ParseExact(thoiGianKetThuc, "dd/MM/yyyy", null),
-                  Gia = giaDien
-               };
-               db.GiaDiens.Add(item);
+                  rs_1.NgayKetThuc = start_date.AddDays(-1);
+               }
+               var rs_2 = db.GiaDiens.Where(x => x.NgayBatDau >= start_date && x.NgayKetThuc <= end_date).FirstOrDefault();
+               if (rs_2 != null)
+               {
+                  db.GiaDiens.Remove(rs_2);
+               }
+               var rs_3 = db.GiaDiens.Where(x => x.NgayBatDau >= start_date && x.NgayBatDau <= end_date && x.NgayKetThuc > end_date).FirstOrDefault();
+               if (rs_3 != null)
+               {
+                  rs_3.NgayBatDau = end_date.AddDays(1);
+               }
+               var rs_4 = db.GiaDiens.Where(x => x.NgayBatDau < start_date && x.NgayKetThuc > end_date).FirstOrDefault();
+               if (rs_4 != null)
+               {
+                  rs_4.NgayKetThuc = start_date.AddDays(-1);
+                  GiaDien dg_1 = new GiaDien();
+                  dg_1.NgayBatDau = end_date.AddDays(1);
+                  dg_1.NgayKetThuc = rs_4.NgayKetThuc;
+                  dg_1.Gia = rs_4.Gia;
+                  db.GiaDiens.Add(dg_1);
+               }
+               GiaDien dg = new GiaDien();
+               dg.NgayBatDau = start_date;
+               dg.NgayKetThuc = end_date;
+               dg.Gia = giaDien;
+
+               db.GiaDiens.Add(dg);
                db.SaveChanges();
-               return "";
+               return true;
             }
             catch (Exception e)
             {
-               return "Error";
+               return false;
             }
          }
       }
@@ -1323,7 +1350,8 @@ namespace DuAn
                db.SaveChanges();
                return "success";
             }
-         }catch (Exception ex)
+         }
+         catch (Exception ex)
          {
             return "Đã xảy ra lỗi khi cập nhật Sản lượng dự kiến";
          }
