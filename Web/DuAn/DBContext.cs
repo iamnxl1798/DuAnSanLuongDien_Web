@@ -1176,6 +1176,75 @@ namespace DuAn
          }
          return list;
       }
+      public static bool GetDiemDoById(int id, out DiemDo dd)
+      {
+         dd = new DiemDo();
+         try
+         {
+            using (Model1 db = new Model1())
+            {
+               dd = db.DiemDoes.Where(x => x.ID == id).FirstOrDefault();
+               if (dd == null)
+               {
+                  return false;
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            dd = null;
+            return false;
+         }
+         return true;
+      }
+      public static bool GetDiemDoPaging(out PagingModel<DiemDoViewModel> pm, RequestPagingModel rpm, int? id_nhamay, int? id_tcdd)
+      {
+         try
+         {
+            pm = new PagingModel<DiemDoViewModel>();
+            using (var db = new Model1())
+            {
+               //LogHelper.QueryInfo(dbContext);
+               var list = db.DiemDoes.Select(x => x);
+
+
+               if (id_nhamay != null)
+               {
+                  list = list.Where(x => x.NhaMayID == id_nhamay);
+               }
+               if (id_tcdd != null)
+               {
+                  list = list.Where(x => x.TinhChatID == id_tcdd);
+               }
+
+               pm.recordsFiltered = list.Count();
+
+               //sorting
+               if (!string.IsNullOrEmpty(rpm.sortColumnName))
+               {
+                  list = list.OrderBy(rpm.sortColumnName + " " + rpm.sortDirection);
+               }
+               pm.recordsTotal = list.Count();
+               //paging
+               list = list.Skip(rpm.start).Take(rpm.length);
+               pm.data = list.AsEnumerable().Select(x => new DiemDoViewModel()
+               {
+                  ID = x.ID,
+                  MaDiemDo = x.MaDiemDo,
+                  TenDiemDo = x.TenDiemDo,
+                  TenNhaMay = x.NhaMay.TenNhaMay,
+                  TinhChat = x.TinhChatDiemDo.TenTinhChat
+               }).ToList();
+               pm.draw = int.Parse(rpm.draw);
+            }
+            return true;
+         }
+         catch (Exception ex)
+         {
+            pm = new PagingModel<DiemDoViewModel>();
+            return false;
+         }
+      }
    }
 
    public static class CongTyDAO
@@ -1358,4 +1427,26 @@ namespace DuAn
       }
    }
 
+   public static class NhaMayDAO
+   {
+      public static List<NhaMay> GetAllNhaMay()
+      {
+         using (var db = new Model1())
+         {
+            var list = db.NhaMays.ToList();
+            return list;
+         }
+      }
+   }
+   public static class TinhChatDiemDoDAO
+   {
+      public static List<TinhChatDiemDo> GetAllTCDD()
+      {
+         using (var db = new Model1())
+         {
+            var list = db.TinhChatDiemDoes.ToList();
+            return list;
+         }
+      }
+   }
 }

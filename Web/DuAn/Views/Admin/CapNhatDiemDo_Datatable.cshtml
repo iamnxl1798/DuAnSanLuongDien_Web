@@ -1,0 +1,105 @@
+﻿<input type="hidden" value="@ViewBag.id_nha_may" id="id_nha_may_db" />
+<input type="hidden" value="@ViewBag.id_tinh_chat_diem_do" id="id_tcdd_db" />
+
+<div class="card-body">
+   <!--begin: Datatable-->
+   <table id="my_datatable_diemdo" style="width:auto;" class="table table-bordered table-hover table-checkable table-striped display">
+      <thead>
+         <tr style="align-content: center !important;">
+            <th @*style="width: 40px;"*@="d-none"><b>ID</b></th>
+            <th @*style="width: 200px"*@ class="text-center"><b>Mã điểm đo</b></th>
+            <th @*style="width: 150px"*@ class="text-center"><b>Tên điểm đo</b></th>
+            <th class="text-center"><b>Nhà máy</b></th>
+            <th class="text-center"><b>Tính chất</b></th>
+            <th class="text-center"><b>Tác vụ</b></th>
+         </tr>
+      </thead>
+   </table>
+   <!--end: Datatable-->
+</div>
+<!--begin::Example-->
+<script>
+   $(document).ready(function () {
+      $('#my_datatable_diemdo').DataTable({
+         //"sorting": false,
+         "processing": true,
+         "scrollX": 'none',
+         //"searching": false,
+         "autoWidth": true,
+         //"ordering": false,
+         "pagingType": "first_last_numbers",
+         //"lengthChange": false,
+         "language": {
+            "processing": "Cập nhật thông tin .....",
+            "search": "Từ khóa",
+            "lengthMenu": "Hiển thị _MENU_ bản ghi mỗi trang",
+            "zeroRecords": "Không tìm thấy bản ghi",
+            "info": "Trang _PAGE_ / _PAGES_",
+            "infoEmpty": "Không tìm thấy bản ghi",
+            //"infoFiltered": "(filtered from _MAX_ total records)",
+            "decimal": ",",
+            "thousands": ".",
+            "paginate": {
+               "first": "Đầu",
+               "last": "Cuối"
+            }
+         },
+         "serverSide": true,
+         "order": [0, "asc"],
+         "ajax": {
+            url: '/Admin/CapNhatDiemDoPaging',
+            type: "POST",
+            dataType: 'json',
+            data: {
+               id_nha_may_db: $('#id_nha_may_db').val(),
+               id_tcdd_db: $('#id_tcdd_db').val(),
+            },
+            dataSrc: function (data) {
+               if (data.success == false) {
+                  showMessage('error', data.message);
+                  //$('.loader').hide();
+                  return null;
+               } else {
+                  return data.data;
+               }
+            }
+         },
+         "columns": [
+            {
+               "data": "ID", "name": "ID",
+               "className": "d-none"
+            },
+            {
+               "data": "MaDiemDo", "name": "MaDiemDo",
+               "className": "text-center  align-middle"
+            },
+            {
+               "data": "TenDiemDo", "name": "TenDiemDo",
+               "className": "text-center  align-middle"
+            },
+            {
+               "data": "TenNhaMay", "name": "TenNhaMay",
+               "orderable": false,
+               "className": "text-center  align-middle"
+            },
+            {
+               "data": "TinhChat", "name": "TinhChat",
+               "orderable": false,
+               "className": "text-center  align-middle"
+            },
+            {
+               "data": "ID", "name": "Actions",
+               "className": "text-center align-middle",
+               "orderable": false,
+               render: function (data) {
+                  return '<a href="javascript:;" title="Cập nhật" class="btn btn-brand m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill m-btn--air btn-edit-diemdo" data-id="' + data + '">\
+                        <i class="la la-edit"></i>\
+                    </a>'
+               }
+            },
+         ]
+      })
+
+   })
+
+</script>

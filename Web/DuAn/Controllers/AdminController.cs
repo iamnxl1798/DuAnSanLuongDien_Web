@@ -322,8 +322,79 @@ namespace DuAn.Controllers
             return Json(new { success = false, message = rs });
          }
 
-
       }
+      #endregion
+
+      #region Cập nhật Điểm đo
+      public ActionResult CapNhatDiemDoView()
+      {
+         ViewBag.ListNhaMay = NhaMayDAO.GetAllNhaMay();
+         ViewBag.ListTCDD = TinhChatDiemDoDAO.GetAllTCDD();
+         return View();
+      }
+      public ActionResult CapNhatDiemDo_Datatable(int id_nha_may, int id_tinh_chat_diem_do)
+      {
+
+         ViewBag.id_nha_may = id_nha_may;
+         ViewBag.id_tinh_chat_diem_do = id_tinh_chat_diem_do;
+
+         return PartialView();
+      }
+      public ActionResult CapNhatDiemDoPaging(int id_nha_may_db, int id_tcdd_db)
+      {
+         try
+         {
+            using (Model1 db = new Model1())
+            {
+               RequestPagingModel rpm = new RequestPagingModel();
+               rpm.length = int.Parse(HttpContext.Request["length"]);
+               rpm.start = int.Parse(Request["start"]);
+               rpm.searchValue = HttpContext.Request["search[value]"];
+               rpm.sortColumnName = HttpContext.Request["columns[" + Request["order[0][column]"] + "][name]"];
+               rpm.sortDirection = Request["order[0][dir]"];
+               rpm.draw = Request["draw"];
+
+               int? nhamay_id = null;
+               if (id_nha_may_db != -1)
+               {
+                  nhamay_id = id_nha_may_db;
+               }
+               int? tcdd_id = null;
+               if (id_tcdd_db != -1)
+               {
+                  tcdd_id = id_tcdd_db;
+               }
+
+               PagingModel<DiemDoViewModel> pm = new PagingModel<DiemDoViewModel>();
+               var response = DiemDoDAO.GetDiemDoPaging(out pm, rpm, nhamay_id, tcdd_id);
+
+               if (!response)
+               {
+                  return Json(new { success = false, message = "Lỗi truy cập cơ sở dữ liệu" }, JsonRequestBehavior.AllowGet);
+                  //return Json(null, JsonRequestBehavior.AllowGet);
+               }
+               return Json(pm, JsonRequestBehavior.AllowGet);
+            }
+         }
+         catch (Exception ex)
+         {
+            return null;
+         }
+      }
+      public ActionResult CapNhatDiemDoManageModal(int id)
+      {
+         ViewBag.ListNhaMay = NhaMayDAO.GetAllNhaMay();
+         ViewBag.ListTCDD = TinhChatDiemDoDAO.GetAllTCDD();
+         DiemDo dd = new DiemDo();
+         if (id == 0)
+         {
+            //return Json(new { success = true, data = View() });
+            return PartialView();
+         }
+         var rs = DiemDoDAO.GetDiemDoById(id, out dd);
+         //return Json(new { success = rs, data = View(sldk) });
+         return PartialView(dd);
+      }
+      #endregion
    }
-   #endregion
 }

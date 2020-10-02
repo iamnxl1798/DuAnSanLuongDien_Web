@@ -76,7 +76,6 @@ $('#submitAccount').on('click', function () {
 });
 function hideError(name) {
    document.getElementById(name).innerText = "";
-   //document.getElementById('resultAccount').innerText = "";
 }
 function CheckTotalAccount() {
    var username = document.getElementById('username').value;

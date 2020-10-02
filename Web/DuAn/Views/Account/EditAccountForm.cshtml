@@ -17,7 +17,7 @@
       <form class="form" @* action="/Account/UpdateAccount" method="POST"*@>
          <div class="card-body">
             <div class="form-group row">
-               <label class="col-xl-3 col-lg-3 col-form-label text-left">Avatar:</label>
+               <label class="col-xl-3 col-lg-3 col-form-label text-left">Ảnh đại diện:</label>
                <div class="col-lg-9 col-xl-9">
                   <div class="image-input image-input-outline" id="kt_user_add_avatar">
                      <div class="image-input-wrapper" style="background-image: url(../images/avatarAccount/@Model.Avatar)"></div>
@@ -59,7 +59,7 @@
                                 url: '@Url.Action("CheckUsername", "Account")',
                                 success: function (response) {
                                     if (response == "Fail") {
-                                        document.getElementById("errorUsername").innerText = "Tên đăng nhập không tồn tại !!!";
+                                        document.getElementById("errorUsername").innerText = "Tên đăng nhập đã tồn tại !!!";
                                     } else {
                                         document.getElementById("errorUsername").innerText = "";
                                     }
@@ -75,7 +75,8 @@
                <label class="col-xl-3 col-lg-3 col-form-label">Mật khẩu:</label>
                <div class="col-lg-9 col-xl-9">
                   <div class="input-group">
-                     <input style="float:left" type="password" class="form-control form-control-solid" placeholder="Nhập mật khẩu" name="password" id="password" value="@Model.Password" />
+                     <input style="float:left" type="password" class="form-control form-control-solid"
+                            onkeypress='hideError("errorPassword")' placeholder="Nhập mật khẩu" name="password" id="password" value="@Model.Password" />
                      <div class="input-group-append"><span class="input-group-text px-4" style="border:none"><i id="pass-status" class="fa fa-eye" aria-hidden="true" onClick="viewPassword()"></i></span></div>
                   </div>
                   <div class="errorRegistrationAccount" id="errorPassword" style="color:red"></div>

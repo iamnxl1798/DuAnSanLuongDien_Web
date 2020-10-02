@@ -286,6 +286,7 @@
     <Compile Include="Models\CustomModel\AllRole.cs" />
     <Compile Include="Models\CustomModel\CongSuatMaxMinModelView.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
+    <Compile Include="Models\CustomModel\DiemDoViewModel.cs" />
     <Compile Include="Models\CustomModel\ExportExcelModel.cs" />
     <Compile Include="Models\CustomModel\HomeModel.cs" />
     <Compile Include="Models\CustomModel\KenhCustom.cs" />
@@ -2463,6 +2464,10 @@
     <Content Include="Views\Admin\CapNhatSLDKList.cshtml" />
     <Content Include="Views\Admin\CapNhatSLDK_Datatable.cshtml" />
     <Content Include="Views\Admin\CapNhatSLDKManageModal.cshtml" />
+    <Content Include="Views\Admin\CapNhatDiemDoView.cshtml" />
+    <Content Include="Views\Admin\CapNhatDiemDoList.cshtml" />
+    <Content Include="Views\Admin\CapNhatDiemDo_Datatable.cshtml" />
+    <Content Include="Views\Admin\CapNhatDiemDoManageModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

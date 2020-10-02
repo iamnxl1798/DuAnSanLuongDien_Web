@@ -1,0 +1,19 @@
+﻿
+@{
+   ViewBag.Title = "CapNhatDiemDoView";
+   Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row col-12" style="justify-content: center;">
+   @RenderPage("CapNhatDiemDoList.cshtml")
+</div>
+
+@section scripts{
+   <script>
+      var listDirect = ["Quản trị", "Cập nhật Sản lượng dự kiến"];
+      $(document).ready(function () {
+         capNhatPageDirectory('Cập nhật Sản lượng dự kiến', listDirect);
+      });
+   </script>
+}
+
