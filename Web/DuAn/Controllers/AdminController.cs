@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
 
+
 namespace DuAn.Controllers
 {
    [CheckLogin(/*RoleID = new int[1] { 2 }*/)]
@@ -394,6 +395,42 @@ namespace DuAn.Controllers
          var rs = DiemDoDAO.GetDiemDoById(id, out dd);
          //return Json(new { success = rs, data = View(sldk) });
          return PartialView(dd);
+      }
+      public ActionResult CapNhatDiemDo_CreateOrUpdate(int? MaDiemDo,  int? ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo, string TenDiemDo = "")
+      {
+         if (MaDiemDo == null)
+         {
+            return Json(new { success = false, message = "Mã điểm đo không được để trống!!!" });
+         }
+         if (ThuTuHienThi == null)
+         {
+            return Json(new { success = false, message = "Thứ tự hiển thị không được để trống!!!" });
+         }
+         if (string.IsNullOrEmpty(TenDiemDo))
+         {
+            return Json(new { success = false, message = "Tên điểm đo không được để trống!!!" });
+         }
+         var rs = "";
+         if (id_diemdo == 0)
+         {
+            //create
+            rs = DiemDoDAO.CreateDiemDo(MaDiemDo.Value, TenDiemDo, ThuTuHienThi.Value, nha_may_id, id_tinh_chat_diem_do, id_diemdo);
+         }
+         else
+         {
+            // update
+            rs = DiemDoDAO.UpdateDiemDo(MaDiemDo.Value, TenDiemDo, ThuTuHienThi.Value, nha_may_id, id_tinh_chat_diem_do, id_diemdo);
+         }
+
+         if (rs.Equals("success"))
+         {
+            return Json(new { success = true, message = "Thành Công!!!" });
+         }
+         else
+         {
+            return Json(new { success = false, message = rs });
+         }
+
       }
       #endregion
    }

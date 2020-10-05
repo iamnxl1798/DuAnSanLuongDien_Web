@@ -1218,13 +1218,21 @@ namespace DuAn
                }
 
                pm.recordsFiltered = list.Count();
-
+               //filter
+               if (!string.IsNullOrEmpty(rpm.searchValue))
+               {
+                  list = list.Where(x => x.NhaMay.TenNhaMay.ToLower().Contains(rpm.searchValue.ToLower()) ||
+                      x.TenDiemDo.ToLower().Contains(rpm.searchValue.ToLower()) ||
+                      x.MaDiemDo.ToString().ToLower().Contains(rpm.searchValue.ToLower()) ||
+                      x.TinhChatDiemDo.TenTinhChat.ToString().ToLower().Contains(rpm.searchValue.ToLower())
+                  );
+               }
+               pm.recordsTotal = list.Count();
                //sorting
                if (!string.IsNullOrEmpty(rpm.sortColumnName))
                {
                   list = list.OrderBy(rpm.sortColumnName + " " + rpm.sortDirection);
                }
-               pm.recordsTotal = list.Count();
                //paging
                list = list.Skip(rpm.start).Take(rpm.length);
                pm.data = list.AsEnumerable().Select(x => new DiemDoViewModel()
@@ -1245,8 +1253,71 @@ namespace DuAn
             return false;
          }
       }
-   }
+      public static string CreateDiemDo(int MaDiemDo, string TenDiemDo, int ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               var check_exist = db.DiemDoes.Where(x => x.NhaMayID == nha_may_id && (x.ID == id_diemdo || x.MaDiemDo == MaDiemDo)).FirstOrDefault();
+               if (check_exist != null)
+               {
+                  return "Điểm đo đã tồn tại !!!";
+               }
+               else
+               {
+                  DiemDo dd = new DiemDo();
+                  dd.MaDiemDo = MaDiemDo;
+                  dd.NhaMayID = nha_may_id;
+                  dd.TenDiemDo = TenDiemDo;
+                  dd.ThuTuHienThi = ThuTuHienThi;
+                  dd.TinhChatID = id_tinh_chat_diem_do;
+                  db.DiemDoes.Add(dd);
+                  db.SaveChanges();
+               }
+               return "success";
+            }
+         }
+         catch (Exception ex)
+         {
+            return "Không thể truy cập cơ sở dữ liệu";
+         }
+      }
 
+      public static string UpdateDiemDo(int MaDiemDo, string TenDiemDo, int ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               var list = db.DiemDoes.Where(x => x.NhaMayID == nha_may_id);
+               var check_exist_ma = list.Where(x => x.MaDiemDo == MaDiemDo).FirstOrDefault();
+               if (check_exist_ma != null && check_exist_ma.ID != id_diemdo)
+               {
+                  return "Mã Điểm đo tại nhà máy đã tồn tại";
+               }
+               var check_exist = list.Where(x => x.ID == id_diemdo).FirstOrDefault();
+               if (check_exist == null)
+               {
+                  return "Không tìm thấy điểm đo";
+               }
+
+               check_exist.MaDiemDo = MaDiemDo;
+               check_exist.TenDiemDo = TenDiemDo;
+               check_exist.ThuTuHienThi = ThuTuHienThi;
+               check_exist.NhaMayID = nha_may_id;
+               check_exist.TinhChatID = id_tinh_chat_diem_do;
+               db.SaveChanges();
+
+               return "success";
+            }
+         }
+         catch (Exception ex)
+         {
+            return "Không thể truy cập cơ sử dữ liệu";
+         }
+      }
+   }
    public static class CongTyDAO
    {
       public static CongTy getCongTyById(int id)
@@ -1304,7 +1375,7 @@ namespace DuAn
                }
 
                pm.recordsFiltered = list.Count();
-
+               //no filter
                //sorting
                if (!string.IsNullOrEmpty(rpm.sortColumnName))
                {

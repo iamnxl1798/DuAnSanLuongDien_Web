@@ -15,33 +15,34 @@
             <h5 class="modal-title">Chỉnh sửa thông tin điểm đo :</h5>
          }
       </div>
-      <!--Card body-->
-      <div class="modal-body">
-         <!--begin::Content-->
-         <form class="form" id="diemdo_modal_form">
+      <form class="form" id="diemdo_modal_form">
+         <!--Card body-->
+         <div class="modal-body">
+            <!--begin::Content-->
+
             <input type="hidden" name="id_diemdo" id="id_diemdo" value="@(Model != null ? Model.ID : 0)" />
             <div class="form-group row">
                <label class="col-form-label col-3">Mã điểm đo:</label>
                <div class="col-7">
-                  <input type="number" name="MaDiemDo" id="MaDiemDo" class="form-control form-control-solid" value="@(Model != null ? Model.MaDiemDo:0)" />
+                  <input type="number" name="MaDiemDo" id="MaDiemDo" class="form-control form-control-solid" value="@(Model != null ? Model.MaDiemDo:0)" required />
                </div>
             </div>
             <div class="form-group row">
                <label class="col-form-label col-3">Tên điểm đo:</label>
                <div class="col-7">
-                  <input type="number" name="TenDiemDo" id="TenDiemDo" class="form-control form-control-solid" value="@(Model != null ? Model.TenDiemDo : "")" />
+                  <input type="text" name="TenDiemDo" id="TenDiemDo" class="form-control form-control-solid" value="@(Model != null ? Model.TenDiemDo : "")" required />
                </div>
             </div>
             <div class="form-group row">
                <label class="col-form-label col-3">Thứ tự hiển thị:</label>
                <div class="col-7">
-                  <input typeof="number" class="form-control form-control-solid" name="ThuTuHienThi" />
+                  <input type="number" class="form-control form-control-solid" name="ThuTuHienThi" value="@(Model != null ? Model.ThuTuHienThi : 1)" required />
                </div>
             </div>
             <div class="form-group row">
                <label class="col-form-label col-3">Nhà máy:</label>
                <div class="col-7">
-                  <select class="form-control m-select2" id="id_nha_may" name="ten_nha_may">
+                  <select class="form-control m-select2" id="id_nha_may" name="nha_may_id">
                      @foreach (var item in ViewBag.ListNhaMay)
                      {
                         <option value="@item.ID" @(Model != null && item.ID == Model.NhaMayID ? "selected" : "")>@item.TenNhaMay</option>
@@ -52,7 +53,7 @@
             <div class="form-group row">
                <label class="col-form-label col-3">Tính chất:</label>
                <div class="col-7">
-                  <select class="form-control m-select2" id="id_tinh_chat_diem_do" name="tinh_chat_diem_do">
+                  <select class="form-control m-select2" id="id_tinh_chat_diem_do" name="id_tinh_chat_diem_do">
                      @foreach (var item in ViewBag.ListTCDD)
                      {
                         <option value="@item.ID" @(Model != null && item.ID == Model.TinhChatID ? "selected" : "")>@item.TenTinhChat</option>
@@ -60,25 +61,63 @@
                   </select>
                </div>
             </div>
-         </form>
-         <!--end::Form-->
-         <!--end::Content-->
-      </div>
-      <!--end::card body-->
-      <!--begin::footer-->
-      <div class="modal-footer">
-         <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
-         <button type="button" class="btn btn-primary font-weight-bold" id="submitDiemDo">Lưu thay đổi</button>
-      </div>
+
+            <!--end::Form-->
+            <!--end::Content-->
+         </div>
+         <!--end::card body-->
+         <!--begin::footer-->
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary font-weight-bold" id="submitDiemDo">Lưu thay đổi</button>
+         </div>
+      </form>
       <!--End::footer-->
    </div>
 </div>
 <script>
    $(document).ready(function () {
-      $('#submitDiemDo').on('click', function () {
+
+      FormValidation.formValidation(
+         document.getElementById('diemdo_modal_form'),
+         {
+            fields: {
+               MaDiemDo: {
+                  validators: {
+                     notEmpty: {
+                        message: 'Mã điểm đo không được để trống'
+                     },
+                  }
+               },
+               TenDiemDo: {
+                  validators: {
+                     notEmpty: {
+                        message: 'Tên điểm đo không được để trống'
+                     },
+                  }
+               },
+               ThuTuHienThi: {
+                  validators: {
+                     notEmpty: {
+                        message: 'Thứ tự hiển thị không được để trống'
+                     },
+                  }
+               },
+            },
+            plugins: {
+               trigger: new FormValidation.plugins.Trigger(),
+               // Bootstrap Framework Integration
+               bootstrap: new FormValidation.plugins.Bootstrap(),
+               // Validate fields when clicking the Submit button
+               submitButton: new FormValidation.plugins.SubmitButton(),
+               // Submit the form when all fields are valid
+               //defaultSubmit: new FormValidation.plugins.DefaultSubmit(), //comment to avoid reload page
+            }
+         }
+      ).on('core.form.valid', function () {
          $.ajax({
             url: '/Admin/CapNhatDiemDo_CreateOrUpdate',
-            type: 'POST',
+            method: 'POST',
             data: $('#diemdo_modal_form').serialize(),
             cache: false,
             success: function (data) {
@@ -93,8 +132,7 @@
                showMessage('Không thể truy vấn cơ sở dữ liệu ' + jqXHR.responseText, false);
             }
          })
-      })
+      });
 
-      $('#loai_sldk_modal').trigger('change');
    })
 </script>
