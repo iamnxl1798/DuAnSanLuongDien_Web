@@ -1333,6 +1333,21 @@ namespace DuAn
             return ct;
          }
       }
+
+      public static CongTy getCongTyByDefault()
+      {
+         CongTy ct = new CongTy();
+         using (var db = new Model1())
+         {
+            ct = db.CongTies.Select(x => x).FirstOrDefault();
+            if (ct == null)
+            {
+               return null;
+            }
+            return ct;
+         }
+      }
+
       public static string updateCongTyInformation(CongTy ct)
       {
          using (var db = new Model1())
@@ -1364,14 +1379,38 @@ namespace DuAn
                var list = db.SanLuongDuKiens.Select(x => x);
 
 
-
+               // get data theo thang
                if (loai_SLDK == 1)
                {
-                  list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == nam && x.ThoiGian.Month == thang);
+                  if (thang.HasValue && nam.HasValue)
+                  {
+                     list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == nam && x.ThoiGian.Month == thang);
+                  }
+                  else if (thang.HasValue && !nam.HasValue)
+                  {
+                     list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Month == thang);
+                  }
+                  else if (!thang.HasValue && nam.HasValue)
+                  {
+                     list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == nam);
+                  }
+                  else
+                  {
+                     list = list.Where(x => x.LoaiID == loai_SLDK);
+                  }
+
                }
-               else
+               else // get data theo nam
                {
-                  list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == nam);
+                  if (nam.HasValue)
+                  {
+                     list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == nam);
+                  }
+                  else
+                  {
+                     list = list.Where(x => x.LoaiID == loai_SLDK);
+                  }
+
                }
 
                pm.recordsFiltered = list.Count();
@@ -1506,6 +1545,57 @@ namespace DuAn
          {
             var list = db.NhaMays.ToList();
             return list;
+         }
+      }
+
+      public static NhaMay GetNhaMayById(int id)
+      {
+         NhaMay nm = new NhaMay();
+         using (var db = new Model1())
+         {
+            nm = db.NhaMays.Where(x => x.ID == id).FirstOrDefault();
+            if (nm == null)
+            {
+               return null;
+            }
+            return nm;
+         }
+      }
+
+      public static NhaMay GetNhaMayByDefault()
+      {
+         NhaMay nm = new NhaMay();
+         using (var db = new Model1())
+         {
+            nm = db.NhaMays.Select(x => x).FirstOrDefault();
+            if (nm == null)
+            {
+               return null;
+            }
+            return nm;
+         }
+      }
+      public static string updateNhaMayInformation(NhaMay nm)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               var rs = db.NhaMays.SingleOrDefault(x => x.ID == nm.ID);
+               if (rs == null)
+               {
+                  return "Không tìm thấy thông tin Nhà máy";
+               }
+               rs.TenVietTat = nm.TenVietTat;
+               rs.TenNhaMay = nm.TenNhaMay;
+               rs.DiaChi = nm.DiaChi;
+               db.SaveChanges();
+               return "success";
+            }
+         }
+         catch (Exception ex)
+         {
+            return "Đã có lỗi xảy ra trong quá trình cập nhật!!";
          }
       }
    }

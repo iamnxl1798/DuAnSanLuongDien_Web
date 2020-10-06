@@ -28,10 +28,11 @@
 @section scripts{
    <script>
         capNhatPageDirectory('Thông tin người dùng', ['Hồ sơ']);
-        renderProfileSide();
-        $(document).ready(function () {
+
+         $(document).ready(function () {
+            renderProfileSide();
             changePartial('infoButton');
-        });
+         });
 
          function renderProfileSide() {
             $.ajax({

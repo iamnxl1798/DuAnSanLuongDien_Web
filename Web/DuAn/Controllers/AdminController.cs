@@ -62,8 +62,12 @@ namespace DuAn.Controllers
       public ActionResult QuanTriCauHinh()
       {
          //id cong ty default
+         CauHinhWebViewModel model = new CauHinhWebViewModel();
          CongTy ct = (CongTy)Session["CongTy"];
-         return View(ct);
+         NhaMay nm = (NhaMay)Session["NhaMay"];
+         model.ct = ct;
+         model.nm = nm;
+         return View(model);
       }
 
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
@@ -182,7 +186,7 @@ namespace DuAn.Controllers
 
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_ChangeConfig })]
       [HttpPost]
-      public ActionResult ChangeCauHinhWeb(HttpPostedFileBase cauhinh_logo, string ten_congty, int id, string ten_viet_tat)
+      public ActionResult ChangeCauHinhWeb(HttpPostedFileBase cauhinh_logo, string ten_congty, int id, string ten_viet_tat, string ten_viet_tat_nm, string ten_nha_may, int id_nm, string dia_chi_nm)
       {
          string fileName = "default_logo.png";
          try
@@ -207,13 +211,27 @@ namespace DuAn.Controllers
 
             var rs = CongTyDAO.updateCongTyInformation(ct);
 
+            NhaMay nm = NhaMayDAO.GetNhaMayById(id_nm);
+            if (nm == null)
+            {
+               return Json(new { success = false, message = "Không tìm thấy thông tin nhà máy" });
+            }
+            nm.TenNhaMay = ten_nha_may;
+            nm.TenVietTat = ten_viet_tat_nm;
+            nm.DiaChi = dia_chi_nm;
+
+            var rs_nm = NhaMayDAO.updateNhaMayInformation(nm);
 
             if (rs != "success")
             {
                return Json(new { success = false, message = rs });
             }
-
+            if (rs_nm != "success")
+            {
+               return Json(new { success = false, message = rs_nm });
+            }
             Session["CongTy"] = ct;
+            Session["NhaMay"] = nm;
             return Json(new { success = true, message = string.Empty });
          }
          catch (Exception ex)
@@ -225,7 +243,7 @@ namespace DuAn.Controllers
       }
 
       #region Cập nhật sản lượng dự kiến
-      public ActionResult CapNhatSLDK_Datatable(int loaiDuKien, int thang, int nam)
+      public ActionResult CapNhatSLDK_Datatable(int loaiDuKien, int? thang, int? nam)
       {
 
          ViewBag.Nam = nam;
@@ -239,7 +257,7 @@ namespace DuAn.Controllers
          return View();
       }
       [HttpPost]
-      public ActionResult SanLuongDuKienPaging(int thang, int nam, int loai_sldk = 1)
+      public ActionResult SanLuongDuKienPaging(int? thang, int? nam, int loai_sldk = 1)
       {
          try
          {
@@ -253,19 +271,8 @@ namespace DuAn.Controllers
                rpm.sortDirection = Request["order[0][dir]"];
                rpm.draw = Request["draw"];
 
-               int? _thang = null;
-               if (thang != -1)
-               {
-                  _thang = thang;
-               }
-               int? _nam = null;
-               if (nam != -1)
-               {
-                  _nam = nam;
-               }
-
                PagingModel<SanLuongDuKienViewModel> pm = new PagingModel<SanLuongDuKienViewModel>();
-               var response = SanLuongDuKienDAO.GetSanLuongDuKienPaging(out pm, rpm, loai_sldk, _thang, _nam);
+               var response = SanLuongDuKienDAO.GetSanLuongDuKienPaging(out pm, rpm, loai_sldk, thang, nam);
 
                if (!response)
                {
@@ -396,7 +403,7 @@ namespace DuAn.Controllers
          //return Json(new { success = rs, data = View(sldk) });
          return PartialView(dd);
       }
-      public ActionResult CapNhatDiemDo_CreateOrUpdate(int? MaDiemDo,  int? ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo, string TenDiemDo = "")
+      public ActionResult CapNhatDiemDo_CreateOrUpdate(int? MaDiemDo, int? ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo, string TenDiemDo = "")
       {
          if (MaDiemDo == null)
          {

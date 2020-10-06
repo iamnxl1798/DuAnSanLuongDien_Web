@@ -1,4 +1,4 @@
-﻿@model DuAn.Models.DbModel.CongTy
+﻿@model DuAn.Models.CustomModel.CauHinhWebViewModel
 
 @{
    ViewBag.Title = "QuanTriCauHinh";
@@ -8,26 +8,28 @@
    <div class="col-lg-6">
       <div class="card card-custom">
          <!--begin::Header-->
+
          <div class="card-header flex-wrap pt-6 pb-0">
             <div class="card-title align-items-start flex-column">
                <h3 class="card-label font-weight-bolder text-dark">Quản trị cấu hình</h3>
                <span class="text-muted font-weight-bold font-size-sm mt-1">Sửa đổi tên, logo công ty</span>
             </div>
             <div class="card-toolbar d-none d-md-block">
-               <button type="button" class="btn btn-primary font-weight-bold" id="submit_cauhinh">Lưu thay đổi</button>
+               <button type="submit" class="btn btn-primary font-weight-bold" id="submit_cauhinh" form="cauhinhweb_form">Lưu thay đổi</button>
             </div>
          </div>
          <!--end::Header-->
          <!--begin::Body-->
 
          <div class="card-body">
-            <form class="form">
-               <input type="hidden" name="id" id="id" value="@Model.ID" />
+            <form class="form" id="cauhinhweb_form">
+               <input type="hidden" name="id" id="id" value="@Model.ct.ID" />
+               <input type="hidden" name="id_nm" id="id_nm" value="@Model.nm.ID" />
                <div class="form-group row">
                   <label class="col-xl-3 col-lg-3 col-form-label text-left">Logo:</label>
                   <div class="col-lg-9 col-xl-9">
                      <div class="image-input image-input-outline" id="kt_user_cauhinh_logo">
-                        <div class="image-input-wrapper" style="background-color:#464E5F;background-image: url(../images/logoFactory/@Model.Logo)"></div>
+                        <div class="image-input-wrapper" style="background-color:#464E5F;background-image: url(../images/logoFactory/@Model.ct.Logo)"></div>
                         <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Thay đổi">
                            <i class="fa fa-pen icon-sm text-muted"></i>
                            <input type="file" id="cauhinh_logo" name="cauhinh_logo" accept=".png, .jpg, .jpeg" />
@@ -40,18 +42,43 @@
                      <span class="form-text text-muted">Định dạng phù hợp: png, jpg, jpeg.</span>
                   </div>
                </div>
+
                <div class="form-group row">
                   <label class="col-xl-3 col-lg-3 col-form-label">Tên công ty :</label>
                   <div class="col-lg-9 col-xl-9">
-                     <input type="text" class="form-control form-control-solid" placeholder="Nhập tên công ty" name="ten_congty" id="ten_congty" value="@Model.TenCongTy" />
-                     <span class="form-text text-muted">Tên đầy đủ</span>
+                     <input type="text" class="form-control form-control-solid" placeholder="Nhập tên công ty" name="ten_congty" id="ten_congty" value="@Model.ct.TenCongTy" required />
+                     <span class="form-text text-muted">Tên đầy đủ của Công ty</span>
                   </div>
                </div>
                <div class="form-group row">
-                  <label class="col-xl-3 col-lg-3 col-form-label">Tên viết tắt :</label>
+                  <label class="col-xl-3 col-lg-3 col-form-label">Tên viết tắt Công ty:</label>
                   <div class="col-lg-9 col-xl-9">
-                     <input type="text" class="form-control form-control-solid" placeholder="Nhập tên ngắn gọn" name="ten_viet_tat" id="ten_viet_tat" value="@Model.TenVietTat" />
-                     <span class="form-text text-muted">Tên ngắn gọn</span>
+                     <input type="text" class="form-control form-control-solid" placeholder="Nhập tên ngắn gọn" name="ten_viet_tat" id="ten_viet_tat" value="@Model.ct.TenVietTat" required />
+                     <span class="form-text text-muted">Tên ngắn gọn của Công ty</span>
+                  </div>
+               </div>
+               @*<div class="m--space-20"></div>*@
+               <div class="dropdown-divider"></div>
+               <!--Nhà máy-->
+               <div class="form-group row pt-3">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Tên nhà máy :</label>
+                  <div class="col-lg-9 col-xl-9">
+                     <input type="text" class="form-control form-control-solid" placeholder="Nhập tên nhà máy" name="ten_nha_may" id="ten_nha_may" value="@Model.nm.TenNhaMay" required />
+                     <span class="form-text text-muted">Tên đầy đủ của Nhà máy</span>
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Tên viết tắt Nhà máy:</label>
+                  <div class="col-lg-9 col-xl-9">
+                     <input type="text" class="form-control form-control-solid" placeholder="Nhập tên ngắn gọn" name="ten_viet_tat_nm" id="ten_viet_tat_nm" value="@Model.nm.TenVietTat" required />
+                     <span class="form-text text-muted">Tên ngắn gọn của Nhà máy</span>
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-xl-3 col-lg-3 col-form-label">Địa chỉ :</label>
+                  <div class="col-lg-9 col-xl-9">  
+                     <textarea rows="4" class="form-control form-control-solid" name="dia_chi_nm" id="dia_chi_nm" form="cauhinhweb_form" required>@Model.nm.DiaChi</textarea>
+                     <span class="form-text text-muted">Địa chỉ của Nhà máy</span>
                   </div>
                </div>
             </form>
@@ -70,16 +97,70 @@
 
 @section scripts{
    <script>
-      var listDirect = ["Quản trị", "Quản trị Cấu hình"];
-      $(document).ready(function () {
-         capNhatPageDirectory('Quản trị Cấu hình', listDirect);
-      });
-   </script>
-   <script>
-      var _avatar = new KTImageInput('kt_user_cauhinh_logo');
-      $(document).ready(function () {
-         $('#submit_cauhinh').on('click', function () {
 
+      var listDirect = ["Quản trị", "Quản trị Cấu hình"];
+
+      $(document).ready(function () {
+
+         var _avatar = new KTImageInput('kt_user_cauhinh_logo');
+         capNhatPageDirectory('Quản trị Cấu hình', listDirect);
+
+         @*$('#submit_cauhinh').on('click', function (e) {
+            $('#submit_cauhinh_none').trigger('click');
+         })*@
+
+         FormValidation.formValidation(
+            document.getElementById('cauhinhweb_form'),
+            {
+               fields: {
+                  ten_congty: {
+                     validators: {
+                        notEmpty: {
+                           message: 'Tên công ty không được để trống'
+                        },
+                     }
+                  },
+                  ten_viet_tat: {
+                     validators: {
+                        notEmpty: {
+                           message: 'Tên viết tắt không được để trống'
+                        },
+                     }
+                  },
+                  ten_nha_may: {
+                     validators: {
+                        notEmpty: {
+                           message: 'Tên nhà máy không được để trống'
+                        },
+                     }
+                  },
+                  ten_viet_tat_nm: {
+                     validators: {
+                        notEmpty: {
+                           message: 'Tên viết tắt nhà máy không được để trống'
+                        },
+                     }
+                  },
+                  dia_chi_nm: {
+                     validators: {
+                        notEmpty: {
+                           message: 'Địa chỉ nhà máy không được để trống'
+                        },
+                     }
+                  },
+               },
+               plugins: {
+                  trigger: new FormValidation.plugins.Trigger(),
+                  // Bootstrap Framework Integration
+                  bootstrap: new FormValidation.plugins.Bootstrap(),
+                  // Validate fields when clicking the Submit button
+                  submitButton: new FormValidation.plugins.SubmitButton(),
+                  // Submit the form when all fields are valid
+                  //defaultSubmit: new FormValidation.plugins.DefaultSubmit(), //comment to avoid reload page
+               }
+            }
+         ).on('core.form.valid', function () {
+            debugger
             var cauhinh_logo = document.getElementById('cauhinh_logo');
             var formData = new FormData();
 
@@ -88,11 +169,23 @@
             var id = document.getElementById('id').value;
             formData.append('id', id);
 
+            var id_nm = document.getElementById('id_nm').value;
+            formData.append('id_nm', id_nm);
+
             var ten_congty = document.getElementById('ten_congty').value;
             formData.append('ten_congty', ten_congty);
 
             var ten_viet_tat = document.getElementById('ten_viet_tat').value;
             formData.append('ten_viet_tat', ten_viet_tat);
+
+            var ten_nha_may = document.getElementById('ten_nha_may').value;
+            formData.append('ten_nha_may', ten_nha_may);
+
+            var ten_viet_tat_nm = document.getElementById('ten_viet_tat_nm').value;
+            formData.append('ten_viet_tat_nm', ten_viet_tat_nm);
+
+            var dia_chi_nm = document.getElementById('dia_chi_nm').value;
+            formData.append('dia_chi_nm', dia_chi_nm);
 
             $.ajax({
                url: '/Admin/ChangeCauHinhWeb',
@@ -122,6 +215,7 @@
                }
             });
          });
+
       })
    </script>
 }

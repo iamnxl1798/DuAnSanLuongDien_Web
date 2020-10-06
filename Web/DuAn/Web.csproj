@@ -284,6 +284,7 @@
     <Compile Include="Models\CustomModel\AccountPaging.cs" />
     <Compile Include="Models\CustomModel\AdminModel.cs" />
     <Compile Include="Models\CustomModel\AllRole.cs" />
+    <Compile Include="Models\CustomModel\CauHinhWebViewModel.cs" />
     <Compile Include="Models\CustomModel\CongSuatMaxMinModelView.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
     <Compile Include="Models\CustomModel\DiemDoViewModel.cs" />

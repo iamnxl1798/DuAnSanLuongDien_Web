@@ -1,5 +1,18 @@
 ﻿<!--begin::Entry-->
 <!--begin::Card-->
+<style>
+   .datepickersren .picker-switch {
+      display: none !important;
+   }
+
+   .datepickersren .prev {
+      display: none !important;
+   }
+
+   .datepickersren .next {
+      display: none !important;
+   }
+</style>
 <div class="col-lg-6">
    <div class="card card-custom">
       <!--begin::Header-->
@@ -44,17 +57,17 @@
          <div class="col-3 row" id="div_nam_sldk">
             <label class="col-form-label">Năm:</label>
             <div class="col-lg-9 col-xl-9">
-               @{
-                  var year_max = DateTime.Now.Year + 10;
-                  var year_min = DateTime.Now.Year - 10;
-               }
-               <input type="number" max="@year_max" min="@year_min" id="sldk_nam" class="form-control form-control-solid" value="@DateTime.Now.Year" />
+               <div class="date">
+                  <input type="text" id="sldk_nam" class="form-control form-control-solid" placeholder="Tất cả" />
+               </div>
             </div>
          </div>
          <div class="col-3 row" id="div_thang_sldk">
             <label class="col-form-label">Tháng:</label>
             <div class="col-lg-9 col-xl-9">
-               <input class="form-control form-control-solid" type="number" id="sldk_thang" max="12" min="1" value="@DateTime.Now.Month" />
+               <div class="date">
+                  <input type="text" id="sldk_thang" class="form-control form-control-solid" placeholder="Tất cả" />
+               </div>
             </div>
          </div>
          <div class="col-2 order-2 order-xl-1 m--align-right" style="bottom:15%;">
@@ -84,6 +97,25 @@
 <script>
 
    $(document).ready(function () {
+
+      $("#sldk_nam").datepicker({
+         clearBtn: true,
+         format: "yyyy",
+         viewMode: "years",
+         minViewMode: "years",
+         autoclose: true,
+         defaultViewDate: { year: '@DateTime.Now.Year' }
+      });
+
+      $("#sldk_thang").datepicker({
+         clearBtn: true,
+         format: "mm",
+         viewMode: "months",
+         minViewMode: "months",
+         maxViewMode: "months",
+         autoclose: true,
+         defaultViewDate: { month: '@(DateTime.Now.Month-1)' }
+      });
 
       var getModalSLDK = function (id) {
          $.ajax({
