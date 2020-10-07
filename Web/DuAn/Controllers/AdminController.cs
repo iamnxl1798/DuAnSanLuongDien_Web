@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
-
+using System.Web.Services.Description;
 
 namespace DuAn.Controllers
 {
@@ -340,15 +340,15 @@ namespace DuAn.Controllers
          ViewBag.ListTCDD = TinhChatDiemDoDAO.GetAllTCDD();
          return View();
       }
-      public ActionResult CapNhatDiemDo_Datatable(int id_nha_may, int id_tinh_chat_diem_do)
+      public ActionResult CapNhatDiemDo_Datatable(/*int id_nha_may,*/ int id_tinh_chat_diem_do)
       {
 
-         ViewBag.id_nha_may = id_nha_may;
+         //ViewBag.id_nha_may = id_nha_may;
          ViewBag.id_tinh_chat_diem_do = id_tinh_chat_diem_do;
 
          return PartialView();
       }
-      public ActionResult CapNhatDiemDoPaging(int id_nha_may_db, int id_tcdd_db)
+      public ActionResult CapNhatDiemDoPaging(int id_tcdd_db)
       {
          try
          {
@@ -362,11 +362,6 @@ namespace DuAn.Controllers
                rpm.sortDirection = Request["order[0][dir]"];
                rpm.draw = Request["draw"];
 
-               int? nhamay_id = null;
-               if (id_nha_may_db != -1)
-               {
-                  nhamay_id = id_nha_may_db;
-               }
                int? tcdd_id = null;
                if (id_tcdd_db != -1)
                {
@@ -374,7 +369,7 @@ namespace DuAn.Controllers
                }
 
                PagingModel<DiemDoViewModel> pm = new PagingModel<DiemDoViewModel>();
-               var response = DiemDoDAO.GetDiemDoPaging(out pm, rpm, nhamay_id, tcdd_id);
+               var response = DiemDoDAO.GetDiemDoPaging(out pm, rpm, tcdd_id);
 
                if (!response)
                {
@@ -389,6 +384,28 @@ namespace DuAn.Controllers
             return null;
          }
       }
+
+      public ActionResult CapNhatDiemDo_CongToModal(int DiemDoID = -1, int CongToID = -1)
+      {
+         CapNhatDiemDo_CongToViewModel ct = new CapNhatDiemDo_CongToViewModel();
+         // Cap nhat Cong To
+         if (CongToID != -1)
+         {
+            ViewBag.CongToManage = "edit";
+            ViewBag.DiemDoID = DiemDoID;
+            var rs = CongToDAO.GetCongToByID(CongToID, DiemDoID, out ct);
+            return View(ct);
+         }
+         // Thay doi cong to
+         else
+         {
+            ViewBag.CongToManage = "change";
+            ViewBag.DiemDoID = DiemDoID;
+            return View();
+         }
+
+      }
+
       public ActionResult CapNhatDiemDoManageModal(int id)
       {
          ViewBag.ListNhaMay = NhaMayDAO.GetAllNhaMay();
@@ -403,6 +420,7 @@ namespace DuAn.Controllers
          //return Json(new { success = rs, data = View(sldk) });
          return PartialView(dd);
       }
+      [HttpPost]
       public ActionResult CapNhatDiemDo_CreateOrUpdate(int? MaDiemDo, int? ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo, string TenDiemDo = "")
       {
          if (MaDiemDo == null)
@@ -438,6 +456,19 @@ namespace DuAn.Controllers
             return Json(new { success = false, message = rs });
          }
 
+      }
+      [HttpPost]
+      public ActionResult CapNhatDiemDo_CreateOrUpdateCongTo(int id_congto, double id_diemdo, string serial, string loai_congto)
+      {
+         if (id_congto != -1)
+         {
+            //cap nhat thong tin cong to
+         }
+         else
+         {
+            // create cong to
+         }
+         return Json(new { success = true, message = "" });
       }
       #endregion
    }

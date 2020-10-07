@@ -1,4 +1,4 @@
-﻿<input type="hidden" value="@ViewBag.id_nha_may" id="id_nha_may_db" />
+﻿@*<input type="hidden" value="@ViewBag.id_nha_may" id="id_nha_may_db" />*@
 <input type="hidden" value="@ViewBag.id_tinh_chat_diem_do" id="id_tcdd_db" />
 
 <div class="card-body">
@@ -9,7 +9,7 @@
             <th @*style="width: 40px;"*@="d-none"><b>ID</b></th>
             <th @*style="width: 200px"*@ class="text-center"><b>Mã điểm đo</b></th>
             <th @*style="width: 150px"*@ class="text-center"><b>Tên điểm đo</b></th>
-            <th class="text-center"><b>Nhà máy</b></th>
+            <th class="text-center"><b>Công Tơ</b></th>
             <th class="text-center"><b>Tính chất</b></th>
             <th class="text-center"><b>Tác vụ</b></th>
          </tr>
@@ -51,7 +51,7 @@
             type: "POST",
             dataType: 'json',
             data: {
-               id_nha_may_db: $('#id_nha_may_db').val(),
+               @*id_nha_may_db: $('#id_nha_may_db').val(),*@
                id_tcdd_db: $('#id_tcdd_db').val(),
             },
             dataSrc: function (data) {
@@ -78,8 +78,7 @@
                "className": "text-center  align-middle"
             },
             {
-               "data": "TenNhaMay", "name": "TenNhaMay",
-               "orderable": false,
+               "data": "CongToSerial", "name": "CongToSerial",
                "className": "text-center  align-middle"
             },
             {
@@ -88,13 +87,23 @@
                "className": "text-center  align-middle"
             },
             {
-               "data": "ID", "name": "Actions",
+               "data": {
+                  ID : "ID",
+                  CongToID : "CongToID",
+               },
+               "name": "Actions",
                "className": "text-center align-middle",
                "orderable": false,
                render: function (data) {
-                  return '<a href="javascript:;" title="Cập nhật" class="btn btn-brand m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill m-btn--air btn-edit-diemdo" data-id="' + data + '">\
+                  return '<a href="javascript:;" title="Chỉnh sửa thông tin Điểm đo" class="btn btn-brand m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill m-btn--air btn-edit-diemdo" data-id="' + data.ID + '">\
                         <i class="la la-edit"></i>\
-                    </a>'
+                    </a>\
+                     <a href="javascript:;" title="Chỉnh sửa thông tin Công tơ Điểm đo" class="btn btn-brand m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill m-btn--air btn-edit-congto_diemdo" data-diemdo_id="' + data.ID + ' data-congto_id="' + data.CongToID + '">\
+                        <i class="la la-edit"></i>\
+                    </a>\
+                     <a href="javascript:;" title="Thay đổi Công tơ Điểm đo" class="btn btn-brand m-btn m-btn--icon btn-sm m-btn--icon-only  m-btn--pill m-btn--air btn-change-congto_diemdo" data-congto_id="' + data.CongToID + ' data-diemdo_id="' + data.ID + '">\
+                        <i class="la la-edit"></i>\
+                    </a>';
                }
             },
          ]

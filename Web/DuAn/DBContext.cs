@@ -14,6 +14,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
 using System.Web.Optimization;
+using iTextSharp.text.pdf;
 
 namespace DuAn
 {
@@ -949,6 +950,32 @@ namespace DuAn
          if (number >= 1) return "I" + ToRoman(number - 1);
          throw new ArgumentOutOfRangeException("something bad happened");
       }
+      public static string GetDiemDo_CongToViewModel(int congto_id, int diemdo_id, out CapNhatDiemDo_CongToViewModel ct)
+      {
+         try
+         {
+            ct = new CapNhatDiemDo_CongToViewModel();
+            using (var db = new Model1())
+            {
+               var rs = db.CongToes.Where(x => x.ID == congto_id).FirstOrDefault();
+               if (rs == null)
+               {
+                  ct = null;
+                  return "Không tìm thấy Công tơ !!!";
+               }
+               else
+               {
+                  var lk = db.DiemDo_CongTo.Where(x => x.CongToID == congto_id && x.DiemDoID == diemdo_id).FirstOrDefault();
+                  return "success";
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ct = null;
+            return "Đã có lỗi xảy ra khi lấy thông tin Công tơ";
+         }
+      }
    }
 
 
@@ -1197,7 +1224,7 @@ namespace DuAn
          }
          return true;
       }
-      public static bool GetDiemDoPaging(out PagingModel<DiemDoViewModel> pm, RequestPagingModel rpm, int? id_nhamay, int? id_tcdd)
+      public static bool GetDiemDoPaging(out PagingModel<DiemDoViewModel> pm, RequestPagingModel rpm, int? id_tcdd)
       {
          try
          {
@@ -1205,13 +1232,30 @@ namespace DuAn
             using (var db = new Model1())
             {
                //LogHelper.QueryInfo(dbContext);
-               var list = db.DiemDoes.Select(x => x);
+               var list = from dd in db.DiemDoes
+                          join lk in db.DiemDo_CongTo on dd.ID equals lk.DiemDoID into x
+                          from lk in x.DefaultIfEmpty()
+                          where lk.ThoiGianBatDau <= DateTime.Now && lk.ThoiGianKetThuc >= DateTime.Now
+                          select new
+                          {
+                             diem_do = dd,
+                             lien_ket = lk
+                          }
+                          into sub_list
+                          join ct in db.CongToes on sub_list.lien_ket.CongToID equals ct.ID into y
+                          from ct in y.DefaultIfEmpty()
+                          select new
+                          {
+                             ID = sub_list.diem_do.ID,
+                             MaDiemDo = sub_list.diem_do.MaDiemDo,
+                             TenDiemDo = sub_list.diem_do.TenDiemDo,
+                             CongToSerial = ct != null ? ct.Serial : "",
+                             CongToID = ct != null ? ct.ID : -1,
+                             TinhChat = sub_list.diem_do.TinhChatDiemDo.TenTinhChat,
+                             TinhChatID = sub_list.diem_do.TinhChatDiemDo.ID,
+                             ThuTuHienThi = sub_list.diem_do.ThuTuHienThi,
+                          };
 
-
-               if (id_nhamay != null)
-               {
-                  list = list.Where(x => x.NhaMayID == id_nhamay);
-               }
                if (id_tcdd != null)
                {
                   list = list.Where(x => x.TinhChatID == id_tcdd);
@@ -1221,11 +1265,13 @@ namespace DuAn
                //filter
                if (!string.IsNullOrEmpty(rpm.searchValue))
                {
-                  list = list.Where(x => x.NhaMay.TenNhaMay.ToLower().Contains(rpm.searchValue.ToLower()) ||
-                      x.TenDiemDo.ToLower().Contains(rpm.searchValue.ToLower()) ||
-                      x.MaDiemDo.ToString().ToLower().Contains(rpm.searchValue.ToLower()) ||
-                      x.TinhChatDiemDo.TenTinhChat.ToString().ToLower().Contains(rpm.searchValue.ToLower())
-                  );
+
+                  list = list.Where(x => x.TenDiemDo.ToLower().Contains(rpm.searchValue.ToLower()) ||
+                                        x.MaDiemDo.ToString().ToLower().Contains(rpm.searchValue.ToLower()) ||
+                                        x.CongToSerial.ToString().ToLower().Contains(rpm.searchValue.ToLower()) ||
+                                        x.TinhChat.ToString().ToLower().Contains(rpm.searchValue.ToLower())
+                                    );
+
                }
                pm.recordsTotal = list.Count();
                //sorting
@@ -1240,8 +1286,11 @@ namespace DuAn
                   ID = x.ID,
                   MaDiemDo = x.MaDiemDo,
                   TenDiemDo = x.TenDiemDo,
-                  TenNhaMay = x.NhaMay.TenNhaMay,
-                  TinhChat = x.TinhChatDiemDo.TenTinhChat
+                  CongToSerial = x.CongToSerial,
+                  CongToID = x.CongToID,
+                  TinhChat = x.TinhChat,
+                  TinhChatID = x.TinhChatID,
+                  ThuTuHienThi = x.ThuTuHienThi,
                }).ToList();
                pm.draw = int.Parse(rpm.draw);
             }
@@ -1317,6 +1366,21 @@ namespace DuAn
             return "Không thể truy cập cơ sử dữ liệu";
          }
       }
+      /*public static string EditCongToDiemDo(CongTo ct)
+      {
+         try
+         {
+
+         }
+         catch (Exception ex)
+         {
+            return "Đã có lỗi xảy ra khi thay đổi thông tin công tơ"
+         }
+      }
+      public static string ChangeCongToDiemDo(CongTo ct)
+      {
+
+      }*/
    }
    public static class CongTyDAO
    {
@@ -1607,6 +1671,61 @@ namespace DuAn
          {
             var list = db.TinhChatDiemDoes.ToList();
             return list;
+         }
+      }
+   }
+
+   public static class CongToDAO
+   {
+      public static string GetCongToByID(int congto_id, out CongTo ct)
+      {
+         try
+         {
+            ct = new CongTo();
+            using (var db = new Model1())
+            {
+               var rs = db.CongToes.Where(x => x.ID == congto_id).FirstOrDefault();
+               if (rs == null)
+               {
+                  ct = null;
+                  return "Không tìm thấy Công tơ !!!";
+               }
+               else
+               {
+                  ct = rs;
+                  return "success";
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ct = null;
+            return "Đã có lỗi xảy ra khi lấy thông tin Công tơ";
+         }
+      }
+      public static string CreateCongToID(ref CongTo ct)
+      {
+         try
+         {
+            string serial = ct.Serial;
+            using (var db = new Model1())
+            {
+               var rs = db.CongToes.Where(x => x.Serial.ToLower() == serial.ToLower()).FirstOrDefault();
+               if (rs != null)
+               {
+                  return "Serial công tơ đã tồn tại";
+               }
+               else
+               {
+                  db.CongToes.Add(ct);
+                  db.SaveChanges();
+                  return "success";
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            return "Đã có lỗi xảy ra khi thêm mới công tơ";
          }
       }
    }
