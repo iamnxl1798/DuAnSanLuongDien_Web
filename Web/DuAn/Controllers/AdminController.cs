@@ -487,7 +487,14 @@ namespace DuAn.Controllers
 
             if (id_congto != -1)
             {
-               //cap nhat thong tin cong to           
+               CongTo ct = new CongTo()
+               {
+                  Serial = serial,
+                  Type = loai_congto
+               };
+               //cap nhat thong tin cong to 
+               var rs_update_congto = CongToDAO.UpdateCongTo(ct);
+               var rs_update_lienket = LienKetDiemDoCongToDAO.CapNhatThoiGian(id_congto, id_diemdo, dt_start, dt_end);
             }
             else
             {

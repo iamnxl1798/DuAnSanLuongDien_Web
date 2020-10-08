@@ -1677,30 +1677,18 @@ namespace DuAn
 
    public static class CongToDAO
    {
-      public static string GetCongToByID(int congto_id, out CongTo ct)
+      public static CongTo GetCongToByID(int congto_id)
       {
          try
          {
-            ct = new CongTo();
             using (var db = new Model1())
             {
-               var rs = db.CongToes.Where(x => x.ID == congto_id).FirstOrDefault();
-               if (rs == null)
-               {
-                  ct = null;
-                  return "Không tìm thấy Công tơ !!!";
-               }
-               else
-               {
-                  ct = rs;
-                  return "success";
-               }
+               return db.CongToes.Where(x => x.ID == congto_id).FirstOrDefault();
             }
          }
          catch (Exception ex)
          {
-            ct = null;
-            return "Đã có lỗi xảy ra khi lấy thông tin Công tơ";
+            throw new Exception("Đã có lỗi xảy ra khi lấy thông tin Công tơ");
          }
       }
       public static bool CheckCongToExistBySerial(string serial)
@@ -1801,6 +1789,28 @@ namespace DuAn
             throw new Exception("Đã có lỗi xảy ra khi lấy thông tin Công tơ");
          }
       }
+      public static bool UpdateCongTo(CongTo ct)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               var rs = CongToDAO.GetCongToByID(ct.ID);
+               if (rs == null)
+               {
+                  throw new Exception("Không tìm thấy công tơ");
+               }
+               rs.Serial = ct.Serial;
+               rs.Type = ct.Type;
+               db.SaveChanges();
+               return true;
+            }
+         }
+         catch
+         {
+            throw new Exception("Đã có lỗi xảy ra khi update công tơ");
+         }
+      }
 
    }
 
@@ -1859,13 +1869,29 @@ namespace DuAn
             throw new Exception("Đã có lỗi xảy ra khi kiểm tra công tơ");
          }
       }
-   }
-
-   public class CongToUsingException : Exception
-   {
-      public CongToUsingException(string message) : base(message)
+      public static bool CapNhatThoiGian(int congto_id, int diemdo_id, DateTime start, DateTime? end)
       {
+         try
+         {
+            using (var db = new Model1())
+            {
+               var rs = db.DiemDo_CongTo.Where(x => x.CongToID == congto_id && x.DiemDoID == diemdo_id && x.ThoiGianBatDau <= DateTime.Now && (x.ThoiGianKetThuc >= DateTime.Now || x.ThoiGianKetThuc == null)).FirstOrDefault();
+               if (rs == null)
+               {
+                  throw new Exception();
+               }
+               rs.ThoiGianBatDau = start;
+               rs.ThoiGianKetThuc = end;
+               db.SaveChanges();
+               return true;
+            }
+         }
+         catch (Exception ex)
+         {
+            throw new Exception("Đã có lỗi xảy ra khi cập nhật liên kết điểm đo - công tơ");
+         }
       }
    }
+
 
 }
