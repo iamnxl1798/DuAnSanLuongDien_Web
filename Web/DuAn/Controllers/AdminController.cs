@@ -489,6 +489,7 @@ namespace DuAn.Controllers
             {
                CongTo ct = new CongTo()
                {
+                  ID = id_congto,
                   Serial = serial,
                   Type = loai_congto
                };
