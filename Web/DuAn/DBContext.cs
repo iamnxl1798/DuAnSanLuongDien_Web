@@ -1235,7 +1235,7 @@ namespace DuAn
                var list = from dd in db.DiemDoes
                           join lk in db.DiemDo_CongTo on dd.ID equals lk.DiemDoID into x
                           from lk in x.DefaultIfEmpty()
-                          where lk == null || (lk.ThoiGianBatDau <= DateTime.Now && (lk.ThoiGianKetThuc >= DateTime.Now || lk.ThoiGianKetThuc == null))
+                         // where lk == null || (lk.ThoiGianBatDau <= DateTime.Now && (lk.ThoiGianKetThuc >= DateTime.Now || lk.ThoiGianKetThuc == null))
                           select new
                           {
                              diem_do = dd,
