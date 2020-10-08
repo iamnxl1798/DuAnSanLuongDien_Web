@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
 using System.Web.Services.Description;
+using System.Globalization;
 
 namespace DuAn.Controllers
 {
@@ -393,7 +394,7 @@ namespace DuAn.Controllers
          {
             ViewBag.CongToManage = "edit";
             ViewBag.DiemDoID = DiemDoID;
-            var rs = CongToDAO.GetCongToByID(CongToID, DiemDoID, out ct);
+            var rs = CongToDAO.GetCongToTheoDiemDoByCongToID(CongToID, DiemDoID, out ct);
             return View(ct);
          }
          // Thay doi cong to
@@ -458,17 +459,81 @@ namespace DuAn.Controllers
 
       }
       [HttpPost]
-      public ActionResult CapNhatDiemDo_CreateOrUpdateCongTo(int id_congto, double id_diemdo, string serial, string loai_congto)
+      public ActionResult CapNhatDiemDo_CreateOrUpdateCongTo(int id_congto, int id_diemdo, string serial, string loai_congto, string ct_dd_thoigianketthuc, string ct_dd_thoigianbatdau)
       {
-         if (id_congto != -1)
+         try
          {
-            //cap nhat thong tin cong to
+            DateTime dt_start = new DateTime();
+            var rs_start = DateTime.TryParseExact(ct_dd_thoigianbatdau, "dd - mm - yyyy", null, DateTimeStyles.None, out dt_start);
+            if (!rs_start)
+            {
+               return Json(new { success = false, message = "Thời gian bắt đầu không đúng định dạng" });
+            }
+            DateTime? dt_end = new DateTime();
+            if (string.IsNullOrEmpty(ct_dd_thoigianketthuc))
+            {
+               dt_end = null;
+            }
+            else
+            {
+               DateTime dt = new DateTime();
+               var rs_end = DateTime.TryParseExact(ct_dd_thoigianketthuc, "dd - mm - yyyy", null, DateTimeStyles.None, out dt);
+               if (!rs_end)
+               {
+                  return Json(new { success = false, message = "Thời gian kết thúc không đúng định dạng" });
+               }
+               dt_end = dt;
+            }
+
+            if (id_congto != -1)
+            {
+               //cap nhat thong tin cong to           
+            }
+            else
+            {
+               // lien ket cong to voi diem do
+               CongTo ct = new CongTo();
+               ct.Serial = serial;
+               ct.Type = loai_congto;
+               var rs_checkexist = CongToDAO.CheckCongToExistBySerial(serial);// kiem tra cong to con tai tai hay chua
+               if (rs_checkexist)
+               {
+                  // neu cong to da ton tai
+                  var rs_check_congto_using = LienKetDiemDoCongToDAO.CheckCongToUsingBySerial(serial);// kiem tra co dang duoc su dung hay chua
+                  if (rs_check_congto_using)
+                  {
+                     // neu da duoc su dung
+                     return Json(new { success = false, message = "Công tơ đã được sử dụng" });
+                  }
+                  else
+                  {
+                     // neu chua duoc su dung => cap nhat lien ket
+                     CongTo temp_ct = CongToDAO.GetCongToBySerial(serial);
+                     var rs_create_lk = LienKetDiemDoCongToDAO.CreateLienKet(temp_ct.ID, id_diemdo, dt_start, dt_end);
+                  }
+               }
+               else
+               {
+                  //neu cong to chua ton tai => tao moi
+                  var rs_create = CongToDAO.CreateCongTo(ref ct);
+                  if (!rs_create)
+                  {
+                     return Json(new { success = false, message = "Công tơ đã tồn tại" });
+                  }
+                  else
+                  {
+                     var rs_create_lk = LienKetDiemDoCongToDAO.CreateLienKet(ct.ID, id_diemdo, dt_start, dt_end);
+                  }
+               }
+
+            }
+            return Json(new { success = true, message = "Thành Công" });
          }
-         else
+         catch (Exception ex)
          {
-            // create cong to
+            return Json(new { success = false, message = ex.Message });
          }
-         return Json(new { success = true, message = "" });
+
       }
       #endregion
    }

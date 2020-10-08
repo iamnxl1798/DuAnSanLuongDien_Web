@@ -5,10 +5,13 @@ namespace DuAn.Models.DbModel
    using System.ComponentModel.DataAnnotations;
    using System.ComponentModel.DataAnnotations.Schema;
    using System.Data.Entity.Spatial;
+   using System.Windows.Input;
 
    [Table("DiemDo-CongTo")]
    public partial class DiemDo_CongTo
    {
+      [Key]
+      public int ID { get; set; }
 
       [Column(Order = 0)]
       [DatabaseGenerated(DatabaseGeneratedOption.None)]

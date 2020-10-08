@@ -1235,7 +1235,7 @@ namespace DuAn
                var list = from dd in db.DiemDoes
                           join lk in db.DiemDo_CongTo on dd.ID equals lk.DiemDoID into x
                           from lk in x.DefaultIfEmpty()
-                          where lk.ThoiGianBatDau <= DateTime.Now && lk.ThoiGianKetThuc >= DateTime.Now
+                          where lk == null || (lk.ThoiGianBatDau <= DateTime.Now && (lk.ThoiGianKetThuc >= DateTime.Now || lk.ThoiGianKetThuc == null))
                           select new
                           {
                              diem_do = dd,
@@ -1703,7 +1703,66 @@ namespace DuAn
             return "Đã có lỗi xảy ra khi lấy thông tin Công tơ";
          }
       }
-      public static string CreateCongToID(ref CongTo ct)
+      public static bool CheckCongToExistBySerial(string serial)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               var rs = db.CongToes.Where(x => x.Serial == serial).FirstOrDefault();
+               if (rs == null)
+               {
+                  return false;
+               }
+               else
+               {
+                  return true;
+               }
+            }
+         }
+         catch
+         {
+            throw new Exception("Đã có lỗi xảy ra khi kiểm tra công tơ");
+         }
+      }
+      public static string GetCongToTheoDiemDoByCongToID(int congto_id, int diemdo_id, out CapNhatDiemDo_CongToViewModel ct)
+      {
+         try
+         {
+            ct = new CapNhatDiemDo_CongToViewModel();
+            using (var db = new Model1())
+            {
+               var rs = db.CongToes.Where(x => x.ID == congto_id).FirstOrDefault();
+               if (rs == null)
+               {
+                  ct = null;
+                  return "Không tìm thấy Công tơ !!!";
+               }
+               else
+               {
+                  var lk = db.DiemDo_CongTo.Where(x => x.DiemDoID == diemdo_id && x.CongToID == congto_id).FirstOrDefault();
+                  if (lk == null)
+                  {
+                     ct = null;
+                     return "Điểm đo không có công tơ";
+                  }
+                  ct.CongToID = lk.CongTo.ID;
+                  ct.Serial = lk.CongTo.Serial;
+                  ct.DiemDoID = lk.DiemDoID;
+                  ct.ThoiGianBatDau = lk.ThoiGianBatDau;
+                  ct.ThoiGianKetThuc = lk.ThoiGianKetThuc;
+                  ct.Type = lk.CongTo.Type;
+                  return "success";
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            ct = null;
+            return "Đã có lỗi xảy ra khi lấy thông tin Công tơ";
+         }
+      }
+      public static bool CreateCongTo(ref CongTo ct)
       {
          try
          {
@@ -1713,20 +1772,100 @@ namespace DuAn
                var rs = db.CongToes.Where(x => x.Serial.ToLower() == serial.ToLower()).FirstOrDefault();
                if (rs != null)
                {
-                  return "Serial công tơ đã tồn tại";
+                  return false;
                }
                else
                {
                   db.CongToes.Add(ct);
                   db.SaveChanges();
-                  return "success";
+                  return true;
                }
             }
          }
          catch (Exception ex)
          {
-            return "Đã có lỗi xảy ra khi thêm mới công tơ";
+            throw new Exception("Đã có lỗi xảy ra khi thêm mới công tơ");
+         }
+      }
+      public static CongTo GetCongToBySerial(string serial)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               return db.CongToes.Where(x => x.Serial == serial).FirstOrDefault();
+            }
+         }
+         catch (Exception ex)
+         {
+            throw new Exception("Đã có lỗi xảy ra khi lấy thông tin Công tơ");
+         }
+      }
+
+   }
+
+
+   public static class LienKetDiemDoCongToDAO
+   {
+      public static bool CreateLienKet(int congto_id, int diemdo_id, DateTime start, DateTime? end)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               DiemDo_CongTo dd_ct = new DiemDo_CongTo();
+               dd_ct.DiemDoID = diemdo_id;
+               dd_ct.CongToID = congto_id;
+               dd_ct.ThoiGianBatDau = start;
+               dd_ct.ThoiGianKetThuc = end;
+               db.DiemDo_CongTo.Add(dd_ct);
+               db.SaveChanges();
+               return true;
+            }
+         }
+         catch (Exception ex)
+         {
+            throw new Exception("Đã có lỗi xảy ra khi tạo liên kết điểm đo - công tơ");
+         }
+      }
+      public static bool CheckCongToUsingBySerial(string serial)
+      {
+
+         try
+         {
+            using (var db = new Model1())
+            {
+               CongTo ct = CongToDAO.GetCongToBySerial(serial);
+               if (ct == null)
+               {
+                  throw new Exception("Không tìm thấy công tơ");
+               }
+               else
+               {
+                  var rs_check_using = db.DiemDo_CongTo.Where(x => x.CongToID == ct.ID && x.ThoiGianBatDau <= DateTime.Now && (x.ThoiGianKetThuc >= DateTime.Now || x.ThoiGianKetThuc == null)).FirstOrDefault();
+                  if (rs_check_using == null)
+                  {
+                     return false;
+                  }
+                  else
+                  {
+                     return true;
+                  }
+               }
+            }
+         }
+         catch (Exception ex)
+         {
+            throw new Exception("Đã có lỗi xảy ra khi kiểm tra công tơ");
          }
       }
    }
+
+   public class CongToUsingException : Exception
+   {
+      public CongToUsingException(string message) : base(message)
+      {
+      }
+   }
+
 }

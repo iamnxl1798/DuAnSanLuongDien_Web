@@ -12,6 +12,6 @@ namespace DuAn.Models.CustomModel
       public string Serial { get; set; }
       public string Type { get; set; }
       public DateTime ThoiGianBatDau { get; set; }
-      public DateTime ThoiGianKetThuc { get; set; }
+      public DateTime? ThoiGianKetThuc { get; set; }
    }
 }

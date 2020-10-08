@@ -1,8 +1,8 @@
-﻿@model DuAn.Models.DbModel.CongTo
+﻿@model DuAn.Models.CustomModel.CapNhatDiemDo_CongToViewModel
 @{
    Layout = null;
 }
-<div class="modal-dialog modal-dialog-centered modal-sm" style="width:600px !important" role="document">
+<div class="modal-dialog modal-dialog-centered modal-xl" style="width:600px !important" role="document">
    <div class="modal-content">
       <!--Card header-->
       <div class="modal-header">
@@ -20,12 +20,12 @@
          <div class="modal-body">
             <!--begin::Content-->
 
-            <input type="hidden" name="id_congto" id="id_congto" value="@(Model != null ? Model.ID : -1)" />
+            <input type="hidden" name="id_congto" id="id_congto" value="@(Model != null ? Model.CongToID : -1)" />
             <input type="hidden" name="id_diemdo" id="id_diemdo" value="@ViewBag.DiemDoID" />
             <div class="form-group row">
                <label class="col-form-label col-3">Serial:</label>
                <div class="col-7">
-                  <input type="number" name="serial" id="serial" class="form-control form-control-solid" value="@(Model != null ? Model.Serial:"")" required />
+                  <input type="text" name="serial" id="serial" class="form-control form-control-solid" value="@(Model != null ? Model.Serial:"")" required />
                </div>
             </div>
             <div class="form-group row">
@@ -34,7 +34,24 @@
                   <input type="text" name="loai_congto" id="loai_congto" class="form-control form-control-solid" value="@(Model != null ? Model.Type : "")" required />
                </div>
             </div>
-
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Thời gian bắt đầu :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <div class="datepicker date input-group" id="ct_dd_thoigianbatdau" data-dob="@(Model != null ? Model.ThoiGianBatDau.ToString():"")">
+                     <input type="text" name="ct_dd_thoigianbatdau" class="form-control" placeholder="dd - mm - yyyy" />
+                     <div class="input-group-append "><span class="input-group-text px-4 "><i class="fa fa-calendar"></i></span></div>
+                  </div>
+               </div>
+            </div>
+            <div class="form-group row">
+               <label class="col-xl-3 col-lg-3 col-form-label">Thời gian kết thúc :</label>
+               <div class="col-lg-9 col-xl-9">
+                  <div class="datepicker date input-group" id="ct_dd_thoigianketthuc" data-dob="@(Model != null ? Model.ThoiGianKetThuc:null)">
+                     <input type="text" name="ct_dd_thoigianketthuc" class="form-control" placeholder="dd - mm - yyyy" />
+                     <div class="input-group-append "><span class="input-group-text px-4"><i class="fa fa-calendar"></i></span></div>
+                  </div>
+               </div>
+            </div>
             <!--end::Form-->
             <!--end::Content-->
          </div>
@@ -42,7 +59,7 @@
          <!--begin::footer-->
          <div class="modal-footer">
             <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Đóng</button>
-            <button type="submit" class="btn btn-primary font-weight-bold" id="submitCongTo">Lưu thay đổi</button>
+            <button type="submit" class="btn btn-primary font-weight-bold " id="submitCongTo">Lưu thay đổi</button>
          </div>
       </form>
       <!--End::footer-->
@@ -50,6 +67,15 @@
 </div>
 <script>
    $(document).ready(function () {
+      var dob_start = new Date($('#ct_dd_thoigianbatdau').attr('data-dob'));
+      var dob_end = new Date($('#ct_dd_thoigianketthuc').attr('data-dob'));
+      $(".datepicker").datepicker({
+         clearBtn: true,
+         format: "dd - mm - yyyy",
+         autoclose: true,
+      });
+      $("#ct_dd_thoigianbatdau").datepicker('setDate', dob_start);
+      $("#ct_dd_thoigianketthuc").datepicker('setDate', dob_end);
 
       FormValidation.formValidation(
          document.getElementById('congto_modal_form'),
@@ -66,6 +92,13 @@
                   validators: {
                      notEmpty: {
                         message: 'Loại công tơ không được để trống'
+                     },
+                  }
+               },
+               ct_dd_thoigianbatdau: {
+                  validators: {
+                     notEmpty: {
+                        message: 'Thời gian bắt đầu không được để trống'
                      },
                   }
                },
@@ -89,7 +122,7 @@
             cache: false,
             success: function (data) {
                if (data.success == true) {
-                  showMessage(data.message, true);
+                  showMessage("Thành Công", true);
                   $('#my_datatable_diemdo').DataTable().ajax.reload();
                } else {
                   showMessage(data.message, false);
