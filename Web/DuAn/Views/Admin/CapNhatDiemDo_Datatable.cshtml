@@ -6,11 +6,13 @@
    <table id="my_datatable_diemdo" style="width:auto;" class="table table-bordered table-hover table-checkable table-striped display">
       <thead>
          <tr style="align-content: center !important;">
-            <th @*style="width: 40px;"*@="d-none"><b>ID</b></th>
-            <th @*style="width: 200px"*@ class="text-center"><b>Mã điểm đo</b></th>
-            <th @*style="width: 150px"*@ class="text-center"><b>Tên điểm đo</b></th>
-            <th class="text-center"><b>Công Tơ</b></th>
+            <th class="d-none"><b>ID</b></th>
+            <th class="text-center"><b>Mã điểm đo</b></th>
+            <th class="text-center"><b>Tên điểm đo</b></th>
             <th class="text-center"><b>Tính chất</b></th>
+            <th class="text-center"><b>Công Tơ</b></th>
+            <th class="text-center"><b>Bắt đầu</b></th>
+            <th class="text-center"><b>Kết thúc</b></th>
             <th class="text-center"><b>Tác vụ</b></th>
          </tr>
       </thead>
@@ -78,12 +80,20 @@
                "className": "text-center  align-middle"
             },
             {
+               "data": "TinhChat", "name": "TinhChat",
+               "orderable": false,
+               "className": "text-center  align-middle"
+            },
+            {
                "data": "CongToSerial", "name": "CongToSerial",
                "className": "text-center  align-middle"
             },
             {
-               "data": "TinhChat", "name": "TinhChat",
-               "orderable": false,
+               "data": "ThoiGianBatDau", "name": "ThoiGianBatDau",
+               "className": "text-center  align-middle"
+            },
+            {
+               "data": "ThoiGianKetThuc", "name": "ThoiGianKetThuc",
                "className": "text-center  align-middle"
             },
             {

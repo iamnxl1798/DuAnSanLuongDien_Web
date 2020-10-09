@@ -15,5 +15,7 @@ namespace DuAn.Models.CustomModel
       public string TinhChat { get; set; }
       public int TinhChatID { get; set; }
       public int? ThuTuHienThi { get; set; }
+      public string ThoiGianBatDau { get; set; }
+      public string ThoiGianKetThuc { get; set; }
    }
 }

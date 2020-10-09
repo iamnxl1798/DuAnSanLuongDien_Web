@@ -1235,7 +1235,7 @@ namespace DuAn
                var list = from dd in db.DiemDoes
                           join lk in db.DiemDo_CongTo on dd.ID equals lk.DiemDoID into x
                           from lk in x.DefaultIfEmpty()
-                         // where lk == null || (lk.ThoiGianBatDau <= DateTime.Now && (lk.ThoiGianKetThuc >= DateTime.Now || lk.ThoiGianKetThuc == null))
+                             // where lk == null || (lk.ThoiGianBatDau <= DateTime.Now && (lk.ThoiGianKetThuc >= DateTime.Now || lk.ThoiGianKetThuc == null))
                           select new
                           {
                              diem_do = dd,
@@ -1254,6 +1254,7 @@ namespace DuAn
                              TinhChat = sub_list.diem_do.TinhChatDiemDo.TenTinhChat,
                              TinhChatID = sub_list.diem_do.TinhChatDiemDo.ID,
                              ThuTuHienThi = sub_list.diem_do.ThuTuHienThi,
+                             lienket = sub_list.lien_ket
                           };
 
                if (id_tcdd != null)
@@ -1291,6 +1292,8 @@ namespace DuAn
                   TinhChat = x.TinhChat,
                   TinhChatID = x.TinhChatID,
                   ThuTuHienThi = x.ThuTuHienThi,
+                  ThoiGianBatDau = x.lienket != null ? "1" : "0",
+                  ThoiGianKetThuc = x.lienket != null ? "1" : "0",
                }).ToList();
                pm.draw = int.Parse(rpm.draw);
             }
