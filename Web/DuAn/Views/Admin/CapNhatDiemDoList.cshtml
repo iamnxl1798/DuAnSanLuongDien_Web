@@ -56,7 +56,7 @@
                </select>
             </div>
          </div>
-         <div class="col-2 order-2 order-xl-1 m--align-right" style="bottom:15%;">
+         <!--<div class="col-2 order-2 order-xl-1 m--align-right" style="bottom:15%;">
             <a href="javascript:;" class="btn btn-primary" id="btn-search-diem-do">
                <span>
                   <i class="fa fa-search"></i>
@@ -64,9 +64,9 @@
                      Tìm kiếm
                   </span>
                </span>
-            </a>
+            </a>-->
             @*<div class="m-separator m-separator--dashed d-xl-none"></div>*@
-         </div>
+         <!--</div>-->
       </div>
 
       <!--end::Header-->
@@ -184,11 +184,15 @@
       };
 
 
-      $('#btn-search-diem-do').on('click', function () {
+      @*$('#btn-search-diem-do').on('click', function () {
+         load_datatable_diemdo();
+      })*@
+      $('#id_tinh_chat_diem_do').on('change', function () {
          load_datatable_diemdo();
       })
 
-      $('#btn-search-diem-do').trigger('click');
+      @*$('#btn-search-diem-do').trigger('click');*@
+      $('#id_tinh_chat_diem_do').trigger('change');
 
       $('#new_diemdo').on('click', function () {
          getModalDiemDo(0);

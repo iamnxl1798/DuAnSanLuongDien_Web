@@ -1256,7 +1256,6 @@ namespace DuAn
                              ThuTuHienThi = sub_list.diem_do.ThuTuHienThi,
                              lienket = sub_list.lien_ket
                           };
-
                if (id_tcdd != null)
                {
                   list = list.Where(x => x.TinhChatID == id_tcdd);
@@ -1292,8 +1291,8 @@ namespace DuAn
                   TinhChat = x.TinhChat,
                   TinhChatID = x.TinhChatID,
                   ThuTuHienThi = x.ThuTuHienThi,
-                  ThoiGianBatDau = x.lienket != null ? "1" : "0",
-                  ThoiGianKetThuc = x.lienket != null ? "1" : "0",
+                  ThoiGianBatDau = x.lienket != null ? x.lienket.ThoiGianBatDau.ToString("dd/MM/yyyy") : "",
+                  ThoiGianKetThuc = x.lienket != null ? (x.lienket.ThoiGianKetThuc != null ? x.lienket.ThoiGianKetThuc.Value.ToString("dd/MM/yyyy") : "") : "",
                }).ToList();
                pm.draw = int.Parse(rpm.draw);
             }

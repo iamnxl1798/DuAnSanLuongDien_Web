@@ -464,7 +464,7 @@ namespace DuAn.Controllers
          try
          {
             DateTime dt_start = new DateTime();
-            var rs_start = DateTime.TryParseExact(ct_dd_thoigianbatdau, "dd - mm - yyyy", null, DateTimeStyles.None, out dt_start);
+            var rs_start = DateTime.TryParseExact(ct_dd_thoigianbatdau, "dd - MM - yyyy", null, DateTimeStyles.None, out dt_start);
             if (!rs_start)
             {
                return Json(new { success = false, message = "Thời gian bắt đầu không đúng định dạng" });
@@ -477,14 +477,17 @@ namespace DuAn.Controllers
             else
             {
                DateTime dt = new DateTime();
-               var rs_end = DateTime.TryParseExact(ct_dd_thoigianketthuc, "dd - mm - yyyy", null, DateTimeStyles.None, out dt);
+               var rs_end = DateTime.TryParseExact(ct_dd_thoigianketthuc, "dd - MM - yyyy", null, DateTimeStyles.None, out dt);
                if (!rs_end)
                {
                   return Json(new { success = false, message = "Thời gian kết thúc không đúng định dạng" });
                }
                dt_end = dt;
             }
-
+            if (dt_start > dt_end)
+            {
+               return Json(new { success = false, message = "Thời gian bắt đầu phải nhỏ hơn Thời gian kết thúc" });
+            }
             if (id_congto != -1)
             {
                CongTo ct = new CongTo()
