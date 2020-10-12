@@ -117,7 +117,7 @@
       ).on('core.form.valid', function () {
          $.ajax({
             url: '/Admin/CapNhatDiemDo_CreateOrUpdate',
-            method: 'POST',
+            type: 'POST',
             data: $('#diemdo_modal_form').serialize(),
             cache: false,
             success: function (data) {

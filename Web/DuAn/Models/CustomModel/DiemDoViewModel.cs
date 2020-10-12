@@ -12,6 +12,7 @@ namespace DuAn.Models.CustomModel
       public string TenDiemDo { get; set; }
       public string CongToSerial { get; set; }
       public int CongToID { get; set; }
+      public int LienKetID { get; set; }
       public string TinhChat { get; set; }
       public int TinhChatID { get; set; }
       public int? ThuTuHienThi { get; set; }

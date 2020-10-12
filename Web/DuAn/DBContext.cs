@@ -20,6 +20,7 @@ namespace DuAn
 {
    public class DBContext
    {
+      #region Common
       public async static Task<HomeModel> getDuKien(DateTime date)
       {
          using (var db = new Model1())
@@ -976,8 +977,8 @@ namespace DuAn
             return "Đã có lỗi xảy ra khi lấy thông tin Công tơ";
          }
       }
+      #endregion
    }
-
 
    public static class AccountDAO
    {
@@ -1291,6 +1292,7 @@ namespace DuAn
                   TinhChat = x.TinhChat,
                   TinhChatID = x.TinhChatID,
                   ThuTuHienThi = x.ThuTuHienThi,
+                  LienKetID = x.lienket != null ? x.lienket.ID : -1,
                   ThoiGianBatDau = x.lienket != null ? x.lienket.ThoiGianBatDau.ToString("dd/MM/yyyy") : "",
                   ThoiGianKetThuc = x.lienket != null ? (x.lienket.ThoiGianKetThuc != null ? x.lienket.ThoiGianKetThuc.Value.ToString("dd/MM/yyyy") : "") : "",
                }).ToList();
@@ -1304,16 +1306,16 @@ namespace DuAn
             return false;
          }
       }
-      public static string CreateDiemDo(int MaDiemDo, string TenDiemDo, int ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo)
+      public static string CreateDiemDo(int MaDiemDo, string TenDiemDo, int ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do)
       {
          try
          {
             using (var db = new Model1())
             {
-               var check_exist = db.DiemDoes.Where(x => x.NhaMayID == nha_may_id && (x.ID == id_diemdo || x.MaDiemDo == MaDiemDo)).FirstOrDefault();
+               var check_exist = db.DiemDoes.Where(x => x.NhaMayID == nha_may_id && (x.MaDiemDo == MaDiemDo || x.TenDiemDo == TenDiemDo)).FirstOrDefault();
                if (check_exist != null)
                {
-                  return "Điểm đo đã tồn tại !!!";
+                  return "Điểm đo hoặc Tên điểm đo đã tồn tại !!!";
                }
                else
                {
@@ -1342,10 +1344,10 @@ namespace DuAn
             using (var db = new Model1())
             {
                var list = db.DiemDoes.Where(x => x.NhaMayID == nha_may_id);
-               var check_exist_ma = list.Where(x => x.MaDiemDo == MaDiemDo).FirstOrDefault();
+               var check_exist_ma = list.Where(x => x.MaDiemDo == MaDiemDo || x.TenDiemDo == TenDiemDo).FirstOrDefault();
                if (check_exist_ma != null && check_exist_ma.ID != id_diemdo)
                {
-                  return "Mã Điểm đo tại nhà máy đã tồn tại";
+                  return "Mã Điểm đo hoặc Tên điểm đo tại nhà máy đã tồn tại";
                }
                var check_exist = list.Where(x => x.ID == id_diemdo).FirstOrDefault();
                if (check_exist == null)
@@ -1715,6 +1717,29 @@ namespace DuAn
             throw new Exception("Đã có lỗi xảy ra khi kiểm tra công tơ");
          }
       }
+      public static bool CheckCongToExistBySerialExceptOneID(string serial, int id)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               var rs = db.CongToes.Where(x => x.Serial == serial && x.ID != id).FirstOrDefault();
+               if (rs == null)
+               {
+                  return false;
+               }
+               else
+               {
+                  return true;
+               }
+            }
+         }
+         catch
+         {
+            throw new Exception("Đã có lỗi xảy ra khi kiểm tra công tơ");
+         }
+      }
+
       public static string GetCongToTheoDiemDoByCongToID(int congto_id, int diemdo_id, out CapNhatDiemDo_CongToViewModel ct)
       {
          try
@@ -1819,6 +1844,20 @@ namespace DuAn
 
    public static class LienKetDiemDoCongToDAO
    {
+      public static DiemDo_CongTo GetLienKetById(int id_lienket)
+      {
+         try
+         {
+            using (var db = new Model1())
+            {
+               return db.DiemDo_CongTo.Find(id_lienket);
+            }
+         }
+         catch
+         {
+            throw new Exception("Đã có lỗi xảy ra khi lấy thông tin liên kết điểm đo - công tơ");
+         }
+      }
       public static bool CreateLienKet(int congto_id, int diemdo_id, DateTime start, DateTime? end)
       {
          try
@@ -1840,44 +1879,44 @@ namespace DuAn
             throw new Exception("Đã có lỗi xảy ra khi tạo liên kết điểm đo - công tơ");
          }
       }
-      public static bool CheckCongToUsingBySerial(string serial)
+      public static bool CheckCongToUsingFollowTimeByID(int id_congto, int id_lienket, DateTime dt_start, DateTime? dt_end)
       {
 
          try
          {
             using (var db = new Model1())
             {
-               CongTo ct = CongToDAO.GetCongToBySerial(serial);
+               CongTo ct = CongToDAO.GetCongToByID(id_congto);
                if (ct == null)
                {
                   throw new Exception("Không tìm thấy công tơ");
                }
                else
                {
-                  var rs_check_using = db.DiemDo_CongTo.Where(x => x.CongToID == ct.ID && x.ThoiGianBatDau <= DateTime.Now && (x.ThoiGianKetThuc >= DateTime.Now || x.ThoiGianKetThuc == null)).FirstOrDefault();
-                  if (rs_check_using == null)
+                  var list_lienket = db.DiemDo_CongTo.Where(x => x.CongToID == id_congto && x.ID != id_lienket).ToList();
+                  foreach (var item in list_lienket)
                   {
-                     return false;
-                  }
-                  else
-                  {
-                     return true;
+                     if (CheckTimeDuplicate.CheckTwoPeriodsIsDuplicate(item.ThoiGianBatDau, item.ThoiGianKetThuc, dt_start, dt_end))
+                     {
+                        return true;
+                     }
                   }
                }
+               return false;
             }
          }
-         catch (Exception ex)
+         catch
          {
             throw new Exception("Đã có lỗi xảy ra khi kiểm tra công tơ");
          }
       }
-      public static bool CapNhatThoiGian(int congto_id, int diemdo_id, DateTime start, DateTime? end)
+      public static bool CapNhatThoiGian(int lienket_id, DateTime start, DateTime? end)
       {
          try
          {
             using (var db = new Model1())
             {
-               var rs = db.DiemDo_CongTo.Where(x => x.CongToID == congto_id && x.DiemDoID == diemdo_id && x.ThoiGianBatDau <= DateTime.Now && (x.ThoiGianKetThuc >= DateTime.Now || x.ThoiGianKetThuc == null)).FirstOrDefault();
+               var rs = db.DiemDo_CongTo.Find(lienket_id);
                if (rs == null)
                {
                   throw new Exception();
@@ -1888,7 +1927,7 @@ namespace DuAn
                return true;
             }
          }
-         catch (Exception ex)
+         catch
          {
             throw new Exception("Đã có lỗi xảy ra khi cập nhật liên kết điểm đo - công tơ");
          }

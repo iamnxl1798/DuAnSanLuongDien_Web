@@ -22,6 +22,7 @@
 
             <input type="hidden" name="id_congto" id="id_congto" value="@(Model != null ? Model.CongToID : -1)" />
             <input type="hidden" name="id_diemdo" id="id_diemdo" value="@ViewBag.DiemDoID" />
+            <input type="hidden" name="id_lienket" id="id_lienket" value="@ViewBag.LienKetID" />
             <div class="form-group row">
                <label class="col-form-label col-3">Serial:</label>
                <div class="col-7">
@@ -114,10 +115,9 @@
             }
          }
       ).on('core.form.valid', function () {
-
          $.ajax({
             url: '/Admin/CapNhatDiemDo_CreateOrUpdateCongTo',
-            method: 'POST',
+            type: 'POST',
             data: $('#congto_modal_form').serialize(),
             cache: false,
             success: function (data) {

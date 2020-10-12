@@ -20,17 +20,7 @@ namespace DuAn.Controllers
    [CheckTotalRole(RoleID = new int[2] { RoleContext.Expertise, RoleContext.Administration })]
    public class AdminController : Controller
    {
-      /*public ActionResult getLogoCongTy()
-      {
-          string logo = CongTyDAO.getCongTyById(5).Logo;
-          return Json(logo, JsonRequestBehavior.AllowGet);
-      }*/
-      // GET: Admin
-      /*public ActionResult Index()
-      {
-          AdminModel item = DBContext.getDataAdminModel();
-          return View(item);
-      }*/
+      #region Common
       public ActionResult CapNhatGiaDien()
       {
          return View();
@@ -242,7 +232,7 @@ namespace DuAn.Controllers
 
 
       }
-
+      #endregion
       #region Cập nhật sản lượng dự kiến
       public ActionResult CapNhatSLDK_Datatable(int loaiDuKien, int? thang, int? nam)
       {
@@ -386,7 +376,7 @@ namespace DuAn.Controllers
          }
       }
 
-      public ActionResult CapNhatDiemDo_CongToModal(int DiemDoID = -1, int CongToID = -1)
+      public ActionResult CapNhatDiemDo_CongToModal(int DiemDoID = -1, int CongToID = -1, int LienKetID = -1)
       {
          CapNhatDiemDo_CongToViewModel ct = new CapNhatDiemDo_CongToViewModel();
          // Cap nhat Cong To
@@ -394,6 +384,7 @@ namespace DuAn.Controllers
          {
             ViewBag.CongToManage = "edit";
             ViewBag.DiemDoID = DiemDoID;
+            ViewBag.LienKetID = LienKetID;
             var rs = CongToDAO.GetCongToTheoDiemDoByCongToID(CongToID, DiemDoID, out ct);
             return View(ct);
          }
@@ -402,6 +393,7 @@ namespace DuAn.Controllers
          {
             ViewBag.CongToManage = "change";
             ViewBag.DiemDoID = DiemDoID;
+            ViewBag.LienKetID = LienKetID;
             return View();
          }
 
@@ -421,6 +413,7 @@ namespace DuAn.Controllers
          //return Json(new { success = rs, data = View(sldk) });
          return PartialView(dd);
       }
+
       [HttpPost]
       public ActionResult CapNhatDiemDo_CreateOrUpdate(int? MaDiemDo, int? ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo, string TenDiemDo = "")
       {
@@ -440,7 +433,7 @@ namespace DuAn.Controllers
          if (id_diemdo == 0)
          {
             //create
-            rs = DiemDoDAO.CreateDiemDo(MaDiemDo.Value, TenDiemDo, ThuTuHienThi.Value, nha_may_id, id_tinh_chat_diem_do, id_diemdo);
+            rs = DiemDoDAO.CreateDiemDo(MaDiemDo.Value, TenDiemDo, ThuTuHienThi.Value, nha_may_id, id_tinh_chat_diem_do);
          }
          else
          {
@@ -459,7 +452,7 @@ namespace DuAn.Controllers
 
       }
       [HttpPost]
-      public ActionResult CapNhatDiemDo_CreateOrUpdateCongTo(int id_congto, int id_diemdo, string serial, string loai_congto, string ct_dd_thoigianketthuc, string ct_dd_thoigianbatdau)
+      public ActionResult CapNhatDiemDo_CreateOrUpdateCongTo(int id_congto, int id_diemdo, string serial, string loai_congto, string ct_dd_thoigianketthuc, string ct_dd_thoigianbatdau, int id_lienket = -1)
       {
          try
          {
@@ -488,6 +481,7 @@ namespace DuAn.Controllers
             {
                return Json(new { success = false, message = "Thời gian bắt đầu phải nhỏ hơn Thời gian kết thúc" });
             }
+            // if update cong to
             if (id_congto != -1)
             {
                CongTo ct = new CongTo()
@@ -496,32 +490,46 @@ namespace DuAn.Controllers
                   Serial = serial,
                   Type = loai_congto
                };
+               var rs_checkexist = CongToDAO.CheckCongToExistBySerialExceptOneID(serial, id_congto);
+               if (rs_checkexist)
+               {
+                  return Json(new { success = false, message = "Công tơ đã tồn tại" });
+               }
+               var rs_check_congto_using = LienKetDiemDoCongToDAO.CheckCongToUsingFollowTimeByID(id_congto, id_lienket, dt_start, dt_end);// kiem tra co dang duoc su dung hay chua
+               if (rs_check_congto_using)
+               {
+                  // neu da duoc su dung
+                  return Json(new { success = false, message = "Công tơ đã được sử dụng vào khoảng thời gian này" });
+               }
                //cap nhat thong tin cong to 
                var rs_update_congto = CongToDAO.UpdateCongTo(ct);
-               var rs_update_lienket = LienKetDiemDoCongToDAO.CapNhatThoiGian(id_congto, id_diemdo, dt_start, dt_end);
+               var rs_update_lienket = LienKetDiemDoCongToDAO.CapNhatThoiGian(id_lienket, dt_start, dt_end);
             }
+            // if create or add cong to to diem do
             else
             {
                // lien ket cong to voi diem do
                CongTo ct = new CongTo();
                ct.Serial = serial;
                ct.Type = loai_congto;
-               var rs_checkexist = CongToDAO.CheckCongToExistBySerial(serial);// kiem tra cong to con tai tai hay chua
+               var rs_checkexist = CongToDAO.CheckCongToExistBySerial(serial);// kiem tra cong to da ton tai hay chua
                if (rs_checkexist)
                {
                   // neu cong to da ton tai
-                  var rs_check_congto_using = LienKetDiemDoCongToDAO.CheckCongToUsingBySerial(serial);// kiem tra co dang duoc su dung hay chua
+                  var ct_temp = CongToDAO.GetCongToBySerial(serial);
+                  var rs_check_congto_using = LienKetDiemDoCongToDAO.CheckCongToUsingFollowTimeByID(id_congto, id_diemdo, dt_start, dt_end);// kiem tra co dang duoc su dung hay chua
                   if (rs_check_congto_using)
                   {
                      // neu da duoc su dung
-                     return Json(new { success = false, message = "Công tơ đã được sử dụng" });
+                     return Json(new { success = false, message = "Công tơ đã được sử dụng vào khoảng thời gian này" });
                   }
-                  else
+                  // neu chua duoc su dung => cap nhat lien ket
+                  if (id_lienket != -1)
                   {
-                     // neu chua duoc su dung => cap nhat lien ket
-                     CongTo temp_ct = CongToDAO.GetCongToBySerial(serial);
-                     var rs_create_lk = LienKetDiemDoCongToDAO.CreateLienKet(temp_ct.ID, id_diemdo, dt_start, dt_end);
+                     var old_lienket = LienKetDiemDoCongToDAO.GetLienKetById(id_lienket);
+                     var rs_update_lienket = LienKetDiemDoCongToDAO.CapNhatThoiGian(id_lienket, old_lienket.ThoiGianBatDau, dt_start.AddDays(-1));
                   }
+                  var rs_create_lk = LienKetDiemDoCongToDAO.CreateLienKet(ct_temp.ID, id_diemdo, dt_start, dt_end);
                }
                else
                {
@@ -533,6 +541,11 @@ namespace DuAn.Controllers
                   }
                   else
                   {
+                     if (id_lienket != -1)
+                     {
+                        var old_lienket = LienKetDiemDoCongToDAO.GetLienKetById(id_lienket);
+                        var rs_update_lienket = LienKetDiemDoCongToDAO.CapNhatThoiGian(id_lienket, old_lienket.ThoiGianBatDau, dt_start.AddDays(-1));
+                     }
                      var rs_create_lk = LienKetDiemDoCongToDAO.CreateLienKet(ct.ID, id_diemdo, dt_start, dt_end);
                   }
                }
