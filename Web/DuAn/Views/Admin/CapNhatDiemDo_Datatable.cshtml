@@ -1,5 +1,6 @@
 ﻿@*<input type="hidden" value="@ViewBag.id_nha_may" id="id_nha_may_db" />*@
 <input type="hidden" value="@ViewBag.id_tinh_chat_diem_do" id="id_tcdd_db" />
+<input type="hidden" value="@ViewBag.allow_history" id="allow_history_db" />
 
 <div class="card-body">
    <!--begin: Datatable-->
@@ -55,6 +56,7 @@
             data: {
                @*id_nha_may_db: $('#id_nha_may_db').val(),*@
                id_tcdd_db: $('#id_tcdd_db').val(),
+               allow_history: $('#allow_history_db').val(),
             },
             dataSrc: function (data) {
                if (data.success == false) {

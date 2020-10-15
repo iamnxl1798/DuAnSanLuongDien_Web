@@ -56,6 +56,17 @@
                </select>
             </div>
          </div>
+         <div class="col-3 row">
+            <label class="col-form-label">Xem lịch sử thay đổi</label>
+            <div class="col-lg-3 col-xl-3">
+               <span class="switch switch-icon">
+                  <label>
+                     <input id="allow_history" type="checkbox" checked="checked" name="allow_history" value="true" />
+                     <span></span>
+                  </label>
+               </span>
+            </div>
+         </div>
          <!--<div class="col-2 order-2 order-xl-1 m--align-right" style="bottom:15%;">
             <a href="javascript:;" class="btn btn-primary" id="btn-search-diem-do">
                <span>
@@ -65,7 +76,7 @@
                   </span>
                </span>
             </a>-->
-            @*<div class="m-separator m-separator--dashed d-xl-none"></div>*@
+         @*<div class="m-separator m-separator--dashed d-xl-none"></div>*@
          <!--</div>-->
       </div>
 
@@ -166,12 +177,18 @@
       }
 
       var load_datatable_diemdo = function () {
+         var allow_history = false;
+         if ($('#allow_history').is(':checked')) {
+            allow_history = true;
+         }
+
          $.ajax({
             url: "/Admin/CapNhatDiemDo_Datatable",
             cache: false,
             data: {
                @*id_nha_may: $('#id_nha_may').val(),*@
                id_tinh_chat_diem_do: $('#id_tinh_chat_diem_do').val(),
+               allow_history: allow_history,
             },
             success: function (data) {
                $("#datatable_diemdo_ajax").html(data);
@@ -190,7 +207,10 @@
          load_datatable_diemdo();
       })
 
-      @*$('#btn-search-diem-do').trigger('click');*@
+      $('#allow_history').on('change', function () {
+         load_datatable_diemdo();
+      })
+
       $('#id_tinh_chat_diem_do').trigger('change');
 
       $('#new_diemdo').on('click', function () {

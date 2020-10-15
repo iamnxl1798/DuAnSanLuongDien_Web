@@ -331,15 +331,16 @@ namespace DuAn.Controllers
          ViewBag.ListTCDD = TinhChatDiemDoDAO.GetAllTCDD();
          return View();
       }
-      public ActionResult CapNhatDiemDo_Datatable(/*int id_nha_may,*/ int id_tinh_chat_diem_do)
+      public ActionResult CapNhatDiemDo_Datatable(/*int id_nha_may,*/ int id_tinh_chat_diem_do, bool allow_history = false)
       {
 
          //ViewBag.id_nha_may = id_nha_may;
          ViewBag.id_tinh_chat_diem_do = id_tinh_chat_diem_do;
+         ViewBag.allow_history = allow_history.ToString();
 
          return PartialView();
       }
-      public ActionResult CapNhatDiemDoPaging(int id_tcdd_db)
+      public ActionResult CapNhatDiemDoPaging(int id_tcdd_db, bool allow_history = false)
       {
          try
          {
@@ -360,7 +361,7 @@ namespace DuAn.Controllers
                }
 
                PagingModel<DiemDoViewModel> pm = new PagingModel<DiemDoViewModel>();
-               var response = DiemDoDAO.GetDiemDoPaging(out pm, rpm, tcdd_id);
+               var response = DiemDoDAO.GetDiemDoPaging(out pm, rpm, tcdd_id, allow_history);
 
                if (!response)
                {

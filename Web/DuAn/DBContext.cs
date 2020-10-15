@@ -1225,7 +1225,7 @@ namespace DuAn
          }
          return true;
       }
-      public static bool GetDiemDoPaging(out PagingModel<DiemDoViewModel> pm, RequestPagingModel rpm, int? id_tcdd)
+      public static bool GetDiemDoPaging(out PagingModel<DiemDoViewModel> pm, RequestPagingModel rpm, int? id_tcdd, bool allow_history)
       {
          try
          {
@@ -1261,7 +1261,10 @@ namespace DuAn
                {
                   list = list.Where(x => x.TinhChatID == id_tcdd);
                }
-
+               if (!allow_history)
+               {
+                  list = list.Where(x => x.lienket == null || (x.lienket.ThoiGianBatDau <= DateTime.Now && (x.lienket.ThoiGianKetThuc >= DateTime.Now || x.lienket.ThoiGianKetThuc == null)) );
+               }
                pm.recordsFiltered = list.Count();
                //filter
                if (!string.IsNullOrEmpty(rpm.searchValue))
