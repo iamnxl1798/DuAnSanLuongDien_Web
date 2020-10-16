@@ -130,7 +130,7 @@ namespace ServiceTool
                //ShowNotificationMessage(50, "Error", "Wait to access file !!!", ToolTipIcon.Error);
                Thread.Sleep(100);
             }
-            catch (Exception ex)
+            catch
             {
                //Console.WriteLine(ex.Message);
                //ShowNotificationMessage(50, "Error", ex.Message, ToolTipIcon.Error);
@@ -142,7 +142,7 @@ namespace ServiceTool
                {
                   reader.Close();
                }
-               catch (Exception ex)
+               catch
                {
                }
             }

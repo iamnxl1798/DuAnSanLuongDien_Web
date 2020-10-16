@@ -25,6 +25,7 @@ namespace DuAn.Controllers
       {
          return View();
       }
+
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_UpdateFile })]
       public ActionResult CauHinhSanLuong()
       {
@@ -49,6 +50,7 @@ namespace DuAn.Controllers
       {
          return View();
       }
+
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_ChangeConfig })]
       public ActionResult QuanTriCauHinh()
       {
@@ -87,17 +89,20 @@ namespace DuAn.Controllers
                   bool isExists = System.IO.Directory.Exists(pathString);
 
                   if (!isExists)
+                  {
                      System.IO.Directory.CreateDirectory(pathString);
+                  }
 
                   var path = string.Format("{0}\\{1}", pathString, file.FileName);
                   file.SaveAs(path);
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
             return Json(new { Message = "Lỗi lưu file !!" });
          }
+
          return Json(new { Message = string.Empty });
       }
 
@@ -119,7 +124,9 @@ namespace DuAn.Controllers
                   bool isExists = System.IO.Directory.Exists(pathString);
 
                   if (!isExists)
+                  {
                      System.IO.Directory.CreateDirectory(pathString);
+                  }
 
                   var path = string.Format("{0}\\{1}", pathString, file.FileName);
                   file.SaveAs(path);
@@ -137,9 +144,10 @@ namespace DuAn.Controllers
                   System.IO.File.Delete(Path.Combine(folderPath, name));
                }
             }
+
             return Json(new { Message = "Thanhcong" });
          }
-         catch (Exception ex)
+         catch
          {
             return Json(new { Message = "Xuly" });
          }
@@ -151,6 +159,7 @@ namespace DuAn.Controllers
          DBContext.updateFormula(formula, name, thoiGian);
          return Json(new { Message = "Cập nhật thành công" });
       }
+
       public ActionResult InsertGiaDien(string thoiGianBatDau, string thoiGianKetThuc, int giaDien)
       {
          var message = DBContext.InsertGiaDien(thoiGianBatDau, thoiGianKetThuc, giaDien);
@@ -158,6 +167,7 @@ namespace DuAn.Controllers
          {
             return Json(new { success = true, message = string.Empty });
          }
+
          return Json(new { success = false, Message = "Không thể cập nhật giá điện" });
       }
 
@@ -176,6 +186,7 @@ namespace DuAn.Controllers
       }
 
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Administration_ChangeConfig })]
+
       [HttpPost]
       public ActionResult ChangeCauHinhWeb(HttpPostedFileBase cauhinh_logo, string ten_congty, int id, string ten_viet_tat, string ten_viet_tat_nm, string ten_nha_may, int id_nm, string dia_chi_nm)
       {
@@ -196,6 +207,7 @@ namespace DuAn.Controllers
             {
                return Json(new { success = false, message = "Không tìm thấy thông tin công ty" });
             }
+
             ct.Logo = fileName;
             ct.TenCongTy = ten_congty;
             ct.TenVietTat = ten_viet_tat;
@@ -207,6 +219,7 @@ namespace DuAn.Controllers
             {
                return Json(new { success = false, message = "Không tìm thấy thông tin nhà máy" });
             }
+
             nm.TenNhaMay = ten_nha_may;
             nm.TenVietTat = ten_viet_tat_nm;
             nm.DiaChi = dia_chi_nm;
@@ -217,36 +230,38 @@ namespace DuAn.Controllers
             {
                return Json(new { success = false, message = rs });
             }
+
             if (rs_nm != "success")
             {
                return Json(new { success = false, message = rs_nm });
             }
+
             Session["CongTy"] = ct;
             Session["NhaMay"] = nm;
             return Json(new { success = true, message = string.Empty });
          }
-         catch (Exception ex)
+         catch
          {
             return Json(new { success = false, message = "Không thể truy cập cơ sở dữ liệu" });
          }
-
-
       }
       #endregion
+
       #region Cập nhật sản lượng dự kiến
       public ActionResult CapNhatSLDK_Datatable(int loaiDuKien, int? thang, int? nam)
       {
-
          ViewBag.Nam = nam;
          ViewBag.Thang = thang;
          ViewBag.loaiDuKien = loaiDuKien;
 
          return PartialView();
       }
+
       public ActionResult CapNhatSanLuongDuKienView()
       {
          return View();
       }
+
       [HttpPost]
       public ActionResult SanLuongDuKienPaging(int? thang, int? nam, int loai_sldk = 1)
       {
@@ -270,14 +285,16 @@ namespace DuAn.Controllers
                   return Json(new { success = false, message = "Lỗi truy cập cơ sở dữ liệu" }, JsonRequestBehavior.AllowGet);
                   //return Json(null, JsonRequestBehavior.AllowGet);
                }
+
                return Json(pm, JsonRequestBehavior.AllowGet);
             }
          }
-         catch (Exception ex)
+         catch
          {
             return null;
          }
       }
+
       [HttpPost]
       public ActionResult CapNhatSLDKManageModal(int id)
       {
@@ -287,6 +304,7 @@ namespace DuAn.Controllers
             //return Json(new { success = true, data = View() });
             return PartialView();
          }
+
          var rs = SanLuongDuKienDAO.GetSanLuongDuKienById(id, out sldk);
          //return Json(new { success = rs, data = View(sldk) });
          return PartialView(sldk);
@@ -301,6 +319,7 @@ namespace DuAn.Controllers
          {
             sldk_thang_modal = -1;
          }
+
          if (id_sldk == 0)
          {
             //create
@@ -320,7 +339,6 @@ namespace DuAn.Controllers
          {
             return Json(new { success = false, message = rs });
          }
-
       }
       #endregion
 
@@ -331,15 +349,16 @@ namespace DuAn.Controllers
          ViewBag.ListTCDD = TinhChatDiemDoDAO.GetAllTCDD();
          return View();
       }
+
       public ActionResult CapNhatDiemDo_Datatable(/*int id_nha_may,*/ int id_tinh_chat_diem_do, bool allow_history = false)
       {
-
          //ViewBag.id_nha_may = id_nha_may;
          ViewBag.id_tinh_chat_diem_do = id_tinh_chat_diem_do;
          ViewBag.allow_history = allow_history.ToString();
 
          return PartialView();
       }
+
       public ActionResult CapNhatDiemDoPaging(int id_tcdd_db, bool allow_history = false)
       {
          try
@@ -368,10 +387,11 @@ namespace DuAn.Controllers
                   return Json(new { success = false, message = "Lỗi truy cập cơ sở dữ liệu" }, JsonRequestBehavior.AllowGet);
                   //return Json(null, JsonRequestBehavior.AllowGet);
                }
+
                return Json(pm, JsonRequestBehavior.AllowGet);
             }
          }
-         catch (Exception ex)
+         catch
          {
             return null;
          }
@@ -389,15 +409,14 @@ namespace DuAn.Controllers
             var rs = CongToDAO.GetCongToTheoDiemDoByCongToID(CongToID, DiemDoID, out ct);
             return View(ct);
          }
-         // Thay doi cong to
          else
          {
+            // Thay doi cong to
             ViewBag.CongToManage = "change";
             ViewBag.DiemDoID = DiemDoID;
             ViewBag.LienKetID = LienKetID;
             return View();
          }
-
       }
 
       public ActionResult CapNhatDiemDoManageModal(int id)
@@ -410,36 +429,40 @@ namespace DuAn.Controllers
             //return Json(new { success = true, data = View() });
             return PartialView();
          }
+
          var rs = DiemDoDAO.GetDiemDoById(id, out dd);
          //return Json(new { success = rs, data = View(sldk) });
          return PartialView(dd);
       }
 
       [HttpPost]
-      public ActionResult CapNhatDiemDo_CreateOrUpdate(int? MaDiemDo, int? ThuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo, string TenDiemDo = "")
+      public ActionResult CapNhatDiemDo_CreateOrUpdate(int? maDiemDo, int? thuTuHienThi, int nha_may_id, int id_tinh_chat_diem_do, int id_diemdo, string tenDiemDo = "")
       {
-         if (MaDiemDo == null)
+         if (maDiemDo == null)
          {
             return Json(new { success = false, message = "Mã điểm đo không được để trống!!!" });
          }
-         if (ThuTuHienThi == null)
+
+         if (thuTuHienThi == null)
          {
             return Json(new { success = false, message = "Thứ tự hiển thị không được để trống!!!" });
          }
-         if (string.IsNullOrEmpty(TenDiemDo))
+
+         if (string.IsNullOrEmpty(tenDiemDo))
          {
             return Json(new { success = false, message = "Tên điểm đo không được để trống!!!" });
          }
+
          var rs = "";
          if (id_diemdo == 0)
          {
             //create
-            rs = DiemDoDAO.CreateDiemDo(MaDiemDo.Value, TenDiemDo, ThuTuHienThi.Value, nha_may_id, id_tinh_chat_diem_do);
+            rs = DiemDoDAO.CreateDiemDo(maDiemDo.Value, tenDiemDo, thuTuHienThi.Value, nha_may_id, id_tinh_chat_diem_do);
          }
          else
          {
             // update
-            rs = DiemDoDAO.UpdateDiemDo(MaDiemDo.Value, TenDiemDo, ThuTuHienThi.Value, nha_may_id, id_tinh_chat_diem_do, id_diemdo);
+            rs = DiemDoDAO.UpdateDiemDo(maDiemDo.Value, tenDiemDo, thuTuHienThi.Value, nha_may_id, id_tinh_chat_diem_do, id_diemdo);
          }
 
          if (rs.Equals("success"))
@@ -450,8 +473,8 @@ namespace DuAn.Controllers
          {
             return Json(new { success = false, message = rs });
          }
-
       }
+
       [HttpPost]
       public ActionResult CapNhatDiemDo_CreateOrUpdateCongTo(int id_congto, int id_diemdo, string serial, string loai_congto, string ct_dd_thoigianketthuc, string ct_dd_thoigianbatdau, int id_lienket = -1)
       {
@@ -463,6 +486,7 @@ namespace DuAn.Controllers
             {
                return Json(new { success = false, message = "Thời gian bắt đầu không đúng định dạng" });
             }
+
             DateTime? dt_end = new DateTime();
             if (string.IsNullOrEmpty(ct_dd_thoigianketthuc))
             {
@@ -476,8 +500,10 @@ namespace DuAn.Controllers
                {
                   return Json(new { success = false, message = "Thời gian kết thúc không đúng định dạng" });
                }
+
                dt_end = dt;
             }
+
             if (dt_start > dt_end)
             {
                return Json(new { success = false, message = "Thời gian bắt đầu phải nhỏ hơn Thời gian kết thúc" });
@@ -496,7 +522,8 @@ namespace DuAn.Controllers
                {
                   return Json(new { success = false, message = "Công tơ đã tồn tại" });
                }
-               var rs_check_congto_using = LienKetDiemDoCongToDAO.CheckCongToUsingFollowTimeByID(id_congto, id_lienket, dt_start, dt_end);// kiem tra co dang duoc su dung hay chua
+               // kiem tra co dang duoc su dung hay chua
+               var rs_check_congto_using = LienKetDiemDoCongToDAO.CheckCongToUsingFollowTimeByID(id_congto, id_lienket, dt_start, dt_end);
                if (rs_check_congto_using)
                {
                   // neu da duoc su dung
@@ -513,12 +540,14 @@ namespace DuAn.Controllers
                CongTo ct = new CongTo();
                ct.Serial = serial;
                ct.Type = loai_congto;
-               var rs_checkexist = CongToDAO.CheckCongToExistBySerial(serial);// kiem tra cong to da ton tai hay chua
+               // kiem tra cong to da ton tai hay chua
+               var rs_checkexist = CongToDAO.CheckCongToExistBySerial(serial);
                if (rs_checkexist)
                {
                   // neu cong to da ton tai
                   var ct_temp = CongToDAO.GetCongToBySerial(serial);
-                  var rs_check_congto_using = LienKetDiemDoCongToDAO.CheckCongToUsingFollowTimeByID(id_congto, id_diemdo, dt_start, dt_end);// kiem tra co dang duoc su dung hay chua
+                  // kiem tra co dang duoc su dung hay chua
+                  var rs_check_congto_using = LienKetDiemDoCongToDAO.CheckCongToUsingFollowTimeByID(id_congto, id_diemdo, dt_start, dt_end);
                   if (rs_check_congto_using)
                   {
                      // neu da duoc su dung
@@ -530,6 +559,7 @@ namespace DuAn.Controllers
                      var old_lienket = LienKetDiemDoCongToDAO.GetLienKetById(id_lienket);
                      var rs_update_lienket = LienKetDiemDoCongToDAO.CapNhatThoiGian(id_lienket, old_lienket.ThoiGianBatDau, dt_start.AddDays(-1));
                   }
+
                   var rs_create_lk = LienKetDiemDoCongToDAO.CreateLienKet(ct_temp.ID, id_diemdo, dt_start, dt_end);
                }
                else
@@ -547,18 +577,18 @@ namespace DuAn.Controllers
                         var old_lienket = LienKetDiemDoCongToDAO.GetLienKetById(id_lienket);
                         var rs_update_lienket = LienKetDiemDoCongToDAO.CapNhatThoiGian(id_lienket, old_lienket.ThoiGianBatDau, dt_start.AddDays(-1));
                      }
+
                      var rs_create_lk = LienKetDiemDoCongToDAO.CreateLienKet(ct.ID, id_diemdo, dt_start, dt_end);
                   }
                }
-
             }
+
             return Json(new { success = true, message = "Thành Công" });
          }
          catch (Exception ex)
          {
             return Json(new { success = false, message = ex.Message });
          }
-
       }
       #endregion
    }

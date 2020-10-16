@@ -20,6 +20,9 @@ namespace DuAn
 {
    public class DBContext
    {
+      static List<MissingDataStatus> data = new List<MissingDataStatus>();
+      static DateTime startDay = DateTime.MinValue;
+      static DateTime endDay = DateTime.MaxValue;
       #region Common
       public async static Task<HomeModel> getDuKien(DateTime date)
       {
@@ -89,7 +92,7 @@ namespace DuAn
 
                return await Task.FromResult(result);
             }
-            catch (Exception ex)
+            catch
             {
                return null;
             }
@@ -136,7 +139,7 @@ namespace DuAn
                acc.DOB = DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                db.SaveChanges();
             }
-            catch (Exception ex)
+            catch
             {
                return null;
             }
@@ -189,7 +192,7 @@ namespace DuAn
                result.RemoveAll(x => x.value == 0 || x.giaTien == 0);
                return result;
             }
-            catch (Exception e)
+            catch
             {
                return null;
             }
@@ -356,7 +359,7 @@ namespace DuAn
             }
 
          }
-         catch (Exception ex)
+         catch
          {
             return -1;
          }
@@ -373,7 +376,7 @@ namespace DuAn
             }
 
          }
-         catch (Exception ex)
+         catch
          {
             return -1;
          }
@@ -387,7 +390,7 @@ namespace DuAn
             var allDiemDo = db.DiemDoes.ToList();
             var listDate = data.Select(x => x.ThoiGianCongTo.Date).Distinct().ToList();
             var idInt = -1;
-            if (id != "")
+            if (!string.IsNullOrEmpty(id))
             {
                idInt = int.Parse(id);
                var join = (from bridge in db.DiemDo_CongTo select new { s = bridge.DiemDo, c = bridge.CongTo }).Where(x => x.s.ID == idInt);
@@ -518,15 +521,13 @@ namespace DuAn
                db.SaveChanges();
                return true;
             }
-            catch (Exception e)
+            catch
             {
                return false;
             }
          }
       }
-      static List<MissingDataStatus> data = new List<MissingDataStatus>();
-      static DateTime startDay = DateTime.MinValue;
-      static DateTime endDay = DateTime.MaxValue;
+
       public static List<MissingDataStatus> getMissingData(string start, string end, string name = "")
       {
          using (var db = new Model1())
@@ -570,7 +571,7 @@ namespace DuAn
                }
                return data;
             }
-            else if (!String.IsNullOrEmpty(start) || !string.IsNullOrEmpty(end))
+            else if (!string.IsNullOrEmpty(start) || !string.IsNullOrEmpty(end))
             {
                data.Clear();
                if (string.IsNullOrEmpty(end))
@@ -629,7 +630,7 @@ namespace DuAn
                if (date < startDay || date > endDay)
                {
                   data.Clear();
-                  return getMissingData(date.ToString("dd/MM/yyyy"), "");
+                  return getMissingData(date.ToString("dd/MM/yyyy"), string.Empty);
                }
                var diemDo = db.DiemDoes.Where(x => x.MaDiemDo == MaDiemDo).FirstOrDefault();
                int id = diemDo.ID;
@@ -738,7 +739,7 @@ namespace DuAn
                return GenerateExcel(data, "rpt_PhieuTongHop_GNDN_NMD_ChiTiet.xlsx", date);
             }
          }
-         catch (Exception ex)
+         catch
          {
             return null;
          }
@@ -756,7 +757,7 @@ namespace DuAn
 
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
-               ExcelWorksheet wookSheet = package.Workbook.Worksheets[1]/*.Add("Sheet 1")*/;
+               ExcelWorksheet wookSheet = package.Workbook.Worksheets[1];
                int rowIndex = 12;
                wookSheet.Row(4).Style.Font.Bold = true;
                wookSheet.Cells[4, 4].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
@@ -879,7 +880,7 @@ namespace DuAn
             }
 
          }
-         catch (Exception ex)
+         catch
          {
             return null;
          }
@@ -926,9 +927,9 @@ namespace DuAn
             }
             return contentType;
          }
-         catch (Exception ex)
+         catch
          {
-            return "get content type :" + ex.Message;
+            return "File không được hỗ trợ";
          }
       }
 
@@ -971,7 +972,7 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
             ct = null;
             return "Đã có lỗi xảy ra khi lấy thông tin Công tơ";
@@ -982,7 +983,7 @@ namespace DuAn
 
    public static class AccountDAO
    {
-      public static string MaHoaMatKhau(String password)
+      public static string MaHoaMatKhau(string password)
       {
          //Tạo MD5 
          MD5 mh = MD5.Create();
@@ -991,7 +992,7 @@ namespace DuAn
          //mã hóa chuỗi đã chuyển
          byte[] hash = mh.ComputeHash(inputBytes);
          //tạo đối tượng StringBuilder (làm việc với kiểu dữ liệu lớn)
-         String sb = "";
+         string sb = string.Empty;
          for (int i = 0; i < hash.Length; i++)
          {
             sb += hash[i].ToString("x");
@@ -1001,11 +1002,11 @@ namespace DuAn
 
       private static string RandomSaltHash()
       {
-         string rs = "";
+         string rs = string.Empty;
          Random rd = new Random();
          for (int i = 0; i < 20; i++)
          {
-            rs += Convert.ToString((Char)rd.Next(65, 90));
+            rs += Convert.ToString((char)rd.Next(65, 90));
          }
          return rs;
       }
@@ -1021,7 +1022,7 @@ namespace DuAn
                   return rs;
                }
             }
-            catch (Exception ex)
+            catch
             {
                return null;
             }
@@ -1041,7 +1042,7 @@ namespace DuAn
                db.SaveChanges();
                return acc.ID;
             }
-            catch (Exception ex)
+            catch
             {
                return -1;
             }
@@ -1063,7 +1064,7 @@ namespace DuAn
             }
             else
             {
-               return "";
+               return string.Empty;
             }
          }
       }
@@ -1111,9 +1112,9 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
-            throw ex;
+            throw new Exception("Lỗi update tài khoản");
          }
       }
 
@@ -1149,9 +1150,9 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
-            throw ex;
+            throw new Exception("Lỗi update Vai trò");
          }
       }
       public static void InsertRole(RoleAccount role)
@@ -1167,9 +1168,9 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
-            throw ex;
+            throw new Exception("Lỗi tạo mỡi vai trò");
          }
       }
       public static void Delete(int roleID)
@@ -1186,9 +1187,9 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
-            throw ex;
+            throw new Exception("Không thể xóa vai trò");
          }
       }
    }
@@ -1218,7 +1219,7 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
             dd = null;
             return false;
@@ -1236,7 +1237,6 @@ namespace DuAn
                var list = from dd in db.DiemDoes
                           join lk in db.DiemDo_CongTo on dd.ID equals lk.DiemDoID into x
                           from lk in x.DefaultIfEmpty()
-                             // where lk == null || (lk.ThoiGianBatDau <= DateTime.Now && (lk.ThoiGianKetThuc >= DateTime.Now || lk.ThoiGianKetThuc == null))
                           select new
                           {
                              diem_do = dd,
@@ -1250,7 +1250,7 @@ namespace DuAn
                              ID = sub_list.diem_do.ID,
                              MaDiemDo = sub_list.diem_do.MaDiemDo,
                              TenDiemDo = sub_list.diem_do.TenDiemDo,
-                             CongToSerial = ct != null ? ct.Serial : "",
+                             CongToSerial = ct != null ? ct.Serial : string.Empty,
                              CongToID = ct != null ? ct.ID : -1,
                              TinhChat = sub_list.diem_do.TinhChatDiemDo.TenTinhChat,
                              TinhChatID = sub_list.diem_do.TinhChatDiemDo.ID,
@@ -1263,7 +1263,7 @@ namespace DuAn
                }
                if (!allow_history)
                {
-                  list = list.Where(x => x.lienket == null || (x.lienket.ThoiGianBatDau <= DateTime.Now && (x.lienket.ThoiGianKetThuc >= DateTime.Now || x.lienket.ThoiGianKetThuc == null)) );
+                  list = list.Where(x => x.lienket == null || (x.lienket.ThoiGianBatDau <= DateTime.Now && (x.lienket.ThoiGianKetThuc >= DateTime.Now || x.lienket.ThoiGianKetThuc == null)));
                }
                pm.recordsFiltered = list.Count();
                //filter
@@ -1273,8 +1273,7 @@ namespace DuAn
                   list = list.Where(x => x.TenDiemDo.ToLower().Contains(rpm.searchValue.ToLower()) ||
                                         x.MaDiemDo.ToString().ToLower().Contains(rpm.searchValue.ToLower()) ||
                                         x.CongToSerial.ToString().ToLower().Contains(rpm.searchValue.ToLower()) ||
-                                        x.TinhChat.ToString().ToLower().Contains(rpm.searchValue.ToLower())
-                                    );
+                                        x.TinhChat.ToString().ToLower().Contains(rpm.searchValue.ToLower()));
 
                }
                pm.recordsTotal = list.Count();
@@ -1296,14 +1295,14 @@ namespace DuAn
                   TinhChatID = x.TinhChatID,
                   ThuTuHienThi = x.ThuTuHienThi,
                   LienKetID = x.lienket != null ? x.lienket.ID : -1,
-                  ThoiGianBatDau = x.lienket != null ? x.lienket.ThoiGianBatDau.ToString("dd/MM/yyyy") : "",
-                  ThoiGianKetThuc = x.lienket != null ? (x.lienket.ThoiGianKetThuc != null ? x.lienket.ThoiGianKetThuc.Value.ToString("dd/MM/yyyy") : "") : "",
+                  ThoiGianBatDau = x.lienket != null ? x.lienket.ThoiGianBatDau.ToString("dd/MM/yyyy") : string.Empty,
+                  ThoiGianKetThuc = x.lienket != null ? (x.lienket.ThoiGianKetThuc != null ? x.lienket.ThoiGianKetThuc.Value.ToString("dd/MM/yyyy") : string.Empty) : string.Empty,
                }).ToList();
                pm.draw = int.Parse(rpm.draw);
             }
             return true;
          }
-         catch (Exception ex)
+         catch
          {
             pm = new PagingModel<DiemDoViewModel>();
             return false;
@@ -1334,7 +1333,7 @@ namespace DuAn
                return "success";
             }
          }
-         catch (Exception ex)
+         catch
          {
             return "Không thể truy cập cơ sở dữ liệu";
          }
@@ -1368,7 +1367,7 @@ namespace DuAn
                return "success";
             }
          }
-         catch (Exception ex)
+         catch
          {
             return "Không thể truy cập cơ sử dữ liệu";
          }
@@ -1379,7 +1378,7 @@ namespace DuAn
          {
 
          }
-         catch (Exception ex)
+         catch 
          {
             return "Đã có lỗi xảy ra khi thay đổi thông tin công tơ"
          }
@@ -1471,8 +1470,9 @@ namespace DuAn
                   }
 
                }
-               else // get data theo nam
+               else
                {
+                  // get data theo nam
                   if (nam.HasValue)
                   {
                      list = list.Where(x => x.LoaiID == loai_SLDK && x.ThoiGian.Year == nam);
@@ -1504,7 +1504,7 @@ namespace DuAn
             }
             return true;
          }
-         catch (Exception ex)
+         catch
          {
             pm = new PagingModel<SanLuongDuKienViewModel>();
             return false;
@@ -1524,7 +1524,7 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
             sldk = null;
             return false;
@@ -1573,7 +1573,7 @@ namespace DuAn
                return "success";
             }
          }
-         catch (Exception ex)
+         catch
          {
             return "Đã xảy ra lỗi khi thêm mới Sản lượng dự kiến";
          }
@@ -1601,7 +1601,7 @@ namespace DuAn
                return "success";
             }
          }
-         catch (Exception ex)
+         catch
          {
             return "Đã xảy ra lỗi khi cập nhật Sản lượng dự kiến";
          }
@@ -1664,7 +1664,7 @@ namespace DuAn
                return "success";
             }
          }
-         catch (Exception ex)
+         catch
          {
             return "Đã có lỗi xảy ra trong quá trình cập nhật!!";
          }
@@ -1693,7 +1693,7 @@ namespace DuAn
                return db.CongToes.Where(x => x.ID == congto_id).FirstOrDefault();
             }
          }
-         catch (Exception ex)
+         catch
          {
             throw new Exception("Đã có lỗi xảy ra khi lấy thông tin Công tơ");
          }
@@ -1774,7 +1774,7 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
             ct = null;
             return "Đã có lỗi xảy ra khi lấy thông tin Công tơ";
@@ -1800,7 +1800,7 @@ namespace DuAn
                }
             }
          }
-         catch (Exception ex)
+         catch
          {
             throw new Exception("Đã có lỗi xảy ra khi thêm mới công tơ");
          }
@@ -1814,7 +1814,7 @@ namespace DuAn
                return db.CongToes.Where(x => x.Serial == serial).FirstOrDefault();
             }
          }
-         catch (Exception ex)
+         catch
          {
             throw new Exception("Đã có lỗi xảy ra khi lấy thông tin Công tơ");
          }
@@ -1877,7 +1877,7 @@ namespace DuAn
                return true;
             }
          }
-         catch (Exception ex)
+         catch
          {
             throw new Exception("Đã có lỗi xảy ra khi tạo liên kết điểm đo - công tơ");
          }

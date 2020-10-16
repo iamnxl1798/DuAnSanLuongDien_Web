@@ -229,7 +229,7 @@ namespace DocDuLieuCongTo.Model
                     }
                     return "success";
                 }
-                catch (Exception ex)
+                catch
                 {
                     return "failed";
                 }
@@ -327,7 +327,7 @@ namespace DocDuLieuCongTo.Model
                     return "success";
 
                 }
-                catch (Exception ex)
+                catch
                 {
                     return "failed";
                 }
@@ -461,7 +461,7 @@ namespace DocDuLieuCongTo.Model
                     }
                     return formula.ToString();
                 }
-                catch (Exception ex)
+                catch
                 {
                     return "false";
                 }
@@ -589,7 +589,7 @@ namespace DocDuLieuCongTo.Model
                     }
 
                 }
-                catch (Exception ex)
+                catch
                 {
                     return "failed";
                 }
@@ -693,7 +693,7 @@ namespace DocDuLieuCongTo.Model
                         }
                     }
                 }
-                catch (Exception ex)
+                catch 
                 {
                     return "failed";
                 }
@@ -866,7 +866,7 @@ namespace DocDuLieuCongTo.Model
                     return ct;
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 return "failed";
             }

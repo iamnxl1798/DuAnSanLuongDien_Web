@@ -99,7 +99,7 @@ namespace ServiceTool
                   tsvh.ThoiGianCongTo = dt;
 
                   var bool_rs = true;
-                  var he_so_nhan = 0.001;//from W to kW
+                  //var he_so_nhan = 0.001;//from W to kW
 
                   tsvh.P_Nhan = Common.ParseDouble(data[6 - 1].Split(',')[1], ref bool_rs) ;
                   tsvh.P_Giao = Common.ParseDouble(data[7 - 1].Split(',')[1], ref bool_rs);
@@ -162,7 +162,7 @@ namespace ServiceTool
                //ShowNotificationMessage(50, "Error", "Wait to access file !!!", ToolTipIcon.Error);
                Thread.Sleep(100);
             }
-            catch (Exception ex)
+            catch
             {
                //Console.WriteLine(ex.Message);
                //ShowNotificationMessage(50, "Error", ex.Message, ToolTipIcon.Error);
@@ -174,7 +174,7 @@ namespace ServiceTool
                {
                   reader.Close();
                }
-               catch (Exception ex)
+               catch
                {
                }
 

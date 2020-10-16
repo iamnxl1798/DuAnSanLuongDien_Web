@@ -42,7 +42,7 @@ namespace ServiceTool.Model.CustomModel
                //ShowNotificationMessage(50, "Di chuyển file !!!", "Thành công", ToolTipIcon.None);
                break;
             }
-            catch (Exception ex)
+            catch
             {
                //ShowNotificationMessage(50, "Error !!!", ex.Message, ToolTipIcon.Error);
             }

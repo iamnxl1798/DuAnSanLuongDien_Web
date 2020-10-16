@@ -29,10 +29,21 @@ namespace DuAn.Controllers
          Session["CongTy"] = ct;
          NhaMay nm = NhaMayDAO.GetNhaMayByDefault();
          Session["NhaMay"] = nm;
+         var account_cookies_username = Request.Cookies["username"];
+         if (account_cookies_username != null)
+         {
+            ViewBag.username = account_cookies_username.Value.ToString();
+         }
+         var account_cookies_password = Request.Cookies["password"];
+         if (account_cookies_password != null)
+         {
+            ViewBag.password = account_cookies_password.Value.ToString();
+         }
          return View();
       }
+
       [AllowAnonymous]
-      public JsonResult CheckLogin(string username, string password)
+      public JsonResult CheckLogin(string username, string password, bool remember)
       {
          try
          {
@@ -41,12 +52,57 @@ namespace DuAn.Controllers
             {
                rs.RoleAccount = db.RoleAccounts.Find(rs.RoleID);
                Session["User"] = rs;
+               if (remember)
+               {
+                  var check_cookies_username = Request.Cookies["username"];
+                  if (check_cookies_username != null)
+                  {
+                     check_cookies_username.Value = username;
+                     Response.SetCookie(check_cookies_username);
+                  }
+                  else
+                  {
+                     HttpCookie usernameCookies = new HttpCookie("username", username);
+                     usernameCookies.Expires = DateTime.Now.AddDays(1);
+                     Response.Cookies.Add(usernameCookies);
+                  }
+
+                  var check_cookies_password = Request.Cookies["password"];
+                  if (check_cookies_password != null)
+                  {
+                     check_cookies_password.Value = password;
+                     Response.SetCookie(check_cookies_password);
+                  }
+                  else
+                  {
+                     HttpCookie passwordCookies = new HttpCookie("password", password);
+                     passwordCookies.Expires = DateTime.Now.AddDays(1);
+                     Response.Cookies.Add(passwordCookies);
+                  }
+               }
+               else
+               {
+                  var check_cookies_username = Request.Cookies["username"];
+                  if (check_cookies_username != null)
+                  {
+                     check_cookies_username.Expires = DateTime.Now.AddDays(-1);
+                     Response.Cookies.Add(check_cookies_username);
+                  }
+
+                  var check_cookies_password = Request.Cookies["password"];
+                  if (check_cookies_password != null)
+                  {
+                     check_cookies_password.Expires = DateTime.Now.AddDays(-1);
+                     Response.Cookies.Add(check_cookies_password);
+                  }
+
+               }
                return Json("Success", JsonRequestBehavior.AllowGet);
             }
          }
-         catch (Exception ex)
+         catch
          {
-            return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            return Json("Fail", JsonRequestBehavior.AllowGet);
          }
          return Json("Fail", JsonRequestBehavior.AllowGet);
       }
@@ -59,6 +115,7 @@ namespace DuAn.Controllers
          Session.Remove("NhaMay");
          return RedirectToAction("Login");
       }
+
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts })]
       public ActionResult ListUser()
       {
@@ -113,7 +170,8 @@ namespace DuAn.Controllers
             int start = Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(int.Parse(Request["start"]) / length))) + 1;
             string searchValue = HttpContext.Request["search[value]"];
             string sortColumnName = HttpContext.Request["columns[" + Request["order[0][column]"] + "][name]"];
-            string searchRoleValue = HttpContext.Request["columns[5][search][value]"];// search theo role
+            // search theo role
+            string searchRoleValue = HttpContext.Request["columns[5][search][value]"];
             string sortDirection = Request["order[0][dir]"];
 
             AccountPaging apg = new AccountPaging();
@@ -170,11 +228,12 @@ namespace DuAn.Controllers
             apg.draw = int.Parse(Request["draw"]);
             return Json(apg);
          }
-         catch (Exception ex)
+         catch
          {
             return null;
          }
       }
+
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Accounts_Edit })]
       public string UpdateAccount(int id, HttpPostedFileBase avatar, string password, string username, string fullname, string email, string address, string phone, string icode, string dob, int roleID)
@@ -274,7 +333,7 @@ namespace DuAn.Controllers
             db.SaveChanges();
             return true;
          }
-         catch (Exception ex)
+         catch
          {
             return false;
          }

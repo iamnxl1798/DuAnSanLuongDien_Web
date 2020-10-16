@@ -112,7 +112,7 @@ namespace ServiceTool
                 btConfig.Enabled = false;
                 btCancel.Enabled = false;
             }
-            catch (Exception ex)
+            catch
             {
                 MessageBox.Show("Đường dẫn không tìm thấy !! ");
             }

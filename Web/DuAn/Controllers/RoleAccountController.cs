@@ -25,41 +25,45 @@ namespace DuAn.Controllers
          List<AllRole> list = new List<AllRole>();
          try
          {
-            Dictionary<string, string> Role_Color = StatusContext.GetColorForRole();
+            Dictionary<string, string> role_Color = StatusContext.GetColorForRole();
             if (string.IsNullOrEmpty(role))
             {
                role = "Fullpower";
                //return null;
             }
-            foreach (var i in db.RoleAccounts)
+
+            foreach (var i in this.db.RoleAccounts)
             {
                if (i.Role.ToLower().Equals(role.ToLower()))
                {
                   ViewBag.RoleIDAccEdit = i.ID;
                   ViewBag.RoleAccEdit = role;
-                  ViewBag.RoleColorClass = Role_Color[i.Role];
+                  ViewBag.RoleColorClass = role_Color[i.Role];
                }
+
                AllRole alr = new AllRole()
                {
                   ID = i.ID,
                   Role = i.Role,
-                  ColorClass = Role_Color[i.Role]
+                  ColorClass = role_Color[i.Role]
                };
                list.Add(alr);
             }
-
          }
-         catch (Exception ex)
+         catch
          {
-            Console.WriteLine(ex.Message);
+            return this.PartialView(null);
          }
-         return PartialView(list);
+
+         return this.PartialView(list);
       }
+
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
       public ActionResult TableDataRole()
       {
-         return PartialView();
+         return this.PartialView();
       }
+
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
       public JsonResult GetAllRole()
@@ -81,8 +85,8 @@ namespace DuAn.Controllers
             RolePaging apg = new RolePaging();
             apg.data = new List<RoleModel>();
             start = (start - 1) * length;
-            List<RoleAccount> listRole = db.RoleAccounts.ToList<RoleAccount>();
-            Dictionary<string, string> Role_Color = StatusContext.GetColorForRole();
+            List<RoleAccount> listRole = this.db.RoleAccounts.ToList<RoleAccount>();
+            Dictionary<string, string> role_Color = StatusContext.GetColorForRole();
             apg.recordsTotal = listRole.Count;
             //filter
             if (!string.IsNullOrEmpty(searchValue))
@@ -95,6 +99,7 @@ namespace DuAn.Controllers
                //sort UTF 8
                sortColumnName = "ID";
             }
+
             listRole = listRole.OrderBy(sortColumnName + " " + sortDirection).ToList<RoleAccount>();
 
             apg.recordsFiltered = listRole.Count;
@@ -103,50 +108,54 @@ namespace DuAn.Controllers
 
             foreach (var i in listRole)
             {
-               apg.data.Add(new RoleModel(i, Role_Color[i.Role]));
+               apg.data.Add(new RoleModel(i, role_Color[i.Role]));
             }
 
-            apg.draw = int.Parse(Request["draw"]);
-            return Json(apg);
+            apg.draw = int.Parse(this.Request["draw"]);
+            return this.Json(apg);
             /*return Json(apg, JsonRequestBehavior.AllowGet);*/
          }
-         catch (Exception ex)
+         catch
          {
             return null;
          }
       }
+
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
       public ActionResult ListRole()
       {
-         return PartialView();
+         return this.PartialView();
       }
 
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Create })]
       public ActionResult CreateRoleForm()
       {
-         return PartialView("EditRoleForm", new RoleAccount());
+         return this.PartialView("EditRoleForm", new RoleAccount());
       }
 
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Edit })]
-      public ActionResult EditRoleForm(int RoleID)
+      public ActionResult EditRoleForm(int roleID)
       {
-         var rs = db.RoleAccounts.Find(RoleID);
-         if (rs == null) return null;
-         return PartialView(rs);
+         var rs = this.db.RoleAccounts.Find(roleID);
+         if (rs == null)
+         {
+            return null;
+         }
+
+         return this.PartialView(rs);
       }
 
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise })]
-      public JsonResult GetPermissionTree(int RoleID)
+      public JsonResult GetPermissionTree(int roleID)
       {
-
          try
          {
-            RoleAccount ra = db.RoleAccounts.Find(RoleID);
+            RoleAccount ra = this.db.RoleAccounts.Find(roleID);
             List<TreeViewNode> ls = new List<TreeViewNode>();
-            foreach (var i in db.Permissions)
+            foreach (var i in this.db.Permissions)
             {
                TreeViewNode tvn = new TreeViewNode
                {
@@ -156,33 +165,37 @@ namespace DuAn.Controllers
                   state = new Dictionary<string, bool>()
                };
 
-               if (ra != null && RoleID != 0 && ra.PermissionID != null && ra.PermissionID.Split(',').Contains(tvn.id.ToString()))
+               if (ra != null && roleID != 0 && ra.PermissionID != null && ra.PermissionID.Split(',').Contains(tvn.id.ToString()))
                {
                   tvn.state.Add("selected", true);
                }
+
                ls.Add(tvn);
             }
 
-            return Json(ls);
+            return this.Json(ls);
          }
-         catch (Exception ex)
+         catch
          {
             return null;
          }
       }
+
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles })]
       public JsonResult CheckRolename(string rolename)
       {
          if (!RoleAccountDAO.checkRoleName(rolename))
          {
-            return Json("Fail", JsonRequestBehavior.AllowGet);
+            return this.Json("Fail", JsonRequestBehavior.AllowGet);
          }
-         return Json("Success", JsonRequestBehavior.AllowGet);
+
+         return this.Json("Success", JsonRequestBehavior.AllowGet);
       }
+
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Edit })]
-      public string UpdateRole(int RoleID, string RoleName, List<String> listPermissionID)
+      public string UpdateRole(int roleID, string roleName, List<string> listPermissionID)
       {
          try
          {
@@ -190,10 +203,11 @@ namespace DuAn.Controllers
             {
                listPermissionID = new List<string>();
             }
+
             RoleAccount ra = new RoleAccount()
             {
-               ID = RoleID,
-               Role = RoleName,
+               ID = roleID,
+               Role = roleName,
                PermissionID = string.Join(",", listPermissionID)
             };
             /*if (rs == null)
@@ -201,17 +215,18 @@ namespace DuAn.Controllers
                 return "Role không tồn tại !!!";
             }*/
             RoleAccountDAO.UpdateRole(ra);
-
          }
-         catch (Exception ex)
+         catch
          {
             return "Update Role không thành công !!!";
          }
+
          return "success";
       }
+
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Create })]
-      public string InsertRole(int RoleID, string RoleName, List<String> listPermissionID)
+      public string InsertRole(int roleID, string roleName, List<string> listPermissionID)
       {
          try
          {
@@ -219,34 +234,36 @@ namespace DuAn.Controllers
             {
                listPermissionID = new List<string>();
             }
+
             var rs = new RoleAccount()
             {
-               Role = RoleName,
+               Role = roleName,
                PermissionID = string.Join(",", listPermissionID)
             };
             RoleAccountDAO.InsertRole(rs);
-
          }
-         catch (Exception ex)
+         catch
          {
             return "Insert Role không thành công !!!";
          }
+
          return "success";
       }
+
       [HttpPost]
       [CheckTotalRole(RoleID = new int[1] { RoleContext.Expertise_Roles_Delete })]
-      public bool DeleteRole(int RoleID)
+      public bool DeleteRole(int roleID)
       {
          try
          {
-            RoleAccountDAO.Delete(RoleID);
+            RoleAccountDAO.Delete(roleID);
          }
-         catch (Exception ex)
+         catch
          {
             return false;
          }
+
          return true;
       }
    }
-
 }

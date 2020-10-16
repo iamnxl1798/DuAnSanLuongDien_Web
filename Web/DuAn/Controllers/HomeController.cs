@@ -14,10 +14,11 @@ namespace DuAn.Controllers
    [CheckLogin(/*RoleID = new int[1] { 2 }*/)]
    public class HomeController : Controller
    {
-      public ActionResult Index(string dateStr = "")
+      public ActionResult Index()
       {
          return View();
       }
+
       [HttpGet]
       public ActionResult CongSuatMaxMinPartialView()
       {
@@ -86,7 +87,7 @@ namespace DuAn.Controllers
                return PartialView(apg);
             }
          }
-         catch (Exception ex)
+         catch
          {
             return PartialView(null);
          }
