@@ -11,6 +11,8 @@ using System.Web;
 using DuAn.Models.DbModel;
 using System.IO;
 using DuAn.COMMON;
+using System.Web.Security;
+using Newtonsoft.Json;
 
 namespace DuAn.Controllers
 {
@@ -24,25 +26,21 @@ namespace DuAn.Controllers
       // GET: Account
       public ActionResult Login()
       {
+         if (User.Identity.IsAuthenticated)
+         {
+            return RedirectToAction("Index", "Home");
+         }
+
          //CongTy ct = CongTyDAO.getCongTyById(5);
          CongTy ct = CongTyDAO.getCongTyByDefault();
          Session["CongTy"] = ct;
          NhaMay nm = NhaMayDAO.GetNhaMayByDefault();
          Session["NhaMay"] = nm;
-         var account_cookies_username = Request.Cookies["username"];
-         if (account_cookies_username != null)
-         {
-            ViewBag.username = account_cookies_username.Value.ToString();
-         }
-         var account_cookies_password = Request.Cookies["password"];
-         if (account_cookies_password != null)
-         {
-            ViewBag.password = account_cookies_password.Value.ToString();
-         }
          return View();
       }
 
       [AllowAnonymous]
+      [HttpPost]
       public JsonResult CheckLogin(string username, string password, bool remember)
       {
          try
@@ -52,59 +50,33 @@ namespace DuAn.Controllers
             {
                rs.RoleAccount = db.RoleAccounts.Find(rs.RoleID);
                Session["User"] = rs;
-               if (remember)
-               {
-                  var check_cookies_username = Request.Cookies["username"];
-                  if (check_cookies_username != null)
-                  {
-                     check_cookies_username.Value = username;
-                     Response.SetCookie(check_cookies_username);
-                  }
-                  else
-                  {
-                     HttpCookie usernameCookies = new HttpCookie("username", username);
-                     usernameCookies.Expires = DateTime.Now.AddDays(1);
-                     Response.Cookies.Add(usernameCookies);
-                  }
+               string userData = /*JsonConvert.SerializeObject(rs);*/"haha";
 
-                  var check_cookies_password = Request.Cookies["password"];
-                  if (check_cookies_password != null)
-                  {
-                     check_cookies_password.Value = password;
-                     Response.SetCookie(check_cookies_password);
-                  }
-                  else
-                  {
-                     HttpCookie passwordCookies = new HttpCookie("password", password);
-                     passwordCookies.Expires = DateTime.Now.AddDays(1);
-                     Response.Cookies.Add(passwordCookies);
-                  }
-               }
-               else
-               {
-                  var check_cookies_username = Request.Cookies["username"];
-                  if (check_cookies_username != null)
-                  {
-                     check_cookies_username.Expires = DateTime.Now.AddDays(-1);
-                     Response.Cookies.Add(check_cookies_username);
-                  }
+               FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
+                 username,
+                 DateTime.Now,
+                 DateTime.Now.AddDays(1),
+                 remember,
+                 userData/*,
+                    FormsAuthentication.FormsCookiePath*/);
 
-                  var check_cookies_password = Request.Cookies["password"];
-                  if (check_cookies_password != null)
-                  {
-                     check_cookies_password.Expires = DateTime.Now.AddDays(-1);
-                     Response.Cookies.Add(check_cookies_password);
-                  }
+               // Encrypt the ticket.
+               string encTicket = FormsAuthentication.Encrypt(ticket);
 
-               }
-               return Json("Success", JsonRequestBehavior.AllowGet);
+               HttpCookie faCookie = new HttpCookie("login_form_cre", encTicket) { Expires = ticket.Expiration };
+
+               // Create the cookie.
+               Response.Cookies.Add(faCookie);
+
+
+               return Json("Success");
             }
          }
          catch
          {
-            return Json("Fail", JsonRequestBehavior.AllowGet);
+            return Json("Fail");
          }
-         return Json("Fail", JsonRequestBehavior.AllowGet);
+         return Json("Fail");
       }
 
       [AllowAnonymous]
@@ -113,6 +85,12 @@ namespace DuAn.Controllers
          Session.Remove("User");
          Session.Remove("CongTy");
          Session.Remove("NhaMay");
+
+         HttpCookie cookie = new HttpCookie("login_form_cre", "");
+         cookie.Expires = DateTime.Now.AddDays(-1);
+         Response.Cookies.Add(cookie);
+
+         FormsAuthentication.SignOut();
          return RedirectToAction("Login");
       }
 
