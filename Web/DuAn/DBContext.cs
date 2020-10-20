@@ -1010,7 +1010,42 @@ namespace DuAn
          }
          return rs;
       }
-      public static Account CheckLogin(string username, string password)
+
+      public static Account GetAccountByUsername(string username)
+      {
+         using (Model1 db = new Model1())
+         {
+            try
+            {
+               Account acc = db.Accounts.SingleOrDefault(x => x.Username == username);
+               acc.RoleAccount = db.RoleAccounts.Find(acc.RoleID);
+               return acc;
+            }
+            catch
+            {
+               throw new Exception("Có lỗi xảy ra khi lấy thông tin đăng nhập qua username");
+            }
+         }
+      }
+
+      public static Account GetAccountByID(int id)
+      {
+         using (Model1 db = new Model1())
+         {
+            try
+            {
+               Account acc = db.Accounts.Find(id);
+               acc.RoleAccount = db.RoleAccounts.Find(acc.RoleID);
+               return acc;
+            }
+            catch
+            {
+               throw new Exception("Có lỗi xảy ra khi lấy thông tin đăng nhập qua id");
+            }
+         }
+      }
+
+      public static bool CheckLogin(string username, string password)
       {
          using (Model1 db = new Model1())
          {
@@ -1019,16 +1054,17 @@ namespace DuAn
                var rs = db.Accounts.SingleOrDefault(x => x.Username == username);
                if (rs != null && rs.Password == MaHoaMatKhau(rs.SaltPassword + password))
                {
-                  return rs;
+                  return true;
                }
             }
             catch
             {
-               return null;
+               throw new Exception("Có lỗi xảy ra khi kiểm tra thông tin đăng nhập");
             }
-            return null;
+            return false;
          }
       }
+
       public static int AddAccount(Account acc)
       {
          using (Model1 db = new Model1())
@@ -1068,6 +1104,7 @@ namespace DuAn
             }
          }
       }
+
       public static bool CheckUsername(string username)
       {
          using (Model1 db = new Model1())
@@ -1082,6 +1119,7 @@ namespace DuAn
             return true;
          }
       }
+
       public static void UpdateAccout(Account acc)
       {
          try

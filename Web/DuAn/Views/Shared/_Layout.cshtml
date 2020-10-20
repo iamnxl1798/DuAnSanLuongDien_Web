@@ -89,7 +89,7 @@ License: You must have a valid license purchased only from themeforest(the above
                   @RenderPage("_Menu.cshtml")
                   <!--end::Left-->
                   @{
-                     DuAn.Models.DbModel.Account acc = (DuAn.Models.DbModel.Account)Session["User"];
+                     DuAn.Models.DbModel.Account acc = (DuAn.Models.DbModel.Account)HttpContext.Current.Session["User"];
                      <input type="hidden" id="permissionRole" value="@acc.RoleAccount.PermissionID" />
                   }
                   <!--begin::Topbar-->

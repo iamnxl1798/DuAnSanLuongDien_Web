@@ -26,16 +26,14 @@ namespace DuAn.Controllers
       // GET: Account
       public ActionResult Login()
       {
-         if (User.Identity.IsAuthenticated)
-         {
-            return RedirectToAction("Index", "Home");
-         }
-
-         //CongTy ct = CongTyDAO.getCongTyById(5);
          CongTy ct = CongTyDAO.getCongTyByDefault();
          Session["CongTy"] = ct;
          NhaMay nm = NhaMayDAO.GetNhaMayByDefault();
          Session["NhaMay"] = nm;
+         if (User.Identity.IsAuthenticated)
+         {
+            return RedirectToAction("Index", "Home");
+         }
          return View();
       }
 
@@ -46,33 +44,30 @@ namespace DuAn.Controllers
          try
          {
             var rs = AccountDAO.CheckLogin(username, password);
-            if (rs != null)
+            if (rs)
             {
-               rs.RoleAccount = db.RoleAccounts.Find(rs.RoleID);
-               Session["User"] = rs;
-               string userData = /*JsonConvert.SerializeObject(rs);*/"haha";
+               Account acc = AccountDAO.GetAccountByUsername(username);
+               Session["User"] = acc;
+               if (remember)
+               {
+                  CustomSerializeModel userModel = new CustomSerializeModel()
+                  {
+                     UserId = acc.ID,
+                     FullName = acc.Fullname,
+                     Email = acc.Email,
+                  };
 
-               FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1,
-                 username,
-                 DateTime.Now,
-                 DateTime.Now.AddDays(1),
-                 remember,
-                 userData/*,
-                    FormsAuthentication.FormsCookiePath*/);
-
-               // Encrypt the ticket.
-               string encTicket = FormsAuthentication.Encrypt(ticket);
-
-               HttpCookie faCookie = new HttpCookie("login_form_cre", encTicket) { Expires = ticket.Expiration };
-
-               // Create the cookie.
-               Response.Cookies.Add(faCookie);
-
+                  string userData = JsonConvert.SerializeObject(userModel);
+                  FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, username, DateTime.Now, DateTime.Now.AddDays(1), remember, userData);
+                  string encTicket = FormsAuthentication.Encrypt(ticket);
+                  HttpCookie faCookie = new HttpCookie("login_form_cre", encTicket) { Expires = ticket.Expiration };
+                  Response.Cookies.Add(faCookie);
+               }
 
                return Json("Success");
             }
          }
-         catch
+         catch (Exception ex)
          {
             return Json("Fail");
          }

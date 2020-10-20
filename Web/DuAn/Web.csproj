@@ -290,6 +290,8 @@
     <Compile Include="Models\CustomModel\CapNhatDiemDo_CongToViewModel.cs" />
     <Compile Include="Models\CustomModel\CauHinhWebViewModel.cs" />
     <Compile Include="Models\CustomModel\CongSuatMaxMinModelView.cs" />
+    <Compile Include="Models\CustomModel\CustomPrincipal.cs" />
+    <Compile Include="Models\CustomModel\CustomSerializeModel.cs" />
     <Compile Include="Models\CustomModel\DiemDoData.cs" />
     <Compile Include="Models\CustomModel\DiemDoViewModel.cs" />
     <Compile Include="Models\CustomModel\ExportExcelModel.cs" />
