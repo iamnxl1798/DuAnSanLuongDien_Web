@@ -48,6 +48,7 @@ namespace DuAn.Controllers
             {
                Account acc = AccountDAO.GetAccountByUsername(username);
                Session["User"] = acc;
+
                if (remember)
                {
                   CustomSerializeModel userModel = new CustomSerializeModel()

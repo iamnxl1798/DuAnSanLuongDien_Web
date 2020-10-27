@@ -15,7 +15,7 @@ namespace DuAn.Attribute
       // call hàm này để check xem có được phép truy cập
       protected override bool AuthorizeCore(HttpContextBase httpContext)
       {
-         if (HttpContext.Current.User.Identity.IsAuthenticated)
+         if (HttpContext.Current.User.Identity.IsAuthenticated || HttpContext.Current.Session["User"] != null)
          {
             if (HttpContext.Current.Session["User"] == null)
             {
@@ -24,9 +24,10 @@ namespace DuAn.Attribute
                var serializeModel = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
                Account acc = AccountDAO.GetAccountByID(serializeModel.UserId);
                HttpContext.Current.Session["User"] = acc;
-               HttpContext.Current.Session["CongTy"] = CongTyDAO.getCongTyByDefault();
-               HttpContext.Current.Session["NhaMay"] = NhaMayDAO.GetNhaMayByDefault();
             }
+
+            HttpContext.Current.Session["CongTy"] = CongTyDAO.getCongTyByDefault();
+            HttpContext.Current.Session["NhaMay"] = NhaMayDAO.GetNhaMayByDefault();
             return true;
          }
          return false;
